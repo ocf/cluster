@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: trivy
+    app.kubernetes.io/instance: harbor
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: harbor
+    helm.sh/chart: harbor-15.2.5
+  name: harbor-trivy
+  namespace: harbor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: trivy
+      app.kubernetes.io/instance: harbor
+      app.kubernetes.io/name: harbor
+  serviceName: harbor-trivy
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-env: 758cd5a9c4091ff79264663e270c55cb2464d6b6667680a774983650c764a4cd
+      labels:
+        app.kubernetes.io/component: trivy
+        app.kubernetes.io/instance: harbor
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: harbor
+        helm.sh/chart: harbor-15.2.5
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: trivy
+                  app.kubernetes.io/instance: harbor
+                  app.kubernetes.io/name: harbor
+              namespaces:
+              - harbor
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        envFrom:
+        - configMapRef:
+            name: harbor-trivy-envvars
+        - secretRef:
+            name: harbor-trivy-envvars
+        image: docker.io/bitnami/harbor-adapter-trivy:2.6.0-debian-11-r18
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /probe/healthy
+            port: api-server
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: trivy
+        ports:
+        - containerPort: 8080
+          name: api-server
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /probe/ready
+            port: api-server
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 512Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /bitnami/harbor-adapter-trivy/.cache
+          name: data
+          readOnly: false
+      initContainers: null
+      securityContext:
+        fsGroup: 1001
+      volumes: null
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app.kubernetes.io/instance: harbor
+        app.kubernetes.io/name: harbor
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

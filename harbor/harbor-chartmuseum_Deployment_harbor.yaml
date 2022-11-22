@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: chartmuseum
+    app.kubernetes.io/instance: harbor
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: harbor
+    helm.sh/chart: harbor-15.2.5
+  name: harbor-chartmuseum
+  namespace: harbor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: chartmuseum
+      app.kubernetes.io/instance: harbor
+      app.kubernetes.io/name: harbor
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-envvars: 230567da10a48679f5b40469a30ab059bb2ce4b45a36f63483c83dc78f3d1030
+      labels:
+        app.kubernetes.io/component: chartmuseum
+        app.kubernetes.io/instance: harbor
+        app.kubernetes.io/name: harbor
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: chartmuseum
+                  app.kubernetes.io/instance: harbor
+                  app.kubernetes.io/name: harbor
+              namespaces:
+              - harbor
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: DEBUG
+          value: '0'
+        - name: BASIC_AUTH_PASS
+          valueFrom:
+            secretKeyRef:
+              key: secret
+              name: harbor-core
+        envFrom:
+        - configMapRef:
+            name: harbor-chartmuseum-envvars
+        - secretRef:
+            name: harbor-chartmuseum-secret
+        image: docker.io/bitnami/chartmuseum:0.15.0-debian-11-r31
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: chartmuseum
+        ports:
+        - containerPort: 9999
+          name: http
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /bitnami/data
+          name: chartmuseum-data
+          subPath: null
+      securityContext:
+        fsGroup: 1001
+      volumes:
+      - name: chartmuseum-data
+        persistentVolumeClaim:
+          claimName: harbor-chartmuseum

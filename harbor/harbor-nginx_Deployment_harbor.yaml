@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: nginx
+    app.kubernetes.io/instance: harbor
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: harbor
+    helm.sh/chart: harbor-15.2.5
+  name: harbor-nginx
+  namespace: harbor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: nginx
+      app.kubernetes.io/instance: harbor
+      app.kubernetes.io/name: harbor
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: 8dbf07461629be00e8c24d6abb2de74e871f0eb82199050f71d8a87237cd0be1
+        checksum/tls-secret: 80b95014d46ece96921ae7d4b1e95efa20cbd906943827fde87acac79e3d2efa
+      labels:
+        app.kubernetes.io/component: nginx
+        app.kubernetes.io/instance: harbor
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: harbor
+        helm.sh/chart: harbor-15.2.5
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: nginx
+                  app.kubernetes.io/instance: harbor
+                  app.kubernetes.io/name: harbor
+              namespaces:
+              - harbor
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        envFrom: null
+        image: docker.io/bitnami/nginx:1.23.1-debian-11-r33
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: nginx
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        - containerPort: 4443
+          name: notary
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /opt/bitnami/nginx/conf/nginx.conf
+          name: config
+          subPath: nginx.conf
+        - mountPath: /etc/nginx/cert
+          name: certificate
+      securityContext:
+        fsGroup: 1001
+      volumes:
+      - configMap:
+          name: harbor-nginx
+        name: config
+      - name: certificate
+        secret:
+          secretName: harbor-nginx

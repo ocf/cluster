@@ -1,0 +1,11 @@
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: replicapool
+  namespace: rook
+spec:
+  deviceClass: ssd
+  failureDomain: host
+  replicated:
+    requireSafeReplicaSize: true
+    size: 2

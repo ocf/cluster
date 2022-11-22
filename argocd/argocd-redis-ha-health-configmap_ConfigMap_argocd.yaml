@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  redis_liveness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p 6379\
+    \ \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ] && [ \"${response:0:7}\" !=\
+    \ \"LOADING\" ] ; then\n  echo \"$response\"\n  exit 1\nfi\necho \"response=$response\"\
+    \n"
+  redis_readiness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p 6379\
+    \ \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ] ; then\n  echo \"$response\"\
+    \n  exit 1\nfi\necho \"response=$response\"\n"
+  sentinel_liveness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p\
+    \ 26379 \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ]; then\n  echo \"$response\"\
+    \n  exit 1\nfi\necho \"response=$response\"\n"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: argocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: argocd-redis-ha-health-configmap

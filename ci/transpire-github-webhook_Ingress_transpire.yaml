@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    kubernetes.io/tls-acme: 'true'
+  name: transpire-github-webhook
+  namespace: transpire
+spec:
+  ingressClassName: contour
+  rules:
+  - host: ocf.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: transpire-github-eventsource-svc
+            port:
+              number: 12000
+        path: /wtf
+        pathType: Prefix
+  tls:
+  - hosts:
+    - ocf.io
+    secretName: transpire-github-webhook-cert

@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: argocd-redis-ha-haproxy
+    app.kubernetes.io/part-of: argocd
+  name: argocd-redis-ha-haproxy
+spec:
+  replicas: 3
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-redis-ha-haproxy
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/config: 33967cee643b636d6e9a66e82b7f85814ceb8c55fba7a1d8af439ef056934e5c
+      labels:
+        app.kubernetes.io/name: argocd-redis-ha-haproxy
+      name: argocd-redis-ha-haproxy
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: argocd-redis-ha-haproxy
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - image: haproxy:2.6.2-alpine
+        imagePullPolicy: IfNotPresent
+        lifecycle: {}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8888
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        name: haproxy
+        ports:
+        - containerPort: 6379
+          name: redis
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8888
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /usr/local/etc/haproxy
+          name: data
+        - mountPath: /run/haproxy
+          name: shared-socket
+      initContainers:
+      - args:
+        - /readonly/haproxy_init.sh
+        command:
+        - sh
+        image: haproxy:2.6.2-alpine
+        imagePullPolicy: IfNotPresent
+        name: config-init
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /readonly
+          name: config-volume
+          readOnly: true
+        - mountPath: /data
+          name: data
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      serviceAccountName: argocd-redis-ha-haproxy
+      volumes:
+      - configMap:
+          name: argocd-redis-ha-configmap
+        name: config-volume
+      - emptyDir: {}
+        name: shared-socket
+      - emptyDir: {}
+        name: data

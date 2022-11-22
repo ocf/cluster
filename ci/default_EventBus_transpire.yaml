@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: default
+  namespace: transpire
+spec:
+  nats:
+    native:
+      auth: token
+      replicas: 3

@@ -1,0 +1,24 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+  name: ceph
+  namespace: rook
+spec:
+  cephVersion:
+    image: ceph/ceph:v17.2.5
+  dashboard:
+    enabled: true
+  dataDirHostPath: /var/lib/rook
+  mon:
+    allowMultiplePerNode: false
+    count: 3
+  storage:
+    nodes:
+    - name: adenine
+    - name: guanine
+    - name: cytosine
+    - name: thymine
+    useAllDevices: true
+    useAllNodes: false
