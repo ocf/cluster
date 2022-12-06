@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eventsource-controller
+  name: controller-manager
   namespace: argo-events
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eventsource-controller
+      app: controller-manager
   template:
     metadata:
       labels:
-        app: eventsource-controller
+        app: controller-manager
     spec:
       containers:
       - args:
-        - eventsource-controller
+        - controller
         env:
-        - name: EVENTSOURCE_IMAGE
-          value: quay.io/argoproj/argo-events:v1.6.3
+        - name: ARGO_EVENTS_IMAGE
+          value: quay.io/argoproj/argo-events:v1.7.3
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: quay.io/argoproj/argo-events:v1.6.3
+        image: quay.io/argoproj/argo-events:v1.7.3
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -31,14 +31,21 @@ spec:
             port: 8081
           initialDelaySeconds: 3
           periodSeconds: 3
-        name: eventsource-controller
+        name: controller-manager
         readinessProbe:
           httpGet:
             path: /readyz
             port: 8081
           initialDelaySeconds: 3
           periodSeconds: 3
+        volumeMounts:
+        - mountPath: /etc/argo-events
+          name: controller-config-volume
       securityContext:
         runAsNonRoot: true
         runAsUser: 9731
       serviceAccountName: argo-events-sa
+      volumes:
+      - configMap:
+          name: argo-events-controller-config
+        name: controller-config-volume

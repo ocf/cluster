@@ -4,10 +4,12 @@ metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
   labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
+    app: redis-ha
+    chart: redis-ha-4.22.3
+    heritage: Helm
+    release: argocd
   name: argocd-redis-ha-announce-1
+  namespace: argocd
 spec:
   ports:
   - name: tcp-server
@@ -18,8 +20,13 @@ spec:
     port: 26379
     protocol: TCP
     targetPort: sentinel
+  - name: http-exporter
+    port: 9121
+    protocol: TCP
+    targetPort: exporter-port
   publishNotReadyAddresses: true
   selector:
-    app.kubernetes.io/name: argocd-redis-ha
+    app: redis-ha
+    release: argocd
     statefulset.kubernetes.io/pod-name: argocd-redis-ha-server-1
   type: ClusterIP

@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-11.9.8
+    helm.sh/chart: postgresql-12.1.2
   name: harbor-postgresql
   namespace: harbor
 spec:
@@ -21,13 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/extended-configuration: 9c33439b490506f40090c5364cc8541245145c59c2b548a25e4882a051728e2f
+        checksum/extended-configuration: a7729eebacb315f7bb07cf54e81232ef5f81a7147694dae111aeda49443d0cb1
       labels:
         app.kubernetes.io/component: primary
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        helm.sh/chart: postgresql-11.9.8
+        helm.sh/chart: postgresql-12.1.2
       name: harbor-postgresql
     spec:
       affinity:
@@ -41,8 +41,6 @@ spec:
                   app.kubernetes.io/component: primary
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: postgresql
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       containers:
@@ -76,7 +74,7 @@ spec:
           value: error
         - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
           value: pgaudit
-        image: docker.io/bitnami/postgresql:13.8.0-debian-11-r26
+        image: docker.io/bitnami/postgresql:13.9.0-debian-11-r4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:

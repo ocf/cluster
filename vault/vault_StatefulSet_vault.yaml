@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/instance: vault
         app.kubernetes.io/name: vault
         component: server
-        helm.sh/chart: vault-0.22.1
+        helm.sh/chart: vault-0.23.0
     spec:
       affinity:
         podAntiAffinity:

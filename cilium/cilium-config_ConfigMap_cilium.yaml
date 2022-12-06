@@ -13,8 +13,10 @@ data:
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: '0'
   cluster-name: default
-  cluster-pool-ipv4-cidr: 10.0.0.0/8
+  cluster-pool-ipv4-cidr: 10.244.0.0/16
   cluster-pool-ipv4-mask-size: '24'
+  cluster-pool-ipv6-cidr: 2607:f140:8801:1::/112
+  cluster-pool-ipv6-mask-size: '120'
   custom-cni-conf: 'false'
   debug: 'false'
   disable-cnp-status-updates: 'true'
@@ -32,14 +34,16 @@ data:
   enable-ingress-secrets-sync: 'true'
   enable-ipv4: 'true'
   enable-ipv4-masquerade: 'true'
-  enable-ipv6: 'false'
-  enable-ipv6-masquerade: 'true'
+  enable-ipv6: 'true'
+  enable-ipv6-big-tcp: 'false'
+  enable-ipv6-masquerade: 'false'
   enable-k8s-terminating-endpoint: 'true'
   enable-l2-neigh-discovery: 'true'
   enable-l7-proxy: 'true'
   enable-local-redirect-policy: 'false'
   enable-policy: default
   enable-remote-node-identity: 'true'
+  enable-sctp: 'false'
   enable-svc-source-range-check: 'true'
   enable-vtep: 'false'
   enable-well-known-identities: 'false'
@@ -52,12 +56,18 @@ data:
   hubble-tls-client-ca-files: /var/lib/cilium/tls/hubble/client-ca.crt
   hubble-tls-key-file: /var/lib/cilium/tls/hubble/server.key
   identity-allocation-mode: crd
+  identity-gc-interval: 15m0s
+  identity-heartbeat-timeout: 30m0s
+  ingress-default-lb-mode: shared
   ingress-lb-annotation-prefixes: service.beta.kubernetes.io service.kubernetes.io
-    cloud.google.com
+    metallb.universe.tf
   ingress-secrets-namespace: cilium-secrets
+  ingress-shared-lb-service-name: cilium-ingress
   install-iptables-rules: 'true'
   install-no-conntrack-iptables-rules: 'false'
   ipam: cluster-pool
+  k8s-require-ipv4-pod-cidr: 'true'
+  k8s-require-ipv6-pod-cidr: 'true'
   kube-proxy-replacement: strict
   kube-proxy-replacement-healthz-bind-address: ''
   monitor-aggregation: medium
@@ -71,6 +81,7 @@ data:
   remove-cilium-node-taints: 'true'
   set-cilium-is-up-condition: 'true'
   sidecar-istio-proxy-image: cilium/istio_proxy
+  skip-cnp-status-startup-clean: 'false'
   synchronize-k8s-nodes: 'true'
   tofqdns-dns-reject-response-code: refused
   tofqdns-enable-dns-compression: 'true'

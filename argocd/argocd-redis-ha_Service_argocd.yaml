@@ -1,11 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations: null
   labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
+    app: redis-ha
+    chart: redis-ha-4.22.3
+    exporter: enabled
+    heritage: Helm
+    release: argocd
   name: argocd-redis-ha
+  namespace: argocd
 spec:
   clusterIP: None
   ports:
@@ -17,6 +21,11 @@ spec:
     port: 26379
     protocol: TCP
     targetPort: sentinel
+  - name: http-exporter-port
+    port: 9121
+    protocol: TCP
+    targetPort: exporter-port
   selector:
-    app.kubernetes.io/name: argocd-redis-ha
+    app: redis-ha
+    release: argocd
   type: ClusterIP

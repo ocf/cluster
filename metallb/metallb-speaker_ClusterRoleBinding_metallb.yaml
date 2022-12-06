@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.10
+    helm.sh/chart: metallb-4.1.12
   name: metallb-speaker
   namespace: metallb
 roleRef:

@@ -1,43 +1,64 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app.kubernetes.io/component: notifications-controller
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argocd-notifications-controller
+    app.kubernetes.io/part-of: argocd
+    helm.sh/chart: argo-cd-5.16.1
   name: argocd-notifications-controller
 spec:
+  replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
+      app.kubernetes.io/instance: argocd
       app.kubernetes.io/name: argocd-notifications-controller
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
+        app.kubernetes.io/component: notifications-controller
+        app.kubernetes.io/instance: argocd
+        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-notifications-controller
+        app.kubernetes.io/part-of: argocd
+        helm.sh/chart: argo-cd-5.16.1
     spec:
       containers:
       - command:
         - argocd-notifications
-        image: quay.io/argoproj/argocd:v2.5.0
-        imagePullPolicy: Always
-        livenessProbe:
-          tcpSocket:
-            port: 9001
-        name: argocd-notifications-controller
+        - --loglevel=info
+        - --logformat=text
+        - --metrics-port=9001
+        - --namespace=argocd
+        - --argocd-repo-server=argocd-repo-server:8081
+        image: quay.io/argoproj/argocd:v2.5.3
+        imagePullPolicy: IfNotPresent
+        name: notifications-controller
+        ports:
+        - containerPort: 9001
+          name: metrics
+          protocol: TCP
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
           readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /app/config/tls
           name: tls-certs
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
         workingDir: /app
-      securityContext:
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
       serviceAccountName: argocd-notifications-controller
       volumes:
       - configMap:

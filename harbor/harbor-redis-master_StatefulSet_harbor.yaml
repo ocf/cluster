@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-17.3.4
+    helm.sh/chart: redis-17.3.11
   name: harbor-redis-master
   namespace: harbor
 spec:
@@ -20,15 +20,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 1f8eb79ccd6221a6879103146e4547aefc81dca516d9b08a2a805d32b09ce1d6
-        checksum/health: 0e7781953a43ce8cd9eee12709a1d4509f8f6437ba87627e4dde724cd9e8861d
-        checksum/scripts: a2cf252b85e342e85d75f4babbe78f28bdc7be924007b80182860d884467a2d9
+        checksum/configmap: 5aa2db40667d8477b4d13a0d1a05872df9bf048a6f42ab6c0f91a4d426f9a073
+        checksum/health: 31277bf220ae9c7ec37bee8aaaf9b5a5419cdf7d39e0cede1e9bbb22f10585d5
+        checksum/scripts: ebb9b038a2527000707b95d55f793c7d65c4a2df73ab3442b6c07fe19ae80ce2
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-17.3.4
+        helm.sh/chart: redis-17.3.11
     spec:
       affinity:
         nodeAffinity: null
@@ -41,8 +41,6 @@ spec:
                   app.kubernetes.io/component: master
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: redis
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       containers:
@@ -62,7 +60,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.0.5-debian-11-r7
+        image: docker.io/bitnami/redis:7.0.5-debian-11-r15
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -102,7 +100,6 @@ spec:
           name: health
         - mountPath: /data
           name: redis-data
-          subPath: null
         - mountPath: /opt/bitnami/redis/mounted-etc
           name: config
         - mountPath: /opt/bitnami/redis/etc/

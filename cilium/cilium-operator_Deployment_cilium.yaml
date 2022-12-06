@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/name: cilium-operator
+    app.kubernetes.io/part-of: cilium
     io.cilium/app: operator
     name: cilium-operator
   name: cilium-operator
@@ -21,6 +23,8 @@ spec:
     metadata:
       annotations: null
       labels:
+        app.kubernetes.io/name: cilium-operator
+        app.kubernetes.io/part-of: cilium
         io.cilium/app: operator
         name: cilium-operator
     spec:
@@ -58,7 +62,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/operator-generic:v1.12.3@sha256:816ec1da586139b595eeb31932c61a7c13b07fb4a0255341c0e0f18608e84eff
+        image: quay.io/cilium/operator-generic:v1.13.0-rc3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

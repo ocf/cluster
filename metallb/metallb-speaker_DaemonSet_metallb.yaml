@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.10
+    helm.sh/chart: metallb-4.1.12
   name: metallb-speaker
   namespace: metallb
 spec:
@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/instance: metallb
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: metallb
-        helm.sh/chart: metallb-4.1.10
+        helm.sh/chart: metallb-4.1.12
     spec:
       affinity:
         nodeAffinity: null
@@ -35,8 +35,6 @@ spec:
                   app.kubernetes.io/component: speaker
                   app.kubernetes.io/instance: metallb
                   app.kubernetes.io/name: metallb
-              namespaces:
-              - metallb
               topologyKey: kubernetes.io/hostname
             weight: 1
       containers:
@@ -67,7 +65,7 @@ spec:
               key: secretkey
               name: metallb-memberlist
         envFrom: null
-        image: docker.io/bitnami/metallb-speaker:0.13.6-debian-11-r1
+        image: docker.io/bitnami/metallb-speaker:0.13.7-debian-11-r8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3

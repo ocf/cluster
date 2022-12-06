@@ -32,6 +32,6 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-11.9.8
+    helm.sh/chart: postgresql-12.1.2
   name: harbor-postgresql-init-scripts
   namespace: harbor

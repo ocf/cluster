@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-15.2.5
+    helm.sh/chart: harbor-16.0.4
   name: harbor-registry
   namespace: harbor
 spec:
@@ -21,13 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 00448476a8a85ab40488be6c169429dc516463999b1fa1fe150de034fa36db64
+        checksum/configmap: 75bbcee5074f2b21d54d1d5e22d0865b6f9064397d32439ea90470e82f3c5026
       labels:
         app.kubernetes.io/component: registry
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-15.2.5
+        helm.sh/chart: harbor-16.0.4
     spec:
       affinity:
         nodeAffinity: null
@@ -40,8 +40,6 @@ spec:
                   app.kubernetes.io/component: registry
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       automountServiceAccountToken: false
@@ -52,7 +50,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registry:2.6.0-debian-11-r18
+        image: docker.io/bitnami/harbor-registry:2.6.2-debian-11-r5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -115,7 +113,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registryctl:2.6.0-debian-11-r20
+        image: docker.io/bitnami/harbor-registryctl:2.6.2-debian-11-r5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

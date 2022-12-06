@@ -16,7 +16,7 @@ spec:
         - server
         - --namespaced
         env: []
-        image: quay.io/argoproj/argocli:v3.3.1
+        image: quay.io/argoproj/argocli:v3.3.10
         name: argo-server
         ports:
         - containerPort: 2746
@@ -29,9 +29,12 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 20
         securityContext:
+          allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp

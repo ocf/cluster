@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-15.2.5
+    helm.sh/chart: harbor-16.0.4
   name: harbor-core
   namespace: harbor
 spec:
@@ -21,8 +21,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 532a94d88801cd9e22f736c9e6ed240d402ca0788479953dacf526c05af7294b
-        checksum/configmap-envvars: 29e0873cc425bc6bf7d46cdde219ca9850cf0e1587e4382f8e21f918791cc6c2
+        checksum/configmap: 588abd53dda23e51084e9c6f1d14dde4015bce3862b78e0df9be1854c8d9893a
+        checksum/configmap-envvars: e56317ebc08568b357ba54cfc81f5c45de7390fd237127d6c43834b593322ce9
       labels:
         app.kubernetes.io/component: core
         app.kubernetes.io/instance: harbor
@@ -39,8 +39,6 @@ spec:
                   app.kubernetes.io/component: core
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       automountServiceAccountToken: false
@@ -63,7 +61,7 @@ spec:
             name: harbor-core-envvars
         - secretRef:
             name: harbor-core-envvars
-        image: docker.io/bitnami/harbor-core:2.6.0-debian-11-r20
+        image: docker.io/bitnami/harbor-core:2.6.2-debian-11-r5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

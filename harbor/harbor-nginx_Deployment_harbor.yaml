@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-15.2.5
+    helm.sh/chart: harbor-16.0.4
   name: harbor-nginx
   namespace: harbor
 spec:
@@ -21,14 +21,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 8dbf07461629be00e8c24d6abb2de74e871f0eb82199050f71d8a87237cd0be1
-        checksum/tls-secret: 80b95014d46ece96921ae7d4b1e95efa20cbd906943827fde87acac79e3d2efa
+        checksum/configmap: 7088984f7831f406784f8acb7f1011d772443fcd7aa1f995ea654f2965ec2c69
+        checksum/tls-secret: 82c07d5e9a335da13991c3aa90504756e0e84ee0b6383a3c2cd0e4b2bb212675
       labels:
         app.kubernetes.io/component: nginx
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-15.2.5
+        helm.sh/chart: harbor-16.0.4
     spec:
       affinity:
         nodeAffinity: null
@@ -41,8 +41,6 @@ spec:
                   app.kubernetes.io/component: nginx
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       containers:
@@ -50,7 +48,7 @@ spec:
         - name: BITNAMI_DEBUG
           value: 'false'
         envFrom: null
-        image: docker.io/bitnami/nginx:1.23.1-debian-11-r33
+        image: docker.io/bitnami/nginx:1.23.2-debian-11-r12
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

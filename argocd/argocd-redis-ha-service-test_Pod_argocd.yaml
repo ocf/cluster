@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    helm.sh/hook: test-success
+  labels:
+    app: redis-ha
+    chart: redis-ha-4.22.3
+    heritage: Helm
+    release: argocd
+  name: argocd-redis-ha-service-test
+  namespace: argocd
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - redis-cli -h argocd-redis-ha-haproxy -p 6379 info server
+    image: redis:7.0.5-alpine
+    name: argocd-service-test
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+  nodeSelector: {}
+  restartPolicy: Never
+  tolerations: null

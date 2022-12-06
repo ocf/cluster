@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-15.2.5
+    helm.sh/chart: harbor-16.0.4
   name: harbor-chartmuseum
   namespace: harbor
 spec:
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-envvars: 230567da10a48679f5b40469a30ab059bb2ce4b45a36f63483c83dc78f3d1030
+        checksum/configmap-envvars: 5a0747b209337197fa742128eeac5589556d6c1c665d54087c759645d510ef8c
       labels:
         app.kubernetes.io/component: chartmuseum
         app.kubernetes.io/instance: harbor
@@ -38,8 +38,6 @@ spec:
                   app.kubernetes.io/component: chartmuseum
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       automountServiceAccountToken: false
@@ -57,7 +55,7 @@ spec:
             name: harbor-chartmuseum-envvars
         - secretRef:
             name: harbor-chartmuseum-secret
-        image: docker.io/bitnami/chartmuseum:0.15.0-debian-11-r31
+        image: docker.io/bitnami/chartmuseum:0.15.0-debian-11-r47
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

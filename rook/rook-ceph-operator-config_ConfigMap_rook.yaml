@@ -7,6 +7,10 @@ data:
     \ 512Mi\n      cpu: 250m\n    limits:\n      memory: 1Gi\n      cpu: 500m\n- name\
     \ : liveness-prometheus\n  resource:\n    requests:\n      memory: 128Mi\n   \
     \   cpu: 50m\n    limits:\n      memory: 256Mi\n      cpu: 100m\n"
+  CSI_CEPHFS_PLUGIN_VOLUME: "- hostPath:\n    path: /run/booted-system/kernel-modules/lib/modules/\n\
+    \  name: lib-modules\n- hostPath:\n    path: /nix\n  name: host-nix"
+  CSI_CEPHFS_PLUGIN_VOLUME_MOUNT: "- mountPath: /nix\n  name: host-nix\n  readOnly:\
+    \ true"
   CSI_CEPHFS_PROVISIONER_RESOURCE: "- name : csi-provisioner\n  resource:\n    requests:\n\
     \      memory: 128Mi\n      cpu: 100m\n    limits:\n      memory: 256Mi\n    \
     \  cpu: 200m\n- name : csi-resizer\n  resource:\n    requests:\n      memory:\
@@ -50,6 +54,9 @@ data:
     \ 512Mi\n      cpu: 250m\n    limits:\n      memory: 1Gi\n      cpu: 500m\n- name\
     \ : liveness-prometheus\n  resource:\n    requests:\n      memory: 128Mi\n   \
     \   cpu: 50m\n    limits:\n      memory: 256Mi\n      cpu: 100m\n"
+  CSI_RBD_PLUGIN_VOLUME: "- hostPath:\n    path: /run/booted-system/kernel-modules/lib/modules/\n\
+    \  name: lib-modules\n- hostPath:\n    path: /nix\n  name: host-nix"
+  CSI_RBD_PLUGIN_VOLUME_MOUNT: "- mountPath: /nix\n  name: host-nix\n  readOnly: true"
   CSI_RBD_PROVISIONER_RESOURCE: "- name : csi-provisioner\n  resource:\n    requests:\n\
     \      memory: 128Mi\n      cpu: 100m\n    limits:\n      memory: 256Mi\n    \
     \  cpu: 200m\n- name : csi-resizer\n  resource:\n    requests:\n      memory:\
@@ -63,6 +70,7 @@ data:
     \      memory: 512Mi\n      cpu: 250m\n    limits:\n      memory: 1Gi\n      cpu:\
     \ 500m\n- name : liveness-prometheus\n  resource:\n    requests:\n      memory:\
     \ 128Mi\n      cpu: 50m\n    limits:\n      memory: 256Mi\n      cpu: 100m\n"
+  ROOK_CEPH_ALLOW_LOOP_DEVICES: 'false'
   ROOK_CEPH_COMMANDS_TIMEOUT_SECONDS: '15'
   ROOK_CSI_ENABLE_CEPHFS: 'true'
   ROOK_CSI_ENABLE_GRPC_METRICS: 'false'

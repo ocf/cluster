@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-15.2.5
+    helm.sh/chart: harbor-16.0.4
   name: harbor-jobservice
   namespace: harbor
 spec:
@@ -21,13 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: ac19890f4bea8413dab58188deabf472bdb589adbeb670373c0b134e2e214da9
+        checksum/configmap-env: 2895a0e7000e9c479e071857e47bf004e5792eb217da592273848b0724235740
       labels:
         app.kubernetes.io/component: jobservice
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-15.2.5
+        helm.sh/chart: harbor-16.0.4
     spec:
       affinity:
         nodeAffinity: null
@@ -40,8 +40,6 @@ spec:
                   app.kubernetes.io/component: jobservice
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
-              namespaces:
-              - harbor
               topologyKey: kubernetes.io/hostname
             weight: 1
       automountServiceAccountToken: false
@@ -64,7 +62,7 @@ spec:
             name: harbor-jobservice-envvars
         - secretRef:
             name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.6.0-debian-11-r16
+        image: docker.io/bitnami/harbor-jobservice:2.6.2-debian-11-r5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

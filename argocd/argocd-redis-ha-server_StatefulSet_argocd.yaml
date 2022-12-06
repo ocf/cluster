@@ -1,31 +1,43 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  annotations: {}
   labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
+    app: redis-ha
+    argocd-redis-ha: replica
+    chart: redis-ha-4.22.3
+    heritage: Helm
+    release: argocd
   name: argocd-redis-ha-server
+  namespace: argocd
 spec:
   podManagementPolicy: OrderedReady
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha
+      app: redis-ha
+      release: argocd
   serviceName: argocd-redis-ha
   template:
     metadata:
       annotations:
-        checksum/init-config: 226aec192d2f29b5355769c9f1fbf093bf36c3a1e15b574b71fb8fe73fd37c05
+        checksum/init-config: 84ccf6a9b8a7fa3ae5b62a8f17d6c65a5197e9605da9b2761179bf942828eefe
+        prometheus.io/path: /metrics
+        prometheus.io/port: '9121'
+        prometheus.io/scrape: 'true'
       labels:
-        app.kubernetes.io/name: argocd-redis-ha
+        app: redis-ha
+        argocd-redis-ha: replica
+        release: argocd
     spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/name: argocd-redis-ha
+                app: redis-ha
+                argocd-redis-ha: replica
+                release: argocd
             topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: false
       containers:
@@ -67,11 +79,14 @@ spec:
           periodSeconds: 15
           successThreshold: 1
           timeoutSeconds: 15
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
@@ -115,11 +130,14 @@ spec:
           periodSeconds: 15
           successThreshold: 3
           timeoutSeconds: 15
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
@@ -142,12 +160,47 @@ spec:
         imagePullPolicy: IfNotPresent
         name: split-brain-fix
         resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /readonly-config
           name: config
           readOnly: true
         - mountPath: /data
           name: data
+      - args: null
+        env:
+        - name: REDIS_ADDR
+          value: redis://localhost:6379
+        image: oliver006/redis_exporter:v1.43.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9121
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 3
+        name: redis-exporter
+        ports:
+        - containerPort: 9121
+          name: exporter-port
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9121
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 3
+        resources: {}
+        volumeMounts: null
       initContainers:
       - args:
         - /readonly-config/init.sh
@@ -163,11 +216,14 @@ spec:
         image: redis:7.0.5-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
