@@ -22,7 +22,7 @@ spec:
     metadata:
       annotations:
         checksum/configmap: 7088984f7831f406784f8acb7f1011d772443fcd7aa1f995ea654f2965ec2c69
-        checksum/tls-secret: 82c07d5e9a335da13991c3aa90504756e0e84ee0b6383a3c2cd0e4b2bb212675
+        checksum/tls-secret: b8b34f74ef3f3cfe371d9295df5d584def70ce475cf88eee92ffb5e07aa724de
       labels:
         app.kubernetes.io/component: nginx
         app.kubernetes.io/instance: harbor
