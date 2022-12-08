@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  teleport.yaml: "teleport:\n  log:\n    severity: INFO\n    output: stderr\n    format:\n\
+    \      output: text\n      extra_fields: [\"timestamp\",\"level\",\"component\"\
+    ,\"caller\"]\nauth_service:\n  enabled: true\n  cluster_name: tele.ocf.io\n  license_file:\
+    \ '/var/lib/license/license.pem'\n  authentication:\n    type: \"local\"\n   \
+    \ local_auth: true\n    second_factor: \"otp\"\nkubernetes_service:\n  enabled:\
+    \ true\n  listen_addr: 0.0.0.0:3027\n  kube_cluster_name: dna.ocf.io\nproxy_service:\n\
+    \  public_addr: 'tele.ocf.io:443'\n  kube_listen_addr: 0.0.0.0:3026\n  mysql_listen_addr:\
+    \ 0.0.0.0:3036\n  enabled: true\n  https_keypairs:\n  - key_file: /etc/teleport-tls/tls.key\n\
+    \    cert_file: /etc/teleport-tls/tls.crt\nssh_service:\n  enabled: false\n"
+kind: ConfigMap
+metadata:
+  name: teleport
+  namespace: teleport
