@@ -127,6 +127,6 @@ spec:
           secretName: harbor-core
       - name: ca-download
         secret:
-          secretName: harbor-nginx
+          secretName: harbor.ocf.berkeley.edu-tls
       - emptyDir: {}
         name: psc
