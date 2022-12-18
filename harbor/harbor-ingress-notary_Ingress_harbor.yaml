@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
     ingress.kubernetes.io/proxy-body-size: '0'
     ingress.kubernetes.io/ssl-redirect: 'true'
     kubernetes.io/tls-acme: 'true'
@@ -28,7 +27,7 @@ spec:
             port:
               name: notary-server
         path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
   tls:
   - hosts:
     - harbor-notary.ocf.berkeley.edu

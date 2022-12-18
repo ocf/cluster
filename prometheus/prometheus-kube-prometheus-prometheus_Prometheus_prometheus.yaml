@@ -14,12 +14,7 @@ metadata:
   namespace: prometheus
 spec:
   alerting:
-    alertmanagers:
-    - apiVersion: v2
-      name: prometheus-kube-prometheus-alertmanager
-      namespace: prometheus
-      pathPrefix: /
-      port: web
+    alertmanagers: []
   enableAdminAPI: false
   externalUrl: http://prom.ocf.berkeley.edu/
   image: quay.io/prometheus/prometheus:v2.26.0

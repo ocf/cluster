@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app: kube-prometheus-stack-alertmanager
+    app: kube-prometheus-stack-node-exporter
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
@@ -10,17 +10,13 @@ metadata:
     chart: kube-prometheus-stack-16.0.1
     heritage: Helm
     release: prometheus
-  name: prometheus-kube-prometheus-alertmanager
+  name: prometheus-kube-prometheus-node-exporter
   namespace: prometheus
 spec:
   endpoints:
-  - path: /metrics
-    port: web
-  namespaceSelector:
-    matchNames:
-    - prometheus
+  - port: metrics
+  jobLabel: jobLabel
   selector:
     matchLabels:
-      app: kube-prometheus-stack-alertmanager
+      app: prometheus-node-exporter
       release: prometheus
-      self-monitor: 'true'

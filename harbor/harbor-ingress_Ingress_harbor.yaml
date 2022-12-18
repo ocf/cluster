@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
     ingress.kubernetes.io/proxy-body-size: '0'
     ingress.kubernetes.io/ssl-redirect: 'true'
     kubernetes.io/tls-acme: 'true'
@@ -28,42 +27,42 @@ spec:
             port:
               name: http
         path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               name: http
         path: /api/
-        pathType: ImplementationSpecific
+        pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               name: http
         path: /service/
-        pathType: ImplementationSpecific
+        pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               name: http
         path: /v2
-        pathType: ImplementationSpecific
+        pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               name: http
         path: /chartrepo/
-        pathType: ImplementationSpecific
+        pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               name: http
         path: /c/
-        pathType: ImplementationSpecific
+        pathType: Prefix
   tls:
   - hosts:
     - harbor.ocf.berkeley.edu

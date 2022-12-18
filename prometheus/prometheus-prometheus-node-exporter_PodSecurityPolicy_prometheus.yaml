@@ -2,15 +2,13 @@ apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   labels:
-    app: kube-prometheus-stack-alertmanager
-    app.kubernetes.io/instance: prometheus
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app: prometheus-node-exporter
+    chart: prometheus-node-exporter-1.18.0
     heritage: Helm
+    jobLabel: node-exporter
     release: prometheus
-  name: prometheus-kube-prometheus-alertmanager
+  name: prometheus-prometheus-node-exporter
+  namespace: prometheus
 spec:
   fsGroup:
     ranges:
@@ -18,8 +16,11 @@ spec:
       min: 0
     rule: MustRunAs
   hostIPC: false
-  hostNetwork: false
-  hostPID: false
+  hostNetwork: true
+  hostPID: true
+  hostPorts:
+  - max: 65535
+    min: 0
   privileged: false
   readOnlyRootFilesystem: false
   runAsUser:
@@ -38,3 +39,4 @@ spec:
   - secret
   - downwardAPI
   - persistentVolumeClaim
+  - hostPath
