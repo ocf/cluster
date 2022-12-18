@@ -2,20 +2,21 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app: kube-prometheus-stack-grafana
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
-    heritage: Helm
-    release: prometheus
-  name: prometheus-kube-prometheus-grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/version: 9.3.1
+    helm.sh/chart: grafana-6.48.0
+  name: prometheus-grafana
   namespace: prometheus
 spec:
   endpoints:
-  - path: /metrics
-    port: service
+  - honorLabels: true
+    path: /metrics
+    port: http-web
+    scheme: http
+    scrapeTimeout: 30s
+  jobLabel: prometheus
   namespaceSelector:
     matchNames:
     - prometheus

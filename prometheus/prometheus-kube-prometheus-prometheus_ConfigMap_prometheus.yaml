@@ -45,11 +45,11 @@ data:
     \    \"linkUrl\": \"\",\n                            \"pattern\": \"Value #B\"\
     ,\n                            \"thresholds\": [\n\n                         \
     \   ],\n                            \"type\": \"number\",\n                  \
-    \          \"unit\": \"short\"\n                        },\n                 \
-    \       {\n                            \"alias\": \"Instance\",\n            \
-    \                \"colorMode\": null,\n                            \"colors\"\
-    : [\n\n                            ],\n                            \"dateFormat\"\
-    : \"YYYY-MM-DD HH:mm:ss\",\n                            \"decimals\": 2,\n   \
+    \          \"unit\": \"s\"\n                        },\n                     \
+    \   {\n                            \"alias\": \"Instance\",\n                \
+    \            \"colorMode\": null,\n                            \"colors\": [\n\
+    \n                            ],\n                            \"dateFormat\":\
+    \ \"YYYY-MM-DD HH:mm:ss\",\n                            \"decimals\": 2,\n   \
     \                         \"link\": false,\n                            \"linkTargetBlank\"\
     : false,\n                            \"linkTooltip\": \"Drill down\",\n     \
     \                       \"linkUrl\": \"\",\n                            \"pattern\"\
@@ -101,8 +101,8 @@ data:
     \                \"thresholds\": [\n\n                    ],\n               \
     \     \"timeFrom\": null,\n                    \"timeShift\": null,\n        \
     \            \"title\": \"Prometheus Stats\",\n                    \"tooltip\"\
-    : {\n                        \"shared\": false,\n                        \"sort\"\
-    : 0,\n                        \"value_type\": \"individual\"\n               \
+    : {\n                        \"shared\": true,\n                        \"sort\"\
+    : 2,\n                        \"value_type\": \"individual\"\n               \
     \     },\n                    \"transform\": \"table\",\n                    \"\
     type\": \"table\",\n                    \"xaxis\": {\n                       \
     \ \"buckets\": null,\n                        \"mode\": \"time\",\n          \
@@ -148,8 +148,8 @@ data:
     \      ],\n                    \"thresholds\": [\n\n                    ],\n \
     \                   \"timeFrom\": null,\n                    \"timeShift\": null,\n\
     \                    \"title\": \"Target Sync\",\n                    \"tooltip\"\
-    : {\n                        \"shared\": false,\n                        \"sort\"\
-    : 0,\n                        \"value_type\": \"individual\"\n               \
+    : {\n                        \"shared\": true,\n                        \"sort\"\
+    : 2,\n                        \"value_type\": \"individual\"\n               \
     \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
     : {\n                        \"buckets\": null,\n                        \"mode\"\
     : \"time\",\n                        \"name\": null,\n                       \
@@ -189,8 +189,8 @@ data:
     \                    }\n                    ],\n                    \"thresholds\"\
     : [\n\n                    ],\n                    \"timeFrom\": null,\n     \
     \               \"timeShift\": null,\n                    \"title\": \"Targets\"\
-    ,\n                    \"tooltip\": {\n                        \"shared\": false,\n\
-    \                        \"sort\": 0,\n                        \"value_type\"\
+    ,\n                    \"tooltip\": {\n                        \"shared\": true,\n\
+    \                        \"sort\": 2,\n                        \"value_type\"\
     : \"individual\"\n                    },\n                    \"type\": \"graph\"\
     ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
     \                        \"mode\": \"time\",\n                        \"name\"\
@@ -236,8 +236,8 @@ data:
     \              \"thresholds\": [\n\n                    ],\n                 \
     \   \"timeFrom\": null,\n                    \"timeShift\": null,\n          \
     \          \"title\": \"Average Scrape Interval Duration\",\n                \
-    \    \"tooltip\": {\n                        \"shared\": false,\n            \
-    \            \"sort\": 0,\n                        \"value_type\": \"individual\"\
+    \    \"tooltip\": {\n                        \"shared\": true,\n             \
+    \           \"sort\": 2,\n                        \"value_type\": \"individual\"\
     \n                    },\n                    \"type\": \"graph\",\n         \
     \           \"xaxis\": {\n                        \"buckets\": null,\n       \
     \                 \"mode\": \"time\",\n                        \"name\": null,\n\
@@ -270,6 +270,12 @@ data:
     \                \"span\": 4,\n                    \"stack\": true,\n        \
     \            \"steppedLine\": false,\n                    \"targets\": [\n   \
     \                     {\n                            \"expr\": \"sum by (job)\
+    \ (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))\",\n  \
+    \                          \"format\": \"time_series\",\n                    \
+    \        \"intervalFactor\": 2,\n                            \"legendFormat\"\
+    : \"exceeded body size limit: {{job}}\",\n                            \"legendLink\"\
+    : null,\n                            \"step\": 10\n                        },\n\
+    \                        {\n                            \"expr\": \"sum by (job)\
     \ (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))\",\n     \
     \                       \"format\": \"time_series\",\n                       \
     \     \"intervalFactor\": 2,\n                            \"legendFormat\": \"\
@@ -295,8 +301,8 @@ data:
     \             ],\n                    \"thresholds\": [\n\n                  \
     \  ],\n                    \"timeFrom\": null,\n                    \"timeShift\"\
     : null,\n                    \"title\": \"Scrape failures\",\n               \
-    \     \"tooltip\": {\n                        \"shared\": false,\n           \
-    \             \"sort\": 0,\n                        \"value_type\": \"individual\"\
+    \     \"tooltip\": {\n                        \"shared\": true,\n            \
+    \            \"sort\": 2,\n                        \"value_type\": \"individual\"\
     \n                    },\n                    \"type\": \"graph\",\n         \
     \           \"xaxis\": {\n                        \"buckets\": null,\n       \
     \                 \"mode\": \"time\",\n                        \"name\": null,\n\
@@ -337,10 +343,10 @@ data:
     \      \"thresholds\": [\n\n                    ],\n                    \"timeFrom\"\
     : null,\n                    \"timeShift\": null,\n                    \"title\"\
     : \"Appended Samples\",\n                    \"tooltip\": {\n                \
-    \        \"shared\": false,\n                        \"sort\": 0,\n          \
-    \              \"value_type\": \"individual\"\n                    },\n      \
-    \              \"type\": \"graph\",\n                    \"xaxis\": {\n      \
-    \                  \"buckets\": null,\n                        \"mode\": \"time\"\
+    \        \"shared\": true,\n                        \"sort\": 2,\n           \
+    \             \"value_type\": \"individual\"\n                    },\n       \
+    \             \"type\": \"graph\",\n                    \"xaxis\": {\n       \
+    \                 \"buckets\": null,\n                        \"mode\": \"time\"\
     ,\n                        \"name\": null,\n                        \"show\":\
     \ true,\n                        \"values\": [\n\n                        ]\n\
     \                    },\n                    \"yaxes\": [\n                  \
@@ -383,10 +389,10 @@ data:
     \              \"thresholds\": [\n\n                    ],\n                 \
     \   \"timeFrom\": null,\n                    \"timeShift\": null,\n          \
     \          \"title\": \"Head Series\",\n                    \"tooltip\": {\n \
-    \                       \"shared\": false,\n                        \"sort\":\
-    \ 0,\n                        \"value_type\": \"individual\"\n               \
-    \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
-    : {\n                        \"buckets\": null,\n                        \"mode\"\
+    \                       \"shared\": true,\n                        \"sort\": 2,\n\
+    \                        \"value_type\": \"individual\"\n                    },\n\
+    \                    \"type\": \"graph\",\n                    \"xaxis\": {\n\
+    \                        \"buckets\": null,\n                        \"mode\"\
     : \"time\",\n                        \"name\": null,\n                       \
     \ \"show\": true,\n                        \"values\": [\n\n                 \
     \       ]\n                    },\n                    \"yaxes\": [\n        \
@@ -425,10 +431,10 @@ data:
     \              \"thresholds\": [\n\n                    ],\n                 \
     \   \"timeFrom\": null,\n                    \"timeShift\": null,\n          \
     \          \"title\": \"Head Chunks\",\n                    \"tooltip\": {\n \
-    \                       \"shared\": false,\n                        \"sort\":\
-    \ 0,\n                        \"value_type\": \"individual\"\n               \
-    \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
-    : {\n                        \"buckets\": null,\n                        \"mode\"\
+    \                       \"shared\": true,\n                        \"sort\": 2,\n\
+    \                        \"value_type\": \"individual\"\n                    },\n\
+    \                    \"type\": \"graph\",\n                    \"xaxis\": {\n\
+    \                        \"buckets\": null,\n                        \"mode\"\
     : \"time\",\n                        \"name\": null,\n                       \
     \ \"show\": true,\n                        \"values\": [\n\n                 \
     \       ]\n                    },\n                    \"yaxes\": [\n        \
@@ -472,11 +478,11 @@ data:
     \             ],\n                    \"thresholds\": [\n\n                  \
     \  ],\n                    \"timeFrom\": null,\n                    \"timeShift\"\
     : null,\n                    \"title\": \"Query Rate\",\n                    \"\
-    tooltip\": {\n                        \"shared\": false,\n                   \
-    \     \"sort\": 0,\n                        \"value_type\": \"individual\"\n \
-    \                   },\n                    \"type\": \"graph\",\n           \
-    \         \"xaxis\": {\n                        \"buckets\": null,\n         \
-    \               \"mode\": \"time\",\n                        \"name\": null,\n\
+    tooltip\": {\n                        \"shared\": true,\n                    \
+    \    \"sort\": 2,\n                        \"value_type\": \"individual\"\n  \
+    \                  },\n                    \"type\": \"graph\",\n            \
+    \        \"xaxis\": {\n                        \"buckets\": null,\n          \
+    \              \"mode\": \"time\",\n                        \"name\": null,\n\
     \                        \"show\": true,\n                        \"values\":\
     \ [\n\n                        ]\n                    },\n                   \
     \ \"yaxes\": [\n                        {\n                            \"format\"\
@@ -514,8 +520,8 @@ data:
     \                      }\n                    ],\n                    \"thresholds\"\
     : [\n\n                    ],\n                    \"timeFrom\": null,\n     \
     \               \"timeShift\": null,\n                    \"title\": \"Stage Duration\"\
-    ,\n                    \"tooltip\": {\n                        \"shared\": false,\n\
-    \                        \"sort\": 0,\n                        \"value_type\"\
+    ,\n                    \"tooltip\": {\n                        \"shared\": true,\n\
+    \                        \"sort\": 2,\n                        \"value_type\"\
     : \"individual\"\n                    },\n                    \"type\": \"graph\"\
     ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
     \                        \"mode\": \"time\",\n                        \"name\"\
@@ -537,44 +543,44 @@ data:
     : [\n        \"prometheus-mixin\"\n    ],\n    \"templating\": {\n        \"list\"\
     : [\n            {\n                \"current\": {\n                    \"text\"\
     : \"default\",\n                    \"value\": \"default\"\n                },\n\
-    \                \"hide\": 0,\n                \"label\": null,\n            \
-    \    \"name\": \"datasource\",\n                \"options\": [\n\n           \
-    \     ],\n                \"query\": \"prometheus\",\n                \"refresh\"\
-    : 1,\n                \"regex\": \"\",\n                \"type\": \"datasource\"\
-    \n            },\n            {\n                \"allValue\": \".+\",\n     \
-    \           \"current\": {\n                    \"selected\": true,\n        \
-    \            \"text\": \"All\",\n                    \"value\": \"$__all\"\n \
-    \               },\n                \"datasource\": \"$datasource\",\n       \
-    \         \"hide\": 0,\n                \"includeAll\": true,\n              \
-    \  \"label\": \"job\",\n                \"multi\": true,\n                \"name\"\
-    : \"job\",\n                \"options\": [\n\n                ],\n           \
-    \     \"query\": \"label_values(prometheus_build_info, job)\",\n             \
-    \   \"refresh\": 1,\n                \"regex\": \"\",\n                \"sort\"\
-    : 2,\n                \"tagValuesQuery\": \"\",\n                \"tags\": [\n\
-    \n                ],\n                \"tagsQuery\": \"\",\n                \"\
-    type\": \"query\",\n                \"useTags\": false\n            },\n     \
-    \       {\n                \"allValue\": \".+\",\n                \"current\"\
-    : {\n                    \"selected\": true,\n                    \"text\": \"\
-    All\",\n                    \"value\": \"$__all\"\n                },\n      \
-    \          \"datasource\": \"$datasource\",\n                \"hide\": 0,\n  \
-    \              \"includeAll\": true,\n                \"label\": \"instance\"\
-    ,\n                \"multi\": true,\n                \"name\": \"instance\",\n\
-    \                \"options\": [\n\n                ],\n                \"query\"\
-    : \"label_values(prometheus_build_info, instance)\",\n                \"refresh\"\
-    : 1,\n                \"regex\": \"\",\n                \"sort\": 2,\n       \
-    \         \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n         \
-    \       ],\n                \"tagsQuery\": \"\",\n                \"type\": \"\
-    query\",\n                \"useTags\": false\n            }\n        ]\n    },\n\
-    \    \"time\": {\n        \"from\": \"now-1h\",\n        \"to\": \"now\"\n   \
-    \ },\n    \"timepicker\": {\n        \"refresh_intervals\": [\n            \"\
-    5s\",\n            \"10s\",\n            \"30s\",\n            \"1m\",\n     \
-    \       \"5m\",\n            \"15m\",\n            \"30m\",\n            \"1h\"\
-    ,\n            \"2h\",\n            \"1d\"\n        ],\n        \"time_options\"\
-    : [\n            \"5m\",\n            \"15m\",\n            \"1h\",\n        \
-    \    \"6h\",\n            \"12h\",\n            \"24h\",\n            \"2d\",\n\
-    \            \"7d\",\n            \"30d\"\n        ]\n    },\n    \"timezone\"\
-    : \"utc\",\n    \"title\": \"Prometheus / Overview\",\n    \"uid\": \"\",\n  \
-    \  \"version\": 0\n}"
+    \                \"hide\": 0,\n                \"label\": \"Data Source\",\n \
+    \               \"name\": \"datasource\",\n                \"options\": [\n\n\
+    \                ],\n                \"query\": \"prometheus\",\n            \
+    \    \"refresh\": 1,\n                \"regex\": \"\",\n                \"type\"\
+    : \"datasource\"\n            },\n            {\n                \"allValue\"\
+    : \".+\",\n                \"current\": {\n                    \"selected\": true,\n\
+    \                    \"text\": \"All\",\n                    \"value\": \"$__all\"\
+    \n                },\n                \"datasource\": \"$datasource\",\n     \
+    \           \"hide\": 0,\n                \"includeAll\": true,\n            \
+    \    \"label\": \"job\",\n                \"multi\": true,\n                \"\
+    name\": \"job\",\n                \"options\": [\n\n                ],\n     \
+    \           \"query\": \"label_values(prometheus_build_info{job=\\\"prometheus-k8s\\\
+    \",namespace=\\\"monitoring\\\"}, job)\",\n                \"refresh\": 1,\n \
+    \               \"regex\": \"\",\n                \"sort\": 2,\n             \
+    \   \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n               \
+    \ ],\n                \"tagsQuery\": \"\",\n                \"type\": \"query\"\
+    ,\n                \"useTags\": false\n            },\n            {\n       \
+    \         \"allValue\": \".+\",\n                \"current\": {\n            \
+    \        \"selected\": true,\n                    \"text\": \"All\",\n       \
+    \             \"value\": \"$__all\"\n                },\n                \"datasource\"\
+    : \"$datasource\",\n                \"hide\": 0,\n                \"includeAll\"\
+    : true,\n                \"label\": \"instance\",\n                \"multi\":\
+    \ true,\n                \"name\": \"instance\",\n                \"options\"\
+    : [\n\n                ],\n                \"query\": \"label_values(prometheus_build_info{job=~\\\
+    \"$job\\\"}, instance)\",\n                \"refresh\": 1,\n                \"\
+    regex\": \"\",\n                \"sort\": 2,\n                \"tagValuesQuery\"\
+    : \"\",\n                \"tags\": [\n\n                ],\n                \"\
+    tagsQuery\": \"\",\n                \"type\": \"query\",\n                \"useTags\"\
+    : false\n            }\n        ]\n    },\n    \"time\": {\n        \"from\":\
+    \ \"now-1h\",\n        \"to\": \"now\"\n    },\n    \"timepicker\": {\n      \
+    \  \"refresh_intervals\": [\n            \"5s\",\n            \"10s\",\n     \
+    \       \"30s\",\n            \"1m\",\n            \"5m\",\n            \"15m\"\
+    ,\n            \"30m\",\n            \"1h\",\n            \"2h\",\n          \
+    \  \"1d\"\n        ],\n        \"time_options\": [\n            \"5m\",\n    \
+    \        \"15m\",\n            \"1h\",\n            \"6h\",\n            \"12h\"\
+    ,\n            \"24h\",\n            \"2d\",\n            \"7d\",\n          \
+    \  \"30d\"\n        ]\n    },\n    \"timezone\": \"utc\",\n    \"title\": \"Prometheus\
+    \ / Overview\",\n    \"uid\": \"\",\n    \"version\": 0\n}"
 kind: ConfigMap
 metadata:
   annotations: {}
@@ -583,8 +589,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

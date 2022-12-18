@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-admission-create
@@ -23,8 +23,8 @@ spec:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/part-of: kube-prometheus-stack
-        app.kubernetes.io/version: 16.0.1
-        chart: kube-prometheus-stack-16.0.1
+        app.kubernetes.io/version: 43.1.1
+        chart: kube-prometheus-stack-43.1.1
         heritage: Helm
         release: prometheus
       name: prometheus-kube-prometheus-admission-create
@@ -35,10 +35,11 @@ spec:
         - --host=prometheus-kube-prometheus-operator,prometheus-kube-prometheus-operator.prometheus.svc
         - --namespace=prometheus
         - --secret-name=prometheus-kube-prometheus-admission
-        image: jettech/kube-webhook-certgen:v1.5.0
+        image: k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.3.0
         imagePullPolicy: IfNotPresent
         name: create
         resources: {}
+        securityContext: {}
       restartPolicy: OnFailure
       securityContext:
         runAsGroup: 2000

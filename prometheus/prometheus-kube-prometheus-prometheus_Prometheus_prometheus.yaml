@@ -6,18 +6,17 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-prometheus
   namespace: prometheus
 spec:
-  alerting:
-    alertmanagers: []
   enableAdminAPI: false
   externalUrl: http://prom.ocf.berkeley.edu/
-  image: quay.io/prometheus/prometheus:v2.26.0
+  hostNetwork: false
+  image: quay.io/prometheus/prometheus:v2.40.5
   listenLocal: false
   logFormat: logfmt
   logLevel: info
@@ -26,7 +25,7 @@ spec:
   podMonitorSelector:
     matchLabels:
       release: prometheus
-  portName: web
+  portName: http-web
   probeNamespaceSelector: {}
   probeSelector:
     matchLabels:
@@ -37,7 +36,6 @@ spec:
   ruleNamespaceSelector: {}
   ruleSelector:
     matchLabels:
-      app: kube-prometheus-stack
       release: prometheus
   securityContext:
     fsGroup: 2000
@@ -50,4 +48,5 @@ spec:
     matchLabels:
       release: prometheus
   shards: 1
-  version: v2.26.0
+  version: v2.40.5
+  walCompression: true

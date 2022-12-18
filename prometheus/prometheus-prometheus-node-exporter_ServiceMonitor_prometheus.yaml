@@ -1,8 +1,6 @@
-apiVersion: v1
-kind: Service
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
 metadata:
-  annotations:
-    prometheus.io/scrape: 'true'
   labels:
     app.kubernetes.io/component: metrics
     app.kubernetes.io/instance: prometheus
@@ -16,12 +14,11 @@ metadata:
   name: prometheus-prometheus-node-exporter
   namespace: prometheus
 spec:
-  ports:
-  - name: http-metrics
-    port: 9100
-    protocol: TCP
-    targetPort: 9100
+  endpoints:
+  - port: http-metrics
+    scheme: http
+  jobLabel: jobLabel
   selector:
-    app.kubernetes.io/instance: prometheus
-    app.kubernetes.io/name: prometheus-node-exporter
-  type: ClusterIP
+    matchLabels:
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/name: prometheus-node-exporter

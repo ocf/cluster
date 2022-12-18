@@ -430,25 +430,26 @@ data:
     \        \"list\": [\n            {\n                \"current\": {\n        \
     \            \"text\": \"default\",\n                    \"value\": \"default\"\
     \n                },\n                \"hide\": 0,\n                \"label\"\
-    : null,\n                \"name\": \"datasource\",\n                \"options\"\
-    : [\n\n                ],\n                \"query\": \"prometheus\",\n      \
-    \          \"refresh\": 1,\n                \"regex\": \"\",\n               \
-    \ \"type\": \"datasource\"\n            },\n            {\n                \"\
-    allValue\": null,\n                \"current\": {\n\n                },\n    \
-    \            \"datasource\": \"$datasource\",\n                \"hide\": 2,\n\
-    \                \"includeAll\": false,\n                \"label\": null,\n  \
-    \              \"multi\": false,\n                \"name\": \"cluster\",\n   \
-    \             \"options\": [\n\n                ],\n                \"query\"\
-    : \"label_values(kube_pod_info, cluster)\",\n                \"refresh\": 2,\n\
-    \                \"regex\": \"\",\n                \"sort\": 0,\n            \
-    \    \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n              \
-    \  ],\n                \"tagsQuery\": \"\",\n                \"type\": \"query\"\
-    ,\n                \"useTags\": false\n            },\n            {\n       \
-    \         \"allValue\": \".+\",\n                \"auto\": false,\n          \
-    \      \"auto_count\": 30,\n                \"auto_min\": \"10s\",\n         \
-    \       \"current\": {\n                    \"text\": \"kube-system\",\n     \
-    \               \"value\": \"kube-system\"\n                },\n             \
-    \   \"datasource\": \"$datasource\",\n                \"definition\": \"label_values(container_network_receive_packets_total{cluster=\\\
+    : \"Data Source\",\n                \"name\": \"datasource\",\n              \
+    \  \"options\": [\n\n                ],\n                \"query\": \"prometheus\"\
+    ,\n                \"refresh\": 1,\n                \"regex\": \"\",\n       \
+    \         \"type\": \"datasource\"\n            },\n            {\n          \
+    \      \"allValue\": null,\n                \"current\": {\n\n               \
+    \ },\n                \"datasource\": \"$datasource\",\n                \"hide\"\
+    : 2,\n                \"includeAll\": false,\n                \"label\": null,\n\
+    \                \"multi\": false,\n                \"name\": \"cluster\",\n \
+    \               \"options\": [\n\n                ],\n                \"query\"\
+    : \"label_values(up{job=\\\"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\"\
+    }, cluster)\",\n                \"refresh\": 2,\n                \"regex\": \"\
+    \",\n                \"sort\": 0,\n                \"tagValuesQuery\": \"\",\n\
+    \                \"tags\": [\n\n                ],\n                \"tagsQuery\"\
+    : \"\",\n                \"type\": \"query\",\n                \"useTags\": false\n\
+    \            },\n            {\n                \"allValue\": \".+\",\n      \
+    \          \"auto\": false,\n                \"auto_count\": 30,\n           \
+    \     \"auto_min\": \"10s\",\n                \"current\": {\n               \
+    \     \"text\": \"kube-system\",\n                    \"value\": \"kube-system\"\
+    \n                },\n                \"datasource\": \"$datasource\",\n     \
+    \           \"definition\": \"label_values(container_network_receive_packets_total{cluster=\\\
     \"$cluster\\\"}, namespace)\",\n                \"hide\": 0,\n               \
     \ \"includeAll\": true,\n                \"label\": null,\n                \"\
     multi\": false,\n                \"name\": \"namespace\",\n                \"\
@@ -516,7 +517,7 @@ data:
     : [\n            \"5m\",\n            \"15m\",\n            \"1h\",\n        \
     \    \"6h\",\n            \"12h\",\n            \"24h\",\n            \"2d\",\n\
     \            \"7d\",\n            \"30d\"\n        ]\n    },\n    \"timezone\"\
-    : \"UTC\",\n    \"title\": \"Kubernetes / Networking / Pod\",\n    \"uid\": \"\
+    : \"utc\",\n    \"title\": \"Kubernetes / Networking / Pod\",\n    \"uid\": \"\
     7a18067ce943a40ae25454675c19ff5c\",\n    \"version\": 0\n}"
 kind: ConfigMap
 metadata:
@@ -526,8 +527,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

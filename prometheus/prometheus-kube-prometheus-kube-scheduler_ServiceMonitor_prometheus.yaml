@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kube-scheduler
@@ -16,6 +16,10 @@ spec:
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     port: http-metrics
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecureSkipVerify: true
   jobLabel: jobLabel
   namespaceSelector:
     matchNames:

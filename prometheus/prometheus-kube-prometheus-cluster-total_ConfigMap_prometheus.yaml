@@ -815,30 +815,31 @@ data:
     ,\n                \"useTags\": false\n            },\n            {\n       \
     \         \"current\": {\n                    \"text\": \"default\",\n       \
     \             \"value\": \"default\"\n                },\n                \"hide\"\
-    : 0,\n                \"label\": null,\n                \"name\": \"datasource\"\
-    ,\n                \"options\": [\n\n                ],\n                \"query\"\
-    : \"prometheus\",\n                \"refresh\": 1,\n                \"regex\"\
-    : \"\",\n                \"type\": \"datasource\"\n            },\n          \
-    \  {\n                \"allValue\": null,\n                \"current\": {\n\n\
-    \                },\n                \"datasource\": \"$datasource\",\n      \
-    \          \"hide\": 2,\n                \"includeAll\": false,\n            \
-    \    \"label\": null,\n                \"multi\": false,\n                \"name\"\
-    : \"cluster\",\n                \"options\": [\n\n                ],\n       \
-    \         \"query\": \"label_values(kube_pod_info, cluster)\",\n             \
-    \   \"refresh\": 2,\n                \"regex\": \"\",\n                \"sort\"\
-    : 0,\n                \"tagValuesQuery\": \"\",\n                \"tags\": [\n\
-    \n                ],\n                \"tagsQuery\": \"\",\n                \"\
-    type\": \"query\",\n                \"useTags\": false\n            }\n      \
-    \  ]\n    },\n    \"time\": {\n        \"from\": \"now-1h\",\n        \"to\":\
-    \ \"now\"\n    },\n    \"timepicker\": {\n        \"refresh_intervals\": [\n \
-    \           \"5s\",\n            \"10s\",\n            \"30s\",\n            \"\
-    1m\",\n            \"5m\",\n            \"15m\",\n            \"30m\",\n     \
-    \       \"1h\",\n            \"2h\",\n            \"1d\"\n        ],\n       \
-    \ \"time_options\": [\n            \"5m\",\n            \"15m\",\n           \
-    \ \"1h\",\n            \"6h\",\n            \"12h\",\n            \"24h\",\n \
-    \           \"2d\",\n            \"7d\",\n            \"30d\"\n        ]\n   \
-    \ },\n    \"timezone\": \"UTC\",\n    \"title\": \"Kubernetes / Networking / Cluster\"\
-    ,\n    \"uid\": \"ff635a025bcfea7bc3dd4f508990a3e9\",\n    \"version\": 0\n}"
+    : 0,\n                \"label\": \"Data Source\",\n                \"name\": \"\
+    datasource\",\n                \"options\": [\n\n                ],\n        \
+    \        \"query\": \"prometheus\",\n                \"refresh\": 1,\n       \
+    \         \"regex\": \"\",\n                \"type\": \"datasource\"\n       \
+    \     },\n            {\n                \"allValue\": null,\n               \
+    \ \"current\": {\n\n                },\n                \"datasource\": \"$datasource\"\
+    ,\n                \"hide\": 2,\n                \"includeAll\": false,\n    \
+    \            \"label\": null,\n                \"multi\": false,\n           \
+    \     \"name\": \"cluster\",\n                \"options\": [\n\n             \
+    \   ],\n                \"query\": \"label_values(up{job=\\\"kubelet\\\", metrics_path=\\\
+    \"/metrics/cadvisor\\\"}, cluster)\",\n                \"refresh\": 2,\n     \
+    \           \"regex\": \"\",\n                \"sort\": 0,\n                \"\
+    tagValuesQuery\": \"\",\n                \"tags\": [\n\n                ],\n \
+    \               \"tagsQuery\": \"\",\n                \"type\": \"query\",\n \
+    \               \"useTags\": false\n            }\n        ]\n    },\n    \"time\"\
+    : {\n        \"from\": \"now-1h\",\n        \"to\": \"now\"\n    },\n    \"timepicker\"\
+    : {\n        \"refresh_intervals\": [\n            \"5s\",\n            \"10s\"\
+    ,\n            \"30s\",\n            \"1m\",\n            \"5m\",\n          \
+    \  \"15m\",\n            \"30m\",\n            \"1h\",\n            \"2h\",\n\
+    \            \"1d\"\n        ],\n        \"time_options\": [\n            \"5m\"\
+    ,\n            \"15m\",\n            \"1h\",\n            \"6h\",\n          \
+    \  \"12h\",\n            \"24h\",\n            \"2d\",\n            \"7d\",\n\
+    \            \"30d\"\n        ]\n    },\n    \"timezone\": \"utc\",\n    \"title\"\
+    : \"Kubernetes / Networking / Cluster\",\n    \"uid\": \"ff635a025bcfea7bc3dd4f508990a3e9\"\
+    ,\n    \"version\": 0\n}"
 kind: ConfigMap
 metadata:
   annotations: {}
@@ -847,8 +848,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

@@ -2,15 +2,15 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app: kube-prometheus-stack-kube-state-metrics
+    app.kubernetes.io/component: metrics
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
-    heritage: Helm
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/version: 2.7.0
+    helm.sh/chart: kube-state-metrics-4.24.0
     release: prometheus
-  name: prometheus-kube-prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
   namespace: prometheus
 spec:
   endpoints:

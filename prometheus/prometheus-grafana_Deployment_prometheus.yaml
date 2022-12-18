@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: grafana
-    app.kubernetes.io/version: 7.5.5
-    helm.sh/chart: grafana-6.9.1
+    app.kubernetes.io/version: 9.3.1
+    helm.sh/chart: grafana-6.48.0
   name: prometheus-grafana
   namespace: prometheus
 spec:
@@ -21,31 +21,78 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1d9d558d57aa0fe57c6f831ac7b635db81c3aff9db7cb880c48c86bee2209e09
+        checksum/config: c4baa6cba2655ed227f8f9a05b29dc09ec19070ac4b87792a6003c1ba7a7742c
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/sc-dashboard-provider-config: d80af9cf540d07b17211f2ae39ee1e7f9940db9ea32379fec590c3c77306ad26
-        checksum/secret: 7edf0f8ab7dd99438ffcaefb19ed732eedbdca4e2119e1c93b6df6c3d08c8642
+        checksum/sc-dashboard-provider-config: 9eb623b98d37bfd8a7a82435358206321adf1eebd3f53a40b49b7d11ca0dab78
+        checksum/secret: 7bbb781227e76ab243d001fd6b845b82b3323d040c6cb23e4755a38355da1681
       labels:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/name: grafana
     spec:
+      automountServiceAccountToken: true
       containers:
       - env:
         - name: METHOD
-          value: null
+          value: WATCH
         - name: LABEL
           value: grafana_dashboard
+        - name: LABEL_VALUE
+          value: '1'
         - name: FOLDER
           value: /tmp/dashboards
         - name: RESOURCE
           value: both
-        image: quay.io/kiwigrid/k8s-sidecar:1.10.7
+        - name: REQ_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: admin-user
+              name: prometheus-grafana
+        - name: REQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: prometheus-grafana
+        - name: REQ_URL
+          value: http://localhost:3000/api/admin/provisioning/dashboards/reload
+        - name: REQ_METHOD
+          value: POST
+        image: quay.io/kiwigrid/k8s-sidecar:1.21.0
         imagePullPolicy: IfNotPresent
         name: grafana-sc-dashboard
-        resources: {}
         volumeMounts:
         - mountPath: /tmp/dashboards
           name: sc-dashboard-volume
+      - env:
+        - name: METHOD
+          value: WATCH
+        - name: LABEL
+          value: grafana_datasource
+        - name: LABEL_VALUE
+          value: '1'
+        - name: FOLDER
+          value: /etc/grafana/provisioning/datasources
+        - name: RESOURCE
+          value: both
+        - name: REQ_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: admin-user
+              name: prometheus-grafana
+        - name: REQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: prometheus-grafana
+        - name: REQ_URL
+          value: http://localhost:3000/api/admin/provisioning/datasources/reload
+        - name: REQ_METHOD
+          value: POST
+        image: quay.io/kiwigrid/k8s-sidecar:1.21.0
+        imagePullPolicy: IfNotPresent
+        name: grafana-sc-datasources
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources
+          name: sc-datasources-volume
       - env:
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:
@@ -57,7 +104,15 @@ spec:
             secretKeyRef:
               key: admin-password
               name: prometheus-grafana
-        image: grafana/grafana:7.5.5
+        - name: GF_PATHS_DATA
+          value: /var/lib/grafana/
+        - name: GF_PATHS_LOGS
+          value: /var/log/grafana
+        - name: GF_PATHS_PLUGINS
+          value: /var/lib/grafana/plugins
+        - name: GF_PATHS_PROVISIONING
+          value: /etc/grafana/provisioning
+        image: grafana/grafana:9.3.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 10
@@ -68,9 +123,6 @@ spec:
           timeoutSeconds: 30
         name: grafana
         ports:
-        - containerPort: 80
-          name: service
-          protocol: TCP
         - containerPort: 3000
           name: grafana
           protocol: TCP
@@ -78,7 +130,6 @@ spec:
           httpGet:
             path: /api/health
             port: 3000
-        resources: {}
         volumeMounts:
         - mountPath: /etc/grafana/grafana.ini
           name: config
@@ -92,23 +143,7 @@ spec:
           subPath: provider.yaml
         - mountPath: /etc/grafana/provisioning/datasources
           name: sc-datasources-volume
-      initContainers:
-      - env:
-        - name: METHOD
-          value: LIST
-        - name: LABEL
-          value: grafana_datasource
-        - name: FOLDER
-          value: /etc/grafana/provisioning/datasources
-        - name: RESOURCE
-          value: both
-        image: quay.io/kiwigrid/k8s-sidecar:1.10.7
-        imagePullPolicy: IfNotPresent
-        name: grafana-sc-datasources
-        resources: {}
-        volumeMounts:
-        - mountPath: /etc/grafana/provisioning/datasources
-          name: sc-datasources-volume
+      enableServiceLinks: true
       securityContext:
         fsGroup: 472
         runAsGroup: 472

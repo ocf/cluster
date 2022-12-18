@@ -36,8 +36,9 @@ data:
     \            \"seriesOverrides\": [\n\n            ],\n            \"spaceLength\"\
     : 10,\n            \"span\": 24,\n            \"stack\": false,\n            \"\
     steppedLine\": false,\n            \"targets\": [\n                {\n       \
-    \             \"expr\": \"sort_desc(sum(irate(container_network_receive_bytes_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \             \"expr\": \"sort_desc(sum(irate(container_network_receive_bytes_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                    \"format\": \"time_series\"\
@@ -80,41 +81,42 @@ data:
     : [\n\n            ],\n            \"spaceLength\": 10,\n            \"span\"\
     : 24,\n            \"stack\": false,\n            \"steppedLine\": false,\n  \
     \          \"targets\": [\n                {\n                    \"expr\": \"\
-    sort_desc(sum(irate(container_network_transmit_bytes_total{cluster=\\\"$cluster\\\
-    \",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
-    ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
-    \"$type\\\"}) by (pod))\\n\",\n                    \"format\": \"time_series\"\
-    ,\n                    \"intervalFactor\": 1,\n                    \"legendFormat\"\
-    : \"{{ pod }}\",\n                    \"refId\": \"A\",\n                    \"\
-    step\": 10\n                }\n            ],\n            \"thresholds\": [\n\
-    \n            ],\n            \"timeFrom\": null,\n            \"timeShift\":\
-    \ null,\n            \"title\": \"Current Rate of Bytes Transmitted\",\n     \
-    \       \"tooltip\": {\n                \"shared\": true,\n                \"\
-    sort\": 2,\n                \"value_type\": \"individual\"\n            },\n \
-    \           \"type\": \"graph\",\n            \"xaxis\": {\n                \"\
-    buckets\": null,\n                \"mode\": \"series\",\n                \"name\"\
-    : null,\n                \"show\": false,\n                \"values\": [\n   \
-    \                 \"current\"\n                ]\n            },\n           \
-    \ \"yaxes\": [\n                {\n                    \"format\": \"Bps\",\n\
-    \                    \"label\": null,\n                    \"logBase\": 1,\n \
-    \                   \"max\": null,\n                    \"min\": 0,\n        \
-    \            \"show\": true\n                },\n                {\n         \
-    \           \"format\": \"Bps\",\n                    \"label\": null,\n     \
-    \               \"logBase\": 1,\n                    \"max\": null,\n        \
-    \            \"min\": 0,\n                    \"show\": true\n               \
-    \ }\n            ]\n        },\n        {\n            \"collapse\": true,\n \
-    \           \"collapsed\": true,\n            \"gridPos\": {\n               \
-    \ \"h\": 1,\n                \"w\": 24,\n                \"x\": 0,\n         \
-    \       \"y\": 10\n            },\n            \"id\": 5,\n            \"panels\"\
-    : [\n                {\n                    \"aliasColors\": {\n\n           \
-    \         },\n                    \"bars\": true,\n                    \"dashLength\"\
-    : 10,\n                    \"dashes\": false,\n                    \"datasource\"\
-    : \"$datasource\",\n                    \"fill\": 2,\n                    \"fillGradient\"\
-    : 0,\n                    \"gridPos\": {\n                        \"h\": 9,\n\
-    \                        \"w\": 12,\n                        \"x\": 0,\n     \
-    \                   \"y\": 11\n                    },\n                    \"\
-    id\": 6,\n                    \"legend\": {\n                        \"alignAsTable\"\
+    sort_desc(sum(irate(container_network_transmit_bytes_total{job=\\\"kubelet\\\"\
+    , metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\",namespace=~\\\
+    \"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\ngroup_left(workload,workload_type)\
+    \ namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\"$cluster\\\",namespace=~\\\
+    \"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\"$type\\\"}) by\
+    \ (pod))\\n\",\n                    \"format\": \"time_series\",\n           \
+    \         \"intervalFactor\": 1,\n                    \"legendFormat\": \"{{ pod\
+    \ }}\",\n                    \"refId\": \"A\",\n                    \"step\":\
+    \ 10\n                }\n            ],\n            \"thresholds\": [\n\n   \
+    \         ],\n            \"timeFrom\": null,\n            \"timeShift\": null,\n\
+    \            \"title\": \"Current Rate of Bytes Transmitted\",\n            \"\
+    tooltip\": {\n                \"shared\": true,\n                \"sort\": 2,\n\
+    \                \"value_type\": \"individual\"\n            },\n            \"\
+    type\": \"graph\",\n            \"xaxis\": {\n                \"buckets\": null,\n\
+    \                \"mode\": \"series\",\n                \"name\": null,\n    \
+    \            \"show\": false,\n                \"values\": [\n               \
+    \     \"current\"\n                ]\n            },\n            \"yaxes\": [\n\
+    \                {\n                    \"format\": \"Bps\",\n               \
+    \     \"label\": null,\n                    \"logBase\": 1,\n                \
+    \    \"max\": null,\n                    \"min\": 0,\n                    \"show\"\
+    : true\n                },\n                {\n                    \"format\"\
+    : \"Bps\",\n                    \"label\": null,\n                    \"logBase\"\
+    : 1,\n                    \"max\": null,\n                    \"min\": 0,\n  \
+    \                  \"show\": true\n                }\n            ]\n        },\n\
+    \        {\n            \"collapse\": true,\n            \"collapsed\": true,\n\
+    \            \"gridPos\": {\n                \"h\": 1,\n                \"w\"\
+    : 24,\n                \"x\": 0,\n                \"y\": 10\n            },\n\
+    \            \"id\": 5,\n            \"panels\": [\n                {\n      \
+    \              \"aliasColors\": {\n\n                    },\n                \
+    \    \"bars\": true,\n                    \"dashLength\": 10,\n              \
+    \      \"dashes\": false,\n                    \"datasource\": \"$datasource\"\
+    ,\n                    \"fill\": 2,\n                    \"fillGradient\": 0,\n\
+    \                    \"gridPos\": {\n                        \"h\": 9,\n     \
+    \                   \"w\": 12,\n                        \"x\": 0,\n          \
+    \              \"y\": 11\n                    },\n                    \"id\":\
+    \ 6,\n                    \"legend\": {\n                        \"alignAsTable\"\
     : true,\n                        \"avg\": false,\n                        \"current\"\
     : true,\n                        \"hideEmpty\": true,\n                      \
     \  \"hideZero\": true,\n                        \"max\": false,\n            \
@@ -133,8 +135,9 @@ data:
     \             \"spaceLength\": 10,\n                    \"span\": 24,\n      \
     \              \"stack\": false,\n                    \"steppedLine\": false,\n\
     \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"sort_desc(avg(irate(container_network_receive_bytes_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \               \"expr\": \"sort_desc(avg(irate(container_network_receive_bytes_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -187,8 +190,9 @@ data:
     \             \"spaceLength\": 10,\n                    \"span\": 24,\n      \
     \              \"stack\": false,\n                    \"steppedLine\": false,\n\
     \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"sort_desc(avg(irate(container_network_transmit_bytes_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \               \"expr\": \"sort_desc(avg(irate(container_network_transmit_bytes_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -245,8 +249,9 @@ data:
     repeat\": null,\n            \"seriesOverrides\": [\n\n            ],\n      \
     \      \"spaceLength\": 10,\n            \"span\": 12,\n            \"stack\"\
     : true,\n            \"steppedLine\": false,\n            \"targets\": [\n   \
-    \             {\n                    \"expr\": \"sort_desc(sum(irate(container_network_receive_bytes_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \             {\n                    \"expr\": \"sort_desc(sum(irate(container_network_receive_bytes_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                    \"format\": \"time_series\"\
@@ -287,8 +292,9 @@ data:
     \    \"repeat\": null,\n            \"seriesOverrides\": [\n\n            ],\n\
     \            \"spaceLength\": 10,\n            \"span\": 12,\n            \"stack\"\
     : true,\n            \"steppedLine\": false,\n            \"targets\": [\n   \
-    \             {\n                    \"expr\": \"sort_desc(sum(irate(container_network_transmit_bytes_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \             {\n                    \"expr\": \"sort_desc(sum(irate(container_network_transmit_bytes_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                    \"format\": \"time_series\"\
@@ -338,8 +344,9 @@ data:
     \      ],\n                    \"spaceLength\": 10,\n                    \"span\"\
     : 12,\n                    \"stack\": true,\n                    \"steppedLine\"\
     : false,\n                    \"targets\": [\n                        {\n    \
-    \                        \"expr\": \"sort_desc(sum(irate(container_network_receive_packets_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \                        \"expr\": \"sort_desc(sum(irate(container_network_receive_packets_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -390,8 +397,9 @@ data:
     \      ],\n                    \"spaceLength\": 10,\n                    \"span\"\
     : 12,\n                    \"stack\": true,\n                    \"steppedLine\"\
     : false,\n                    \"targets\": [\n                        {\n    \
-    \                        \"expr\": \"sort_desc(sum(irate(container_network_transmit_packets_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \                        \"expr\": \"sort_desc(sum(irate(container_network_transmit_packets_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -449,8 +457,9 @@ data:
     \      ],\n                    \"spaceLength\": 10,\n                    \"span\"\
     : 12,\n                    \"stack\": true,\n                    \"steppedLine\"\
     : false,\n                    \"targets\": [\n                        {\n    \
-    \                        \"expr\": \"sort_desc(sum(irate(container_network_receive_packets_dropped_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \                        \"expr\": \"sort_desc(sum(irate(container_network_receive_packets_dropped_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -501,8 +510,9 @@ data:
     \      ],\n                    \"spaceLength\": 10,\n                    \"span\"\
     : 12,\n                    \"stack\": true,\n                    \"steppedLine\"\
     : false,\n                    \"targets\": [\n                        {\n    \
-    \                        \"expr\": \"sort_desc(sum(irate(container_network_transmit_packets_dropped_total{cluster=\\\
-    \"$cluster\\\",namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
+    \                        \"expr\": \"sort_desc(sum(irate(container_network_transmit_packets_dropped_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    ,namespace=~\\\"$namespace\\\"}[$interval:$resolution])\\n* on (namespace,pod)\\\
     ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\", workload=~\\\"$workload\\\", workload_type=\\\
     \"$type\\\"}) by (pod))\\n\",\n                            \"format\": \"time_series\"\
@@ -537,39 +547,42 @@ data:
     \        \"list\": [\n            {\n                \"current\": {\n        \
     \            \"text\": \"default\",\n                    \"value\": \"default\"\
     \n                },\n                \"hide\": 0,\n                \"label\"\
-    : null,\n                \"name\": \"datasource\",\n                \"options\"\
-    : [\n\n                ],\n                \"query\": \"prometheus\",\n      \
-    \          \"refresh\": 1,\n                \"regex\": \"\",\n               \
-    \ \"type\": \"datasource\"\n            },\n            {\n                \"\
-    allValue\": null,\n                \"current\": {\n\n                },\n    \
-    \            \"datasource\": \"$datasource\",\n                \"hide\": 2,\n\
-    \                \"includeAll\": false,\n                \"label\": null,\n  \
-    \              \"multi\": false,\n                \"name\": \"cluster\",\n   \
-    \             \"options\": [\n\n                ],\n                \"query\"\
-    : \"label_values(kube_pod_info, cluster)\",\n                \"refresh\": 2,\n\
-    \                \"regex\": \"\",\n                \"sort\": 0,\n            \
-    \    \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n              \
-    \  ],\n                \"tagsQuery\": \"\",\n                \"type\": \"query\"\
-    ,\n                \"useTags\": false\n            },\n            {\n       \
-    \         \"allValue\": \".+\",\n                \"auto\": false,\n          \
-    \      \"auto_count\": 30,\n                \"auto_min\": \"10s\",\n         \
-    \       \"current\": {\n                    \"text\": \"kube-system\",\n     \
-    \               \"value\": \"kube-system\"\n                },\n             \
-    \   \"datasource\": \"$datasource\",\n                \"definition\": \"label_values(container_network_receive_packets_total{cluster=\\\
-    \"$cluster\\\"}, namespace)\",\n                \"hide\": 0,\n               \
-    \ \"includeAll\": true,\n                \"label\": null,\n                \"\
-    multi\": false,\n                \"name\": \"namespace\",\n                \"\
-    options\": [\n\n                ],\n                \"query\": \"label_values(container_network_receive_packets_total{cluster=\\\
-    \"$cluster\\\"}, namespace)\",\n                \"refresh\": 2,\n            \
-    \    \"regex\": \"\",\n                \"skipUrlSync\": false,\n             \
-    \   \"sort\": 1,\n                \"tagValuesQuery\": \"\",\n                \"\
-    tags\": [\n\n                ],\n                \"tagsQuery\": \"\",\n      \
-    \          \"type\": \"query\",\n                \"useTags\": false\n        \
-    \    },\n            {\n                \"allValue\": null,\n                \"\
-    auto\": false,\n                \"auto_count\": 30,\n                \"auto_min\"\
-    : \"10s\",\n                \"current\": {\n                    \"text\": \"\"\
-    ,\n                    \"value\": \"\"\n                },\n                \"\
-    datasource\": \"$datasource\",\n                \"definition\": \"label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
+    : \"Data Source\",\n                \"name\": \"datasource\",\n              \
+    \  \"options\": [\n\n                ],\n                \"query\": \"prometheus\"\
+    ,\n                \"refresh\": 1,\n                \"regex\": \"\",\n       \
+    \         \"type\": \"datasource\"\n            },\n            {\n          \
+    \      \"allValue\": null,\n                \"current\": {\n\n               \
+    \ },\n                \"datasource\": \"$datasource\",\n                \"hide\"\
+    : 2,\n                \"includeAll\": false,\n                \"label\": null,\n\
+    \                \"multi\": false,\n                \"name\": \"cluster\",\n \
+    \               \"options\": [\n\n                ],\n                \"query\"\
+    : \"label_values(kube_pod_info{job=\\\"kube-state-metrics\\\"}, cluster)\",\n\
+    \                \"refresh\": 2,\n                \"regex\": \"\",\n         \
+    \       \"sort\": 0,\n                \"tagValuesQuery\": \"\",\n            \
+    \    \"tags\": [\n\n                ],\n                \"tagsQuery\": \"\",\n\
+    \                \"type\": \"query\",\n                \"useTags\": false\n  \
+    \          },\n            {\n                \"allValue\": \".+\",\n        \
+    \        \"auto\": false,\n                \"auto_count\": 30,\n             \
+    \   \"auto_min\": \"10s\",\n                \"current\": {\n                 \
+    \   \"text\": \"kube-system\",\n                    \"value\": \"kube-system\"\
+    \n                },\n                \"datasource\": \"$datasource\",\n     \
+    \           \"definition\": \"label_values(container_network_receive_packets_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    }, namespace)\",\n                \"hide\": 0,\n                \"includeAll\"\
+    : true,\n                \"label\": null,\n                \"multi\": false,\n\
+    \                \"name\": \"namespace\",\n                \"options\": [\n\n\
+    \                ],\n                \"query\": \"label_values(container_network_receive_packets_total{job=\\\
+    \"kubelet\\\", metrics_path=\\\"/metrics/cadvisor\\\", cluster=\\\"$cluster\\\"\
+    }, namespace)\",\n                \"refresh\": 2,\n                \"regex\":\
+    \ \"\",\n                \"skipUrlSync\": false,\n                \"sort\": 1,\n\
+    \                \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n  \
+    \              ],\n                \"tagsQuery\": \"\",\n                \"type\"\
+    : \"query\",\n                \"useTags\": false\n            },\n           \
+    \ {\n                \"allValue\": null,\n                \"auto\": false,\n \
+    \               \"auto_count\": 30,\n                \"auto_min\": \"10s\",\n\
+    \                \"current\": {\n                    \"text\": \"\",\n       \
+    \             \"value\": \"\"\n                },\n                \"datasource\"\
+    : \"$datasource\",\n                \"definition\": \"label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\\\
     \"$cluster\\\",namespace=~\\\"$namespace\\\"}, workload)\",\n                \"\
     hide\": 0,\n                \"includeAll\": false,\n                \"label\"\
     : null,\n                \"multi\": false,\n                \"name\": \"workload\"\
@@ -639,7 +652,7 @@ data:
     \        \"time_options\": [\n            \"5m\",\n            \"15m\",\n    \
     \        \"1h\",\n            \"6h\",\n            \"12h\",\n            \"24h\"\
     ,\n            \"2d\",\n            \"7d\",\n            \"30d\"\n        ]\n\
-    \    },\n    \"timezone\": \"UTC\",\n    \"title\": \"Kubernetes / Networking\
+    \    },\n    \"timezone\": \"utc\",\n    \"title\": \"Kubernetes / Networking\
     \ / Workload\",\n    \"uid\": \"728bf77cc1166d2f3133bf25846876cc\",\n    \"version\"\
     : 0\n}"
 kind: ConfigMap
@@ -650,8 +663,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

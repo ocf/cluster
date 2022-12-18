@@ -1,0 +1,267 @@
+apiVersion: v1
+data:
+  grafana-overview.json: "{\n    \"annotations\": {\n        \"list\": [\n       \
+    \     {\n                \"builtIn\": 1,\n                \"datasource\": \"--\
+    \ Grafana --\",\n                \"enable\": true,\n                \"hide\":\
+    \ true,\n                \"iconColor\": \"rgba(0, 211, 255, 1)\",\n          \
+    \      \"name\": \"Annotations & Alerts\",\n                \"target\": {\n  \
+    \                  \"limit\": 100,\n                    \"matchAny\": false,\n\
+    \                    \"tags\": [\n\n                    ],\n                 \
+    \   \"type\": \"dashboard\"\n                },\n                \"type\": \"\
+    dashboard\"\n            }\n        ]\n    },\n    \"editable\": true,\n    \"\
+    gnetId\": null,\n    \"graphTooltip\": 0,\n    \"id\": 3085,\n    \"iteration\"\
+    : 1631554945276,\n    \"links\": [\n\n    ],\n    \"panels\": [\n        {\n \
+    \           \"datasource\": \"$datasource\",\n            \"fieldConfig\": {\n\
+    \                \"defaults\": {\n                    \"mappings\": [\n\n    \
+    \                ],\n                    \"noValue\": \"0\",\n               \
+    \     \"thresholds\": {\n                        \"mode\": \"absolute\",\n   \
+    \                     \"steps\": [\n                            {\n          \
+    \                      \"color\": \"green\",\n                               \
+    \ \"value\": null\n                            },\n                          \
+    \  {\n                                \"color\": \"red\",\n                  \
+    \              \"value\": 80\n                            }\n                \
+    \        ]\n                    }\n                },\n                \"overrides\"\
+    : [\n\n                ]\n            },\n            \"gridPos\": {\n       \
+    \         \"h\": 5,\n                \"w\": 6,\n                \"x\": 0,\n  \
+    \              \"y\": 0\n            },\n            \"id\": 6,\n            \"\
+    options\": {\n                \"colorMode\": \"value\",\n                \"graphMode\"\
+    : \"area\",\n                \"justifyMode\": \"auto\",\n                \"orientation\"\
+    : \"auto\",\n                \"reduceOptions\": {\n                    \"calcs\"\
+    : [\n                        \"mean\"\n                    ],\n              \
+    \      \"fields\": \"\",\n                    \"values\": false\n            \
+    \    },\n                \"text\": {\n\n                },\n                \"\
+    textMode\": \"auto\"\n            },\n            \"pluginVersion\": \"8.1.3\"\
+    ,\n            \"targets\": [\n                {\n                    \"expr\"\
+    : \"grafana_alerting_result_total{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \", state=\\\"alerting\\\"}\",\n                    \"instant\": true,\n     \
+    \               \"interval\": \"\",\n                    \"legendFormat\": \"\"\
+    ,\n                    \"refId\": \"A\"\n                }\n            ],\n \
+    \           \"timeFrom\": null,\n            \"timeShift\": null,\n          \
+    \  \"title\": \"Firing Alerts\",\n            \"type\": \"stat\"\n        },\n\
+    \        {\n            \"datasource\": \"$datasource\",\n            \"fieldConfig\"\
+    : {\n                \"defaults\": {\n                    \"mappings\": [\n\n\
+    \                    ],\n                    \"thresholds\": {\n             \
+    \           \"mode\": \"absolute\",\n                        \"steps\": [\n  \
+    \                          {\n                                \"color\": \"green\"\
+    ,\n                                \"value\": null\n                         \
+    \   },\n                            {\n                                \"color\"\
+    : \"red\",\n                                \"value\": 80\n                  \
+    \          }\n                        ]\n                    }\n             \
+    \   },\n                \"overrides\": [\n\n                ]\n            },\n\
+    \            \"gridPos\": {\n                \"h\": 5,\n                \"w\"\
+    : 6,\n                \"x\": 6,\n                \"y\": 0\n            },\n  \
+    \          \"id\": 8,\n            \"options\": {\n                \"colorMode\"\
+    : \"value\",\n                \"graphMode\": \"area\",\n                \"justifyMode\"\
+    : \"auto\",\n                \"orientation\": \"auto\",\n                \"reduceOptions\"\
+    : {\n                    \"calcs\": [\n                        \"mean\"\n    \
+    \                ],\n                    \"fields\": \"\",\n                 \
+    \   \"values\": false\n                },\n                \"text\": {\n\n   \
+    \             },\n                \"textMode\": \"auto\"\n            },\n   \
+    \         \"pluginVersion\": \"8.1.3\",\n            \"targets\": [\n        \
+    \        {\n                    \"expr\": \"sum(grafana_stat_totals_dashboard{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n                    \"interval\"\
+    : \"\",\n                    \"legendFormat\": \"\",\n                    \"refId\"\
+    : \"A\"\n                }\n            ],\n            \"timeFrom\": null,\n\
+    \            \"timeShift\": null,\n            \"title\": \"Dashboards\",\n  \
+    \          \"type\": \"stat\"\n        },\n        {\n            \"datasource\"\
+    : \"$datasource\",\n            \"fieldConfig\": {\n                \"defaults\"\
+    : {\n                    \"custom\": {\n                        \"align\": null,\n\
+    \                        \"displayMode\": \"auto\"\n                    },\n \
+    \                   \"mappings\": [\n\n                    ],\n              \
+    \      \"thresholds\": {\n                        \"mode\": \"absolute\",\n  \
+    \                      \"steps\": [\n                            {\n         \
+    \                       \"color\": \"green\",\n                              \
+    \  \"value\": null\n                            },\n                         \
+    \   {\n                                \"color\": \"red\",\n                 \
+    \               \"value\": 80\n                            }\n               \
+    \         ]\n                    }\n                },\n                \"overrides\"\
+    : [\n\n                ]\n            },\n            \"gridPos\": {\n       \
+    \         \"h\": 5,\n                \"w\": 12,\n                \"x\": 12,\n\
+    \                \"y\": 0\n            },\n            \"id\": 10,\n         \
+    \   \"options\": {\n                \"showHeader\": true\n            },\n   \
+    \         \"pluginVersion\": \"8.1.3\",\n            \"targets\": [\n        \
+    \        {\n                    \"expr\": \"grafana_build_info{job=~\\\"$job\\\
+    \", instance=~\\\"$instance\\\"}\",\n                    \"instant\": true,\n\
+    \                    \"interval\": \"\",\n                    \"legendFormat\"\
+    : \"\",\n                    \"refId\": \"A\"\n                }\n           \
+    \ ],\n            \"timeFrom\": null,\n            \"timeShift\": null,\n    \
+    \        \"title\": \"Build Info\",\n            \"transformations\": [\n    \
+    \            {\n                    \"id\": \"labelsToFields\",\n            \
+    \        \"options\": {\n\n                    }\n                },\n       \
+    \         {\n                    \"id\": \"organize\",\n                    \"\
+    options\": {\n                        \"excludeByName\": {\n                 \
+    \           \"Time\": true,\n                            \"Value\": true,\n  \
+    \                          \"branch\": true,\n                            \"container\"\
+    : true,\n                            \"goversion\": true,\n                  \
+    \          \"namespace\": true,\n                            \"pod\": true,\n\
+    \                            \"revision\": true\n                        },\n\
+    \                        \"indexByName\": {\n                            \"Time\"\
+    : 7,\n                            \"Value\": 11,\n                           \
+    \ \"branch\": 4,\n                            \"container\": 8,\n            \
+    \                \"edition\": 2,\n                            \"goversion\": 6,\n\
+    \                            \"instance\": 1,\n                            \"\
+    job\": 0,\n                            \"namespace\": 9,\n                   \
+    \         \"pod\": 10,\n                            \"revision\": 5,\n       \
+    \                     \"version\": 3\n                        },\n           \
+    \             \"renameByName\": {\n\n                        }\n             \
+    \       }\n                }\n            ],\n            \"type\": \"table\"\n\
+    \        },\n        {\n            \"aliasColors\": {\n\n            },\n   \
+    \         \"bars\": false,\n            \"dashLength\": 10,\n            \"dashes\"\
+    : false,\n            \"datasource\": \"$datasource\",\n            \"fieldConfig\"\
+    : {\n                \"defaults\": {\n                    \"links\": [\n\n   \
+    \                 ]\n                },\n                \"overrides\": [\n\n\
+    \                ]\n            },\n            \"fill\": 1,\n            \"fillGradient\"\
+    : 0,\n            \"gridPos\": {\n                \"h\": 8,\n                \"\
+    w\": 12,\n                \"x\": 0,\n                \"y\": 5\n            },\n\
+    \            \"hiddenSeries\": false,\n            \"id\": 2,\n            \"\
+    legend\": {\n                \"avg\": false,\n                \"current\": false,\n\
+    \                \"max\": false,\n                \"min\": false,\n          \
+    \      \"show\": true,\n                \"total\": false,\n                \"\
+    values\": false\n            },\n            \"lines\": true,\n            \"\
+    linewidth\": 1,\n            \"nullPointMode\": \"null\",\n            \"options\"\
+    : {\n                \"alertThreshold\": true\n            },\n            \"\
+    percentage\": false,\n            \"pluginVersion\": \"8.1.3\",\n            \"\
+    pointradius\": 2,\n            \"points\": false,\n            \"renderer\": \"\
+    flot\",\n            \"seriesOverrides\": [\n\n            ],\n            \"\
+    spaceLength\": 10,\n            \"stack\": true,\n            \"steppedLine\"\
+    : false,\n            \"targets\": [\n                {\n                    \"\
+    expr\": \"sum by (status_code) (irate(grafana_http_request_duration_seconds_count{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[1m])) \",\n                    \"interval\"\
+    : \"\",\n                    \"legendFormat\": \"{{status_code}}\",\n        \
+    \            \"refId\": \"A\"\n                }\n            ],\n           \
+    \ \"thresholds\": [\n\n            ],\n            \"timeFrom\": null,\n     \
+    \       \"timeRegions\": [\n\n            ],\n            \"timeShift\": null,\n\
+    \            \"title\": \"RPS\",\n            \"tooltip\": {\n               \
+    \ \"shared\": true,\n                \"sort\": 0,\n                \"value_type\"\
+    : \"individual\"\n            },\n            \"type\": \"graph\",\n         \
+    \   \"xaxis\": {\n                \"buckets\": null,\n                \"mode\"\
+    : \"time\",\n                \"name\": null,\n                \"show\": true,\n\
+    \                \"values\": [\n\n                ]\n            },\n        \
+    \    \"yaxes\": [\n                {\n                    \"$$hashKey\": \"object:157\"\
+    ,\n                    \"format\": \"reqps\",\n                    \"label\":\
+    \ null,\n                    \"logBase\": 1,\n                    \"max\": null,\n\
+    \                    \"min\": null,\n                    \"show\": true\n    \
+    \            },\n                {\n                    \"$$hashKey\": \"object:158\"\
+    ,\n                    \"format\": \"short\",\n                    \"label\":\
+    \ null,\n                    \"logBase\": 1,\n                    \"max\": null,\n\
+    \                    \"min\": null,\n                    \"show\": false\n   \
+    \             }\n            ],\n            \"yaxis\": {\n                \"\
+    align\": false,\n                \"alignLevel\": null\n            }\n       \
+    \ },\n        {\n            \"aliasColors\": {\n\n            },\n          \
+    \  \"bars\": false,\n            \"dashLength\": 10,\n            \"dashes\":\
+    \ false,\n            \"datasource\": \"$datasource\",\n            \"fieldConfig\"\
+    : {\n                \"defaults\": {\n                    \"links\": [\n\n   \
+    \                 ]\n                },\n                \"overrides\": [\n\n\
+    \                ]\n            },\n            \"fill\": 1,\n            \"fillGradient\"\
+    : 0,\n            \"gridPos\": {\n                \"h\": 8,\n                \"\
+    w\": 12,\n                \"x\": 12,\n                \"y\": 5\n            },\n\
+    \            \"hiddenSeries\": false,\n            \"id\": 4,\n            \"\
+    legend\": {\n                \"avg\": false,\n                \"current\": false,\n\
+    \                \"max\": false,\n                \"min\": false,\n          \
+    \      \"show\": true,\n                \"total\": false,\n                \"\
+    values\": false\n            },\n            \"lines\": true,\n            \"\
+    linewidth\": 1,\n            \"nullPointMode\": \"null\",\n            \"options\"\
+    : {\n                \"alertThreshold\": true\n            },\n            \"\
+    percentage\": false,\n            \"pluginVersion\": \"8.1.3\",\n            \"\
+    pointradius\": 2,\n            \"points\": false,\n            \"renderer\": \"\
+    flot\",\n            \"seriesOverrides\": [\n\n            ],\n            \"\
+    spaceLength\": 10,\n            \"stack\": false,\n            \"steppedLine\"\
+    : false,\n            \"targets\": [\n                {\n                    \"\
+    exemplar\": true,\n                    \"expr\": \"histogram_quantile(0.99, sum(irate(grafana_http_request_duration_seconds_bucket{instance=~\\\
+    \"$instance\\\", job=~\\\"$job\\\"}[$__rate_interval])) by (le)) * 1\",\n    \
+    \                \"interval\": \"\",\n                    \"legendFormat\": \"\
+    99th Percentile\",\n                    \"refId\": \"A\"\n                },\n\
+    \                {\n                    \"exemplar\": true,\n                \
+    \    \"expr\": \"histogram_quantile(0.50, sum(irate(grafana_http_request_duration_seconds_bucket{instance=~\\\
+    \"$instance\\\", job=~\\\"$job\\\"}[$__rate_interval])) by (le)) * 1\",\n    \
+    \                \"interval\": \"\",\n                    \"legendFormat\": \"\
+    50th Percentile\",\n                    \"refId\": \"B\"\n                },\n\
+    \                {\n                    \"exemplar\": true,\n                \
+    \    \"expr\": \"sum(irate(grafana_http_request_duration_seconds_sum{instance=~\\\
+    \"$instance\\\", job=~\\\"$job\\\"}[$__rate_interval])) * 1 / sum(irate(grafana_http_request_duration_seconds_count{instance=~\\\
+    \"$instance\\\", job=~\\\"$job\\\"}[$__rate_interval]))\",\n                 \
+    \   \"interval\": \"\",\n                    \"legendFormat\": \"Average\",\n\
+    \                    \"refId\": \"C\"\n                }\n            ],\n   \
+    \         \"thresholds\": [\n\n            ],\n            \"timeFrom\": null,\n\
+    \            \"timeRegions\": [\n\n            ],\n            \"timeShift\":\
+    \ null,\n            \"title\": \"Request Latency\",\n            \"tooltip\"\
+    : {\n                \"shared\": true,\n                \"sort\": 0,\n       \
+    \         \"value_type\": \"individual\"\n            },\n            \"type\"\
+    : \"graph\",\n            \"xaxis\": {\n                \"buckets\": null,\n \
+    \               \"mode\": \"time\",\n                \"name\": null,\n       \
+    \         \"show\": true,\n                \"values\": [\n\n                ]\n\
+    \            },\n            \"yaxes\": [\n                {\n               \
+    \     \"$$hashKey\": \"object:210\",\n                    \"format\": \"ms\",\n\
+    \                    \"label\": null,\n                    \"logBase\": 1,\n \
+    \                   \"max\": null,\n                    \"min\": null,\n     \
+    \               \"show\": true\n                },\n                {\n      \
+    \              \"$$hashKey\": \"object:211\",\n                    \"format\"\
+    : \"short\",\n                    \"label\": null,\n                    \"logBase\"\
+    : 1,\n                    \"max\": null,\n                    \"min\": null,\n\
+    \                    \"show\": true\n                }\n            ],\n     \
+    \       \"yaxis\": {\n                \"align\": false,\n                \"alignLevel\"\
+    : null\n            }\n        }\n    ],\n    \"schemaVersion\": 30,\n    \"style\"\
+    : \"dark\",\n    \"tags\": [\n\n    ],\n    \"templating\": {\n        \"list\"\
+    : [\n            {\n                \"current\": {\n                    \"selected\"\
+    : true,\n                    \"text\": \"dev-cortex\",\n                    \"\
+    value\": \"dev-cortex\"\n                },\n                \"description\":\
+    \ null,\n                \"error\": null,\n                \"hide\": 0,\n    \
+    \            \"includeAll\": false,\n                \"label\": null,\n      \
+    \          \"multi\": false,\n                \"name\": \"datasource\",\n    \
+    \            \"options\": [\n\n                ],\n                \"query\":\
+    \ \"prometheus\",\n                \"queryValue\": \"\",\n                \"refresh\"\
+    : 1,\n                \"regex\": \"\",\n                \"skipUrlSync\": false,\n\
+    \                \"type\": \"datasource\"\n            },\n            {\n   \
+    \             \"allValue\": \".*\",\n                \"current\": {\n        \
+    \            \"selected\": false,\n                    \"text\": [\n         \
+    \               \"default/grafana\"\n                    ],\n                \
+    \    \"value\": [\n                        \"default/grafana\"\n             \
+    \       ]\n                },\n                \"datasource\": \"$datasource\"\
+    ,\n                \"definition\": \"label_values(grafana_build_info, job)\",\n\
+    \                \"description\": null,\n                \"error\": null,\n  \
+    \              \"hide\": 0,\n                \"includeAll\": true,\n         \
+    \       \"label\": null,\n                \"multi\": true,\n                \"\
+    name\": \"job\",\n                \"options\": [\n\n                ],\n     \
+    \           \"query\": {\n                    \"query\": \"label_values(grafana_build_info,\
+    \ job)\",\n                    \"refId\": \"Billing Admin-job-Variable-Query\"\
+    \n                },\n                \"refresh\": 1,\n                \"regex\"\
+    : \"\",\n                \"skipUrlSync\": false,\n                \"sort\": 0,\n\
+    \                \"tagValuesQuery\": \"\",\n                \"tagsQuery\": \"\"\
+    ,\n                \"type\": \"query\",\n                \"useTags\": false\n\
+    \            },\n            {\n                \"allValue\": \".*\",\n      \
+    \          \"current\": {\n                    \"selected\": false,\n        \
+    \            \"text\": \"All\",\n                    \"value\": \"$__all\"\n \
+    \               },\n                \"datasource\": \"$datasource\",\n       \
+    \         \"definition\": \"label_values(grafana_build_info, instance)\",\n  \
+    \              \"description\": null,\n                \"error\": null,\n    \
+    \            \"hide\": 0,\n                \"includeAll\": true,\n           \
+    \     \"label\": null,\n                \"multi\": true,\n                \"name\"\
+    : \"instance\",\n                \"options\": [\n\n                ],\n      \
+    \          \"query\": {\n                    \"query\": \"label_values(grafana_build_info,\
+    \ instance)\",\n                    \"refId\": \"Billing Admin-instance-Variable-Query\"\
+    \n                },\n                \"refresh\": 1,\n                \"regex\"\
+    : \"\",\n                \"skipUrlSync\": false,\n                \"sort\": 0,\n\
+    \                \"tagValuesQuery\": \"\",\n                \"tagsQuery\": \"\"\
+    ,\n                \"type\": \"query\",\n                \"useTags\": false\n\
+    \            }\n        ]\n    },\n    \"time\": {\n        \"from\": \"now-6h\"\
+    ,\n        \"to\": \"now\"\n    },\n    \"timepicker\": {\n        \"refresh_intervals\"\
+    : [\n            \"10s\",\n            \"30s\",\n            \"1m\",\n       \
+    \     \"5m\",\n            \"15m\",\n            \"30m\",\n            \"1h\"\
+    ,\n            \"2h\",\n            \"1d\"\n        ]\n    },\n    \"timezone\"\
+    : \"utc\",\n    \"title\": \"Grafana Overview\",\n    \"uid\": \"6be0s85Mk\",\n\
+    \    \"version\": 2\n}"
+kind: ConfigMap
+metadata:
+  annotations: {}
+  labels:
+    app: kube-prometheus-stack-grafana
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
+    grafana_dashboard: '1'
+    heritage: Helm
+    release: prometheus
+  name: prometheus-kube-prometheus-grafana-overview
+  namespace: prometheus

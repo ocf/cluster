@@ -27,8 +27,10 @@ data:
     : 0,\n                        \"show\": false,\n                        \"thresholdLabels\"\
     : false,\n                        \"thresholdMarkers\": true\n               \
     \     },\n                    \"gridPos\": {\n\n                    },\n     \
-    \               \"id\": 3,\n                    \"interval\": null,\n        \
-    \            \"links\": [\n\n                    ],\n                    \"mappingType\"\
+    \               \"id\": 3,\n                    \"interval\": \"1m\",\n      \
+    \              \"legend\": {\n                        \"alignAsTable\": true,\n\
+    \                        \"rightSide\": true\n                    },\n       \
+    \             \"links\": [\n\n                    ],\n                    \"mappingType\"\
     : 1,\n                    \"mappingTypes\": [\n                        {\n   \
     \                         \"name\": \"value to text\",\n                     \
     \       \"value\": 1\n                        },\n                        {\n\
@@ -67,24 +69,25 @@ data:
     \ \"How much error budget is left looking at our 0.990% availability guarantees?\"\
     ,\n                    \"fill\": 10,\n                    \"fillGradient\": 0,\n\
     \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 4,\n                    \"legend\": {\n                       \
-    \ \"alignAsTable\": false,\n                        \"avg\": false,\n        \
-    \                \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 8,\n                    \"stack\": false,\n       \
-    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"100 * (apiserver_request:availability30d{verb=\\\
-    \"all\\\", cluster=\\\"$cluster\\\"} - 0.990000)\",\n                        \
-    \    \"format\": \"time_series\",\n                            \"intervalFactor\"\
+    \      \"id\": 4,\n                    \"interval\": \"1m\",\n               \
+    \     \"legend\": {\n                        \"alignAsTable\": true,\n       \
+    \                 \"avg\": false,\n                        \"current\": false,\n\
+    \                        \"max\": false,\n                        \"min\": false,\n\
+    \                        \"rightSide\": true,\n                        \"show\"\
+    : true,\n                        \"sideWidth\": null,\n                      \
+    \  \"total\": false,\n                        \"values\": false\n            \
+    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
+    : 1,\n                    \"links\": [\n\n                    ],\n           \
+    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
+    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
+    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
+    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
+    \                    \"spaceLength\": 10,\n                    \"span\": 8,\n\
+    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
+    \                    \"targets\": [\n                        {\n             \
+    \               \"expr\": \"100 * (apiserver_request:availability30d{verb=\\\"\
+    all\\\", cluster=\\\"$cluster\\\"} - 0.990000)\",\n                          \
+    \  \"format\": \"time_series\",\n                            \"intervalFactor\"\
     : 2,\n                            \"legendFormat\": \"errorbudget\",\n       \
     \                     \"refId\": \"A\"\n                        }\n          \
     \          ],\n                    \"thresholds\": [\n\n                    ],\n\
@@ -125,8 +128,10 @@ data:
     : 0,\n                        \"show\": false,\n                        \"thresholdLabels\"\
     : false,\n                        \"thresholdMarkers\": true\n               \
     \     },\n                    \"gridPos\": {\n\n                    },\n     \
-    \               \"id\": 5,\n                    \"interval\": null,\n        \
-    \            \"links\": [\n\n                    ],\n                    \"mappingType\"\
+    \               \"id\": 5,\n                    \"interval\": \"1m\",\n      \
+    \              \"legend\": {\n                        \"alignAsTable\": true,\n\
+    \                        \"rightSide\": true\n                    },\n       \
+    \             \"links\": [\n\n                    ],\n                    \"mappingType\"\
     : 1,\n                    \"mappingTypes\": [\n                        {\n   \
     \                         \"name\": \"value to text\",\n                     \
     \       \"value\": 1\n                        },\n                        {\n\
@@ -165,78 +170,79 @@ data:
     \ second do the apiservers get by code?\",\n                    \"fill\": 10,\n\
     \                    \"fillGradient\": 0,\n                    \"gridPos\": {\n\
     \n                    },\n                    \"id\": 6,\n                   \
-    \ \"legend\": {\n                        \"alignAsTable\": false,\n          \
-    \              \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n                        {\n\
-    \                            \"alias\": \"/2../i\",\n                        \
-    \    \"color\": \"#56A64B\"\n                        },\n                    \
-    \    {\n                            \"alias\": \"/3../i\",\n                 \
-    \           \"color\": \"#F2CC0C\"\n                        },\n             \
-    \           {\n                            \"alias\": \"/4../i\",\n          \
-    \                  \"color\": \"#3274D9\"\n                        },\n      \
-    \                  {\n                            \"alias\": \"/5../i\",\n   \
-    \                         \"color\": \"#E02F44\"\n                        }\n\
-    \                    ],\n                    \"spaceLength\": 10,\n          \
-    \          \"span\": 3,\n                    \"stack\": true,\n              \
-    \      \"steppedLine\": false,\n                    \"targets\": [\n         \
-    \               {\n                            \"expr\": \"sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\\\
-    \"read\\\", cluster=\\\"$cluster\\\"})\",\n                            \"format\"\
-    : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
-    \                       \"legendFormat\": \"{{ code }}\",\n                  \
-    \          \"refId\": \"A\"\n                        }\n                    ],\n\
-    \                    \"thresholds\": [\n\n                    ],\n           \
-    \         \"timeFrom\": null,\n                    \"timeShift\": null,\n    \
-    \                \"title\": \"Read SLI - Requests\",\n                    \"tooltip\"\
-    : {\n                        \"shared\": false,\n                        \"sort\"\
-    : 0,\n                        \"value_type\": \"individual\"\n               \
-    \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
-    : {\n                        \"buckets\": null,\n                        \"mode\"\
-    : \"time\",\n                        \"name\": null,\n                       \
-    \ \"show\": true,\n                        \"values\": [\n\n                 \
-    \       ]\n                    },\n                    \"yaxes\": [\n        \
-    \                {\n                            \"format\": \"reqps\",\n     \
-    \                       \"label\": null,\n                            \"logBase\"\
-    : 1,\n                            \"max\": null,\n                           \
-    \ \"min\": null,\n                            \"show\": true\n               \
-    \         },\n                        {\n                            \"format\"\
-    : \"reqps\",\n                            \"label\": null,\n                 \
-    \           \"logBase\": 1,\n                            \"max\": null,\n    \
-    \                        \"min\": null,\n                            \"show\"\
-    : true\n                        }\n                    ]\n                },\n\
-    \                {\n                    \"aliasColors\": {\n\n               \
-    \     },\n                    \"bars\": false,\n                    \"dashLength\"\
-    : 10,\n                    \"dashes\": false,\n                    \"datasource\"\
-    : \"$datasource\",\n                    \"description\": \"How many percent of\
-    \ read requests (LIST,GET) per second are returned with errors (5xx)?\",\n   \
-    \                 \"fill\": 1,\n                    \"fillGradient\": 0,\n   \
-    \                 \"gridPos\": {\n\n                    },\n                 \
-    \   \"id\": 7,\n                    \"legend\": {\n                        \"\
-    alignAsTable\": false,\n                        \"avg\": false,\n            \
-    \            \"current\": false,\n                        \"max\": false,\n  \
-    \                      \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
+    \ \"interval\": \"1m\",\n                    \"legend\": {\n                 \
+    \       \"alignAsTable\": true,\n                        \"avg\": false,\n   \
+    \                     \"current\": false,\n                        \"max\": false,\n\
+    \                        \"min\": false,\n                        \"rightSide\"\
+    : true,\n                        \"show\": true,\n                        \"sideWidth\"\
+    : null,\n                        \"total\": false,\n                        \"\
+    values\": false\n                    },\n                    \"lines\": true,\n\
+    \                    \"linewidth\": 1,\n                    \"links\": [\n\n \
+    \                   ],\n                    \"nullPointMode\": \"null\",\n   \
+    \                 \"percentage\": false,\n                    \"pointradius\"\
     : 5,\n                    \"points\": false,\n                    \"renderer\"\
     : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 3,\n                    \"stack\": false,\n       \
-    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"sum by (resource)\
-    \ (code_resource:apiserver_request_total:rate5m{verb=\\\"read\\\",code=~\\\"5..\\\
-    \", cluster=\\\"$cluster\\\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\\\
+    : [\n                        {\n                            \"alias\": \"/2../i\"\
+    ,\n                            \"color\": \"#56A64B\"\n                      \
+    \  },\n                        {\n                            \"alias\": \"/3../i\"\
+    ,\n                            \"color\": \"#F2CC0C\"\n                      \
+    \  },\n                        {\n                            \"alias\": \"/4../i\"\
+    ,\n                            \"color\": \"#3274D9\"\n                      \
+    \  },\n                        {\n                            \"alias\": \"/5../i\"\
+    ,\n                            \"color\": \"#E02F44\"\n                      \
+    \  }\n                    ],\n                    \"spaceLength\": 10,\n     \
+    \               \"span\": 3,\n                    \"stack\": true,\n         \
+    \           \"steppedLine\": false,\n                    \"targets\": [\n    \
+    \                    {\n                            \"expr\": \"sum by (code)\
+    \ (code_resource:apiserver_request_total:rate5m{verb=\\\"read\\\", cluster=\\\"\
+    $cluster\\\"})\",\n                            \"format\": \"time_series\",\n\
+    \                            \"intervalFactor\": 2,\n                        \
+    \    \"legendFormat\": \"{{ code }}\",\n                            \"refId\"\
+    : \"A\"\n                        }\n                    ],\n                 \
+    \   \"thresholds\": [\n\n                    ],\n                    \"timeFrom\"\
+    : null,\n                    \"timeShift\": null,\n                    \"title\"\
+    : \"Read SLI - Requests\",\n                    \"tooltip\": {\n             \
+    \           \"shared\": false,\n                        \"sort\": 0,\n       \
+    \                 \"value_type\": \"individual\"\n                    },\n   \
+    \                 \"type\": \"graph\",\n                    \"xaxis\": {\n   \
+    \                     \"buckets\": null,\n                        \"mode\": \"\
+    time\",\n                        \"name\": null,\n                        \"show\"\
+    : true,\n                        \"values\": [\n\n                        ]\n\
+    \                    },\n                    \"yaxes\": [\n                  \
+    \      {\n                            \"format\": \"reqps\",\n               \
+    \             \"label\": null,\n                            \"logBase\": 1,\n\
+    \                            \"max\": null,\n                            \"min\"\
+    : null,\n                            \"show\": true\n                        },\n\
+    \                        {\n                            \"format\": \"reqps\"\
+    ,\n                            \"label\": null,\n                            \"\
+    logBase\": 1,\n                            \"max\": null,\n                  \
+    \          \"min\": null,\n                            \"show\": true\n      \
+    \                  }\n                    ]\n                },\n            \
+    \    {\n                    \"aliasColors\": {\n\n                    },\n   \
+    \                 \"bars\": false,\n                    \"dashLength\": 10,\n\
+    \                    \"dashes\": false,\n                    \"datasource\": \"\
+    $datasource\",\n                    \"description\": \"How many percent of read\
+    \ requests (LIST,GET) per second are returned with errors (5xx)?\",\n        \
+    \            \"fill\": 1,\n                    \"fillGradient\": 0,\n        \
+    \            \"gridPos\": {\n\n                    },\n                    \"\
+    id\": 7,\n                    \"interval\": \"1m\",\n                    \"legend\"\
+    : {\n                        \"alignAsTable\": true,\n                       \
+    \ \"avg\": false,\n                        \"current\": false,\n             \
+    \           \"max\": false,\n                        \"min\": false,\n       \
+    \                 \"rightSide\": true,\n                        \"show\": true,\n\
+    \                        \"sideWidth\": null,\n                        \"total\"\
+    : false,\n                        \"values\": false\n                    },\n\
+    \                    \"lines\": true,\n                    \"linewidth\": 1,\n\
+    \                    \"links\": [\n\n                    ],\n                \
+    \    \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
+    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
+    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
+    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
+    \                    \"spaceLength\": 10,\n                    \"span\": 3,\n\
+    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
+    \                    \"targets\": [\n                        {\n             \
+    \               \"expr\": \"sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\\\
+    \"read\\\",code=~\\\"5..\\\", cluster=\\\"$cluster\\\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\\\
     \"read\\\", cluster=\\\"$cluster\\\"})\",\n                            \"format\"\
     : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
     \                       \"legendFormat\": \"{{ resource }}\",\n              \
@@ -267,22 +273,23 @@ data:
     : \"How many seconds is the 99th percentile for reading (LIST|GET) a given resource?\"\
     ,\n                    \"fill\": 1,\n                    \"fillGradient\": 0,\n\
     \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 8,\n                    \"legend\": {\n                       \
-    \ \"alignAsTable\": false,\n                        \"avg\": false,\n        \
-    \                \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 3,\n                    \"stack\": false,\n       \
-    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{verb=\\\
+    \      \"id\": 8,\n                    \"interval\": \"1m\",\n               \
+    \     \"legend\": {\n                        \"alignAsTable\": true,\n       \
+    \                 \"avg\": false,\n                        \"current\": false,\n\
+    \                        \"max\": false,\n                        \"min\": false,\n\
+    \                        \"rightSide\": true,\n                        \"show\"\
+    : true,\n                        \"sideWidth\": null,\n                      \
+    \  \"total\": false,\n                        \"values\": false\n            \
+    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
+    : 1,\n                    \"links\": [\n\n                    ],\n           \
+    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
+    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
+    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
+    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
+    \                    \"spaceLength\": 10,\n                    \"span\": 3,\n\
+    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
+    \                    \"targets\": [\n                        {\n             \
+    \               \"expr\": \"cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{verb=\\\
     \"read\\\", cluster=\\\"$cluster\\\"}\",\n                            \"format\"\
     : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
     \                       \"legendFormat\": \"{{ resource }}\",\n              \
@@ -324,8 +331,10 @@ data:
     \           \"show\": false,\n                        \"thresholdLabels\": false,\n\
     \                        \"thresholdMarkers\": true\n                    },\n\
     \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 9,\n                    \"interval\": null,\n                 \
-    \   \"links\": [\n\n                    ],\n                    \"mappingType\"\
+    \      \"id\": 9,\n                    \"interval\": \"1m\",\n               \
+    \     \"legend\": {\n                        \"alignAsTable\": true,\n       \
+    \                 \"rightSide\": true\n                    },\n              \
+    \      \"links\": [\n\n                    ],\n                    \"mappingType\"\
     : 1,\n                    \"mappingTypes\": [\n                        {\n   \
     \                         \"name\": \"value to text\",\n                     \
     \       \"value\": 1\n                        },\n                        {\n\
@@ -364,30 +373,31 @@ data:
     \ per second do the apiservers get by code?\",\n                    \"fill\":\
     \ 10,\n                    \"fillGradient\": 0,\n                    \"gridPos\"\
     : {\n\n                    },\n                    \"id\": 10,\n             \
-    \       \"legend\": {\n                        \"alignAsTable\": false,\n    \
-    \                    \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n                        {\n\
-    \                            \"alias\": \"/2../i\",\n                        \
-    \    \"color\": \"#56A64B\"\n                        },\n                    \
-    \    {\n                            \"alias\": \"/3../i\",\n                 \
-    \           \"color\": \"#F2CC0C\"\n                        },\n             \
-    \           {\n                            \"alias\": \"/4../i\",\n          \
-    \                  \"color\": \"#3274D9\"\n                        },\n      \
-    \                  {\n                            \"alias\": \"/5../i\",\n   \
-    \                         \"color\": \"#E02F44\"\n                        }\n\
-    \                    ],\n                    \"spaceLength\": 10,\n          \
-    \          \"span\": 3,\n                    \"stack\": true,\n              \
-    \      \"steppedLine\": false,\n                    \"targets\": [\n         \
-    \               {\n                            \"expr\": \"sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\\\
+    \       \"interval\": \"1m\",\n                    \"legend\": {\n           \
+    \             \"alignAsTable\": true,\n                        \"avg\": false,\n\
+    \                        \"current\": false,\n                        \"max\"\
+    : false,\n                        \"min\": false,\n                        \"\
+    rightSide\": true,\n                        \"show\": true,\n                \
+    \        \"sideWidth\": null,\n                        \"total\": false,\n   \
+    \                     \"values\": false\n                    },\n            \
+    \        \"lines\": true,\n                    \"linewidth\": 1,\n           \
+    \         \"links\": [\n\n                    ],\n                    \"nullPointMode\"\
+    : \"null\",\n                    \"percentage\": false,\n                    \"\
+    pointradius\": 5,\n                    \"points\": false,\n                  \
+    \  \"renderer\": \"flot\",\n                    \"repeat\": null,\n          \
+    \          \"seriesOverrides\": [\n                        {\n               \
+    \             \"alias\": \"/2../i\",\n                            \"color\": \"\
+    #56A64B\"\n                        },\n                        {\n           \
+    \                 \"alias\": \"/3../i\",\n                            \"color\"\
+    : \"#F2CC0C\"\n                        },\n                        {\n       \
+    \                     \"alias\": \"/4../i\",\n                            \"color\"\
+    : \"#3274D9\"\n                        },\n                        {\n       \
+    \                     \"alias\": \"/5../i\",\n                            \"color\"\
+    : \"#E02F44\"\n                        }\n                    ],\n           \
+    \         \"spaceLength\": 10,\n                    \"span\": 3,\n           \
+    \         \"stack\": true,\n                    \"steppedLine\": false,\n    \
+    \                \"targets\": [\n                        {\n                 \
+    \           \"expr\": \"sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\\\
     \"write\\\", cluster=\\\"$cluster\\\"})\",\n                            \"format\"\
     : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
     \                       \"legendFormat\": \"{{ code }}\",\n                  \
@@ -418,71 +428,72 @@ data:
     : \"How many percent of write requests (POST|PUT|PATCH|DELETE) per second are\
     \ returned with errors (5xx)?\",\n                    \"fill\": 1,\n         \
     \           \"fillGradient\": 0,\n                    \"gridPos\": {\n\n     \
-    \               },\n                    \"id\": 11,\n                    \"legend\"\
-    : {\n                        \"alignAsTable\": false,\n                      \
-    \  \"avg\": false,\n                        \"current\": false,\n            \
-    \            \"max\": false,\n                        \"min\": false,\n      \
-    \                  \"rightSide\": false,\n                        \"show\": true,\n\
-    \                        \"sideWidth\": null,\n                        \"total\"\
-    : false,\n                        \"values\": false\n                    },\n\
-    \                    \"lines\": true,\n                    \"linewidth\": 1,\n\
-    \                    \"links\": [\n\n                    ],\n                \
-    \    \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 3,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\\\
-    \"write\\\",code=~\\\"5..\\\", cluster=\\\"$cluster\\\"}) / sum by (resource)\
-    \ (code_resource:apiserver_request_total:rate5m{verb=\\\"write\\\", cluster=\\\
-    \"$cluster\\\"})\",\n                            \"format\": \"time_series\",\n\
-    \                            \"intervalFactor\": 2,\n                        \
-    \    \"legendFormat\": \"{{ resource }}\",\n                            \"refId\"\
-    : \"A\"\n                        }\n                    ],\n                 \
-    \   \"thresholds\": [\n\n                    ],\n                    \"timeFrom\"\
-    : null,\n                    \"timeShift\": null,\n                    \"title\"\
-    : \"Write SLI - Errors\",\n                    \"tooltip\": {\n              \
-    \          \"shared\": false,\n                        \"sort\": 0,\n        \
-    \                \"value_type\": \"individual\"\n                    },\n    \
-    \                \"type\": \"graph\",\n                    \"xaxis\": {\n    \
-    \                    \"buckets\": null,\n                        \"mode\": \"\
-    time\",\n                        \"name\": null,\n                        \"show\"\
-    : true,\n                        \"values\": [\n\n                        ]\n\
-    \                    },\n                    \"yaxes\": [\n                  \
-    \      {\n                            \"format\": \"percentunit\",\n         \
-    \                   \"label\": null,\n                            \"logBase\"\
-    : 1,\n                            \"max\": null,\n                           \
-    \ \"min\": 0,\n                            \"show\": true\n                  \
-    \      },\n                        {\n                            \"format\":\
-    \ \"percentunit\",\n                            \"label\": null,\n           \
-    \                 \"logBase\": 1,\n                            \"max\": null,\n\
-    \                            \"min\": 0,\n                            \"show\"\
-    : true\n                        }\n                    ]\n                },\n\
-    \                {\n                    \"aliasColors\": {\n\n               \
-    \     },\n                    \"bars\": false,\n                    \"dashLength\"\
-    : 10,\n                    \"dashes\": false,\n                    \"datasource\"\
-    : \"$datasource\",\n                    \"description\": \"How many seconds is\
-    \ the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?\"\
-    ,\n                    \"fill\": 1,\n                    \"fillGradient\": 0,\n\
-    \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 12,\n                    \"legend\": {\n                      \
-    \  \"alignAsTable\": false,\n                        \"avg\": false,\n       \
-    \                 \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    \               },\n                    \"id\": 11,\n                    \"interval\"\
+    : \"1m\",\n                    \"legend\": {\n                        \"alignAsTable\"\
+    : true,\n                        \"avg\": false,\n                        \"current\"\
+    : false,\n                        \"max\": false,\n                        \"\
+    min\": false,\n                        \"rightSide\": true,\n                \
+    \        \"show\": true,\n                        \"sideWidth\": null,\n     \
+    \                   \"total\": false,\n                        \"values\": false\n\
+    \                    },\n                    \"lines\": true,\n              \
+    \      \"linewidth\": 1,\n                    \"links\": [\n\n               \
+    \     ],\n                    \"nullPointMode\": \"null\",\n                 \
+    \   \"percentage\": false,\n                    \"pointradius\": 5,\n        \
+    \            \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
     : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
     \                \"span\": 3,\n                    \"stack\": false,\n       \
     \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{verb=\\\
+    \                      {\n                            \"expr\": \"sum by (resource)\
+    \ (code_resource:apiserver_request_total:rate5m{verb=\\\"write\\\",code=~\\\"\
+    5..\\\", cluster=\\\"$cluster\\\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\\\
+    \"write\\\", cluster=\\\"$cluster\\\"})\",\n                            \"format\"\
+    : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
+    \                       \"legendFormat\": \"{{ resource }}\",\n              \
+    \              \"refId\": \"A\"\n                        }\n                 \
+    \   ],\n                    \"thresholds\": [\n\n                    ],\n    \
+    \                \"timeFrom\": null,\n                    \"timeShift\": null,\n\
+    \                    \"title\": \"Write SLI - Errors\",\n                    \"\
+    tooltip\": {\n                        \"shared\": false,\n                   \
+    \     \"sort\": 0,\n                        \"value_type\": \"individual\"\n \
+    \                   },\n                    \"type\": \"graph\",\n           \
+    \         \"xaxis\": {\n                        \"buckets\": null,\n         \
+    \               \"mode\": \"time\",\n                        \"name\": null,\n\
+    \                        \"show\": true,\n                        \"values\":\
+    \ [\n\n                        ]\n                    },\n                   \
+    \ \"yaxes\": [\n                        {\n                            \"format\"\
+    : \"percentunit\",\n                            \"label\": null,\n           \
+    \                 \"logBase\": 1,\n                            \"max\": null,\n\
+    \                            \"min\": 0,\n                            \"show\"\
+    : true\n                        },\n                        {\n              \
+    \              \"format\": \"percentunit\",\n                            \"label\"\
+    : null,\n                            \"logBase\": 1,\n                       \
+    \     \"max\": null,\n                            \"min\": 0,\n              \
+    \              \"show\": true\n                        }\n                   \
+    \ ]\n                },\n                {\n                    \"aliasColors\"\
+    : {\n\n                    },\n                    \"bars\": false,\n        \
+    \            \"dashLength\": 10,\n                    \"dashes\": false,\n   \
+    \                 \"datasource\": \"$datasource\",\n                    \"description\"\
+    : \"How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE)\
+    \ a given resource?\",\n                    \"fill\": 1,\n                   \
+    \ \"fillGradient\": 0,\n                    \"gridPos\": {\n\n               \
+    \     },\n                    \"id\": 12,\n                    \"interval\": \"\
+    1m\",\n                    \"legend\": {\n                        \"alignAsTable\"\
+    : true,\n                        \"avg\": false,\n                        \"current\"\
+    : false,\n                        \"max\": false,\n                        \"\
+    min\": false,\n                        \"rightSide\": true,\n                \
+    \        \"show\": true,\n                        \"sideWidth\": null,\n     \
+    \                   \"total\": false,\n                        \"values\": false\n\
+    \                    },\n                    \"lines\": true,\n              \
+    \      \"linewidth\": 1,\n                    \"links\": [\n\n               \
+    \     ],\n                    \"nullPointMode\": \"null\",\n                 \
+    \   \"percentage\": false,\n                    \"pointradius\": 5,\n        \
+    \            \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
+    \                \"span\": 3,\n                    \"stack\": false,\n       \
+    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
+    \                      {\n                            \"expr\": \"cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{verb=\\\
     \"write\\\", cluster=\\\"$cluster\\\"}\",\n                            \"format\"\
     : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
     \                       \"legendFormat\": \"{{ resource }}\",\n              \
@@ -516,23 +527,24 @@ data:
     \                    \"dashes\": false,\n                    \"datasource\": \"\
     $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
     : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 13,\n                    \"legend\": {\n                 \
-    \       \"alignAsTable\": false,\n                        \"avg\": false,\n  \
-    \                      \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": false,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    \           \"id\": 13,\n                    \"interval\": \"1m\",\n         \
+    \           \"legend\": {\n                        \"alignAsTable\": true,\n \
+    \                       \"avg\": false,\n                        \"current\":\
+    \ false,\n                        \"max\": false,\n                        \"\
+    min\": false,\n                        \"rightSide\": true,\n                \
+    \        \"show\": false,\n                        \"sideWidth\": null,\n    \
+    \                    \"total\": false,\n                        \"values\": false\n\
+    \                    },\n                    \"lines\": true,\n              \
+    \      \"linewidth\": 1,\n                    \"links\": [\n\n               \
+    \     ],\n                    \"nullPointMode\": \"null\",\n                 \
+    \   \"percentage\": false,\n                    \"pointradius\": 5,\n        \
+    \            \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
     : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
     \                \"span\": 6,\n                    \"stack\": false,\n       \
     \             \"steppedLine\": false,\n                    \"targets\": [\n  \
     \                      {\n                            \"expr\": \"sum(rate(workqueue_adds_total{job=\\\
-    \"apiserver\\\", instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}[5m]))\
+    \"apiserver\\\", instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}[$__rate_interval]))\
     \ by (instance, name)\",\n                            \"format\": \"time_series\"\
     ,\n                            \"intervalFactor\": 2,\n                      \
     \      \"legendFormat\": \"{{instance}} {{name}}\",\n                        \
@@ -561,23 +573,24 @@ data:
     \                    \"dashes\": false,\n                    \"datasource\": \"\
     $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
     : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 14,\n                    \"legend\": {\n                 \
-    \       \"alignAsTable\": false,\n                        \"avg\": false,\n  \
-    \                      \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": false,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    \           \"id\": 14,\n                    \"interval\": \"1m\",\n         \
+    \           \"legend\": {\n                        \"alignAsTable\": true,\n \
+    \                       \"avg\": false,\n                        \"current\":\
+    \ false,\n                        \"max\": false,\n                        \"\
+    min\": false,\n                        \"rightSide\": true,\n                \
+    \        \"show\": false,\n                        \"sideWidth\": null,\n    \
+    \                    \"total\": false,\n                        \"values\": false\n\
+    \                    },\n                    \"lines\": true,\n              \
+    \      \"linewidth\": 1,\n                    \"links\": [\n\n               \
+    \     ],\n                    \"nullPointMode\": \"null\",\n                 \
+    \   \"percentage\": false,\n                    \"pointradius\": 5,\n        \
+    \            \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
     : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
     \                \"span\": 6,\n                    \"stack\": false,\n       \
     \             \"steppedLine\": false,\n                    \"targets\": [\n  \
     \                      {\n                            \"expr\": \"sum(rate(workqueue_depth{job=\\\
-    \"apiserver\\\", instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}[5m]))\
+    \"apiserver\\\", instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}[$__rate_interval]))\
     \ by (instance, name)\",\n                            \"format\": \"time_series\"\
     ,\n                            \"intervalFactor\": 2,\n                      \
     \      \"legendFormat\": \"{{instance}} {{name}}\",\n                        \
@@ -606,26 +619,27 @@ data:
     \                    \"dashes\": false,\n                    \"datasource\": \"\
     $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
     : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 15,\n                    \"legend\": {\n                 \
-    \       \"alignAsTable\": true,\n                        \"avg\": false,\n   \
-    \                     \"current\": true,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : true,\n                        \"show\": true,\n                        \"sideWidth\"\
-    : null,\n                        \"total\": false,\n                        \"\
-    values\": true\n                    },\n                    \"lines\": true,\n\
-    \                    \"linewidth\": 1,\n                    \"links\": [\n\n \
-    \                   ],\n                    \"nullPointMode\": \"null\",\n   \
-    \                 \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    \           \"id\": 15,\n                    \"interval\": \"1m\",\n         \
+    \           \"legend\": {\n                        \"alignAsTable\": true,\n \
+    \                       \"avg\": false,\n                        \"current\":\
+    \ true,\n                        \"max\": false,\n                        \"min\"\
+    : false,\n                        \"rightSide\": true,\n                     \
+    \   \"show\": true,\n                        \"sideWidth\": null,\n          \
+    \              \"total\": false,\n                        \"values\": true\n \
+    \                   },\n                    \"lines\": true,\n               \
+    \     \"linewidth\": 1,\n                    \"links\": [\n\n                \
+    \    ],\n                    \"nullPointMode\": \"null\",\n                  \
+    \  \"percentage\": false,\n                    \"pointradius\": 5,\n         \
+    \           \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
     : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
     \                \"span\": 12,\n                    \"stack\": false,\n      \
     \              \"steppedLine\": false,\n                    \"targets\": [\n \
     \                       {\n                            \"expr\": \"histogram_quantile(0.99,\
     \ sum(rate(workqueue_queue_duration_seconds_bucket{job=\\\"apiserver\\\", instance=~\\\
-    \"$instance\\\", cluster=\\\"$cluster\\\"}[5m])) by (instance, name, le))\",\n\
-    \                            \"format\": \"time_series\",\n                  \
-    \          \"intervalFactor\": 2,\n                            \"legendFormat\"\
+    \"$instance\\\", cluster=\\\"$cluster\\\"}[$__rate_interval])) by (instance, name,\
+    \ le))\",\n                            \"format\": \"time_series\",\n        \
+    \                    \"intervalFactor\": 2,\n                            \"legendFormat\"\
     : \"{{instance}} {{name}}\",\n                            \"refId\": \"A\"\n \
     \                       }\n                    ],\n                    \"thresholds\"\
     : [\n\n                    ],\n                    \"timeFrom\": null,\n     \
@@ -656,18 +670,19 @@ data:
     \                    \"dashes\": false,\n                    \"datasource\": \"\
     $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
     : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 16,\n                    \"legend\": {\n                 \
-    \       \"alignAsTable\": false,\n                        \"avg\": false,\n  \
-    \                      \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    \           \"id\": 16,\n                    \"interval\": \"1m\",\n         \
+    \           \"legend\": {\n                        \"alignAsTable\": true,\n \
+    \                       \"avg\": false,\n                        \"current\":\
+    \ false,\n                        \"max\": false,\n                        \"\
+    min\": false,\n                        \"rightSide\": true,\n                \
+    \        \"show\": true,\n                        \"sideWidth\": null,\n     \
+    \                   \"total\": false,\n                        \"values\": false\n\
+    \                    },\n                    \"lines\": true,\n              \
+    \      \"linewidth\": 1,\n                    \"links\": [\n\n               \
+    \     ],\n                    \"nullPointMode\": \"null\",\n                 \
+    \   \"percentage\": false,\n                    \"pointradius\": 5,\n        \
+    \            \"points\": false,\n                    \"renderer\": \"flot\",\n\
+    \                    \"repeat\": null,\n                    \"seriesOverrides\"\
     : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
     \                \"span\": 4,\n                    \"stack\": false,\n       \
     \             \"steppedLine\": false,\n                    \"targets\": [\n  \
@@ -701,24 +716,25 @@ data:
     \                 \"datasource\": \"$datasource\",\n                    \"fill\"\
     : 1,\n                    \"fillGradient\": 0,\n                    \"gridPos\"\
     : {\n\n                    },\n                    \"id\": 17,\n             \
-    \       \"legend\": {\n                        \"alignAsTable\": false,\n    \
-    \                    \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 4,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"rate(process_cpu_seconds_total{job=\\\"apiserver\\\
-    \",instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}[5m])\",\n          \
-    \                  \"format\": \"time_series\",\n                            \"\
+    \       \"interval\": \"1m\",\n                    \"legend\": {\n           \
+    \             \"alignAsTable\": true,\n                        \"avg\": false,\n\
+    \                        \"current\": false,\n                        \"max\"\
+    : false,\n                        \"min\": false,\n                        \"\
+    rightSide\": true,\n                        \"show\": true,\n                \
+    \        \"sideWidth\": null,\n                        \"total\": false,\n   \
+    \                     \"values\": false\n                    },\n            \
+    \        \"lines\": true,\n                    \"linewidth\": 1,\n           \
+    \         \"links\": [\n\n                    ],\n                    \"nullPointMode\"\
+    : \"null\",\n                    \"percentage\": false,\n                    \"\
+    pointradius\": 5,\n                    \"points\": false,\n                  \
+    \  \"renderer\": \"flot\",\n                    \"repeat\": null,\n          \
+    \          \"seriesOverrides\": [\n\n                    ],\n                \
+    \    \"spaceLength\": 10,\n                    \"span\": 4,\n                \
+    \    \"stack\": false,\n                    \"steppedLine\": false,\n        \
+    \            \"targets\": [\n                        {\n                     \
+    \       \"expr\": \"rate(process_cpu_seconds_total{job=\\\"apiserver\\\",instance=~\\\
+    \"$instance\\\", cluster=\\\"$cluster\\\"}[$__rate_interval])\",\n           \
+    \                 \"format\": \"time_series\",\n                            \"\
     intervalFactor\": 2,\n                            \"legendFormat\": \"{{instance}}\"\
     ,\n                            \"refId\": \"A\"\n                        }\n \
     \                   ],\n                    \"thresholds\": [\n\n            \
@@ -746,88 +762,88 @@ data:
     \       \"datasource\": \"$datasource\",\n                    \"fill\": 1,\n \
     \                   \"fillGradient\": 0,\n                    \"gridPos\": {\n\
     \n                    },\n                    \"id\": 18,\n                  \
-    \  \"legend\": {\n                        \"alignAsTable\": false,\n         \
-    \               \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 4,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"go_goroutines{job=\\\"apiserver\\\",instance=~\\\"\
-    $instance\\\", cluster=\\\"$cluster\\\"}\",\n                            \"format\"\
-    : \"time_series\",\n                            \"intervalFactor\": 2,\n     \
-    \                       \"legendFormat\": \"{{instance}}\",\n                \
-    \            \"refId\": \"A\"\n                        }\n                   \
-    \ ],\n                    \"thresholds\": [\n\n                    ],\n      \
-    \              \"timeFrom\": null,\n                    \"timeShift\": null,\n\
-    \                    \"title\": \"Goroutines\",\n                    \"tooltip\"\
-    : {\n                        \"shared\": false,\n                        \"sort\"\
-    : 0,\n                        \"value_type\": \"individual\"\n               \
-    \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
-    : {\n                        \"buckets\": null,\n                        \"mode\"\
-    : \"time\",\n                        \"name\": null,\n                       \
-    \ \"show\": true,\n                        \"values\": [\n\n                 \
-    \       ]\n                    },\n                    \"yaxes\": [\n        \
-    \                {\n                            \"format\": \"short\",\n     \
-    \                       \"label\": null,\n                            \"logBase\"\
-    : 1,\n                            \"max\": null,\n                           \
-    \ \"min\": null,\n                            \"show\": true\n               \
-    \         },\n                        {\n                            \"format\"\
+    \  \"interval\": \"1m\",\n                    \"legend\": {\n                \
+    \        \"alignAsTable\": true,\n                        \"avg\": false,\n  \
+    \                      \"current\": false,\n                        \"max\": false,\n\
+    \                        \"min\": false,\n                        \"rightSide\"\
+    : true,\n                        \"show\": true,\n                        \"sideWidth\"\
+    : null,\n                        \"total\": false,\n                        \"\
+    values\": false\n                    },\n                    \"lines\": true,\n\
+    \                    \"linewidth\": 1,\n                    \"links\": [\n\n \
+    \                   ],\n                    \"nullPointMode\": \"null\",\n   \
+    \                 \"percentage\": false,\n                    \"pointradius\"\
+    : 5,\n                    \"points\": false,\n                    \"renderer\"\
+    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
+    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
+    \                \"span\": 4,\n                    \"stack\": false,\n       \
+    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
+    \                      {\n                            \"expr\": \"go_goroutines{job=\\\
+    \"apiserver\\\",instance=~\\\"$instance\\\", cluster=\\\"$cluster\\\"}\",\n  \
+    \                          \"format\": \"time_series\",\n                    \
+    \        \"intervalFactor\": 2,\n                            \"legendFormat\"\
+    : \"{{instance}}\",\n                            \"refId\": \"A\"\n          \
+    \              }\n                    ],\n                    \"thresholds\":\
+    \ [\n\n                    ],\n                    \"timeFrom\": null,\n     \
+    \               \"timeShift\": null,\n                    \"title\": \"Goroutines\"\
+    ,\n                    \"tooltip\": {\n                        \"shared\": false,\n\
+    \                        \"sort\": 0,\n                        \"value_type\"\
+    : \"individual\"\n                    },\n                    \"type\": \"graph\"\
+    ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
+    \                        \"mode\": \"time\",\n                        \"name\"\
+    : null,\n                        \"show\": true,\n                        \"values\"\
+    : [\n\n                        ]\n                    },\n                   \
+    \ \"yaxes\": [\n                        {\n                            \"format\"\
     : \"short\",\n                            \"label\": null,\n                 \
     \           \"logBase\": 1,\n                            \"max\": null,\n    \
     \                        \"min\": null,\n                            \"show\"\
-    : true\n                        }\n                    ]\n                }\n\
-    \            ],\n            \"repeat\": null,\n            \"repeatIteration\"\
-    : null,\n            \"repeatRowId\": null,\n            \"showTitle\": false,\n\
-    \            \"title\": \"Dashboard Row\",\n            \"titleSize\": \"h6\"\
-    ,\n            \"type\": \"row\"\n        }\n    ],\n    \"schemaVersion\": 14,\n\
-    \    \"style\": \"dark\",\n    \"tags\": [\n        \"kubernetes-mixin\"\n   \
-    \ ],\n    \"templating\": {\n        \"list\": [\n            {\n            \
-    \    \"current\": {\n                    \"text\": \"default\",\n            \
-    \        \"value\": \"default\"\n                },\n                \"hide\"\
-    : 0,\n                \"label\": null,\n                \"name\": \"datasource\"\
-    ,\n                \"options\": [\n\n                ],\n                \"query\"\
-    : \"prometheus\",\n                \"refresh\": 1,\n                \"regex\"\
-    : \"\",\n                \"type\": \"datasource\"\n            },\n          \
-    \  {\n                \"allValue\": null,\n                \"current\": {\n\n\
-    \                },\n                \"datasource\": \"$datasource\",\n      \
-    \          \"hide\": 2,\n                \"includeAll\": false,\n            \
-    \    \"label\": \"cluster\",\n                \"multi\": false,\n            \
-    \    \"name\": \"cluster\",\n                \"options\": [\n\n              \
-    \  ],\n                \"query\": \"label_values(apiserver_request_total, cluster)\"\
-    ,\n                \"refresh\": 2,\n                \"regex\": \"\",\n       \
-    \         \"sort\": 1,\n                \"tagValuesQuery\": \"\",\n          \
-    \      \"tags\": [\n\n                ],\n                \"tagsQuery\": \"\"\
-    ,\n                \"type\": \"query\",\n                \"useTags\": false\n\
-    \            },\n            {\n                \"allValue\": null,\n        \
-    \        \"current\": {\n\n                },\n                \"datasource\"\
-    : \"$datasource\",\n                \"hide\": 0,\n                \"includeAll\"\
-    : true,\n                \"label\": null,\n                \"multi\": false,\n\
-    \                \"name\": \"instance\",\n                \"options\": [\n\n \
-    \               ],\n                \"query\": \"label_values(apiserver_request_total{job=\\\
-    \"apiserver\\\", cluster=\\\"$cluster\\\"}, instance)\",\n                \"refresh\"\
+    : true\n                        },\n                        {\n              \
+    \              \"format\": \"short\",\n                            \"label\":\
+    \ null,\n                            \"logBase\": 1,\n                       \
+    \     \"max\": null,\n                            \"min\": null,\n           \
+    \                 \"show\": true\n                        }\n                \
+    \    ]\n                }\n            ],\n            \"repeat\": null,\n   \
+    \         \"repeatIteration\": null,\n            \"repeatRowId\": null,\n   \
+    \         \"showTitle\": false,\n            \"title\": \"Dashboard Row\",\n \
+    \           \"titleSize\": \"h6\",\n            \"type\": \"row\"\n        }\n\
+    \    ],\n    \"schemaVersion\": 14,\n    \"style\": \"dark\",\n    \"tags\": [\n\
+    \        \"kubernetes-mixin\"\n    ],\n    \"templating\": {\n        \"list\"\
+    : [\n            {\n                \"current\": {\n                    \"text\"\
+    : \"default\",\n                    \"value\": \"default\"\n                },\n\
+    \                \"hide\": 0,\n                \"label\": \"Data Source\",\n \
+    \               \"name\": \"datasource\",\n                \"options\": [\n\n\
+    \                ],\n                \"query\": \"prometheus\",\n            \
+    \    \"refresh\": 1,\n                \"regex\": \"\",\n                \"type\"\
+    : \"datasource\"\n            },\n            {\n                \"allValue\"\
+    : null,\n                \"current\": {\n\n                },\n              \
+    \  \"datasource\": \"$datasource\",\n                \"hide\": 2,\n          \
+    \      \"includeAll\": false,\n                \"label\": \"cluster\",\n     \
+    \           \"multi\": false,\n                \"name\": \"cluster\",\n      \
+    \          \"options\": [\n\n                ],\n                \"query\": \"\
+    label_values(up{job=\\\"apiserver\\\"}, cluster)\",\n                \"refresh\"\
     : 2,\n                \"regex\": \"\",\n                \"sort\": 1,\n       \
     \         \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n         \
     \       ],\n                \"tagsQuery\": \"\",\n                \"type\": \"\
-    query\",\n                \"useTags\": false\n            }\n        ]\n    },\n\
-    \    \"time\": {\n        \"from\": \"now-1h\",\n        \"to\": \"now\"\n   \
-    \ },\n    \"timepicker\": {\n        \"refresh_intervals\": [\n            \"\
-    5s\",\n            \"10s\",\n            \"30s\",\n            \"1m\",\n     \
-    \       \"5m\",\n            \"15m\",\n            \"30m\",\n            \"1h\"\
-    ,\n            \"2h\",\n            \"1d\"\n        ],\n        \"time_options\"\
-    : [\n            \"5m\",\n            \"15m\",\n            \"1h\",\n        \
-    \    \"6h\",\n            \"12h\",\n            \"24h\",\n            \"2d\",\n\
-    \            \"7d\",\n            \"30d\"\n        ]\n    },\n    \"timezone\"\
-    : \"UTC\",\n    \"title\": \"Kubernetes / API server\",\n    \"uid\": \"09ec8aa1e996d6ffcd6817bbaff4db1b\"\
-    ,\n    \"version\": 0\n}"
+    query\",\n                \"useTags\": false\n            },\n            {\n\
+    \                \"allValue\": null,\n                \"current\": {\n\n     \
+    \           },\n                \"datasource\": \"$datasource\",\n           \
+    \     \"hide\": 0,\n                \"includeAll\": true,\n                \"\
+    label\": null,\n                \"multi\": false,\n                \"name\": \"\
+    instance\",\n                \"options\": [\n\n                ],\n          \
+    \      \"query\": \"label_values(up{job=\\\"apiserver\\\", cluster=\\\"$cluster\\\
+    \"}, instance)\",\n                \"refresh\": 2,\n                \"regex\"\
+    : \"\",\n                \"sort\": 1,\n                \"tagValuesQuery\": \"\"\
+    ,\n                \"tags\": [\n\n                ],\n                \"tagsQuery\"\
+    : \"\",\n                \"type\": \"query\",\n                \"useTags\": false\n\
+    \            }\n        ]\n    },\n    \"time\": {\n        \"from\": \"now-1h\"\
+    ,\n        \"to\": \"now\"\n    },\n    \"timepicker\": {\n        \"refresh_intervals\"\
+    : [\n            \"5s\",\n            \"10s\",\n            \"30s\",\n       \
+    \     \"1m\",\n            \"5m\",\n            \"15m\",\n            \"30m\"\
+    ,\n            \"1h\",\n            \"2h\",\n            \"1d\"\n        ],\n\
+    \        \"time_options\": [\n            \"5m\",\n            \"15m\",\n    \
+    \        \"1h\",\n            \"6h\",\n            \"12h\",\n            \"24h\"\
+    ,\n            \"2d\",\n            \"7d\",\n            \"30d\"\n        ]\n\
+    \    },\n    \"timezone\": \"utc\",\n    \"title\": \"Kubernetes / API server\"\
+    ,\n    \"uid\": \"09ec8aa1e996d6ffcd6817bbaff4db1b\",\n    \"version\": 0\n}"
 kind: ConfigMap
 metadata:
   annotations: {}
@@ -836,8 +852,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 16.0.1
-    chart: kube-prometheus-stack-16.0.1
+    app.kubernetes.io/version: 43.1.1
+    chart: kube-prometheus-stack-43.1.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus
