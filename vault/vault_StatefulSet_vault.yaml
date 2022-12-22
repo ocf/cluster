@@ -137,7 +137,7 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: rook-ceph-block
+      storageClassName: rbd-nvme
   - metadata:
       name: audit
     spec:
@@ -146,4 +146,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: rook-ceph-block
+      storageClassName: rbd-nvme

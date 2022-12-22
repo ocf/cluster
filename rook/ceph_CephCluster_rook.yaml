@@ -16,9 +16,18 @@ spec:
     count: 3
   storage:
     nodes:
-    - name: adenine
-    - name: guanine
-    - name: cytosine
+    - devices: &id001
+      - - config:
+            deviceClass: nvme
+          name: /dev/disk/by-path/pci-0000:02:00.0-nvme-1
+        - config:
+            deviceClass: nvme
+          name: /dev/disk/by-path/pci-0000:41:00.0-nvme-1
+      name: adenine
+    - devices: *id001
+      name: guanine
+    - devices: *id001
+      name: cytosine
     - name: thymine
-    useAllDevices: true
+    useAllDevices: false
     useAllNodes: false

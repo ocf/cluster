@@ -17,7 +17,7 @@ metadata:
   name: prometheus-kube-prometheus-prometheus
   namespace: prometheus
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: prom.ocf.berkeley.edu
     http:
