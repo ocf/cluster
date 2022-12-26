@@ -36,7 +36,7 @@ spec:
         - name: DISCOVER_DAEMON_UDEV_BLACKLIST
           value: ''
         - name: ROOK_ENABLE_DISCOVERY_DAEMON
-          value: 'false'
+          value: 'true'
         - name: ROOK_DISABLE_ADMISSION_CONTROLLER
           value: 'false'
         - name: NODE_NAME
