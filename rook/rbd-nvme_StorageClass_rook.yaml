@@ -4,7 +4,7 @@ kind: StorageClass
 metadata:
   annotations:
     storageclass.kubernetes.io/is-default-class: 'true'
-  name: rook-ceph-block
+  name: rbd-nvme
 parameters:
   clusterID: rook
   csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
@@ -16,6 +16,6 @@ parameters:
   csi.storage.k8s.io/provisioner-secret-namespace: rook
   imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
   imageFormat: '2'
-  pool: replicapool
+  pool: rbd-nvme
 provisioner: rook.rbd.csi.ceph.com
 reclaimPolicy: Delete

@@ -1,11 +1,11 @@
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
-  name: replicapool
+  name: rbd-nvme
   namespace: rook
 spec:
-  deviceClass: ssd
+  deviceClass: nvme
   failureDomain: host
   replicated:
     requireSafeReplicaSize: true
-    size: 2
+    size: 3
