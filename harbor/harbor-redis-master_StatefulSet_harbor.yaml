@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-17.3.11
+    helm.sh/chart: redis-17.3.17
   name: harbor-redis-master
   namespace: harbor
 spec:
@@ -20,15 +20,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 5aa2db40667d8477b4d13a0d1a05872df9bf048a6f42ab6c0f91a4d426f9a073
-        checksum/health: 31277bf220ae9c7ec37bee8aaaf9b5a5419cdf7d39e0cede1e9bbb22f10585d5
-        checksum/scripts: ebb9b038a2527000707b95d55f793c7d65c4a2df73ab3442b6c07fe19ae80ce2
+        checksum/configmap: 451fa368a5b98f6fc8f443981643f1a9199e271b0b55d8f6fab944b3efd26ae6
+        checksum/health: 8cc35d0fed71c4d417f47aab96f553abe40ca15430272c33b3c74e036303c102
+        checksum/scripts: d6350cb0c5965306020466f90ca90b7455c910243d9449db5577a11bc0f0037d
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-17.3.11
+        helm.sh/chart: redis-17.3.17
     spec:
       affinity:
         nodeAffinity: null
@@ -60,7 +60,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.0.5-debian-11-r15
+        image: docker.io/bitnami/redis:7.0.7-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -127,7 +127,6 @@ spec:
       - emptyDir: {}
         name: tmp
   updateStrategy:
-    rollingUpdate: {}
     type: RollingUpdate
   volumeClaimTemplates:
   - metadata:

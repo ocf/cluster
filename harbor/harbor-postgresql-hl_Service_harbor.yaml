@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-12.1.2
+    helm.sh/chart: postgresql-12.1.5
     service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
   name: harbor-postgresql-hl
   namespace: harbor

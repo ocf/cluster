@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.0.4
+    helm.sh/chart: harbor-16.1.2
   name: harbor-chartmuseum
   namespace: harbor
 spec:
