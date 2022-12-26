@@ -21,18 +21,18 @@ spec:
   storage:
     nodes:
     - devices: &id001
-      - - config:
-            deviceClass: nvme
-          name: /dev/disk/by-path/pci-0000:02:00.0-nvme-1
-        - config:
-            deviceClass: nvme
-          name: /dev/disk/by-path/pci-0000:41:00.0-nvme-1
-        - config:
-            deviceClass: hdd
-          name: /dev/disk/by-path/pci-0000:84:00.0-ata-2
-        - config:
-            deviceClass: hdd
-          name: /dev/disk/by-path/pci-0000:84:00.0-ata-3
+      - config:
+          deviceClass: nvme
+        name: /dev/disk/by-path/pci-0000:02:00.0-nvme-1
+      - config:
+          deviceClass: nvme
+        name: /dev/disk/by-path/pci-0000:41:00.0-nvme-1
+      - config:
+          deviceClass: hdd
+        name: /dev/disk/by-path/pci-0000:84:00.0-ata-2
+      - config:
+          deviceClass: hdd
+        name: /dev/disk/by-path/pci-0000:84:00.0-ata-3
       name: adenine
     - devices: *id001
       name: guanine
