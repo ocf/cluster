@@ -1,0 +1,25 @@
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStore
+metadata:
+  name: rgw-hdd
+spec:
+  dataPool:
+    deviceClass: hdd
+    failureDomain: host
+    replicated:
+      size: 3
+  gateway:
+    instances: 1
+    port: 80
+    securePort: 443
+    sslCertificateRef: o3-ocf-crt
+  healthCheck:
+    bucket:
+      disabled: false
+      interval: 120s
+  metadataPool:
+    deviceClass: nvme
+    failureDomain: host
+    replicated:
+      size: 3
+  preservePoolsOnDelete: true

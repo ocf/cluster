@@ -11,10 +11,6 @@ spec:
   dashboard:
     enabled: true
   dataDirHostPath: /var/lib/rook
-  mgr:
-    modules:
-    - enabled: true
-      name: rook
   mon:
     allowMultiplePerNode: false
     count: 3
