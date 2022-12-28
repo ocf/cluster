@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: postgres-operator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgres-operator
+    helm.sh/chart: postgres-operator-1.8.2
+  name: postgres-operator
+  namespace: postgres-operator
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: postgres-operator
+    app.kubernetes.io/name: postgres-operator
+  type: ClusterIP
