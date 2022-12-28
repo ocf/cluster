@@ -19,11 +19,7 @@ spec:
   serviceName: redis-headless
   template:
     metadata:
-      annotations:
-        checksum/configmap: 9c05c1c0e89a8c4136ba7e23c633e7ab1bb33b49d19e7e5c1c6e53b5f274f89d
-        checksum/health: dbfe35a41427d60d1957994c93741123252b605fd6873c57d4b3e51b3b15ac49
-        checksum/scripts: d30e5fa863ba420db841794ad8550d25664f5bf09c039c4aed94ae8ab5e68b9e
-        checksum/secret: b966b8727380bd6bc04a0981ecc4bbfc30e957f728f0ef3cfb7fe9d3256f89f4
+      annotations: []
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: redis

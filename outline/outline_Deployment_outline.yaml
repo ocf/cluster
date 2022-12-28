@@ -27,7 +27,7 @@ spec:
         - secretRef:
             name: outline
         image: docker.io/outlinewiki/outline:0.67.0-pre.1
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         name: deployment
         ports:
         - containerPort: 80
