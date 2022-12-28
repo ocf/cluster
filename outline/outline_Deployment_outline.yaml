@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline
+  template:
+    metadata:
+      labels:
+        app: outline
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - 'yarn '
+        - 'sequelize:migrate '
+        - '--env '
+        - 'production-ssl-disabled '
+        - '&& yarn start'
+        envFrom:
+        - configMapRef:
+            name: outline
+        - secretRef:
+            name: outline
+        image: docker.io/outlinewiki/outline:0.67.0-pre.1
+        imagePullPolicy: Never
+        name: deployment
+        ports:
+        - containerPort: 80

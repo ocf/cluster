@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  AWS_REGION: default
+  AWS_S3_ACL: private
+  AWS_S3_FORCE_PATH_STYLE: 'true'
+  AWS_S3_UPLOAD_BUCKET_NAME: ocf-outline
+  AWS_S3_UPLOAD_BUCKET_URL: https://o3.ocf.io
+  AWS_S3_UPLOAD_MAX_SIZE: '26214400'
+  DEFAULT_LANGUAGE: en_US
+  ENABLE_UPDATES: 'true'
+  FORCE_HTTPS: 'true'
+  OIDC_AUTH_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/auth
+  OIDC_CLIENT_ID: outline
+  OIDC_DISPLAY_NAME: Sign in with OCF
+  OIDC_TOKEN_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/token
+  OIDC_USERINFO_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/userinfo
+  PGSSLMODE: require
+  PORT: '80'
+  SLACK_MESSAGE_ACTIONS: 'true'
+  URL: https://docs.ocf.berkeley.edu
+kind: ConfigMap
+metadata:
+  name: outline
