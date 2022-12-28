@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: o3-ingress
+spec:
+  ingressClassName: cilium
+  rules:
+  - host: o3.ocf.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: rook-ceph-rgw-rgw-hdd
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - o3.ocf.io
+    - o3.ocf.berkeley.edu
+    secretName: o3-ocf-crt
