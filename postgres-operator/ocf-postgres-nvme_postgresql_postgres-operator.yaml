@@ -1,7 +1,7 @@
 apiVersion: acid.zalan.do/v1
 kind: postgresql
 metadata:
-  name: postgres-nvme
+  name: ocf-postgres-nvme
 spec:
   numberOfInstances: 1
   postgresql:

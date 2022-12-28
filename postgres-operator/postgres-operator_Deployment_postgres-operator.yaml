@@ -27,7 +27,7 @@ spec:
       - env:
         - name: POSTGRES_OPERATOR_CONFIGURATION_OBJECT
           value: postgres-operator
-        image: registry.opensource.zalan.do/acid/postgres-operator:v1.8.2
+        image: registry.opensource.zalan.do/acid/postgres-operator:v1.8.2-43-g3e148ea5
         imagePullPolicy: IfNotPresent
         name: postgres-operator
         resources:
