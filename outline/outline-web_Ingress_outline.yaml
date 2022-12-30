@@ -16,8 +16,9 @@ spec:
           service:
             name: outline-web
             port:
-              number: 8080
-        pathType: ImplementationSpecific
+              number: 80
+        path: /
+        pathType: Prefix
   tls:
   - hosts:
     - docs.ocf.berkeley.edu
