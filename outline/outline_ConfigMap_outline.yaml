@@ -15,7 +15,7 @@ data:
   OIDC_TOKEN_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/token
   OIDC_USERINFO_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/userinfo
   PGSSLMODE: require
-  PORT: '80'
+  PORT: '8080'
   SLACK_MESSAGE_ACTIONS: 'true'
   URL: https://docs.ocf.berkeley.edu
 kind: ConfigMap

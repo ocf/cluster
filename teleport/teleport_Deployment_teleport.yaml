@@ -22,7 +22,7 @@ spec:
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
-        image: public.ecr.aws/gravitational/teleport-ent:11.1.1
+        image: public.ecr.aws/gravitational/teleport-ent:11.1.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

@@ -19,7 +19,7 @@ spec:
   serviceName: redis-headless
   template:
     metadata:
-      annotations: []
+      annotations: {}
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: redis
