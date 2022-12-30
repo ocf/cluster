@@ -34,6 +34,7 @@ spec:
       name: guanine
     - devices: *id001
       name: cytosine
-    - name: thymine
+    - devices: *id001
+      name: thymine
     useAllDevices: false
     useAllNodes: false
