@@ -15,6 +15,16 @@ spec:
               number: 80
         path: /
         pathType: Prefix
+  - host: o3.ocf.berkeley.edu
+    http:
+      paths:
+      - backend:
+          service:
+            name: rook-ceph-rgw-rgw-hdd
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
   tls:
   - hosts:
     - o3.ocf.io
