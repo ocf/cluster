@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: knative-operator
+    app.kubernetes.io/part-of: knative-operator
+    app.kubernetes.io/version: 1.8.1
+    operator.knative.dev/release: v1.8.1
+  name: knative-operator
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: knative-operator
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+      labels:
+        app.kubernetes.io/name: knative-operator
+        app.kubernetes.io/part-of: knative-operator
+        app.kubernetes.io/version: 1.8.1
+        name: knative-operator
+    spec:
+      containers:
+      - env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: METRICS_DOMAIN
+          value: knative.dev/operator
+        - name: CONFIG_LOGGING_NAME
+          value: config-logging
+        - name: CONFIG_OBSERVABILITY_NAME
+          value: config-observability
+        image: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256:ca06becf37d0beb0d90a2eabfe0d70256c6b71fd47dd01d07ccac45e1a71927f
+        imagePullPolicy: IfNotPresent
+        name: knative-operator
+        ports:
+        - containerPort: 9090
+          name: metrics
+      serviceAccountName: knative-operator
