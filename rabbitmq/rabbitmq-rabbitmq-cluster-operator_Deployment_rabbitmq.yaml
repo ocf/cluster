@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: rabbitmq-operator
+    app.kubernetes.io/instance: rabbitmq
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    helm.sh/chart: rabbitmq-cluster-operator-3.1.5
+  name: rabbitmq-rabbitmq-cluster-operator
+  namespace: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: rabbitmq-operator
+      app.kubernetes.io/instance: rabbitmq
+      app.kubernetes.io/name: rabbitmq-cluster-operator
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: rabbitmq-operator
+        app.kubernetes.io/instance: rabbitmq
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: rabbitmq-cluster-operator
+        app.kubernetes.io/part-of: rabbitmq
+        helm.sh/chart: rabbitmq-cluster-operator-3.1.5
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: rabbitmq-operator
+                  app.kubernetes.io/instance: rabbitmq
+                  app.kubernetes.io/name: rabbitmq-cluster-operator
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - args:
+        - --metrics-bind-address=:9782
+        command:
+        - /manager
+        env:
+        - name: OPERATOR_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: DEFAULT_RABBITMQ_IMAGE
+          value: docker.io/bitnami/rabbitmq:3.10.13-debian-11-r6
+        - name: DEFAULT_USER_UPDATER_IMAGE
+          value: docker.io/bitnami/rmq-default-credential-updater:1.0.2-scratch-r12
+        envFrom: null
+        image: docker.io/bitnami/rabbitmq-cluster-operator:2.0.0-scratch-r6
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /metrics
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: rabbitmq-cluster-operator
+        ports:
+        - containerPort: 9782
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /metrics
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+      initContainers: null
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: rabbitmq-rabbitmq-cluster-operator

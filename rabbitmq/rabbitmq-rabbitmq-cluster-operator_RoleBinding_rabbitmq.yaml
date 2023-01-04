@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rabbitmq-operator
+    app.kubernetes.io/instance: rabbitmq
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    helm.sh/chart: rabbitmq-cluster-operator-3.1.5
+  name: rabbitmq-rabbitmq-cluster-operator
+  namespace: rabbitmq
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rabbitmq-rabbitmq-cluster-operator
+subjects:
+- kind: ServiceAccount
+  name: rabbitmq-rabbitmq-cluster-operator
+  namespace: rabbitmq
