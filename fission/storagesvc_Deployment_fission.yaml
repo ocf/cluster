@@ -40,15 +40,11 @@ spec:
         - name: PPROF_ENABLED
           value: 'false'
         - name: STORAGE_S3_ENDPOINT
-          value: null
+          value: https://o3.ocf.berkeley.edu
         - name: STORAGE_S3_BUCKET_NAME
           value: ocf-fission
         - name: STORAGE_S3_SUB_DIR
           value: null
-        - name: STORAGE_S3_ACCESS_KEY_ID
-          value: replaced-in-vault
-        - name: STORAGE_S3_SECRET_ACCESS_KEY
-          value: replaced-in-vault
         - name: STORAGE_S3_REGION
           value: default
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
@@ -61,6 +57,16 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
+        - name: STORAGE_S3_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: STORAGE_S3_ACCESS_KEY_ID
+              name: storage-s3-key
+        - name: STORAGE_S3_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: STORAGE_S3_SECRET_ACCESS_KEY
+              name: storage-s3-key
         image: index.docker.io/fission/fission-bundle:v1.17.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
