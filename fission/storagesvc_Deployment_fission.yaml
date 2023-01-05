@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: fission-storage
+    chart: fission-all-v1.17.0
+    svc: storagesvc
+  name: storagesvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: fission-storage
+      svc: storagesvc
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+      labels:
+        application: fission-storage
+        svc: storagesvc
+    spec:
+      containers:
+      - args:
+        - --storageServicePort
+        - '8000'
+        - --storageType
+        - s3
+        command:
+        - /fission-bundle
+        env:
+        - name: PRUNE_ENABLED
+          value: 'true'
+        - name: PRUNE_INTERVAL
+          value: '60'
+        - name: DEBUG_ENV
+          value: 'false'
+        - name: PPROF_ENABLED
+          value: 'false'
+        - name: STORAGE_S3_ENDPOINT
+          value: null
+        - name: STORAGE_S3_BUCKET_NAME
+          value: ocf-fission
+        - name: STORAGE_S3_SUB_DIR
+          value: null
+        - name: STORAGE_S3_ACCESS_KEY_ID
+          value: replaced-in-vault
+        - name: STORAGE_S3_SECRET_ACCESS_KEY
+          value: replaced-in-vault
+        - name: STORAGE_S3_REGION
+          value: default
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: ''
+        - name: OTEL_EXPORTER_OTLP_INSECURE
+          value: 'true'
+        - name: OTEL_TRACES_SAMPLER
+          value: parentbased_traceidratio
+        - name: OTEL_TRACES_SAMPLER_ARG
+          value: '0.1'
+        - name: OTEL_PROPAGATORS
+          value: tracecontext,baggage
+        image: index.docker.io/fission/fission-bundle:v1.17.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 35
+          periodSeconds: 5
+        name: storagesvc
+        ports:
+        - containerPort: 8080
+          name: metrics
+        - containerPort: 8000
+          name: http
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 1
+          periodSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      serviceAccountName: fission-svc
+      volumes:
+      - emptyDir: {}
+        name: fission-storage

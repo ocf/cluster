@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    chart: fission-all-v1.17.0
+    svc: buildermgr
+  name: buildermgr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      svc: buildermgr
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+      labels:
+        svc: buildermgr
+    spec:
+      containers:
+      - args:
+        - --builderMgr
+        - --storageSvcUrl
+        - http://storagesvc.fission
+        - --envbuilder-namespace
+        - fission-builder
+        command:
+        - /fission-bundle
+        env:
+        - name: FETCHER_IMAGE
+          value: fission/fetcher:v1.17.0
+        - name: FETCHER_IMAGE_PULL_POLICY
+          value: IfNotPresent
+        - name: BUILDER_IMAGE_PULL_POLICY
+          value: IfNotPresent
+        - name: ENABLE_ISTIO
+          value: 'false'
+        - name: FETCHER_MINCPU
+          value: 10m
+        - name: FETCHER_MINMEM
+          value: 16Mi
+        - name: FETCHER_MAXCPU
+          value: ''
+        - name: FETCHER_MAXMEM
+          value: ''
+        - name: DEBUG_ENV
+          value: 'false'
+        - name: PPROF_ENABLED
+          value: 'false'
+        - name: HELM_RELEASE_NAME
+          value: fission
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: ''
+        - name: OTEL_EXPORTER_OTLP_INSECURE
+          value: 'true'
+        - name: OTEL_TRACES_SAMPLER
+          value: parentbased_traceidratio
+        - name: OTEL_TRACES_SAMPLER_ARG
+          value: '0.1'
+        - name: OTEL_PROPAGATORS
+          value: tracecontext,baggage
+        image: index.docker.io/fission/fission-bundle:v1.17.0
+        imagePullPolicy: IfNotPresent
+        name: buildermgr
+        ports:
+        - containerPort: 8080
+          name: metrics
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      serviceAccountName: fission-svc

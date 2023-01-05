@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations: {}
+  labels:
+    app: keda-operator-metrics-apiserver
+    app.kubernetes.io/component: operator
+    app.kubernetes.io/instance: keda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keda-operator-metrics-apiserver
+    app.kubernetes.io/part-of: keda-operator
+    app.kubernetes.io/version: 2.9.1
+    helm.sh/chart: keda-2.9.1
+  name: keda-operator-metrics-apiserver
+  namespace: keda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keda-operator-metrics-apiserver
+  template:
+    metadata:
+      annotations: null
+      labels:
+        app: keda-operator-metrics-apiserver
+        app.kubernetes.io/component: operator
+        app.kubernetes.io/instance: keda
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: keda-operator-metrics-apiserver
+        app.kubernetes.io/part-of: keda-operator
+        app.kubernetes.io/version: 2.9.1
+        helm.sh/chart: keda-2.9.1
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - /usr/local/bin/keda-adapter
+        - --port=8080
+        - --secure-port=6443
+        - --logtostderr=true
+        - --metrics-service-address=keda-operator.keda.svc.cluster.local:9666
+        - --metrics-port=9022
+        - --metrics-path=/metrics
+        - --v=0
+        env:
+        - name: WATCH_NAMESPACE
+          value: ''
+        - name: KEDA_HTTP_DEFAULT_TIMEOUT
+          value: '3000'
+        image: ghcr.io/kedacore/keda-metrics-apiserver:2.9.1
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 6443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+        name: keda-operator-metrics-apiserver
+        ports:
+        - containerPort: 6443
+          name: https
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9022
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 6443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+        resources:
+          limits:
+            cpu: 1
+            memory: 1000Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts: null
+      dnsPolicy: ClusterFirst
+      hostNetwork: false
+      nodeSelector:
+        kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: keda-operator
+      volumes: null

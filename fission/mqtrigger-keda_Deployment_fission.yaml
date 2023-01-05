@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    chart: fission-all-v1.17.0
+    messagequeue: keda
+    svc: mqtrigger-keda
+  name: mqtrigger-keda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      messagequeue: keda
+      svc: mqtrigger-keda
+  template:
+    metadata:
+      labels:
+        messagequeue: keda
+        svc: mqtrigger-keda
+    spec:
+      containers:
+      - args:
+        - --mqt_keda
+        - --routerUrl
+        - http://router.fission
+        command:
+        - /fission-bundle
+        env:
+        - name: DEBUG_ENV
+          value: 'false'
+        - name: CONNECTOR_IMAGE_PULL_POLICY
+          value: IfNotPresent
+        - name: KAFKA_IMAGE
+          value: fission/keda-kafka-http-connector:v0.11
+        - name: RABBITMQ_IMAGE
+          value: fission/keda-rabbitmq-http-connector:v0.10
+        - name: AWS-KINESIS-STREAM_IMAGE
+          value: fission/keda-aws-kinesis-http-connector:v0.10
+        - name: AWS-SQS-QUEUE_IMAGE
+          value: fission/keda-aws-sqs-http-connector:v0.10
+        - name: STAN_IMAGE
+          value: fission/keda-nats-streaming-http-connector:v0.12
+        - name: NATS-JETSTREAM_IMAGE
+          value: fission/keda-nats-jetstream-http-connector:v0.2
+        - name: GCP-PUBSUB_IMAGE
+          value: fission/keda-gcp-pubsub-http-connector:v0.5
+        - name: REDIS_IMAGE
+          value: fission/keda-redis-http-connector:v0.3
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: ''
+        - name: OTEL_EXPORTER_OTLP_INSECURE
+          value: 'true'
+        - name: OTEL_TRACES_SAMPLER
+          value: parentbased_traceidratio
+        - name: OTEL_TRACES_SAMPLER_ARG
+          value: '0.1'
+        - name: OTEL_PROPAGATORS
+          value: tracecontext,baggage
+        image: index.docker.io/fission/fission-bundle:v1.17.0
+        imagePullPolicy: IfNotPresent
+        name: mqtrigger-keda
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      serviceAccountName: fission-svc

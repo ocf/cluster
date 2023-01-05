@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fission-fission-cr-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: fission-fission-cr-admin
+subjects:
+- kind: ServiceAccount
+  name: fission-svc
+  namespace: fission
