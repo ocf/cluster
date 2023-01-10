@@ -10,9 +10,11 @@ metadata:
 spec:
   ports:
   - name: http
+    nodePort: null
     port: 80
     protocol: TCP
   - name: https
+    nodePort: null
     port: 443
     protocol: TCP
   type: LoadBalancer

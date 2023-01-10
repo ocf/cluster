@@ -46,7 +46,7 @@ spec:
         - name: STORAGE_S3_SUB_DIR
           value: null
         - name: STORAGE_S3_REGION
-          value: default
+          value: null
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: ''
         - name: OTEL_EXPORTER_OTLP_INSECURE

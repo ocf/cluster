@@ -3,15 +3,14 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/part-of: cilium
-  name: cilium-operator-ingress-secrets
-  namespace: cilium-secrets
+  name: cilium-config-agent
+  namespace: cilium
 rules:
 - apiGroups:
   - ''
   resources:
-  - secrets
+  - configmaps
   verbs:
-  - create
-  - delete
-  - update
-  - patch
+  - get
+  - list
+  - watch

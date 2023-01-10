@@ -24,8 +24,6 @@ spec:
             - --hubble-server-cert-generate
             - --hubble-server-cert-common-name=*.default.hubble-grpc.cilium.io
             - --hubble-server-cert-validity-duration=94608000s
-            - --hubble-relay-client-cert-generate
-            - --hubble-relay-client-cert-validity-duration=94608000s
             command:
             - /usr/bin/cilium-certgen
             image: quay.io/cilium/certgen:v0.1.8@sha256:4a456552a5f192992a6edcec2febb1c54870d665173a33dc7d876129b199ddbd

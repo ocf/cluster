@@ -62,7 +62,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/operator-generic:v1.13.0-rc3
+        image: quay.io/cilium/operator-generic-ci@sha256:a26bcd90fb3b665009aedb551d6efa14e543290441f7402444cad10595ae4a45
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
