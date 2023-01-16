@@ -1,8 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels:
-    app.kubernetes.io/part-of: cilium
   name: cilium-operator
 rules:
 - apiGroups:
@@ -42,12 +40,10 @@ rules:
   - services/status
   verbs:
   - update
-  - patch
 - apiGroups:
   - ''
   resources:
   - namespaces
-  - secrets
   verbs:
   - get
   - list
@@ -61,10 +57,6 @@ rules:
   - get
   - list
   - watch
-  - create
-  - update
-  - delete
-  - patch
 - apiGroups:
   - cilium.io
   resources:
@@ -130,7 +122,6 @@ rules:
   - list
   - watch
   - delete
-  - patch
 - apiGroups:
   - apiextensions.k8s.io
   resources:
@@ -143,11 +134,12 @@ rules:
 - apiGroups:
   - apiextensions.k8s.io
   resourceNames:
-  - ciliumloadbalancerippools.cilium.io
+  - ciliumbgploadbalancerippools.cilium.io
   - ciliumbgppeeringpolicies.cilium.io
   - ciliumclusterwideenvoyconfigs.cilium.io
   - ciliumclusterwidenetworkpolicies.cilium.io
   - ciliumegressgatewaypolicies.cilium.io
+  - ciliumegressnatpolicies.cilium.io
   - ciliumendpoints.cilium.io
   - ciliumendpointslices.cilium.io
   - ciliumenvoyconfigs.cilium.io
@@ -161,38 +153,10 @@ rules:
   verbs:
   - update
 - apiGroups:
-  - cilium.io
-  resources:
-  - ciliumloadbalancerippools
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - cilium.io
-  resources:
-  - ciliumloadbalancerippools/status
-  verbs:
-  - patch
-- apiGroups:
   - coordination.k8s.io
   resources:
   - leases
   verbs:
   - create
   - get
-  - update
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - ingresses
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - ingresses/status
-  verbs:
   - update

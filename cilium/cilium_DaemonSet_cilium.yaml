@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app.kubernetes.io/name: cilium-agent
-    app.kubernetes.io/part-of: cilium
     k8s-app: cilium
   name: cilium
   namespace: cilium
@@ -19,8 +17,6 @@ spec:
         container.apparmor.security.beta.kubernetes.io/clean-cilium-state: unconfined
         container.apparmor.security.beta.kubernetes.io/mount-cgroup: unconfined
       labels:
-        app.kubernetes.io/name: cilium-agent
-        app.kubernetes.io/part-of: cilium
         k8s-app: cilium
     spec:
       affinity:
@@ -64,7 +60,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
+        image: quay.io/cilium/cilium:v1.12.5@sha256:06ce2b0a0a472e73334a7504ee5c5d8b2e2d7b72ef728ad94e564740dd505be5
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
@@ -155,6 +151,9 @@ spec:
         - mountPath: /var/lib/cilium/clustermesh
           name: clustermesh-secrets
           readOnly: true
+        - mountPath: /tmp/cilium/config-map
+          name: cilium-config-path
+          readOnly: true
         - mountPath: /lib/modules
           name: lib-modules
           readOnly: true
@@ -163,35 +162,8 @@ spec:
         - mountPath: /var/lib/cilium/tls/hubble
           name: hubble-tls
           readOnly: true
-        - mountPath: /tmp
-          name: tmp
       hostNetwork: true
       initContainers:
-      - command:
-        - cilium
-        - build-config
-        env:
-        - name: K8S_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: CILIUM_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: KUBERNETES_SERVICE_HOST
-          value: dna.ocf.io
-        - name: KUBERNETES_SERVICE_PORT
-          value: '6443'
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
-        imagePullPolicy: IfNotPresent
-        name: config
-        terminationMessagePolicy: FallbackToLogsOnError
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp
       - command:
         - sh
         - -ec
@@ -208,7 +180,7 @@ spec:
           value: /run/cilium/cgroupv2
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
+        image: quay.io/cilium/cilium:v1.12.5@sha256:06ce2b0a0a472e73334a7504ee5c5d8b2e2d7b72ef728ad94e564740dd505be5
         imagePullPolicy: IfNotPresent
         name: mount-cgroup
         securityContext:
@@ -241,7 +213,7 @@ spec:
         env:
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
+        image: quay.io/cilium/cilium:v1.12.5@sha256:06ce2b0a0a472e73334a7504ee5c5d8b2e2d7b72ef728ad94e564740dd505be5
         imagePullPolicy: IfNotPresent
         name: apply-sysctl-overwrites
         securityContext:
@@ -267,7 +239,7 @@ spec:
         - /bin/bash
         - -c
         - --
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
+        image: quay.io/cilium/cilium:v1.12.5@sha256:06ce2b0a0a472e73334a7504ee5c5d8b2e2d7b72ef728ad94e564740dd505be5
         imagePullPolicy: IfNotPresent
         name: mount-bpf-fs
         securityContext:
@@ -296,7 +268,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium-ci:0d91314f403cb906426bd6c13a1e5e0839be7df8@sha256:f217be397d00865f0c61964ea9be944294b9e8baaf0126185ff940b1433bb510
+        image: quay.io/cilium/cilium:v1.12.5@sha256:06ce2b0a0a472e73334a7504ee5c5d8b2e2d7b72ef728ad94e564740dd505be5
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -334,8 +306,6 @@ spec:
       tolerations:
       - operator: Exists
       volumes:
-      - emptyDir: {}
-        name: tmp
       - hostPath:
           path: /var/run/cilium
           type: DirectoryOrCreate
@@ -372,6 +342,9 @@ spec:
           defaultMode: 256
           optional: true
           secretName: cilium-clustermesh
+      - configMap:
+          name: cilium-config
+        name: cilium-config-path
       - hostPath:
           path: /proc/sys/net
           type: Directory

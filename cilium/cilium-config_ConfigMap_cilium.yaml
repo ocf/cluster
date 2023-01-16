@@ -26,16 +26,12 @@ data:
   enable-bpf-clock-probe: 'true'
   enable-bpf-masquerade: 'true'
   enable-endpoint-health-checking: 'true'
-  enable-envoy-config: 'true'
   enable-health-check-nodeport: 'true'
   enable-health-checking: 'true'
   enable-hubble: 'true'
-  enable-ingress-controller: 'true'
-  enable-ingress-secrets-sync: 'true'
   enable-ipv4: 'true'
   enable-ipv4-masquerade: 'true'
   enable-ipv6: 'true'
-  enable-ipv6-big-tcp: 'false'
   enable-ipv6-masquerade: 'false'
   enable-k8s-terminating-endpoint: 'true'
   enable-l2-neigh-discovery: 'true'
@@ -43,12 +39,10 @@ data:
   enable-local-redirect-policy: 'false'
   enable-policy: default
   enable-remote-node-identity: 'true'
-  enable-sctp: 'false'
   enable-svc-source-range-check: 'true'
   enable-vtep: 'false'
   enable-well-known-identities: 'false'
   enable-xt-socket-fallback: 'true'
-  enforce-ingress-https: 'true'
   hubble-disable-tls: 'false'
   hubble-listen-address: :4244
   hubble-socket-path: /var/run/cilium/hubble.sock
@@ -56,13 +50,6 @@ data:
   hubble-tls-client-ca-files: /var/lib/cilium/tls/hubble/client-ca.crt
   hubble-tls-key-file: /var/lib/cilium/tls/hubble/server.key
   identity-allocation-mode: crd
-  identity-gc-interval: 15m0s
-  identity-heartbeat-timeout: 30m0s
-  ingress-default-lb-mode: shared
-  ingress-lb-annotation-prefixes: service.beta.kubernetes.io service.kubernetes.io
-    metallb.universe.tf
-  ingress-secrets-namespace: cilium-secrets
-  ingress-shared-lb-service-name: cilium-ingress
   install-iptables-rules: 'true'
   install-no-conntrack-iptables-rules: 'false'
   ipam: cluster-pool
