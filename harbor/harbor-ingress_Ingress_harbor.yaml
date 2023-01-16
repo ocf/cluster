@@ -16,7 +16,7 @@ metadata:
   name: harbor-ingress
   namespace: harbor
 spec:
-  ingressClassName: cilium
+  ingressClassName: contour
   rules:
   - host: harbor.ocf.berkeley.edu
     http:

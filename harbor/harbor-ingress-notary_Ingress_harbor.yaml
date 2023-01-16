@@ -16,7 +16,7 @@ metadata:
   name: harbor-ingress-notary
   namespace: harbor
 spec:
-  ingressClassName: cilium
+  ingressClassName: contour
   rules:
   - host: harbor-notary.ocf.berkeley.edu
     http:

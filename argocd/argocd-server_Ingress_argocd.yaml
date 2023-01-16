@@ -10,7 +10,7 @@ metadata:
     helm.sh/chart: argo-cd-5.16.1
   name: argocd-server
 spec:
-  ingressClassName: cilium
+  ingressClassName: contour
   rules:
   - host: argo.ocf.berkeley.edu
     http:

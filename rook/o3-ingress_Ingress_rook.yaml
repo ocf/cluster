@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: o3-ingress
 spec:
-  ingressClassName: cilium
+  ingressClassName: contour
   rules:
   - host: o3.ocf.io
     http:
