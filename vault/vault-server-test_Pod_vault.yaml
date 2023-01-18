@@ -23,4 +23,7 @@ spec:
     name: vault-server-test
     volumeMounts: null
   restartPolicy: Never
-  volumes: null
+  volumes:
+  - configMap:
+      name: ocf-rootca
+    name: ocf-rootca

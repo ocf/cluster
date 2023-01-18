@@ -113,6 +113,18 @@ spec:
         - mountPath: /home/vault
           name: home
       hostNetwork: false
+      initContainers:
+      - args:
+        - apk --no-cache add ca-certificates && cp /mnt/ocf-rootca/root.crt /usr/local/share/ca-certificates
+          && update-ca-certificates
+        command:
+        - sh
+        - -c
+        image: docker.io/library/alpine:latest
+        name: rootcert
+        volumeMounts:
+        - mountPath: /mnt/ocf-rootca
+          name: ocf-rootca
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
@@ -124,6 +136,9 @@ spec:
       - configMap:
           name: vault-config
         name: config
+      - configMap:
+          name: ocf-rootca
+        name: ocf-rootca
       - emptyDir: {}
         name: home
   updateStrategy:
