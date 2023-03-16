@@ -2,9 +2,11 @@ apiVersion: v1
 data:
   agent-not-ready-taint-key: node.cilium.io/agent-not-ready
   arping-refresh-period: 30s
-  auto-direct-node-routes: 'false'
+  auto-direct-node-routes: 'true'
+  bpf-lb-acceleration: native
   bpf-lb-external-clusterip: 'false'
   bpf-lb-map-max: '65536'
+  bpf-lb-mode: hybrid
   bpf-lb-sock: 'false'
   bpf-map-dynamic-size-ratio: '0.0025'
   bpf-policy-map-max: '16384'
@@ -13,10 +15,6 @@ data:
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: '0'
   cluster-name: default
-  cluster-pool-ipv4-cidr: 10.244.0.0/16
-  cluster-pool-ipv4-mask-size: '24'
-  cluster-pool-ipv6-cidr: 2607:f140:8801:1::/112
-  cluster-pool-ipv6-mask-size: '120'
   custom-cni-conf: 'false'
   debug: 'false'
   disable-cnp-status-updates: 'true'
@@ -24,15 +22,15 @@ data:
   enable-auto-protect-node-port-range: 'true'
   enable-bgp-control-plane: 'false'
   enable-bpf-clock-probe: 'true'
-  enable-bpf-masquerade: 'true'
   enable-endpoint-health-checking: 'true'
+  enable-endpoint-routes: 'true'
   enable-health-check-nodeport: 'true'
   enable-health-checking: 'true'
   enable-hubble: 'true'
   enable-ipv4: 'true'
   enable-ipv4-masquerade: 'true'
   enable-ipv6: 'true'
-  enable-ipv6-masquerade: 'false'
+  enable-ipv6-masquerade: 'true'
   enable-k8s-terminating-endpoint: 'true'
   enable-l2-neigh-discovery: 'true'
   enable-l7-proxy: 'true'
@@ -52,7 +50,9 @@ data:
   identity-allocation-mode: crd
   install-iptables-rules: 'true'
   install-no-conntrack-iptables-rules: 'false'
-  ipam: cluster-pool
+  ipam: kubernetes
+  ipv4-native-routing-cidr: 10.244.0.0/16
+  ipv6-native-routing-cidr: 2607:f140:8801:1::/112
   k8s-require-ipv4-pod-cidr: 'true'
   k8s-require-ipv6-pod-cidr: 'true'
   kube-proxy-replacement: strict
@@ -77,7 +77,7 @@ data:
   tofqdns-max-deferred-connection-deletes: '10000'
   tofqdns-min-ttl: '3600'
   tofqdns-proxy-response-max-delay: 100ms
-  tunnel: vxlan
+  tunnel: disabled
   unmanaged-pod-watcher-interval: '15'
   vtep-cidr: ''
   vtep-endpoint: ''

@@ -1,5 +1,5 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: auth
@@ -9,11 +9,19 @@ metadata:
     app.kubernetes.io/version: 12.1.1
     helm.sh/chart: teleport-cluster-12.1.1
     teleport.dev/majorVersion: '12'
-  name: teleport
+  name: teleport-auth
   namespace: teleport
 spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
+  ports:
+  - name: auth
+    port: 3025
+    protocol: TCP
+    targetPort: 3025
+  - name: kube
+    port: 3026
+    protocol: TCP
+    targetPort: 3026
+  selector:
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/name: teleport-cluster

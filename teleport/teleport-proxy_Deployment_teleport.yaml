@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: teleport-cluster
+    app.kubernetes.io/version: 12.1.1
+    helm.sh/chart: teleport-cluster-12.1.1
+    teleport.dev/majorVersion: '12'
+  name: teleport-proxy
+  namespace: teleport
+spec:
+  minReadySeconds: 15
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/instance: teleport
+      app.kubernetes.io/name: teleport-cluster
+  template:
+    metadata:
+      annotations:
+        checksum/config: 352734907bf0555e6f3eaa3320cb1b7615c265cbb96d27fdbeb9c37223bed08f
+      labels:
+        app.kubernetes.io/component: proxy
+        app.kubernetes.io/instance: teleport
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: teleport-cluster
+        app.kubernetes.io/version: 12.1.1
+        helm.sh/chart: teleport-cluster-12.1.1
+        teleport.dev/majorVersion: '12'
+    spec:
+      affinity:
+        podAntiAffinity: null
+      containers:
+      - args:
+        - --diag-addr=0.0.0.0:3000
+        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - teleport
+              - wait
+              - duration
+              - 30s
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /healthz
+            port: diag
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+        name: teleport
+        ports:
+        - containerPort: 3080
+          name: tls
+          protocol: TCP
+        - containerPort: 3021
+          name: proxypeering
+          protocol: TCP
+        - containerPort: 3023
+          name: sshproxy
+          protocol: TCP
+        - containerPort: 3024
+          name: sshtun
+          protocol: TCP
+        - containerPort: 3026
+          name: kube
+          protocol: TCP
+        - containerPort: 3036
+          name: mysql
+          protocol: TCP
+        - containerPort: 3000
+          name: diag
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 12
+          httpGet:
+            path: /readyz
+            port: diag
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /etc/teleport-tls
+          name: teleport-tls
+          readOnly: true
+        - mountPath: /etc/teleport
+          name: config
+          readOnly: true
+        - mountPath: /var/lib/teleport
+          name: data
+      initContainers:
+      - command:
+        - teleport
+        - wait
+        - no-resolve
+        - teleport-auth-v11.teleport.svc.cluster.local
+        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        name: wait-auth-update
+      serviceAccountName: teleport-proxy
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: teleport-tls
+        secret:
+          secretName: teleport-tls
+      - configMap:
+          name: teleport-proxy
+        name: config
+      - emptyDir: {}
+        name: data

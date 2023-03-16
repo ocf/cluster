@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-weight: '5'
+  labels:
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: teleport-cluster
+    app.kubernetes.io/version: 12.1.1
+    helm.sh/chart: teleport-cluster-12.1.1
+    teleport.dev/majorVersion: '12'
+  name: teleport-proxy-test
+  namespace: teleport
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      containers:
+      - args:
+        - --test
+        - /etc/teleport/teleport.yaml
+        command:
+        - teleport
+        - configure
+        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        imagePullPolicy: IfNotPresent
+        name: teleport
+        volumeMounts:
+        - mountPath: /etc/teleport-tls
+          name: teleport-tls
+          readOnly: true
+        - mountPath: /etc/teleport
+          name: config
+          readOnly: true
+        - mountPath: /var/lib/teleport
+          name: data
+      restartPolicy: Never
+      volumes:
+      - name: teleport-tls
+        secret:
+          optional: true
+          secretName: teleport-tls
+      - configMap:
+          name: teleport-proxy-test
+        name: config
+      - emptyDir: {}
+        name: data
