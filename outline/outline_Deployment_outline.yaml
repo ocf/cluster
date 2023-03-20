@@ -3,11 +3,6 @@ kind: Deployment
 metadata:
   name: outline
 spec:
-  containers:
-  - command:
-    - sh
-    - -c
-    - yarn sequelize:migrate && yarn start
   replicas: 1
   selector:
     matchLabels:
@@ -18,11 +13,13 @@ spec:
         transpire.ocf.io/deployment: outline
     spec:
       containers:
-      - env: []
+      - command:
+        - sh
+        - -c
+        - yarn sequelize:migrate && yarn start
+        env: []
         envFrom:
         - configMapRef:
-            name: outline
-        - secretRef:
             name: outline
         image: docker.io/outlinewiki/outline:0.67.2
         imagePullPolicy: IfNotPresent

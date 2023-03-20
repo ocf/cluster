@@ -44,9 +44,7 @@ spec:
     runAsUser: 1000
   serviceAccountName: prometheus-kube-prometheus-prometheus
   serviceMonitorNamespaceSelector: {}
-  serviceMonitorSelector:
-    matchLabels:
-      release: prometheus
+  serviceMonitorSelector: {}
   shards: 1
   version: v2.40.5
   walCompression: true
