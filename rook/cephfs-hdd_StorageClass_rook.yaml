@@ -12,5 +12,5 @@ parameters:
   csi.storage.k8s.io/provisioner-secret-namespace: rook
   fsName: cephfs-hybrid
   pool: cephfs-hybrid-hdd
-provisioner: rook-ceph.cephfs.csi.ceph.com
+provisioner: rook.cephfs.csi.ceph.com
 reclaimPolicy: Delete
