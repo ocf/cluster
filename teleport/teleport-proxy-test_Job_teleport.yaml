@@ -3,14 +3,14 @@ kind: Job
 metadata:
   annotations:
     helm.sh/hook: pre-install,pre-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
     helm.sh/hook-weight: '5'
   labels:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 12.1.1
-    helm.sh/chart: teleport-cluster-12.1.1
+    app.kubernetes.io/version: 12.2.3
+    helm.sh/chart: teleport-cluster-12.2.3
     teleport.dev/majorVersion: '12'
   name: teleport-proxy-test
   namespace: teleport
@@ -25,7 +25,7 @@ spec:
         command:
         - teleport
         - configure
-        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
         imagePullPolicy: IfNotPresent
         name: teleport
         volumeMounts:

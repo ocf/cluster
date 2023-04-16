@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 12.1.1
-    helm.sh/chart: teleport-cluster-12.1.1
+    app.kubernetes.io/version: 12.2.3
+    helm.sh/chart: teleport-cluster-12.2.3
     teleport.dev/majorVersion: '12'
   name: teleport-proxy
   namespace: teleport
@@ -28,8 +28,8 @@ spec:
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 12.1.1
-        helm.sh/chart: teleport-cluster-12.1.1
+        app.kubernetes.io/version: 12.2.3
+        helm.sh/chart: teleport-cluster-12.2.3
         teleport.dev/majorVersion: '12'
     spec:
       affinity:
@@ -37,7 +37,7 @@ spec:
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
-        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -101,7 +101,7 @@ spec:
         - wait
         - no-resolve
         - teleport-auth-v11.teleport.svc.cluster.local
-        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
         name: wait-auth-update
       serviceAccountName: teleport-proxy
       terminationGracePeriodSeconds: 60

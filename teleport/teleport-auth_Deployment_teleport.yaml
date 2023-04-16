@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 12.1.1
-    helm.sh/chart: teleport-cluster-12.1.1
+    app.kubernetes.io/version: 12.2.3
+    helm.sh/chart: teleport-cluster-12.2.3
     teleport.dev/majorVersion: '12'
   name: teleport-auth
   namespace: teleport
@@ -24,15 +24,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0bd3468ff713b4857b76848b50c35f9cd2bbefc15def23fcd622f6b7d5498094
+        checksum/config: 8b7ef62e31839ca6c50250bd23162f34ef756cd69133a421701dbd627da104cc
       labels:
         app: teleport
         app.kubernetes.io/component: auth
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 12.1.1
-        helm.sh/chart: teleport-cluster-12.1.1
+        app.kubernetes.io/version: 12.2.3
+        helm.sh/chart: teleport-cluster-12.2.3
         teleport.dev/majorVersion: '12'
     spec:
       affinity:
@@ -41,7 +41,7 @@ spec:
       - args:
         - --diag-addr=0.0.0.0:3000
         - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
-        image: public.ecr.aws/gravitational/teleport-ent:12.1.1
+        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
