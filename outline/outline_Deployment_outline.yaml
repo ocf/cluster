@@ -16,12 +16,12 @@ spec:
       - command:
         - sh
         - -c
-        - yarn sequelize:migrate && yarn start
+        - yarn db:migrate && yarn start
         env: []
         envFrom:
         - configMapRef:
             name: outline
-        image: docker.io/outlinewiki/outline:0.67.2
+        image: docker.io/outlinewiki/outline:0.68.1
         imagePullPolicy: IfNotPresent
         name: main
         ports:
