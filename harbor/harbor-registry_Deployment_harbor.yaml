@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 9b371fae580b7e48062b1d7bd9d5a85172706f5af22d055952db1ecc0fd1fe76
+        checksum/configmap: 127fd1d0bd31c63fd6d1d4afc7d5930b87c35c9fb4c524a7faa4e119e2755eca
       labels:
         app.kubernetes.io/component: registry
         app.kubernetes.io/instance: harbor
@@ -68,6 +68,8 @@ spec:
           name: registry
         - containerPort: 5001
           name: debug
+        - containerPort: 8001
+          name: metrics
         readinessProbe:
           failureThreshold: 6
           httpGet:

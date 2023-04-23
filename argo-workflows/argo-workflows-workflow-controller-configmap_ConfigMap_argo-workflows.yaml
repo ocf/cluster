@@ -1,6 +1,7 @@
 apiVersion: v1
 data:
-  config: ''
+  config: "metricsConfig:\n  enabled: true\n  path: /metrics\n  port: 9090\n  ignoreErrors:\
+    \ false\n  secure: false\n"
 kind: ConfigMap
 metadata:
   labels:

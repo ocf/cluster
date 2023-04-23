@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: contour
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    helm.sh/chart: contour-10.1.3
+  name: contour-contour-metrics
+  namespace: contour
+spec:
+  clusterIP: None
+  ports:
+  - name: metrics
+    port: 8000
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/component: contour
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/name: contour
+  type: ClusterIP

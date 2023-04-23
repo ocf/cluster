@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/instance: harbor
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: harbor
+    helm.sh/chart: harbor-16.1.2
+  name: harbor
+  namespace: harbor
+spec:
+  endpoints:
+  - path: /metrics
+    port: http-metrics
+  namespaceSelector:
+    matchNames:
+    - harbor
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: harbor
+      app.kubernetes.io/name: harbor

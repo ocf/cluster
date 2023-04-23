@@ -22,7 +22,7 @@ spec:
     metadata:
       annotations:
         checksum/configmap: 4d84277692997bc5bc81ef3855a504d3532967648130887144e2a8d91ab47a89
-        checksum/configmap-envvars: d1545a67f6c7950cd0c13864aed5cfd52e7c4feafb58bf1f156c83d469929076
+        checksum/configmap-envvars: b3e18163f459e83643b678a3dfcce46213002d480c9f95ffdf2d740cc69ede46
       labels:
         app.kubernetes.io/component: core
         app.kubernetes.io/instance: harbor
@@ -77,6 +77,8 @@ spec:
         ports:
         - containerPort: 8080
           name: http
+        - containerPort: 8001
+          name: metrics
         readinessProbe:
           failureThreshold: 6
           httpGet:

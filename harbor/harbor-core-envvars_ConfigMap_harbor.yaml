@@ -13,6 +13,11 @@ data:
   HTTP_PROXY: ''
   JOBSERVICE_URL: http://harbor-jobservice:80
   LOG_LEVEL: debug
+  METRIC_ENABLE: 'true'
+  METRIC_NAMESPACE: harbor
+  METRIC_PATH: /metrics
+  METRIC_PORT: '8001'
+  METRIC_SUBSYSTEM: core
   NOTARY_URL: http://harbor-notary-server:4443
   NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-chartmuseum,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING)
   PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: docker-hub,harbor,azure-acr,aws-ecr,google-gcr,quay,docker-registry

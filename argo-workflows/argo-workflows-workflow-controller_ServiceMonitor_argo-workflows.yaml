@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: workflow-controller
+    app.kubernetes.io/instance: argo-workflows
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argo-workflows-workflow-controller
+    app.kubernetes.io/part-of: argo-workflows
+    helm.sh/chart: argo-workflows-0.22.0
+  name: argo-workflows-workflow-controller
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: metrics
+  namespaceSelector:
+    matchNames:
+    - argo-workflows
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: argo-workflows
+      app.kubernetes.io/name: argo-workflows-workflow-controller

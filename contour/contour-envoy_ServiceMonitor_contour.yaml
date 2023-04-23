@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: envoy
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    helm.sh/chart: contour-10.1.3
+  name: contour-envoy
+  namespace: contour
+spec:
+  endpoints:
+  - path: /stats/prometheus
+    port: metrics
+  jobLabel: app.kubernetes.io/name
+  namespaceSelector:
+    matchNames:
+    - contour
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour

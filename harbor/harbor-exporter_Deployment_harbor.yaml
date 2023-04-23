@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: jobservice
+    app.kubernetes.io/component: exporter
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
     helm.sh/chart: harbor-16.1.2
-  name: harbor-jobservice
+  name: harbor-exporter
   namespace: harbor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: jobservice
+      app.kubernetes.io/component: exporter
       app.kubernetes.io/instance: harbor
       app.kubernetes.io/name: harbor
   strategy:
@@ -21,13 +21,11 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 63306a7b7fa0a96dabd8449cf3f0479bcd7bc6d076757e613822372a849e8cdc
+        checksum/configmap-env: a737f9ff6e205f101f70328f32c5951d64f78ad58e6ecc775173527f259dcfa9
       labels:
-        app.kubernetes.io/component: jobservice
+        app.kubernetes.io/component: exporter
         app.kubernetes.io/instance: harbor
-        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-16.1.2
     spec:
       affinity:
         nodeAffinity: null
@@ -37,7 +35,7 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/component: jobservice
+                  app.kubernetes.io/component: exporter
                   app.kubernetes.io/instance: harbor
                   app.kubernetes.io/name: harbor
               topologyKey: kubernetes.io/hostname
@@ -47,44 +45,42 @@ spec:
       - env:
         - name: BITNAMI_DEBUG
           value: 'false'
-        - name: CORE_SECRET
+        - name: HARBOR_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: secret
-              name: harbor-core
-        - name: JOBSERVICE_SECRET
+              key: POSTGRESQL_PASSWORD
+              name: harbor-core-envvars
+        - name: HARBOR_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: secret
-              name: harbor-jobservice
+              key: HARBOR_ADMIN_PASSWORD
+              name: harbor-core-envvars
         envFrom:
         - configMapRef:
-            name: harbor-jobservice-envvars
+            name: harbor-exporter-envvars
         - secretRef:
-            name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.7.0-debian-11-r0
+            name: harbor-exporter-envvars
+        image: docker.io/bitnami/harbor-exporter:2.7.0-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
           httpGet:
-            path: /api/v1/stats
-            port: http
+            path: /metrics
+            port: metrics
             scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        name: jobservice
+        name: exporter
         ports:
-        - containerPort: 8080
-          name: http
         - containerPort: 8001
           name: metrics
         readinessProbe:
           failureThreshold: 6
           httpGet:
-            path: /api/v1/stats
-            port: http
+            path: /metrics
+            port: metrics
             scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
@@ -96,20 +92,7 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1001
-        volumeMounts:
-        - mountPath: /etc/jobservice/config.yml
-          name: jobservice-config
-          subPath: config.yml
-        - mountPath: /var/log/jobs
-          name: job-logs
-          subPath: null
-      initContainers: null
+        volumeMounts: null
       securityContext:
         fsGroup: 1001
-      volumes:
-      - name: jobservice-config
-        secret:
-          secretName: harbor-jobservice-config
-      - name: job-logs
-        persistentVolumeClaim:
-          claimName: harbor-jobservice
+      volumes: null

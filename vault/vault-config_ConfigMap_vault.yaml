@@ -1,11 +1,8 @@
 apiVersion: v1
 data:
-  extraconfig-from-values.hcl: "disable_mlock = true\nui = true\n\nlistener \"tcp\"\
-    \ {\n  tls_disable = 1\n  address = \"[::]:8200\"\n  cluster_address = \"[::]:8201\"\
-    \n  # Enable unauthenticated metrics access (necessary for Prometheus Operator)\n\
-    \  #telemetry {\n  #  unauthenticated_metrics_access = \"true\"\n  #}\n}\n\nstorage\
-    \ \"raft\" {\n  path = \"/vault/data\"\n}\n\nservice_registration \"kubernetes\"\
-    \ {}"
+  extraconfig-from-values.hcl: 'disable_mlock = true
+
+    listener "tcp" { "telemetry" { "unauthenticated_metrics_access" = "true"}}'
 kind: ConfigMap
 metadata:
   labels:
