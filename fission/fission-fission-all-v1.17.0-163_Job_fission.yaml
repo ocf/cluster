@@ -8,11 +8,7 @@ metadata:
     app: fission-all
     chart: fission-all-v1.17.0
     release: fission
-<<<<<<<< HEAD:fission/fission-fission-all-v1.17.0-616_Job_fission.yaml
-  name: fission-fission-all-v1.17.0-616
-========
-  name: fission-fission-all-v1.17.0-329
->>>>>>>> 103097b (sync with ocf/kubernetes):fission/fission-fission-all-v1.17.0-329_Job_fission.yaml
+  name: fission-fission-all-v1.17.0-163
 spec:
   backoffLimit: 0
   template:
