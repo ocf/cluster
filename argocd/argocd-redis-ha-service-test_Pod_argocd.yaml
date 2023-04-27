@@ -5,7 +5,7 @@ metadata:
     helm.sh/hook: test-success
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.3
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-service-test
@@ -16,7 +16,7 @@ spec:
     - sh
     - -c
     - redis-cli -h argocd-redis-ha-haproxy -p 6379 info server
-    image: redis:7.0.5-alpine
+    image: redis:7.0.7-alpine
     name: argocd-service-test
     resources: {}
     securityContext:

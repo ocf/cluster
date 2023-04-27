@@ -1,5 +1,10 @@
 apiVersion: v1
 data:
+  applicationsetcontroller.enable.leader.election: 'true'
+  applicationsetcontroller.enable.progressive.syncs: 'false'
+  applicationsetcontroller.log.format: text
+  applicationsetcontroller.log.level: info
+  applicationsetcontroller.policy: sync
   controller.log.format: text
   controller.log.level: info
   controller.operation.processors: '10'
@@ -32,5 +37,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-cmd-params-cm
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-cmd-params-cm
+  namespace: argocd

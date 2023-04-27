@@ -7,8 +7,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-server
+  namespace: argocd
 spec:
   replicas: 2
   revisionHistoryLimit: 3
@@ -19,18 +20,29 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cmd-params: 9f9aa0a666a5c3a6f7239d4e61d6731760a45a913e5ebca5383a5cd8e54330cb
+        checksum/cmd-params: 85662aeb8eaee59e8fad59d30f509a3c1d10d8e30cf7fa4015f1356cedd287e1
       labels:
         app.kubernetes.io/component: server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-server
         app.kubernetes.io/part-of: argocd
-        helm.sh/chart: argo-cd-5.16.1
+        helm.sh/chart: argo-cd-5.29.1
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: argocd-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       - command:
         - argocd-server
+        - --port=8080
+        - --metrics-port=8083
         env:
         - name: ARGOCD_SERVER_INSECURE
           valueFrom:
@@ -230,13 +242,19 @@ spec:
               key: application.namespaces
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v2.5.3
+        - name: ARGOCD_SERVER_ENABLE_PROXY_EXTENSION
+          valueFrom:
+            configMapKeyRef:
+              key: server.enable.proxy.extension
+              name: argocd-cmd-params-cm
+              optional: true
+        image: quay.io/argoproj/argocd:v2.6.7
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
           httpGet:
             path: /healthz?full=true
-            port: 8080
+            port: server
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
@@ -253,7 +271,7 @@ spec:
           failureThreshold: 3
           httpGet:
             path: /healthz
-            port: 8080
+            port: server
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
@@ -283,6 +301,7 @@ spec:
           name: styles
         - mountPath: /tmp
           name: tmp
+      dnsPolicy: ClusterFirst
       serviceAccountName: argocd-server
       volumes:
       - emptyDir: {}

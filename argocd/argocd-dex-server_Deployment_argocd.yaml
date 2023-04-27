@@ -7,8 +7,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-dex-server
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-dex-server
+  namespace: argocd
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -19,20 +20,31 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cmd-params: 9f9aa0a666a5c3a6f7239d4e61d6731760a45a913e5ebca5383a5cd8e54330cb
+        checksum/cmd-params: 85662aeb8eaee59e8fad59d30f509a3c1d10d8e30cf7fa4015f1356cedd287e1
       labels:
         app.kubernetes.io/component: dex-server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-dex-server
         app.kubernetes.io/part-of: argocd
-        helm.sh/chart: argo-cd-5.16.1
+        helm.sh/chart: argo-cd-5.29.1
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: argocd-dex-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       - args:
         - rundex
         command:
         - /shared/argocd-dex
+        - --logformat=text
+        - --loglevel=info
         env:
         - name: ARGOCD_DEX_SERVER_DISABLE_TLS
           valueFrom:
@@ -70,13 +82,14 @@ spec:
           name: dexconfig
         - mountPath: /tls
           name: argocd-dex-server-tls
+      dnsPolicy: ClusterFirst
       initContainers:
       - command:
         - cp
         - -n
         - /usr/local/bin/argocd
         - /shared/argocd-dex
-        image: quay.io/argoproj/argocd:v2.5.3
+        image: quay.io/argoproj/argocd:v2.6.7
         imagePullPolicy: IfNotPresent
         name: copyutil
         resources: {}

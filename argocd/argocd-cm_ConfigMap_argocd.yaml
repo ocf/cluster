@@ -23,7 +23,7 @@ data:
 
     '
   server.rbac.log.enforce.enable: 'false'
-  timeout.hard.reconciliation: '0'
+  timeout.hard.reconciliation: 0s
   timeout.reconciliation: 180s
   url: https://argo.ocf.berkeley.edu
 kind: ConfigMap
@@ -34,5 +34,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-cm
+  namespace: argocd

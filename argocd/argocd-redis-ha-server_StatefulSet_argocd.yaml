@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-ha
     argocd-redis-ha: replica
-    chart: redis-ha-4.22.3
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-server
@@ -22,9 +22,6 @@ spec:
     metadata:
       annotations:
         checksum/init-config: 84ccf6a9b8a7fa3ae5b62a8f17d6c65a5197e9605da9b2761179bf942828eefe
-        prometheus.io/path: /metrics
-        prometheus.io/port: '9121'
-        prometheus.io/scrape: 'true'
       labels:
         app: redis-ha
         argocd-redis-ha: replica
@@ -45,7 +42,7 @@ spec:
         - /data/conf/redis.conf
         command:
         - redis-server
-        image: redis:7.0.5-alpine
+        image: redis:7.0.7-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -101,7 +98,7 @@ spec:
         - /data/conf/sentinel.conf
         command:
         - redis-sentinel
-        image: redis:7.0.5-alpine
+        image: redis:7.0.7-alpine
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:
@@ -156,7 +153,7 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: redis:7.0.5-alpine
+        image: redis:7.0.7-alpine
         imagePullPolicy: IfNotPresent
         name: split-brain-fix
         resources: {}
@@ -175,32 +172,6 @@ spec:
           readOnly: true
         - mountPath: /data
           name: data
-      - args: null
-        env:
-        - name: REDIS_ADDR
-          value: redis://localhost:6379
-        image: oliver006/redis_exporter:v1.43.0
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /metrics
-            port: 9121
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          timeoutSeconds: 3
-        name: redis-exporter
-        ports:
-        - containerPort: 9121
-          name: exporter-port
-        readinessProbe:
-          httpGet:
-            path: /metrics
-            port: 9121
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          timeoutSeconds: 3
-        resources: {}
-        volumeMounts: null
       initContainers:
       - args:
         - /readonly-config/init.sh
@@ -213,7 +184,7 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: redis:7.0.5-alpine
+        image: redis:7.0.7-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
         resources: {}

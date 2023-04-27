@@ -7,8 +7,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-notifications-controller
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-notifications-controller
+  namespace: argocd
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -26,17 +27,26 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-notifications-controller
         app.kubernetes.io/part-of: argocd
-        helm.sh/chart: argo-cd-5.16.1
+        helm.sh/chart: argo-cd-5.29.1
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: argocd-notifications-controller
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       - command:
         - argocd-notifications
+        - --metrics-port=9001
         - --loglevel=info
         - --logformat=text
-        - --metrics-port=9001
         - --namespace=argocd
         - --argocd-repo-server=argocd-repo-server:8081
-        image: quay.io/argoproj/argocd:v2.5.3
+        image: quay.io/argoproj/argocd:v2.6.7
         imagePullPolicy: IfNotPresent
         name: notifications-controller
         ports:
@@ -59,6 +69,7 @@ spec:
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
         workingDir: /app
+      dnsPolicy: ClusterFirst
       serviceAccountName: argocd-notifications-controller
       volumes:
       - configMap:

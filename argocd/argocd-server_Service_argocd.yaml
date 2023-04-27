@@ -7,18 +7,19 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-server
+  namespace: argocd
 spec:
   ports:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: server
+    targetPort: 8080
   - name: https
     port: 443
     protocol: TCP
-    targetPort: server
+    targetPort: 8080
   selector:
     app.kubernetes.io/instance: argocd
     app.kubernetes.io/name: argocd-server

@@ -7,8 +7,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.16.1
+    helm.sh/chart: argo-cd-5.29.1
   name: argocd-application-controller
+  namespace: argocd
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -20,18 +21,28 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cmd-params: 9f9aa0a666a5c3a6f7239d4e61d6731760a45a913e5ebca5383a5cd8e54330cb
+        checksum/cmd-params: 85662aeb8eaee59e8fad59d30f509a3c1d10d8e30cf7fa4015f1356cedd287e1
       labels:
         app.kubernetes.io/component: application-controller
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-application-controller
         app.kubernetes.io/part-of: argocd
-        helm.sh/chart: argo-cd-5.16.1
+        helm.sh/chart: argo-cd-5.29.1
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: argocd-application-controller
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       - command:
         - argocd-application-controller
+        - --metrics-port=8082
         env:
         - name: ARGOCD_CONTROLLER_REPLICAS
           value: '1'
@@ -167,7 +178,7 @@ spec:
               key: application.namespaces
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v2.5.3
+        image: quay.io/argoproj/argocd:v2.6.7
         imagePullPolicy: IfNotPresent
         name: application-controller
         ports:
@@ -199,6 +210,7 @@ spec:
         - mountPath: /home/argocd
           name: argocd-home
         workingDir: /home/argocd
+      dnsPolicy: ClusterFirst
       serviceAccountName: argocd-application-controller
       volumes:
       - emptyDir: {}

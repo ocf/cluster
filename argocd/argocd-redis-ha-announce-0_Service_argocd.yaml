@@ -5,7 +5,7 @@ metadata:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.3
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-announce-0
@@ -20,10 +20,6 @@ spec:
     port: 26379
     protocol: TCP
     targetPort: sentinel
-  - name: http-exporter
-    port: 9121
-    protocol: TCP
-    targetPort: exporter-port
   publishNotReadyAddresses: true
   selector:
     app: redis-ha

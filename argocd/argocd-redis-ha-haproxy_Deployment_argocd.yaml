@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.3
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-haproxy
@@ -27,7 +27,6 @@ spec:
       labels:
         app: redis-ha-haproxy
         release: argocd
-        revision: '1'
       name: argocd-redis-ha-haproxy
     spec:
       affinity:
@@ -37,7 +36,6 @@ spec:
               matchLabels:
                 app: redis-ha-haproxy
                 release: argocd
-                revision: '1'
             topologyKey: kubernetes.io/hostname
       containers:
       - image: haproxy:2.6.4

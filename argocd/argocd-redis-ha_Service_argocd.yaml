@@ -4,8 +4,7 @@ metadata:
   annotations: null
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.3
-    exporter: enabled
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha
@@ -21,10 +20,6 @@ spec:
     port: 26379
     protocol: TCP
     targetPort: sentinel
-  - name: http-exporter-port
-    port: 9121
-    protocol: TCP
-    targetPort: exporter-port
   selector:
     app: redis-ha
     release: argocd

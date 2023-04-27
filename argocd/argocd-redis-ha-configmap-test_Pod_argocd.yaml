@@ -5,7 +5,7 @@ metadata:
     helm.sh/hook: test-success
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.3
+    chart: redis-ha-4.22.5
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap-test
