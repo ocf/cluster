@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  nginx.conf: "\nuser nginx;\nworker_processes  auto;\npid /var/run/nginx.pid;\n\n\
+    events {\n    worker_connections  1024;\n}\n\nhttp {\n    server {\n        listen\
+    \ 80;\n        server_name ~^(.+).ocf.io$;\n\n        return 302 $scheme://$1.ocf.berkeley.edu$request_uri;\n\
+    \    }\n}\n"
+kind: ConfigMap
+metadata:
+  name: ocf-io-nginx
