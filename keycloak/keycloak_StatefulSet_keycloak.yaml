@@ -22,7 +22,7 @@ spec:
     metadata:
       annotations:
         checksum/configmap-env-vars: 0beff184d702c3778f9b4c168b2ad7c3a736a06053df7d59f8dff62943a14205
-        checksum/secrets: 6b56f8825bf6d5606e47f7e19422fd79130c8982515af29b86cdc9540f242ea7
+        checksum/secrets: 855f8610e62873cc160d0eb20c03894dbee460bcf1c67c02a941b25f985e1cc2
       labels:
         app.kubernetes.io/component: keycloak
         app.kubernetes.io/instance: keycloak
