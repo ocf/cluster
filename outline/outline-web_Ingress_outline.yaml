@@ -2,13 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: null
+    cert-manager.io/cluster-issuer: letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: 'true'
     io.cilium/websocket: enabled
     kubernetes.io/tls-acme: 'true'
     projectcontour.io/websocket-routes: /
   name: outline-web
 spec:
+  ingressClassName: contour
   rules:
   - host: docs.ocf.berkeley.edu
     http:
