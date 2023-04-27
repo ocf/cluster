@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: templates
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: templates
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: templates
+    spec:
+      containers:
+      - image: harbor.ocf.berkeley.edu/ocf/templates/templates:19dc172f478b0eb5a6aa799dca5c72376272556b
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 3000
