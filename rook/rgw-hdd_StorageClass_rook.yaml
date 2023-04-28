@@ -5,5 +5,5 @@ metadata:
 parameters:
   objectStoreName: rgw-hdd
   objectStoreNamespace: rook-ceph
-provisioner: rook-ceph.ceph.rook.io/bucket
+provisioner: rook.ceph.rook.io/bucket
 reclaimPolicy: Delete
