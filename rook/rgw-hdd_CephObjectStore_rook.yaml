@@ -12,7 +12,6 @@ spec:
     instances: 1
     port: 80
     securePort: 443
-    sslCertificateRef: o3-ocf-crt
   healthCheck:
     bucket:
       disabled: false
