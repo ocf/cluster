@@ -38,20 +38,18 @@ spec:
           value: email
         - name: CMD_SAML_ATTRIBUTE_USERNAME
           value: username
-        - name: CMD_DB_DATABASE
-          value: notes
-        - name: CMD_DB_HOST
-          value: ocf-notes
+        - name: CMD_DB_URL
+          value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-notes:5432/notes?sslmode=require
         - name: CMD_DB_DIALECT
           value: postgres
         - name: CMD_S3_ENDPOINT
           value: https://o3.ocf.io
-        - name: CMD_DB_USERNAME
+        - name: _DB_USER
           valueFrom:
             secretKeyRef:
               key: username
               name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
-        - name: CMD_DB_PASSWORD
+        - name: _DB_PASS
           valueFrom:
             secretKeyRef:
               key: password
