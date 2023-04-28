@@ -63,12 +63,12 @@ spec:
               name: ocf-notes-bucket
         - name: CMD_S3_ACCESS_KEY_ID
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: AWS_ACCESS_KEY_ID
               name: ocf-notes-bucket
         - name: CMD_S3_SECRET_ACCESS_KEY
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: AWS_SECRET_ACCESS_KEY
               name: ocf-notes-bucket
         image: quay.io/hedgedoc/hedgedoc:1.9.7-alpine
