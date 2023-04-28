@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hedgedoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: hedgedoc
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: hedgedoc
+    spec:
+      containers:
+      - env:
+        - name: CMD_DOMAIN
+          value: dev-notes.ocf.berkeley.edu
+        - name: CMD_PROTOCOL_USESSL
+          value: 'true'
+        - name: CMD_ALLOW_ANONYMOUS
+          value: 'false'
+        - name: CMD_ALLOW_ANONYMOUS_EDITS
+          value: 'false'
+        - name: CMD_EMAIL
+          value: 'false'
+        - name: CMD_ALLOW_EMAIL_REGISTER
+          value: 'false'
+        - name: CMD_SAML_ISSUER
+          value: codimd
+        - name: CMD_SAML_IDENTIFIERFORMAT
+          value: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+        - name: CMD_SAML_IDPSSOURL
+          value: https://auth.ocf.berkeley.edu/auth/realms/ocf/protocol/saml
+        - name: CMD_SAML_IDPCERT
+          value: /keycloak.pem
+        - name: CMD_SAML_ATTRIBUTE_EMAIL
+          value: email
+        - name: CMD_SAML_ATTRIBUTE_USERNAME
+          value: username
+        - name: CMD_DB_DATABASE
+          value: notes
+        - name: CMD_DB_HOST
+          value: ocf-notes
+        - name: CMD_DB_DIALECT
+          value: postgres
+        - name: CMD_S3_ENDPOINT
+          value: https://o3.ocf.io
+        - name: CMD_DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
+        - name: CMD_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
+        - name: CMD_S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: BUCKET_NAME
+              name: ocf-notes-bucket
+        - name: CMD_S3_ACCESS_KEY_ID
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: ocf-notes-bucket
+        - name: CMD_S3_SECRET_ACCESS_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: ocf-notes-bucket
+        image: quay.io/hedgedoc/hedgedoc:1.9.7-alpine
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: /keycloak.pem
+          name: keycloak-pem
+          subPath: keycloak.pem
+      volumes:
+      - configMap:
+          name: keycloak-pem
+        name: keycloak-pem
