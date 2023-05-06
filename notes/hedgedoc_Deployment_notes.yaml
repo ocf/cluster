@@ -14,6 +14,31 @@ spec:
     spec:
       containers:
       - env:
+        - name: _DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
+        - name: _DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
+        - name: CMD_S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: BUCKET_NAME
+              name: ocf-notes-bucket
+        - name: CMD_S3_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: ocf-notes-bucket
+        - name: CMD_S3_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: ocf-notes-bucket
         - name: CMD_DOMAIN
           value: notes.ocf.berkeley.edu
         - name: CMD_PROTOCOL_USESSL
@@ -44,31 +69,6 @@ spec:
           value: postgres
         - name: CMD_S3_ENDPOINT
           value: https://o3.ocf.io
-        - name: _DB_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
-        - name: _DB_PASS
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
-        - name: CMD_S3_BUCKET
-          valueFrom:
-            configMapKeyRef:
-              key: BUCKET_NAME
-              name: ocf-notes-bucket
-        - name: CMD_S3_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: AWS_ACCESS_KEY_ID
-              name: ocf-notes-bucket
-        - name: CMD_S3_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              key: AWS_SECRET_ACCESS_KEY
-              name: ocf-notes-bucket
         image: quay.io/hedgedoc/hedgedoc:1.9.7-alpine
         imagePullPolicy: IfNotPresent
         name: main
