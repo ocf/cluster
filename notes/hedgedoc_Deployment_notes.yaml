@@ -64,7 +64,7 @@ spec:
         - name: CMD_SAML_ATTRIBUTE_USERNAME
           value: username
         - name: CMD_DB_URL
-          value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-notes:5432/notes?ssl=require
+          value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-notes:5432/notes?ssl=no-verify
         - name: CMD_DB_DIALECT
           value: postgres
         - name: CMD_S3_ENDPOINT
