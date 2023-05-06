@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: contour
   rules:
-  - host: dev-notes.ocf.berkeley.edu
+  - host: notes.ocf.berkeley.edu
     http:
       paths:
       - backend:
@@ -23,5 +23,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - dev-notes.ocf.berkeley.edu
+    - notes.ocf.berkeley.edu
     secretName: hedgedoc-tls
