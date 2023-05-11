@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hedgedoc
+  name: ocfweb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      transpire.ocf.io/deployment: hedgedoc
+      transpire.ocf.io/deployment: ocfweb
   template:
     metadata:
       labels:
-        transpire.ocf.io/deployment: hedgedoc
+        transpire.ocf.io/deployment: ocfweb
     spec:
       containers:
       - env:
@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: f9141fa5b7822175765056d13aa88b9c3790d804
-        image: docker.ocf.berkeley.edu/ocfweb-web-deployment:latest
+          value: 75e1884fa5e252422d55050661dc53d2433dc001
+        image: harbor.ocf.berkeley.edu/ocf/ocfweb/web:75e1884fa5e252422d55050661dc53d2433dc001
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -53,11 +53,17 @@ spec:
           name: secrets
       - args:
         - /etc/ocf
+        - --repeat-delay
+        - '60'
         image: harbor.ocf.berkeley.edu/ocf/etc/sync:4c3eb1f6ba456ec30a2fbf21423364eaf0ae40bd
         name: sync-etc
         volumeMounts:
         - mountPath: /etc/ocf
           name: etc
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
       volumes:
       - emptyDir: {}
         name: etc

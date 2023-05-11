@@ -7,4 +7,4 @@ spec:
   - port: 80
     targetPort: 8000
   selector:
-    transpire.ocf.io/deployment: hedgedoc
+    transpire.ocf.io/deployment: ocfweb
