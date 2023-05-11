@@ -19,12 +19,15 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 1117d6ae8892a31d32a12ed86b99831bb824312a
-        image: harbor.ocf.berkeley.edu/ocf/ocfweb/web:1117d6ae8892a31d32a12ed86b99831bb824312a
+          value: 7a444d13e611e0d45259776467d31205ad26fdca
+        image: harbor.ocf.berkeley.edu/ocf/ocfweb/web:7a444d13e611e0d45259776467d31205ad26fdca
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
           httpGet:
+            httpHeaders:
+            - name: Host
+              value: www.ocf.berkeley.edu
             path: /
             port: 8000
           initialDelaySeconds: 10
@@ -34,6 +37,9 @@ spec:
         - containerPort: 8000
         readinessProbe:
           httpGet:
+            httpHeaders:
+            - name: Host
+              value: www.ocf.berkeley.edu
             path: /
             port: 8000
           initialDelaySeconds: 5
