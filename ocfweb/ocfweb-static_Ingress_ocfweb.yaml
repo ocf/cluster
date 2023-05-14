@@ -7,21 +7,21 @@ metadata:
     io.cilium/websocket: enabled
     kubernetes.io/tls-acme: 'true'
     projectcontour.io/websocket-routes: /
-  name: ocfweb
+  name: ocfweb-static
 spec:
   ingressClassName: contour
   rules:
-  - host: www.ocf.berkeley.edu
+  - host: static.ocf.berkeley.edu
     http:
       paths:
       - backend:
           service:
-            name: ocfweb
+            name: ocfweb-static
             port:
               number: 80
         path: /
         pathType: Prefix
   tls:
   - hosts:
-    - www.ocf.berkeley.edu
-    secretName: ocfweb-tls
+    - static.ocf.berkeley.edu
+    secretName: ocfweb-static-tls
