@@ -6,6 +6,7 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
     io.cilium/websocket: enabled
     kubernetes.io/tls-acme: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     projectcontour.io/websocket-routes: /
   name: ocfweb
 spec:
