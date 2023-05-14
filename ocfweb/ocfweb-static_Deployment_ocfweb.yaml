@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ocfweb
+  name: ocfweb-static
 spec:
   replicas: 1
   selector:
     matchLabels:
-      transpire.ocf.io/deployment: ocfweb
+      transpire.ocf.io/deployment: ocfweb-static
   template:
     metadata:
       labels:
-        transpire.ocf.io/deployment: ocfweb
+        transpire.ocf.io/deployment: ocfweb-static
     spec:
       containers:
       - env:
@@ -20,7 +20,7 @@ spec:
           value: '0'
         - name: OCFWEB_PROD_VERSION
           value: cabf42922a109ab2cc1b328ca198d61610290d0b
-        image: harbor.ocf.berkeley.edu/ocf/ocfweb/web:cabf42922a109ab2cc1b328ca198d61610290d0b
+        image: harbor.ocf.berkeley.edu/ocf/ocfweb/static:cabf42922a109ab2cc1b328ca198d61610290d0b
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -28,7 +28,7 @@ spec:
             httpHeaders:
             - name: Host
               value: www.ocf.berkeley.edu
-            path: /
+            path: /js/site.js
             port: 8000
           initialDelaySeconds: 10
           timeoutSeconds: 3
@@ -40,7 +40,7 @@ spec:
             httpHeaders:
             - name: Host
               value: www.ocf.berkeley.edu
-            path: /
+            path: /js/site.js
             port: 8000
           initialDelaySeconds: 5
           periodSeconds: 5
