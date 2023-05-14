@@ -3,10 +3,9 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    ingress.kubernetes.io/force-ssl-redirect: 'false'
     io.cilium/websocket: enabled
     kubernetes.io/tls-acme: 'true'
-    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     projectcontour.io/websocket-routes: /
   name: ocfweb
 spec:
