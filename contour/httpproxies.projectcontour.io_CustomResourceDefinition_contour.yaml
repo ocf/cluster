@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.7.0
+    controller-gen.kubebuilder.io/version: v0.11.2
   creationTimestamp: null
   name: httpproxies.projectcontour.io
 spec:
@@ -927,6 +927,12 @@ spec:
                               - name
                               type: object
                             type: array
+                          healthPort:
+                            description: HealthPort is the port for this service healthcheck.
+                              If not specified, Port is used for service healthchecks.
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
                           mirror:
                             description: If Mirror is true the Service will receive
                               a read only mirror of the traffic for this route.
@@ -1317,6 +1323,12 @@ spec:
                             - name
                             type: object
                           type: array
+                        healthPort:
+                          description: HealthPort is the port for this service healthcheck.
+                            If not specified, Port is used for service healthchecks.
+                          maximum: 65535
+                          minimum: 1
+                          type: integer
                         mirror:
                           description: If Mirror is true the Service will receive
                             a read only mirror of the traffic for this route.
@@ -1693,13 +1705,15 @@ spec:
                                 \ resolver will only perform a lookup for addresses\
                                 \ in the IPv4 family. If \"v6\" is configured, the\
                                 \ DNS resolver will only perform a lookup for addresses\
-                                \ in the IPv6 family. If \"auto\" is configured, the\
-                                \ DNS resolver will first perform a lookup for addresses\
-                                \ in the IPv6 family and fallback to a lookup for\
-                                \ addresses in the IPv4 family. If not specified,\
-                                \ the Contour-wide setting defined in the config file\
-                                \ or ContourConfiguration applies (defaults to \"\
-                                auto\"). \n See https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto.html#envoy-v3-api-enum-config-cluster-v3-cluster-dnslookupfamily\
+                                \ in the IPv6 family. If \"all\" is configured, the\
+                                \ DNS resolver will perform a lookup for addresses\
+                                \ in both the IPv4 and IPv6 family. If \"auto\" is\
+                                \ configured, the DNS resolver will first perform\
+                                \ a lookup for addresses in the IPv6 family and fallback\
+                                \ to a lookup for addresses in the IPv4 family. If\
+                                \ not specified, the Contour-wide setting defined\
+                                \ in the config file or ContourConfiguration applies\
+                                \ (defaults to \"auto\"). \n See https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto.html#envoy-v3-api-enum-config-cluster-v3-cluster-dnslookupfamily\
                                 \ for more information."
                               enum:
                               - auto
@@ -1971,7 +1985,7 @@ spec:
                           \ certificate when an external client establishes a TLS\
                           \ connection to Envoy. \n This setting: \n 1. Enables TLS\
                           \ client certificate validation. 2. Specifies how the client\
-                          \ certificate will be validated (i.e.    validation required\
+                          \ certificate will be validated (i.e. validation required\
                           \ or skipped). \n Note: Setting client certificate validation\
                           \ to be skipped should be only used in conjunction with\
                           \ an external authorization server that performs client\
@@ -2001,6 +2015,38 @@ spec:
                               secrets are limited to 1MiB in size.
                             minLength: 1
                             type: string
+                          forwardClientCertificate:
+                            description: ForwardClientCertificate adds the selected
+                              data from the passed client TLS certificate to the x-forwarded-client-cert
+                              header.
+                            properties:
+                              cert:
+                                description: Client cert in URL encoded PEM format.
+                                type: boolean
+                              chain:
+                                description: Client cert chain (including the leaf
+                                  cert) in URL encoded PEM format.
+                                type: boolean
+                              dns:
+                                description: DNS type Subject Alternative Names of
+                                  the client cert.
+                                type: boolean
+                              subject:
+                                description: Subject of the client cert.
+                                type: boolean
+                              uri:
+                                description: URI type Subject Alternative Name of
+                                  the client cert.
+                                type: boolean
+                            type: object
+                          optionalClientCertificate:
+                            description: OptionalClientCertificate when set to true
+                              will request a client certificate but allow the connection
+                              to continue if the client does not provide one. If a
+                              client certificate is sent, it will be verified according
+                              to the other properties, which includes disabling validation
+                              if SkipClientCertValidation is set. Defaults to false.
+                            type: boolean
                           skipClientCertValidation:
                             description: SkipClientCertValidation disables downstream
                               client certificate validation. Defaults to false. This
@@ -2300,8 +2346,8 @@ spec:
                                   the service port The format of the error shall comply
                                   with the following rules: - built-in error values
                                   shall be specified in this file and those shall
-                                  use   CamelCase names - cloud provider specific
-                                  error values must have names that comply with the   format
+                                  use CamelCase names - cloud provider specific error
+                                  values must have names that comply with the format
                                   foo.example.com/CamelCase. --- The regex it matches
                                   is (dns1123SubdomainFmt/)?(qualifiedNameFmt)'
                                 maxLength: 316
@@ -2336,9 +2382,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ''
-    plural: ''
-  conditions: []
-  storedVersions: []
