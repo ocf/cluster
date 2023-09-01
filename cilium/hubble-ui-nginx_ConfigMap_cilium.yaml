@@ -11,8 +11,11 @@ data:
     \        if ($request_method = OPTIONS) {\n            return 204;\n        }\n\
     \        # /CORS\n\n        location /api {\n            proxy_http_version 1.1;\n\
     \            proxy_pass_request_headers on;\n            proxy_hide_header Access-Control-Allow-Origin;\n\
-    \            proxy_pass http://127.0.0.1:8090;\n        }\n\n        location\
-    \ / {\n            try_files $uri $uri/ /index.html;\n        }\n    }\n}"
+    \            proxy_pass http://127.0.0.1:8090;\n        }\n        location /\
+    \ {\n            # double `/index.html` is required here \n            try_files\
+    \ $uri $uri/ /index.html /index.html;\n        }\n\n        # Liveness probe\n\
+    \        location /healthz {\n            access_log off;\n            add_header\
+    \ Content-Type text/plain;\n            return 200 'ok';\n        }\n    }\n}"
 kind: ConfigMap
 metadata:
   name: hubble-ui-nginx

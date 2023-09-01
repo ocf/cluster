@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/name: hubble-relay
+    app.kubernetes.io/part-of: cilium
     k8s-app: hubble-relay
   name: hubble-relay
   namespace: cilium
@@ -18,6 +20,8 @@ spec:
     metadata:
       annotations: null
       labels:
+        app.kubernetes.io/name: hubble-relay
+        app.kubernetes.io/part-of: cilium
         k8s-app: hubble-relay
     spec:
       affinity:
@@ -33,7 +37,7 @@ spec:
         - serve
         command:
         - hubble-relay
-        image: quay.io/cilium/hubble-relay:v1.12.5@sha256:22039a7a6cb1322badd6b0e5149ba7b11d35a54cf3ac93ce651bebe5a71ac91a
+        image: quay.io/cilium/hubble-relay:v1.15.0-pre.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           tcpSocket:
@@ -45,6 +49,13 @@ spec:
         readinessProbe:
           tcpSocket:
             port: grpc
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /etc/hubble-relay
@@ -57,6 +68,8 @@ spec:
         kubernetes.io/os: linux
       priorityClassName: null
       restartPolicy: Always
+      securityContext:
+        fsGroup: 65532
       serviceAccount: hubble-relay
       serviceAccountName: hubble-relay
       terminationGracePeriodSeconds: 1
@@ -73,10 +86,10 @@ spec:
           sources:
           - secret:
               items:
-              - key: ca.crt
-                path: hubble-server-ca.crt
               - key: tls.crt
                 path: client.crt
               - key: tls.key
                 path: client.key
+              - key: ca.crt
+                path: hubble-server-ca.crt
               name: hubble-relay-client-certs
