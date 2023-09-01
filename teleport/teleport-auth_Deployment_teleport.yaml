@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 12.2.3
-    helm.sh/chart: teleport-cluster-12.2.3
-    teleport.dev/majorVersion: '12'
+    app.kubernetes.io/version: 13.3.7
+    helm.sh/chart: teleport-cluster-13.3.7
+    teleport.dev/majorVersion: '13'
   name: teleport-auth
   namespace: teleport
 spec:
@@ -24,24 +24,25 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 8b7ef62e31839ca6c50250bd23162f34ef756cd69133a421701dbd627da104cc
+        checksum/config: cf97fb44597913e0492748d548ac60c149dc1a0100848c66fc2d37162014f037
       labels:
         app: teleport
         app.kubernetes.io/component: auth
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 12.2.3
-        helm.sh/chart: teleport-cluster-12.2.3
-        teleport.dev/majorVersion: '12'
+        app.kubernetes.io/version: 13.3.7
+        helm.sh/chart: teleport-cluster-13.3.7
+        teleport.dev/majorVersion: '13'
     spec:
       affinity:
         podAntiAffinity: null
+      automountServiceAccountToken: false
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
         - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
-        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:13.3.7
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -87,9 +88,27 @@ spec:
           readOnly: true
         - mountPath: /var/lib/teleport
           name: data
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: auth-serviceaccount-token
+          readOnly: true
       serviceAccountName: teleport
       terminationGracePeriodSeconds: 60
       volumes:
+      - name: auth-serviceaccount-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: token
+          - configMap:
+              items:
+              - key: ca.crt
+                path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - fieldRef:
+                  fieldPath: metadata.namespace
+                path: namespace
       - name: license
         secret:
           secretName: license

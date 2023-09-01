@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 12.2.3
-    helm.sh/chart: teleport-cluster-12.2.3
-    teleport.dev/majorVersion: '12'
+    app.kubernetes.io/version: 13.3.7
+    helm.sh/chart: teleport-cluster-13.3.7
+    teleport.dev/majorVersion: '13'
   name: teleport-proxy
   namespace: teleport
 spec:
@@ -28,16 +28,17 @@ spec:
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 12.2.3
-        helm.sh/chart: teleport-cluster-12.2.3
-        teleport.dev/majorVersion: '12'
+        app.kubernetes.io/version: 13.3.7
+        helm.sh/chart: teleport-cluster-13.3.7
+        teleport.dev/majorVersion: '13'
     spec:
       affinity:
         podAntiAffinity: null
+      automountServiceAccountToken: false
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
-        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:13.3.7
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -95,17 +96,35 @@ spec:
           readOnly: true
         - mountPath: /var/lib/teleport
           name: data
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: proxy-serviceaccount-token
+          readOnly: true
       initContainers:
       - command:
         - teleport
         - wait
         - no-resolve
-        - teleport-auth-v11.teleport.svc.cluster.local
-        image: public.ecr.aws/gravitational/teleport-ent:12.2.3
+        - teleport-auth-v12.teleport.svc.cluster.local
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:13.3.7
         name: wait-auth-update
       serviceAccountName: teleport-proxy
       terminationGracePeriodSeconds: 60
       volumes:
+      - name: proxy-serviceaccount-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: token
+          - configMap:
+              items:
+              - key: ca.crt
+                path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - fieldRef:
+                  fieldPath: metadata.namespace
+                path: namespace
       - name: teleport-tls
         secret:
           secretName: teleport-tls
