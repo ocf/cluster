@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-jobservice
   namespace: harbor
 spec:
@@ -21,13 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 63306a7b7fa0a96dabd8449cf3f0479bcd7bc6d076757e613822372a849e8cdc
+        checksum/configmap-env: 2b3bc3dfa706799f9821a891a20d5730fb683a498f721b04514c741bd91427d1
       labels:
         app.kubernetes.io/component: jobservice
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-16.1.2
+        helm.sh/chart: harbor-17.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -62,7 +62,7 @@ spec:
             name: harbor-jobservice-envvars
         - secretRef:
             name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.7.0-debian-11-r0
+        image: docker.io/bitnami/harbor-jobservice:2.8.3-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -103,6 +103,9 @@ spec:
         - mountPath: /var/log/jobs
           name: job-logs
           subPath: null
+        - mountPath: /var/scandata_exports
+          name: jobservice-scandata
+          subPath: null
       initContainers: null
       securityContext:
         fsGroup: 1001
@@ -113,3 +116,6 @@ spec:
       - name: job-logs
         persistentVolumeClaim:
           claimName: harbor-jobservice
+      - name: jobservice-scandata
+        persistentVolumeClaim:
+          claimName: harbor-jobservice-scandata

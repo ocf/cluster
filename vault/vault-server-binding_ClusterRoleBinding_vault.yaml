@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: vault
-    helm.sh/chart: vault-0.23.0
+    helm.sh/chart: vault-0.25.0
   name: vault-server-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io

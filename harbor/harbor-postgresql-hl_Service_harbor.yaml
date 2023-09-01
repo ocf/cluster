@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
   labels:
     app.kubernetes.io/component: primary
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-12.1.5
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
+    helm.sh/chart: postgresql-12.10.0
   name: harbor-postgresql-hl
   namespace: harbor
 spec:

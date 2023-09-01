@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.0.0
+    helm.sh/chart: contour-12.6.0
   name: contour-contour
 rules:
 - apiGroups:
@@ -78,6 +78,7 @@ rules:
   resources:
   - gatewayclasses
   - gateways
+  - grpcroutes
   - httproutes
   - tcproutes
   - tlsroutes
@@ -94,6 +95,7 @@ rules:
   resources:
   - gatewayclasses/status
   - gateways/status
+  - grpcroutes/status
   - httproutes/status
   - tcproutes/status
   - tlsroutes/status

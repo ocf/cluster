@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/created-by: helm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: rook-ceph-operator
-    helm.sh/chart: rook-ceph-v1.10.6
+    helm.sh/chart: rook-ceph-v1.12.3
     operator: rook
     storage-backend: ceph
   name: rook-ceph-operator
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: rook-ceph-operator
-        helm.sh/chart: rook-ceph-v1.10.6
+        helm.sh/chart: rook-ceph-v1.12.3
     spec:
       containers:
       - args:
@@ -37,8 +37,6 @@ spec:
           value: ''
         - name: ROOK_ENABLE_DISCOVERY_DAEMON
           value: 'true'
-        - name: ROOK_DISABLE_ADMISSION_CONTROLLER
-          value: 'false'
         - name: NODE_NAME
           valueFrom:
             fieldRef:

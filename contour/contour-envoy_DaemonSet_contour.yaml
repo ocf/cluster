@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.0.0
+    helm.sh/chart: contour-12.6.0
   name: contour-envoy
   namespace: contour
 spec:
@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        helm.sh/chart: contour-12.0.0
+        helm.sh/chart: contour-12.6.0
     spec:
       affinity:
         nodeAffinity: null
@@ -35,7 +35,7 @@ spec:
         - shutdown-manager
         command:
         - contour
-        image: docker.io/bitnami/contour:1.25.0-debian-11-r0
+        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -48,6 +48,9 @@ spec:
         resources:
           limits: {}
           requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
         volumeMounts:
         - mountPath: /admin
           name: envoy-admin
@@ -70,7 +73,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        image: docker.io/bitnami/envoy:1.26.1-debian-11-r4
+        image: docker.io/bitnami/envoy:1.26.4-debian-11-r20
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -98,6 +101,7 @@ spec:
           name: https
           protocol: TCP
         - containerPort: 8002
+          hostPort: 8002
           name: metrics
           protocol: TCP
         readinessProbe:
@@ -141,12 +145,15 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/bitnami/contour:1.25.0-debian-11-r0
+        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
         imagePullPolicy: IfNotPresent
         name: envoy-initconfig
         resources:
           limits: {}
           requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
         volumeMounts:
         - mountPath: /config
           name: envoy-config

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-ha
     argocd-redis-ha: replica
-    chart: redis-ha-4.22.5
+    chart: redis-ha-4.23.0
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-server
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/init-config: 84ccf6a9b8a7fa3ae5b62a8f17d6c65a5197e9605da9b2761179bf942828eefe
+        checksum/init-config: 85dba46ea886e0c8cb4d0f96e22c670c443a3382034982d8e4303c5f99cae8a4
       labels:
         app: redis-ha
         argocd-redis-ha: replica
@@ -42,7 +42,7 @@ spec:
         - /data/conf/redis.conf
         command:
         - redis-server
-        image: redis:7.0.7-alpine
+        image: redis:7.0.11-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -98,7 +98,7 @@ spec:
         - /data/conf/sentinel.conf
         command:
         - redis-sentinel
-        image: redis:7.0.7-alpine
+        image: redis:7.0.11-alpine
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:
@@ -153,7 +153,7 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: redis:7.0.7-alpine
+        image: redis:7.0.11-alpine
         imagePullPolicy: IfNotPresent
         name: split-brain-fix
         resources: {}
@@ -184,7 +184,7 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: redis:7.0.7-alpine
+        image: redis:7.0.11-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
         resources: {}

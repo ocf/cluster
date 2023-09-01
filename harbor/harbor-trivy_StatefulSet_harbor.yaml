@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-trivy
   namespace: harbor
 spec:
@@ -20,13 +20,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 14b5085b8c8ebccacaada39a1ed31960fb95c401ab6731e5fa9656e2e749c0c5
+        checksum/configmap-env: 68ee1f123aad661f24e7a47a485bc24166a248790058a4e02ea61442f8cdc389
       labels:
         app.kubernetes.io/component: trivy
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-16.1.2
+        helm.sh/chart: harbor-17.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -51,7 +51,7 @@ spec:
             name: harbor-trivy-envvars
         - secretRef:
             name: harbor-trivy-envvars
-        image: docker.io/bitnami/harbor-adapter-trivy:2.6.2-debian-11-r7
+        image: docker.io/bitnami/harbor-adapter-trivy:2.8.3-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

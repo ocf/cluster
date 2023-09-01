@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.5
+    chart: redis-ha-4.23.0
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-haproxy
@@ -38,7 +38,7 @@ spec:
                 release: argocd
             topologyKey: kubernetes.io/hostname
       containers:
-      - image: haproxy:2.6.4
+      - image: haproxy:2.6.9
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:
@@ -78,7 +78,7 @@ spec:
         - /readonly/haproxy_init.sh
         command:
         - sh
-        image: haproxy:2.6.4
+        image: haproxy:2.6.9
         imagePullPolicy: IfNotPresent
         name: config-init
         resources: {}

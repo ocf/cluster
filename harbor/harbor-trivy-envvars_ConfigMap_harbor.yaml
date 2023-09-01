@@ -2,7 +2,7 @@ apiVersion: v1
 data:
   HTTPS_PROXY: ''
   HTTP_PROXY: ''
-  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-chartmuseum,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING)
+  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING)
   SCANNER_API_SERVER_ADDR: :8080
   SCANNER_LOG_LEVEL: debug
   SCANNER_TRIVY_CACHE_DIR: /bitnami/harbor-adapter-trivy/.cache/trivy
@@ -20,6 +20,6 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-trivy-envvars
   namespace: harbor

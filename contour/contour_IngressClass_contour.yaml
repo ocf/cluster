@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.0.0
+    helm.sh/chart: contour-12.6.0
   name: contour
 spec:
   controller: projectcontour.io/contour/contour-contour

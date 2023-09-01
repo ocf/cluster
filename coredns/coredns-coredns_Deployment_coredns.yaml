@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/instance: coredns
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: coredns
-    app.kubernetes.io/version: 1.9.4
-    helm.sh/chart: coredns-1.19.7
+    app.kubernetes.io/version: 1.11.1
+    helm.sh/chart: coredns-1.26.0
     k8s-app: coredns
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: CoreDNS
@@ -26,8 +26,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 118df1e62308f11ebf7f742da85bfc665029f98db993ab96c136de2a96ab89d0
-        scheduler.alpha.kubernetes.io/critical-pod: ''
+        checksum/config: 1664986923911b04789915bf5e76a0dbe7dd7fa88c8c5c0e4898f163039841a9
         scheduler.alpha.kubernetes.io/tolerations: '[{"key":"CriticalAddonsOnly",
           "operator":"Exists"}]'
       labels:
@@ -39,7 +38,7 @@ spec:
       - args:
         - -conf
         - /etc/coredns/Corefile
-        image: coredns/coredns:1.9.4
+        image: coredns/coredns:1.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
@@ -79,6 +78,10 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
         volumeMounts:
         - mountPath: /etc/coredns
           name: config-volume

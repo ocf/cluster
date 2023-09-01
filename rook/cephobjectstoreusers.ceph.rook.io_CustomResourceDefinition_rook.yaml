@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.6.2
+    controller-gen.kubebuilder.io/version: v0.11.3
     helm.sh/resource-policy: keep
   creationTimestamp: null
   name: cephobjectstoreusers.ceph.rook.io
@@ -47,6 +47,24 @@ spec:
                   store user
                 nullable: true
                 properties:
+                  amz-cache:
+                    description: Add capabilities for user to send request to RGW
+                      Cache API header. Documented in https://docs.ceph.com/en/quincy/radosgw/rgw-cache/#cache-api
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  bilog:
+                    description: Add capabilities for user to change bucket index
+                      logging. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
                   bucket:
                     description: Admin capabilities to read/write Ceph object store
                       buckets. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
@@ -56,9 +74,72 @@ spec:
                     - write
                     - read, write
                     type: string
+                  buckets:
+                    description: Admin capabilities to read/write Ceph object store
+                      buckets. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  datalog:
+                    description: Add capabilities for user to change data logging.
+                      Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  info:
+                    description: Admin capabilities to read/write information about
+                      the user. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  mdlog:
+                    description: Add capabilities for user to change metadata logging.
+                      Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
                   metadata:
                     description: Admin capabilities to read/write Ceph object store
                       metadata. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  oidc-provider:
+                    description: Add capabilities for user to change oidc provider.
+                      Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  ratelimit:
+                    description: Add capabilities for user to set rate limiter for
+                      user and bucket. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  roles:
+                    description: Admin capabilities to read/write roles for user.
+                      Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
                     enum:
                     - '*'
                     - read
@@ -83,6 +164,24 @@ spec:
                     - write
                     - read, write
                     type: string
+                  user-policy:
+                    description: Add capabilities for user to change user policies.
+                      Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
+                  users:
+                    description: Admin capabilities to read/write Ceph object store
+                      users. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
+                    enum:
+                    - '*'
+                    - read
+                    - write
+                    - read, write
+                    type: string
                   zone:
                     description: Admin capabilities to read/write Ceph object store
                       zones. Documented in https://docs.ceph.com/en/latest/radosgw/admin/?#add-remove-admin-capabilities
@@ -93,6 +192,10 @@ spec:
                     - read, write
                     type: string
                 type: object
+              clusterNamespace:
+                description: The namespace where the parent CephCluster and CephObjectStore
+                  are found
+                type: string
               displayName:
                 description: The display name for the ceph users
                 type: string
@@ -152,9 +255,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ''
-    plural: ''
-  conditions: []
-  storedVersions: []

@@ -21,7 +21,7 @@ data:
   server.dex.server: https://argocd-dex-server:5556
   server.dex.server.strict.tls: 'false'
   server.disable.auth: 'false'
-  server.enable.gzip: 'false'
+  server.enable.gzip: 'true'
   server.insecure: 'true'
   server.log.format: text
   server.log.level: info
@@ -37,6 +37,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-cmd-params-cm
     app.kubernetes.io/part-of: argocd
-    helm.sh/chart: argo-cd-5.29.1
+    app.kubernetes.io/version: v2.8.2
+    helm.sh/chart: argo-cd-5.45.0
   name: argocd-cmd-params-cm
   namespace: argocd

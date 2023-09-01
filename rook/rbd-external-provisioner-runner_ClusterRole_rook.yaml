@@ -144,7 +144,7 @@ rules:
   verbs:
   - get
   - list
-  - watch"
+  - watch
 - apiGroups:
   - storage.k8s.io
   resources:

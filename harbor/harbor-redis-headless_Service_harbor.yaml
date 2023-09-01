@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-17.3.17
+    helm.sh/chart: redis-18.0.0
   name: harbor-redis-headless
   namespace: harbor
 spec:

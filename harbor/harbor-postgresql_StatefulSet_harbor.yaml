@@ -1,13 +1,12 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  annotations: null
   labels:
     app.kubernetes.io/component: primary
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-12.1.5
+    helm.sh/chart: postgresql-12.10.0
   name: harbor-postgresql
   namespace: harbor
 spec:
@@ -21,13 +20,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/extended-configuration: 323c8fcc9deb6e5098acc3aab3cee04cd63ffa4a07af5426dbcd6111da88b469
+        checksum/extended-configuration: fd18c85829958181cad9f64e7138083fdb14bc37799ad2071e85662b7ff3ccf7
       labels:
         app.kubernetes.io/component: primary
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        helm.sh/chart: postgresql-12.1.5
+        helm.sh/chart: postgresql-12.10.0
       name: harbor-postgresql
     spec:
       affinity:
@@ -74,7 +73,7 @@ spec:
           value: error
         - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
           value: pgaudit
-        image: docker.io/bitnami/postgresql:13.9.0-debian-11-r13
+        image: docker.io/bitnami/postgresql:13.11.0-debian-11-r80
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -114,7 +113,15 @@ spec:
             cpu: 250m
             memory: 256Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
           runAsUser: 1001
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /docker-entrypoint-initdb.d/
           name: custom-init-scripts
@@ -126,7 +133,6 @@ spec:
           name: data
       hostIPC: false
       hostNetwork: false
-      initContainers: null
       securityContext:
         fsGroup: 1001
       serviceAccountName: default
@@ -144,7 +150,9 @@ spec:
     rollingUpdate: {}
     type: RollingUpdate
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: data
     spec:
       accessModes:

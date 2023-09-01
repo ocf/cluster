@@ -11,8 +11,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: startupapicheck
-    app.kubernetes.io/version: v1.10.1
-    helm.sh/chart: cert-manager-v1.10.1
+    app.kubernetes.io/version: v1.12.4
+    helm.sh/chart: cert-manager-v1.12.4
   name: cert-manager-startupapicheck
   namespace: cert-manager
 spec:
@@ -25,15 +25,15 @@ spec:
         app.kubernetes.io/instance: cert-manager
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: startupapicheck
-        app.kubernetes.io/version: v1.10.1
-        helm.sh/chart: cert-manager-v1.10.1
+        app.kubernetes.io/version: v1.12.4
+        helm.sh/chart: cert-manager-v1.12.4
     spec:
       containers:
       - args:
         - check
         - api
         - --wait=1m
-        image: quay.io/jetstack/cert-manager-ctl:v1.10.1
+        image: quay.io/jetstack/cert-manager-ctl:v1.12.4
         imagePullPolicy: IfNotPresent
         name: cert-manager-startupapicheck
         securityContext:

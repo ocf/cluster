@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-registry
   namespace: harbor
 spec:
@@ -21,13 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 127fd1d0bd31c63fd6d1d4afc7d5930b87c35c9fb4c524a7faa4e119e2755eca
+        checksum/configmap: af6d2a505aa153c2192582330d9ae2a1f1458fed5131286c86d2a7348f7df312
       labels:
         app.kubernetes.io/component: registry
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-16.1.2
+        helm.sh/chart: harbor-17.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -50,7 +50,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registry:2.7.0-debian-11-r0
+        image: docker.io/bitnami/harbor-registry:2.8.3-debian-11-r8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -115,7 +115,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registryctl:2.7.0-debian-11-r0
+        image: docker.io/bitnami/harbor-registryctl:2.8.3-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

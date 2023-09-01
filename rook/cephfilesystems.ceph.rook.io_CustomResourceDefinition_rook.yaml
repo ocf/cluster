@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.6.2
+    controller-gen.kubebuilder.io/version: v0.11.3
     helm.sh/resource-policy: keep
   creationTimestamp: null
   name: cephfilesystems.ceph.rook.io
@@ -517,8 +517,7 @@ spec:
                             type: integer
                           grpc:
                             description: GRPC specifies an action involving a GRPC
-                              port. This is a beta field and requires enabling GRPCContainerProbe
-                              feature gate.
+                              port.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -550,7 +549,9 @@ spec:
                                     to be used in HTTP probes
                                   properties:
                                     name:
-                                      description: The header field name
+                                      description: The header field name. This will
+                                        be canonicalized upon output, so case-variant
+                                        names will be understood as the same header.
                                       type: string
                                     value:
                                       description: The header field value
@@ -749,6 +750,7 @@ spec:
                                         type: object
                                       type: array
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 weight:
                                   description: Weight associated with matching the
                                     corresponding nodeSelectorTerm, in the range 1-100.
@@ -854,10 +856,12 @@ spec:
                                         type: object
                                       type: array
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 type: array
                             required:
                             - nodeSelectorTerms
                             type: object
+                            x-kubernetes-map-type: atomic
                         type: object
                       podAffinity:
                         description: PodAffinity is a group of inter pod affinity
@@ -937,6 +941,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaceSelector:
                                       description: A label query over the set of namespaces
                                         that the term applies to. The term is applied
@@ -994,6 +999,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaces:
                                       description: namespaces specifies a static list
                                         of namespace names that the term applies to.
@@ -1098,6 +1104,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaceSelector:
                                   description: A label query over the set of namespaces
                                     that the term applies to. The term is applied
@@ -1154,6 +1161,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaces:
                                   description: namespaces specifies a static list
                                     of namespace names that the term applies to. The
@@ -1256,6 +1264,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaceSelector:
                                       description: A label query over the set of namespaces
                                         that the term applies to. The term is applied
@@ -1313,6 +1322,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaces:
                                       description: namespaces specifies a static list
                                         of namespace names that the term applies to.
@@ -1417,6 +1427,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaceSelector:
                                   description: A label query over the set of namespaces
                                     that the term applies to. The term is applied
@@ -1473,6 +1484,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaces:
                                   description: namespaces specifies a static list
                                     of namespace names that the term applies to. The
@@ -1597,16 +1609,22 @@ spec:
                                     requirements are ANDed.
                                   type: object
                               type: object
+                              x-kubernetes-map-type: atomic
                             matchLabelKeys:
-                              description: MatchLabelKeys is a set of pod label keys
-                                to select the pods over which spreading will be calculated.
-                                The keys are used to lookup values from the incoming
-                                pod labels, those key-value labels are ANDed with
-                                labelSelector to select the group of existing pods
-                                over which spreading will be calculated for the incoming
-                                pod. Keys that don't exist in the incoming pod labels
-                                will be ignored. A null or empty list means only match
-                                against labelSelector.
+                              description: "MatchLabelKeys is a set of pod label keys\
+                                \ to select the pods over which spreading will be\
+                                \ calculated. The keys are used to lookup values from\
+                                \ the incoming pod labels, those key-value labels\
+                                \ are ANDed with labelSelector to select the group\
+                                \ of existing pods over which spreading will be calculated\
+                                \ for the incoming pod. The same key is forbidden\
+                                \ to exist in both MatchLabelKeys and LabelSelector.\
+                                \ MatchLabelKeys cannot be set when LabelSelector\
+                                \ isn't set. Keys that don't exist in the incoming\
+                                \ pod labels will be ignored. A null or empty list\
+                                \ means only match against labelSelector. \n This\
+                                \ is a beta field and requires the MatchLabelKeysInPodTopologySpread\
+                                \ feature gate to be enabled (enabled by default)."
                               items:
                                 type: string
                               type: array
@@ -1670,8 +1688,8 @@ spec:
                                 \ included in the calculations. - Ignore: nodeAffinity/nodeSelector\
                                 \ are ignored. All nodes are included in the calculations.\
                                 \ \n If this value is nil, the behavior is equivalent\
-                                \ to the Honor policy. This is a alpha-level feature\
-                                \ enabled by the NodeInclusionPolicyInPodTopologySpread\
+                                \ to the Honor policy. This is a beta-level feature\
+                                \ default enabled by the NodeInclusionPolicyInPodTopologySpread\
                                 \ feature flag."
                               type: string
                             nodeTaintsPolicy:
@@ -1682,8 +1700,8 @@ spec:
                                 \ pod has a toleration, are included. - Ignore: node\
                                 \ taints are ignored. All nodes are included. \n If\
                                 \ this value is nil, the behavior is equivalent to\
-                                \ the Ignore policy. This is a alpha-level feature\
-                                \ enabled by the NodeInclusionPolicyInPodTopologySpread\
+                                \ the Ignore policy. This is a beta-level feature\
+                                \ default enabled by the NodeInclusionPolicyInPodTopologySpread\
                                 \ feature flag."
                               type: string
                             topologyKey:
@@ -1705,13 +1723,13 @@ spec:
                                 with a pod if it doesn''t satisfy the spread constraint.
                                 - DoNotSchedule (default) tells the scheduler not
                                 to schedule it. - ScheduleAnyway tells the scheduler
-                                to schedule the pod in any location,   but giving
-                                higher precedence to topologies that would help reduce
-                                the   skew. A constraint is considered "Unsatisfiable"
-                                for an incoming pod if and only if every possible
-                                node assignment for that pod would violate "MaxSkew"
-                                on some topology. For example, in a 3-zone cluster,
-                                MaxSkew is set to 1, and pods with the same labelSelector
+                                to schedule the pod in any location, but giving higher
+                                precedence to topologies that would help reduce the
+                                skew. A constraint is considered "Unsatisfiable" for
+                                an incoming pod if and only if every possible node
+                                assignment for that pod would violate "MaxSkew" on
+                                some topology. For example, in a 3-zone cluster, MaxSkew
+                                is set to 1, and pods with the same labelSelector
                                 spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P
                                 |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule,
                                 incoming pod can only be scheduled to zone2(zone3)
@@ -1735,6 +1753,28 @@ spec:
                     description: The resource requirements for the rgw pods
                     nullable: true
                     properties:
+                      claims:
+                        description: "Claims lists the names of resources, defined\
+                          \ in spec.resourceClaims, that are used by this container.\
+                          \ \n This is an alpha field and requires enabling the DynamicResourceAllocation\
+                          \ feature gate. \n This field is immutable. It can only\
+                          \ be set for containers."
+                        items:
+                          description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                          properties:
+                            name:
+                              description: Name must match the name of one entry in
+                                pod.spec.resourceClaims of the Pod where this field
+                                is used. It makes that resource available inside a
+                                container.
+                              type: string
+                          required:
+                          - name
+                          type: object
+                        type: array
+                        x-kubernetes-list-map-keys:
+                        - name
+                        x-kubernetes-list-type: map
                       limits:
                         additionalProperties:
                           anyOf:
@@ -1755,7 +1795,8 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                          to an implementation-defined value. Requests cannot exceed
+                          Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                     x-kubernetes-preserve-unknown-fields: true
@@ -1796,8 +1837,7 @@ spec:
                             type: integer
                           grpc:
                             description: GRPC specifies an action involving a GRPC
-                              port. This is a beta field and requires enabling GRPCContainerProbe
-                              feature gate.
+                              port.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -1829,7 +1869,9 @@ spec:
                                     to be used in HTTP probes
                                   properties:
                                     name:
-                                      description: The header field name
+                                      description: The header field name. This will
+                                        be canonicalized upon output, so case-variant
+                                        names will be understood as the same header.
                                       type: string
                                     value:
                                       description: The header field value
@@ -2217,9 +2259,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ''
-    plural: ''
-  conditions: []
-  storedVersions: []

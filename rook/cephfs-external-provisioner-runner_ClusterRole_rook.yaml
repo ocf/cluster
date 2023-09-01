@@ -13,6 +13,14 @@ rules:
 - apiGroups:
   - ''
   resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
+  resources:
   - persistentvolumes
   verbs:
   - get
@@ -30,6 +38,7 @@ rules:
   - list
   - watch
   - patch
+  - update
 - apiGroups:
   - storage.k8s.io
   resources:

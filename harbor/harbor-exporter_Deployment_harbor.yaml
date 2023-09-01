@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-exporter
   namespace: harbor
 spec:
@@ -21,11 +21,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: a737f9ff6e205f101f70328f32c5951d64f78ad58e6ecc775173527f259dcfa9
+        checksum/configmap-env: a3437833620158da522451071cbc7ba4914367ca4082fe06b8c57705bfc71922
       labels:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/instance: harbor
+        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
+        helm.sh/chart: harbor-17.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -60,7 +62,7 @@ spec:
             name: harbor-exporter-envvars
         - secretRef:
             name: harbor-exporter-envvars
-        image: docker.io/bitnami/harbor-exporter:2.7.0-debian-11-r0
+        image: docker.io/bitnami/harbor-exporter:2.8.3-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

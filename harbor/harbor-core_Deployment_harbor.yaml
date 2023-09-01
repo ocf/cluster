@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-core
   namespace: harbor
 spec:
@@ -21,12 +21,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 4d84277692997bc5bc81ef3855a504d3532967648130887144e2a8d91ab47a89
-        checksum/configmap-envvars: b3e18163f459e83643b678a3dfcce46213002d480c9f95ffdf2d740cc69ede46
+        checksum/configmap: 40fb06a1af3e741381a6c6776a9b2d7277f984aca6ddddf14f34ab96b3e4f6eb
+        checksum/configmap-envvars: 6d7b4c83eceeb8289d9891010a9488f88456899ac30a34c1d25da0184a308bfb
       labels:
         app.kubernetes.io/component: core
         app.kubernetes.io/instance: harbor
+        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
+        helm.sh/chart: harbor-17.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -61,7 +63,7 @@ spec:
             name: harbor-core-envvars
         - secretRef:
             name: harbor-core-envvars
-        image: docker.io/bitnami/harbor-core:2.7.0-debian-11-r0
+        image: docker.io/bitnami/harbor-core:2.8.3-debian-11-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -99,12 +101,12 @@ spec:
         - mountPath: /etc/core/app.conf
           name: config
           subPath: app.conf
-        - mountPath: /etc/core/key
-          name: secret-key
-          subPath: key
         - mountPath: /etc/core/private_key.pem
           name: token-service-private-key
           subPath: tls.key
+        - mountPath: /etc/core/key
+          name: secret-key
+          subPath: key
         - mountPath: /etc/core/ca
           name: ca-download
         - mountPath: /etc/core/token
@@ -118,14 +120,14 @@ spec:
             path: app.conf
           name: harbor-core
         name: config
+      - name: token-service-private-key
+        secret:
+          secretName: harbor-core
       - name: secret-key
         secret:
           items:
           - key: secretKey
             path: key
-          secretName: harbor-core
-      - name: token-service-private-key
-        secret:
           secretName: harbor-core
       - name: ca-download
         secret:

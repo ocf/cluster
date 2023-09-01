@@ -6,7 +6,7 @@ data:
     SERVICE=argocd-redis-ha\nSENTINEL_TLS_REPLICATION_ENABLED=false\nREDIS_TLS_REPLICATION_ENABLED=false\n\
     \nROLE=''\nREDIS_MASTER=''\n\nset -eu\nsentinel_get_master() {\nset +e\n    if\
     \ [ \"$SENTINEL_PORT\" -eq 0 ]; then\n        redis-cli -h \"${SERVICE}\" -p \"\
-    ${SENTINEL_TLS_PORT}\"   --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt\
+    ${SENTINEL_TLS_PORT}\"  --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
     \ --key /tls-certs/redis.key sentinel get-master-addr-by-name \"${MASTER_GROUP}\"\
     \ |\\\n        grep -E '((^\\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\
     .){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\\s*$)|(^\\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\\\
@@ -78,7 +78,7 @@ data:
     \ \"  using master ip (${DEFAULT_MASTER})\"\n        redis_update \"${DEFAULT_MASTER}\"\
     \n        sentinel_update \"${DEFAULT_MASTER}\"\n    fi\n}\n\nredis_ping() {\n\
     set +e\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_TLS_PORT}\"  --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt\
+    \ -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
     \ --key /tls-certs/redis.key ping\n    else\n        redis-cli -h \"${MASTER}\"\
     \ -p \"${REDIS_PORT}\" ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n\
     \    retry=${1}\n    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n       \
@@ -92,7 +92,7 @@ data:
     \ (sentinel failover)..\"\n\n        if [ \"$SENTINEL_PORT\" -eq 0 ]; then\n \
     \           echo \"  on sentinel (${SERVICE}:${SENTINEL_TLS_PORT}), sentinel grp\
     \ (${MASTER_GROUP})\"\n            if redis-cli -h \"${SERVICE}\" -p \"${SENTINEL_TLS_PORT}\"\
-    \   --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
+    \  --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
     \ sentinel failover \"${MASTER_GROUP}\" | grep -q 'NOGOODSLAVE' ; then\n     \
     \           echo \"  $(date) Failover returned with 'NOGOODSLAVE'\"\n        \
     \        echo \"Setting defaults for this pod..\"\n                setup_defaults\n\
@@ -123,20 +123,20 @@ data:
     \ for this pod..\"\n    echo \"  using (${SERVICE}-announce-${INDEX}) or (${SERVICE}-server-${INDEX})\"\
     \n    ANNOUNCE_IP=$(getent_hosts | awk '{ print $1 }')\n    echo \"  identified\
     \ announce (${ANNOUNCE_IP})\"\n}\n\nredis_role() {\nset +e\n    if [ \"$REDIS_PORT\"\
-    \ -eq 0 ]; then\n        ROLE=$(redis-cli  -p \"${REDIS_TLS_PORT}\"  --tls --cacert\
-    \ /tls-certs/ca.crt --cert /tls-certs/redis.crt --key /tls-certs/redis.key info\
+    \ -eq 0 ]; then\n        ROLE=$(redis-cli  -p \"${REDIS_TLS_PORT}\" --tls --cacert\
+    \ /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info\
     \ | grep role | sed 's/role://' | sed 's/\\r//')\n    else\n        ROLE=$(redis-cli\
     \  -p \"${REDIS_PORT}\" info | grep role | sed 's/role://' | sed 's/\\r//')\n\
     \    fi\nset -e\n}\n\nidentify_redis_master() {\nset +e\n    if [ \"$REDIS_PORT\"\
-    \ -eq 0 ]; then\n        REDIS_MASTER=$(redis-cli  -p \"${REDIS_TLS_PORT}\"  --tls\
-    \ --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
+    \ -eq 0 ]; then\n        REDIS_MASTER=$(redis-cli  -p \"${REDIS_TLS_PORT}\" --tls\
+    \ --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
     \ info | grep master_host | sed 's/master_host://' | sed 's/\\r//')\n    else\n\
     \        REDIS_MASTER=$(redis-cli  -p \"${REDIS_PORT}\" info | grep master_host\
     \ | sed 's/master_host://' | sed 's/\\r//')\n    fi\nset -e\n}\n\nreinit() {\n\
     set +e\n    sh /readonly-config/init.sh\n\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n\
-    \        echo \"shutdown\" | redis-cli  -p \"${REDIS_TLS_PORT}\"  --tls --cacert\
-    \ /tls-certs/ca.crt --cert /tls-certs/redis.crt --key /tls-certs/redis.key\n \
-    \   else\n        echo \"shutdown\" | redis-cli  -p \"${REDIS_PORT}\"\n    fi\n\
+    \        echo \"shutdown\" | redis-cli  -p \"${REDIS_TLS_PORT}\" --tls --cacert\
+    \ /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\n\
+    \    else\n        echo \"shutdown\" | redis-cli  -p \"${REDIS_PORT}\"\n    fi\n\
     set -e\n}\n\nidentify_announce_ip\n\nwhile [ -z \"${ANNOUNCE_IP}\" ]; do\n   \
     \ echo \"Error: Could not resolve the announce ip for this pod.\"\n    sleep 30\n\
     \    identify_announce_ip\ndone\n\nwhile true; do\n    sleep 60\n\n    # where\
@@ -206,7 +206,7 @@ data:
     SENTINEL_TLS_PORT=\nSERVICE=argocd-redis-ha\nSENTINEL_TLS_REPLICATION_ENABLED=false\n\
     REDIS_TLS_REPLICATION_ENABLED=false\n\nset -eu\nsentinel_get_master() {\nset +e\n\
     \    if [ \"$SENTINEL_PORT\" -eq 0 ]; then\n        redis-cli -h \"${SERVICE}\"\
-    \ -p \"${SENTINEL_TLS_PORT}\"   --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt\
+    \ -p \"${SENTINEL_TLS_PORT}\"  --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
     \ --key /tls-certs/redis.key sentinel get-master-addr-by-name \"${MASTER_GROUP}\"\
     \ |\\\n        grep -E '((^\\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\
     .){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\\s*$)|(^\\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\\\
@@ -278,7 +278,7 @@ data:
     \ \"  using master ip (${DEFAULT_MASTER})\"\n        redis_update \"${DEFAULT_MASTER}\"\
     \n        sentinel_update \"${DEFAULT_MASTER}\"\n    fi\n}\n\nredis_ping() {\n\
     set +e\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_TLS_PORT}\"  --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt\
+    \ -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
     \ --key /tls-certs/redis.key ping\n    else\n        redis-cli -h \"${MASTER}\"\
     \ -p \"${REDIS_PORT}\" ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n\
     \    retry=${1}\n    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n       \
@@ -292,7 +292,7 @@ data:
     \ (sentinel failover)..\"\n\n        if [ \"$SENTINEL_PORT\" -eq 0 ]; then\n \
     \           echo \"  on sentinel (${SERVICE}:${SENTINEL_TLS_PORT}), sentinel grp\
     \ (${MASTER_GROUP})\"\n            if redis-cli -h \"${SERVICE}\" -p \"${SENTINEL_TLS_PORT}\"\
-    \   --tls --cacert /tls-certs/ca.crt --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
+    \  --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
     \ sentinel failover \"${MASTER_GROUP}\" | grep -q 'NOGOODSLAVE' ; then\n     \
     \           echo \"  $(date) Failover returned with 'NOGOODSLAVE'\"\n        \
     \        echo \"Setting defaults for this pod..\"\n                setup_defaults\n\
@@ -374,7 +374,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: argocd-redis-ha
-    chart: redis-ha-4.22.5
+    chart: redis-ha-4.23.0
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap

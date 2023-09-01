@@ -3,7 +3,6 @@ data:
   ADMIRAL_URL: NA
   CFG_EXPIRATION: '5'
   CHART_CACHE_DRIVER: redis
-  CHART_REPOSITORY_URL: http://harbor-chartmuseum:80
   CONFIG_PATH: /etc/core/app.conf
   CORE_LOCAL_URL: http://127.0.0.1:8080
   CORE_URL: http://harbor-core:80
@@ -19,8 +18,8 @@ data:
   METRIC_PORT: '8001'
   METRIC_SUBSYSTEM: core
   NOTARY_URL: http://harbor-notary-server:4443
-  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-chartmuseum,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING)
-  PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: docker-hub,harbor,azure-acr,aws-ecr,google-gcr,quay,docker-registry
+  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING)
+  PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: docker-hub,harbor,azure-acr,aws-ecr,google-gcr,quay,docker-registry,github-ghcr,jfrog-artifactory
   PORT: '8080'
   PORTAL_URL: http://harbor-portal:80
   POSTGRESQL_DATABASE: registry
@@ -35,7 +34,6 @@ data:
   SYNC_REGISTRY: 'false'
   TOKEN_SERVICE_URL: http://harbor-core:80/service/token
   TRIVY_ADAPTER_URL: http://harbor-trivy:8080
-  WITH_CHARTMUSEUM: 'true'
   WITH_NOTARY: 'true'
   WITH_TRIVY: 'true'
 kind: ConfigMap
@@ -45,6 +43,6 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-16.1.2
+    helm.sh/chart: harbor-17.1.0
   name: harbor-core-envvars
   namespace: harbor

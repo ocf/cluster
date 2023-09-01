@@ -3,7 +3,7 @@ kind: RoleBinding
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.22.5
+    chart: redis-ha-4.23.0
     component: argocd-redis-ha-haproxy
     heritage: Helm
     release: argocd

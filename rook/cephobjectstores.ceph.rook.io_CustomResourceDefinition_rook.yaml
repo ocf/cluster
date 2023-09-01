@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.6.2
+    controller-gen.kubebuilder.io/version: v0.11.3
     helm.sh/resource-policy: keep
   creationTimestamp: null
   name: cephobjectstores.ceph.rook.io
@@ -39,6 +39,17 @@ spec:
           spec:
             description: ObjectStoreSpec represent the spec of a pool
             properties:
+              allowUsersInNamespaces:
+                description: The list of allowed namespaces in addition to the object
+                  store namespace where ceph object store users may be created. Specify
+                  "*" to allow all namespaces, otherwise list individual namespaces
+                  that are to be allowed. This is useful for applications that need
+                  object store credentials to be created in their own namespace, where
+                  neither OBCs nor COSI is being used to create buckets. The default
+                  is empty.
+                items:
+                  type: string
+                type: array
               dataPool:
                 description: The data pool settings
                 nullable: true
@@ -251,6 +262,20 @@ spec:
                       with root and intermediate certificates.
                     nullable: true
                     type: string
+                  dashboardEnabled:
+                    description: Whether rgw dashboard is enabled for the rgw daemon.
+                      If not set, the rgw dashboard will be enabled.
+                    nullable: true
+                    type: boolean
+                    x-kubernetes-preserve-unknown-fields: true
+                  disableMultisiteSyncTraffic:
+                    description: 'DisableMultisiteSyncTraffic, when true, prevents
+                      this object store''s gateways from transmitting multisite replication
+                      data. Note that this value does not affect whether gateways
+                      receive multisite replication traffic: see ObjectZone.spec.customEndpoints
+                      for that. If false or unset, this object store''s gateways will
+                      be able to transmit multisite replication data.'
+                    type: boolean
                   externalRgwEndpoints:
                     description: ExternalRgwEndpoints points to external RGW endpoint(s).
                       Multiple endpoints can be given, but for stability of ObjectBucketClaims,
@@ -263,12 +288,16 @@ spec:
                         v1.EndpointAddress.
                       properties:
                         hostname:
-                          description: The Hostname of this endpoint
+                          description: The DNS-addressable Hostname of this endpoint.
+                            This field will be preferred over IP if both are given.
                           type: string
                         ip:
-                          description: The IP of this endpoint.
+                          description: The IP of this endpoint. As a legacy behavior,
+                            this supports being given a DNS-adressable hostname as
+                            well.
                           type: string
                       type: object
+                      x-kubernetes-map-type: atomic
                     nullable: true
                     type: array
                   hostNetwork:
@@ -399,6 +428,7 @@ spec:
                                         type: object
                                       type: array
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 weight:
                                   description: Weight associated with matching the
                                     corresponding nodeSelectorTerm, in the range 1-100.
@@ -504,10 +534,12 @@ spec:
                                         type: object
                                       type: array
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 type: array
                             required:
                             - nodeSelectorTerms
                             type: object
+                            x-kubernetes-map-type: atomic
                         type: object
                       podAffinity:
                         description: PodAffinity is a group of inter pod affinity
@@ -587,6 +619,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaceSelector:
                                       description: A label query over the set of namespaces
                                         that the term applies to. The term is applied
@@ -644,6 +677,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaces:
                                       description: namespaces specifies a static list
                                         of namespace names that the term applies to.
@@ -748,6 +782,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaceSelector:
                                   description: A label query over the set of namespaces
                                     that the term applies to. The term is applied
@@ -804,6 +839,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaces:
                                   description: namespaces specifies a static list
                                     of namespace names that the term applies to. The
@@ -906,6 +942,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaceSelector:
                                       description: A label query over the set of namespaces
                                         that the term applies to. The term is applied
@@ -963,6 +1000,7 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                      x-kubernetes-map-type: atomic
                                     namespaces:
                                       description: namespaces specifies a static list
                                         of namespace names that the term applies to.
@@ -1067,6 +1105,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaceSelector:
                                   description: A label query over the set of namespaces
                                     that the term applies to. The term is applied
@@ -1123,6 +1162,7 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                  x-kubernetes-map-type: atomic
                                 namespaces:
                                   description: namespaces specifies a static list
                                     of namespace names that the term applies to. The
@@ -1247,16 +1287,22 @@ spec:
                                     requirements are ANDed.
                                   type: object
                               type: object
+                              x-kubernetes-map-type: atomic
                             matchLabelKeys:
-                              description: MatchLabelKeys is a set of pod label keys
-                                to select the pods over which spreading will be calculated.
-                                The keys are used to lookup values from the incoming
-                                pod labels, those key-value labels are ANDed with
-                                labelSelector to select the group of existing pods
-                                over which spreading will be calculated for the incoming
-                                pod. Keys that don't exist in the incoming pod labels
-                                will be ignored. A null or empty list means only match
-                                against labelSelector.
+                              description: "MatchLabelKeys is a set of pod label keys\
+                                \ to select the pods over which spreading will be\
+                                \ calculated. The keys are used to lookup values from\
+                                \ the incoming pod labels, those key-value labels\
+                                \ are ANDed with labelSelector to select the group\
+                                \ of existing pods over which spreading will be calculated\
+                                \ for the incoming pod. The same key is forbidden\
+                                \ to exist in both MatchLabelKeys and LabelSelector.\
+                                \ MatchLabelKeys cannot be set when LabelSelector\
+                                \ isn't set. Keys that don't exist in the incoming\
+                                \ pod labels will be ignored. A null or empty list\
+                                \ means only match against labelSelector. \n This\
+                                \ is a beta field and requires the MatchLabelKeysInPodTopologySpread\
+                                \ feature gate to be enabled (enabled by default)."
                               items:
                                 type: string
                               type: array
@@ -1320,8 +1366,8 @@ spec:
                                 \ included in the calculations. - Ignore: nodeAffinity/nodeSelector\
                                 \ are ignored. All nodes are included in the calculations.\
                                 \ \n If this value is nil, the behavior is equivalent\
-                                \ to the Honor policy. This is a alpha-level feature\
-                                \ enabled by the NodeInclusionPolicyInPodTopologySpread\
+                                \ to the Honor policy. This is a beta-level feature\
+                                \ default enabled by the NodeInclusionPolicyInPodTopologySpread\
                                 \ feature flag."
                               type: string
                             nodeTaintsPolicy:
@@ -1332,8 +1378,8 @@ spec:
                                 \ pod has a toleration, are included. - Ignore: node\
                                 \ taints are ignored. All nodes are included. \n If\
                                 \ this value is nil, the behavior is equivalent to\
-                                \ the Ignore policy. This is a alpha-level feature\
-                                \ enabled by the NodeInclusionPolicyInPodTopologySpread\
+                                \ the Ignore policy. This is a beta-level feature\
+                                \ default enabled by the NodeInclusionPolicyInPodTopologySpread\
                                 \ feature flag."
                               type: string
                             topologyKey:
@@ -1355,13 +1401,13 @@ spec:
                                 with a pod if it doesn''t satisfy the spread constraint.
                                 - DoNotSchedule (default) tells the scheduler not
                                 to schedule it. - ScheduleAnyway tells the scheduler
-                                to schedule the pod in any location,   but giving
-                                higher precedence to topologies that would help reduce
-                                the   skew. A constraint is considered "Unsatisfiable"
-                                for an incoming pod if and only if every possible
-                                node assignment for that pod would violate "MaxSkew"
-                                on some topology. For example, in a 3-zone cluster,
-                                MaxSkew is set to 1, and pods with the same labelSelector
+                                to schedule the pod in any location, but giving higher
+                                precedence to topologies that would help reduce the
+                                skew. A constraint is considered "Unsatisfiable" for
+                                an incoming pod if and only if every possible node
+                                assignment for that pod would violate "MaxSkew" on
+                                some topology. For example, in a 3-zone cluster, MaxSkew
+                                is set to 1, and pods with the same labelSelector
                                 spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P
                                 |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule,
                                 incoming pod can only be scheduled to zone2(zone3)
@@ -1390,6 +1436,28 @@ spec:
                     description: The resource requirements for the rgw pods
                     nullable: true
                     properties:
+                      claims:
+                        description: "Claims lists the names of resources, defined\
+                          \ in spec.resourceClaims, that are used by this container.\
+                          \ \n This is an alpha field and requires enabling the DynamicResourceAllocation\
+                          \ feature gate. \n This field is immutable. It can only\
+                          \ be set for containers."
+                        items:
+                          description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                          properties:
+                            name:
+                              description: Name must match the name of one entry in
+                                pod.spec.resourceClaims of the Pod where this field
+                                is used. It makes that resource available inside a
+                                container.
+                              type: string
+                          required:
+                          - name
+                          type: object
+                        type: array
+                        x-kubernetes-list-map-keys:
+                        - name
+                        x-kubernetes-list-type: map
                       limits:
                         additionalProperties:
                           anyOf:
@@ -1410,7 +1478,8 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                          to an implementation-defined value. Requests cannot exceed
+                          Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                     x-kubernetes-preserve-unknown-fields: true
@@ -1440,183 +1509,9 @@ spec:
                     type: string
                 type: object
               healthCheck:
-                description: The rgw Bucket healthchecks and liveness probe
+                description: The RGW health probes
                 nullable: true
                 properties:
-                  bucket:
-                    description: HealthCheckSpec represents the health check of an
-                      object store bucket
-                    properties:
-                      disabled:
-                        type: boolean
-                      interval:
-                        description: Interval is the internal in second or minute
-                          for the health check to run like 60s for 60 seconds
-                        type: string
-                      timeout:
-                        type: string
-                    type: object
-                  livenessProbe:
-                    description: ProbeSpec is a wrapper around Probe so it can be
-                      enabled or disabled for a Ceph daemon
-                    properties:
-                      disabled:
-                        description: Disabled determines whether probe is disable
-                          or not
-                        type: boolean
-                      probe:
-                        description: Probe describes a health check to be performed
-                          against a container to determine whether it is alive or
-                          ready to receive traffic.
-                        properties:
-                          exec:
-                            description: Exec specifies the action to take.
-                            properties:
-                              command:
-                                description: Command is the command line to execute
-                                  inside the container, the working directory for
-                                  the command  is root ('/') in the container's filesystem.
-                                  The command is simply exec'd, it is not run inside
-                                  a shell, so traditional shell instructions ('|',
-                                  etc) won't work. To use a shell, you need to explicitly
-                                  call out to that shell. Exit status of 0 is treated
-                                  as live/healthy and non-zero is unhealthy.
-                                items:
-                                  type: string
-                                type: array
-                            type: object
-                          failureThreshold:
-                            description: Minimum consecutive failures for the probe
-                              to be considered failed after having succeeded. Defaults
-                              to 3. Minimum value is 1.
-                            format: int32
-                            type: integer
-                          grpc:
-                            description: GRPC specifies an action involving a GRPC
-                              port. This is a beta field and requires enabling GRPCContainerProbe
-                              feature gate.
-                            properties:
-                              port:
-                                description: Port number of the gRPC service. Number
-                                  must be in the range 1 to 65535.
-                                format: int32
-                                type: integer
-                              service:
-                                description: "Service is the name of the service to\
-                                  \ place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).\
-                                  \ \n If this is not specified, the default behavior\
-                                  \ is defined by gRPC."
-                                type: string
-                            required:
-                            - port
-                            type: object
-                          httpGet:
-                            description: HTTPGet specifies the http request to perform.
-                            properties:
-                              host:
-                                description: Host name to connect to, defaults to
-                                  the pod IP. You probably want to set "Host" in httpHeaders
-                                  instead.
-                                type: string
-                              httpHeaders:
-                                description: Custom headers to set in the request.
-                                  HTTP allows repeated headers.
-                                items:
-                                  description: HTTPHeader describes a custom header
-                                    to be used in HTTP probes
-                                  properties:
-                                    name:
-                                      description: The header field name
-                                      type: string
-                                    value:
-                                      description: The header field value
-                                      type: string
-                                  required:
-                                  - name
-                                  - value
-                                  type: object
-                                type: array
-                              path:
-                                description: Path to access on the HTTP server.
-                                type: string
-                              port:
-                                anyOf:
-                                - type: integer
-                                - type: string
-                                description: Name or number of the port to access
-                                  on the container. Number must be in the range 1
-                                  to 65535. Name must be an IANA_SVC_NAME.
-                                x-kubernetes-int-or-string: true
-                              scheme:
-                                description: Scheme to use for connecting to the host.
-                                  Defaults to HTTP.
-                                type: string
-                            required:
-                            - port
-                            type: object
-                          initialDelaySeconds:
-                            description: 'Number of seconds after the container has
-                              started before liveness probes are initiated. More info:
-                              https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
-                            format: int32
-                            type: integer
-                          periodSeconds:
-                            description: How often (in seconds) to perform the probe.
-                              Default to 10 seconds. Minimum value is 1.
-                            format: int32
-                            type: integer
-                          successThreshold:
-                            description: Minimum consecutive successes for the probe
-                              to be considered successful after having failed. Defaults
-                              to 1. Must be 1 for liveness and startup. Minimum value
-                              is 1.
-                            format: int32
-                            type: integer
-                          tcpSocket:
-                            description: TCPSocket specifies an action involving a
-                              TCP port.
-                            properties:
-                              host:
-                                description: 'Optional: Host name to connect to, defaults
-                                  to the pod IP.'
-                                type: string
-                              port:
-                                anyOf:
-                                - type: integer
-                                - type: string
-                                description: Number or name of the port to access
-                                  on the container. Number must be in the range 1
-                                  to 65535. Name must be an IANA_SVC_NAME.
-                                x-kubernetes-int-or-string: true
-                            required:
-                            - port
-                            type: object
-                          terminationGracePeriodSeconds:
-                            description: Optional duration in seconds the pod needs
-                              to terminate gracefully upon probe failure. The grace
-                              period is the duration in seconds after the processes
-                              running in the pod are sent a termination signal and
-                              the time when the processes are forcibly halted with
-                              a kill signal. Set this value longer than the expected
-                              cleanup time for your process. If this value is nil,
-                              the pod's terminationGracePeriodSeconds will be used.
-                              Otherwise, this value overrides the value provided by
-                              the pod spec. Value must be non-negative integer. The
-                              value zero indicates stop immediately via the kill signal
-                              (no opportunity to shut down). This is a beta field
-                              and requires enabling ProbeTerminationGracePeriod feature
-                              gate. Minimum value is 1. spec.terminationGracePeriodSeconds
-                              is used if unset.
-                            format: int64
-                            type: integer
-                          timeoutSeconds:
-                            description: 'Number of seconds after which the probe
-                              times out. Defaults to 1 second. Minimum value is 1.
-                              More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
-                            format: int32
-                            type: integer
-                        type: object
-                    type: object
                   readinessProbe:
                     description: ProbeSpec is a wrapper around Probe so it can be
                       enabled or disabled for a Ceph daemon
@@ -1654,8 +1549,7 @@ spec:
                             type: integer
                           grpc:
                             description: GRPC specifies an action involving a GRPC
-                              port. This is a beta field and requires enabling GRPCContainerProbe
-                              feature gate.
+                              port.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -1687,7 +1581,9 @@ spec:
                                     to be used in HTTP probes
                                   properties:
                                     name:
-                                      description: The header field name
+                                      description: The header field name. This will
+                                        be canonicalized upon output, so case-variant
+                                        names will be understood as the same header.
                                       type: string
                                     value:
                                       description: The header field value
@@ -1778,6 +1674,7 @@ spec:
                             type: integer
                         type: object
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   startupProbe:
                     description: ProbeSpec is a wrapper around Probe so it can be
                       enabled or disabled for a Ceph daemon
@@ -1815,8 +1712,7 @@ spec:
                             type: integer
                           grpc:
                             description: GRPC specifies an action involving a GRPC
-                              port. This is a beta field and requires enabling GRPCContainerProbe
-                              feature gate.
+                              port.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -1848,7 +1744,9 @@ spec:
                                     to be used in HTTP probes
                                   properties:
                                     name:
-                                      description: The header field name
+                                      description: The header field name. This will
+                                        be canonicalized upon output, so case-variant
+                                        names will be understood as the same header.
                                       type: string
                                     value:
                                       description: The header field value
@@ -2142,6 +2040,20 @@ spec:
                 description: Security represents security settings
                 nullable: true
                 properties:
+                  keyRotation:
+                    description: KeyRotation defines options for Key Rotation.
+                    nullable: true
+                    properties:
+                      enabled:
+                        default: false
+                        description: Enabled represents whether the key rotation is
+                          enabled.
+                        type: boolean
+                      schedule:
+                        description: Schedule represents the cron schedule for key
+                          rotation.
+                        type: string
+                    type: object
                   kms:
                     description: KeyManagementService is the main Key Management option
                     nullable: true
@@ -2192,19 +2104,6 @@ spec:
             description: ObjectStoreStatus represents the status of a Ceph Object
               Store resource
             properties:
-              bucketStatus:
-                description: BucketStatus represents the status of a bucket
-                properties:
-                  details:
-                    type: string
-                  health:
-                    description: ConditionType represent a resource's status
-                    type: string
-                  lastChanged:
-                    type: string
-                  lastChecked:
-                    type: string
-                type: object
               conditions:
                 items:
                   description: Condition represents a status condition on any Rook-Ceph
@@ -2266,9 +2165,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ''
-    plural: ''
-  conditions: []
-  storedVersions: []
