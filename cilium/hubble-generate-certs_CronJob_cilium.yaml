@@ -1,7 +1,6 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  annotations: null
   labels:
     app.kubernetes.io/name: hubble-generate-certs
     app.kubernetes.io/part-of: cilium
@@ -30,7 +29,7 @@ spec:
             - --hubble-relay-client-cert-validity-duration=94608000s
             command:
             - /usr/bin/cilium-certgen
-            image: quay.io/cilium/certgen:v0.1.9@sha256:89a0847753686444daabde9474b48340993bd19c7bea66a46e45b2974b82041f
+            image: quay.io/cilium/certgen:v0.1.8@sha256:4a456552a5f192992a6edcec2febb1c54870d665173a33dc7d876129b199ddbd
             imagePullPolicy: IfNotPresent
             name: certgen
           hostNetwork: true

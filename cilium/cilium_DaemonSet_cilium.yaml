@@ -49,13 +49,33 @@ spec:
               fieldPath: metadata.namespace
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
+        - name: CILIUM_CNI_CHAINING_MODE
+          valueFrom:
+            configMapKeyRef:
+              key: cni-chaining-mode
+              name: cilium-config
+              optional: true
+        - name: CILIUM_CUSTOM_CNI_CONF
+          valueFrom:
+            configMapKeyRef:
+              key: custom-cni-conf
+              name: cilium-config
+              optional: true
         - name: KUBERNETES_SERVICE_HOST
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         lifecycle:
+          postStart:
+            exec:
+              command:
+              - bash
+              - -c
+              - '/cni-install.sh --enable-debug=false --cni-exclusive=true --log-file=/var/run/cilium/cilium-cni.log
+
+                '
           preStop:
             exec:
               command:
@@ -165,7 +185,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -188,7 +208,7 @@ spec:
           value: /run/cilium/cgroupv2
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: mount-cgroup
         securityContext:
@@ -221,7 +241,7 @@ spec:
         env:
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: apply-sysctl-overwrites
         securityContext:
@@ -247,7 +267,7 @@ spec:
         - /bin/bash
         - -c
         - --
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: mount-bpf-fs
         securityContext:
@@ -276,7 +296,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -306,7 +326,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.15.0-pre.0
+        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
@@ -368,22 +388,10 @@ spec:
           type: FileOrCreate
         name: xtables-lock
       - name: clustermesh-secrets
-        projected:
+        secret:
           defaultMode: 256
-          sources:
-          - secret:
-              name: cilium-clustermesh
-              optional: true
-          - secret:
-              items:
-              - key: tls.key
-                path: common-etcd-client.key
-              - key: tls.crt
-                path: common-etcd-client.crt
-              - key: ca.crt
-                path: common-etcd-client-ca.crt
-              name: clustermesh-apiserver-remote-cert
-              optional: true
+          optional: true
+          secretName: cilium-clustermesh
       - hostPath:
           path: /proc/sys/net
           type: Directory
@@ -398,12 +406,12 @@ spec:
           sources:
           - secret:
               items:
+              - key: ca.crt
+                path: client-ca.crt
               - key: tls.crt
                 path: server.crt
               - key: tls.key
                 path: server.key
-              - key: ca.crt
-                path: client-ca.crt
               name: hubble-server-certs
               optional: true
   updateStrategy:
