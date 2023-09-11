@@ -13,7 +13,7 @@ metadata:
   namespace: teleport
 spec:
   minReadySeconds: 15
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: proxy
