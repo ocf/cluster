@@ -22,6 +22,8 @@ data:
     - groups
 
     '
+  resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: '{"jqPathExpressions":
+    [".webhooks[]?.clientConfig.caBundle"]}'
   server.rbac.log.enforce.enable: 'false'
   timeout.hard.reconciliation: 0s
   timeout.reconciliation: 180s
