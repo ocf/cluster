@@ -21,6 +21,8 @@ spec:
         envFrom:
         - configMapRef:
             name: outline
+        - secretRef:
+            name: outline
         image: docker.io/outlinewiki/outline:0.68.1
         imagePullPolicy: IfNotPresent
         name: main
