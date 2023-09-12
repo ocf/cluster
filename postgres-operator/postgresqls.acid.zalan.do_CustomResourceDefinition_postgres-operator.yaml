@@ -205,6 +205,10 @@ spec:
                     *$
                   type: string
                 type: array
+              masterServiceAnnotations:
+                additionalProperties:
+                  type: string
+                type: object
               nodeAffinity:
                 properties:
                   preferredDuringSchedulingIgnoredDuringExecution:
@@ -301,6 +305,8 @@ spec:
                 type: integer
               patroni:
                 properties:
+                  failsafe_mode:
+                    type: boolean
                   initdb:
                     additionalProperties:
                       type: string
@@ -347,13 +353,12 @@ spec:
                     type: object
                   version:
                     enum:
-                    - '9.5'
-                    - '9.6'
                     - '10'
                     - '11'
                     - '12'
                     - '13'
                     - '14'
+                    - '15'
                     type: string
                 required:
                 - version
@@ -383,6 +388,10 @@ spec:
               replicaLoadBalancer:
                 description: deprecated
                 type: boolean
+              replicaServiceAnnotations:
+                additionalProperties:
+                  type: string
+                type: object
               resources:
                 properties:
                   limits:
@@ -573,7 +582,7 @@ spec:
                               type: string
                             operator:
                               enum:
-                              - DoesNotExists
+                              - DoesNotExist
                               - Exists
                               - In
                               - NotIn

@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: postgres-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgres-operator
-    helm.sh/chart: postgres-operator-1.8.2
+    helm.sh/chart: postgres-operator-1.10.1
   name: postgres-operator
   namespace: postgres-operator
 spec:
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 06226280c5d84333ddae6bc08f62a4966115d88083df9a8cc7ae35ff6da2b9b9
+        checksum/config: 8a272a88b75d58e2d41edf5e72199c4025a5c6a1adcfa7e5c0b5871240ed44fa
       labels:
         app.kubernetes.io/instance: postgres-operator
         app.kubernetes.io/name: postgres-operator
@@ -27,9 +27,15 @@ spec:
       - env:
         - name: POSTGRES_OPERATOR_CONFIGURATION_OBJECT
           value: postgres-operator
-        image: registry.opensource.zalan.do/acid/postgres-operator:v1.8.2-43-g3e148ea5
+        image: registry.opensource.zalan.do/acid/postgres-operator:v1.10.1
         imagePullPolicy: IfNotPresent
         name: postgres-operator
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
         resources:
           limits:
             cpu: 500m
