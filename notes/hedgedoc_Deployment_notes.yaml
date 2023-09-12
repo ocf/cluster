@@ -24,6 +24,16 @@ spec:
             secretKeyRef:
               key: password
               name: notes.ocf-notes.credentials.postgresql.acid.zalan.do
+        - name: CMD_SESSION_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: session-secret
+              name: hedgedoc
+        - name: CMD_OAUTH2_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: oidc-client-secret
+              name: hedgedoc
         - name: CMD_S3_BUCKET
           valueFrom:
             configMapKeyRef:
@@ -51,18 +61,24 @@ spec:
           value: 'false'
         - name: CMD_ALLOW_EMAIL_REGISTER
           value: 'false'
-        - name: CMD_SAML_ISSUER
-          value: codimd
-        - name: CMD_SAML_IDENTIFIERFORMAT
-          value: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
-        - name: CMD_SAML_IDPSSOURL
-          value: https://auth.ocf.berkeley.edu/auth/realms/ocf/protocol/saml
-        - name: CMD_SAML_IDPCERT
-          value: /keycloak.pem
-        - name: CMD_SAML_ATTRIBUTE_EMAIL
+        - name: CMD_OAUTH2_USER_PROFILE_URL
+          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/userinfo
+        - name: CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR
+          value: preferred_username
+        - name: CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR
+          value: name
+        - name: CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR
           value: email
-        - name: CMD_SAML_ATTRIBUTE_USERNAME
-          value: username
+        - name: CMD_OAUTH2_TOKEN_URL
+          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/token
+        - name: CMD_OAUTH2_AUTHORIZATION_URL
+          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/auth
+        - name: CMD_OAUTH2_CLIENT_ID
+          value: hedgedoc
+        - name: CMD_OAUTH2_PROVIDERNAME
+          value: OCF
+        - name: CMD_OAUTH2_SCOPE
+          value: openid email profile
         - name: CMD_DB_URL
           value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-notes:5432/notes?ssl=no-verify
         - name: CMD_DB_DIALECT
