@@ -62,7 +62,7 @@ spec:
         - name: CMD_ALLOW_EMAIL_REGISTER
           value: 'false'
         - name: CMD_OAUTH2_USER_PROFILE_URL
-          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/userinfo
+          value: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/userinfo
         - name: CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR
           value: preferred_username
         - name: CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR
@@ -70,9 +70,9 @@ spec:
         - name: CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR
           value: email
         - name: CMD_OAUTH2_TOKEN_URL
-          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/token
+          value: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/token
         - name: CMD_OAUTH2_AUTHORIZATION_URL
-          value: https://idm.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/auth
+          value: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/auth
         - name: CMD_OAUTH2_CLIENT_ID
           value: hedgedoc
         - name: CMD_OAUTH2_PROVIDERNAME
