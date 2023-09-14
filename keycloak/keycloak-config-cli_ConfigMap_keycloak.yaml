@@ -1,0 +1,65 @@
+apiVersion: v1
+data:
+  configuration: '{"id": "ocf", "realm": "ocf", "displayName": "OCF", "sslRequired":
+    "all", "enabled": true, "registrationAllowed": false, "loginWithEmailAllowed":
+    false, "loginTheme": "keywind", "accountTheme": "keycloak.v2", "adminTheme": "keycloak.v2",
+    "emailTheme": "keycloak", "roles": {"realm": [{"name": "ocfstaff", "composite":
+    false, "clientRole": false}, {"name": "ocfroot", "composite": false, "clientRole":
+    false}, {"name": "opstaff", "composite": false, "clientRole": false}]}, "groups":
+    [{"name": "ocf"}, {"name": "ocfalumni"}, {"name": "ocfapphost"}, {"name": "ocfhpc"},
+    {"name": "ocfofficers"}, {"name": "ocfroot", "realmRoles": ["ocfroot"], "clientRoles":
+    {"realm-management": ["manage-clients", "manage-events", "manage-identity-providers",
+    "manage-realm", "manage-users", "manage-authorization", "realm-admin"]}}, {"name":
+    "ocfstaff", "realmRoles": ["ocfstaff"]}, {"name": "opstaff", "realmRoles": ["opstaff"]},
+    {"name": "sorry"}], "clients": [{"clientId": "argocd", "name": "ArgoCD", "description":
+    "Declarative GitOps CD for Kubernetes", "baseUrl": "https://argo.ocf.berkeley.edu/",
+    "clientAuthenticatorType": "client-secret", "redirectUris": ["https://argo.ocf.berkeley.edu/auth/callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "hedgedoc", "name": "HedgeDoc", "description": "Collaborative
+    Markdown Notes", "baseUrl": "https://notes.ocf.berkeley.edu/", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://notes.ocf.berkeley.edu/auth/oauth2/callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
+    {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
+    [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
+    "consentRequired": false, "config": {"full.path": "false", "id.token.claim": "true",
+    "access.token.claim": "true", "claim.name": "groups", "userinfo.token.claim":
+    "true"}}]}], "defaultDefaultClientScopes": ["acr", "email", "profile", "roles",
+    "web-origins", "groups"], "components": {"org.keycloak.storage.UserStorageProvider":
+    [{"name": "ldap", "providerId": "ldap", "config": {"enabled": ["true"], "vendor":
+    ["other"], "connectionUrl": ["ldaps://ldap.ocf.berkeley.edu"], "useTruststoreSpi":
+    ["ldapsOnly"], "connectionPooling": ["true"], "authType": ["none"], "editMode":
+    ["READ_ONLY"], "usersDn": ["ou=People,dc=OCF,dc=Berkeley,dc=EDU"], "usernameLDAPAttribute":
+    ["uid"], "rdnLDAPAttribute": ["uid"], "uuidLDAPAttribute": ["uid"], "userObjectClasses":
+    ["ocfAccount,account,posixAccount"], "customUserSearchFilter": ["(!(loginShell=/opt/share/utils/bin/sorried))"],
+    "searchScope": ["1"], "pagination": ["true"], "importEnabled": ["true"], "batchSizeForSync":
+    ["1000"], "fullSyncPeriod": ["604800"], "changedSyncPeriod": ["86400"], "allowKerberosAuthentication":
+    ["true"], "kerberosRealm": ["OCF.BERKELEY.EDU"], "serverPrincipal": ["HTTP/idm.ocf.berkeley.edu@OCF.BERKELEY.EDU"],
+    "keyTab": ["/vault/secrets/keytab"], "debug": ["true"], "useKerberosForPasswordAuthentication":
+    ["true"], "cachePolicy": ["DEFAULT"], "syncRegistrations": ["false"], "validatePasswordPolicy":
+    ["false"], "trustEmail": ["true"], "priority": ["0"]}, "subComponents": {"org.keycloak.storage.ldap.mappers.LDAPStorageMapper":
+    [{"name": "username", "providerId": "user-attribute-ldap-mapper", "subComponents":
+    {}, "config": {"ldap.attribute": ["uid"], "is.mandatory.in.ldap": ["true"], "always.read.value.from.ldap":
+    ["false"], "read.only": ["true"], "user.model.attribute": ["username"]}}, {"name":
+    "email", "providerId": "user-attribute-ldap-mapper", "subComponents": {}, "config":
+    {"ldap.attribute": ["ocfEmail"], "is.mandatory.in.ldap": ["true"], "is.binary.attribute":
+    ["false"], "always.read.value.from.ldap": ["false"], "read.only": ["true"], "user.model.attribute":
+    ["email"]}}, {"name": "first name", "providerId": "user-attribute-ldap-mapper",
+    "subComponents": {}, "config": {"ldap.attribute": ["cn"], "is.mandatory.in.ldap":
+    ["true"], "read.only": ["true"], "always.read.value.from.ldap": ["true"], "user.model.attribute":
+    ["firstName"]}}, {"name": "creation date", "providerId": "user-attribute-ldap-mapper",
+    "subComponents": {}, "config": {"ldap.attribute": ["createTimestamp"], "is.mandatory.in.ldap":
+    ["false"], "read.only": ["true"], "always.read.value.from.ldap": ["true"], "user.model.attribute":
+    ["createTimestamp"]}}, {"name": "modify date", "providerId": "user-attribute-ldap-mapper",
+    "subComponents": {}, "config": {"ldap.attribute": ["modifyTimestamp"], "is.mandatory.in.ldap":
+    ["false"], "read.only": ["true"], "always.read.value.from.ldap": ["true"], "user.model.attribute":
+    ["modifyTimestamp"]}}, {"name": "group", "providerId": "group-ldap-mapper", "subComponents":
+    {}, "config": {"mode": ["READ_ONLY"], "membership.attribute.type": ["UID"], "user.roles.retrieve.strategy":
+    ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"], "group.name.ldap.attribute": ["cn"], "preserve.group.inheritance":
+    ["false"], "ignore.missing.groups": ["false"], "membership.user.ldap.attribute":
+    ["uid"], "membership.ldap.attribute": ["memberUid"], "group.object.classes": ["posixGroup"],
+    "groups.dn": ["ou=Group,dc=ocf,dc=Berkeley,dc=EDU"], "memberof.ldap.attribute":
+    ["memberOf"], "drop.non.existing.groups.during.sync": ["false"]}}]}}]}}'
+kind: ConfigMap
+metadata:
+  name: keycloak-config-cli
