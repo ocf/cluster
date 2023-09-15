@@ -23,7 +23,7 @@ spec:
             name: outline
         - secretRef:
             name: outline
-        image: docker.io/outlinewiki/outline:0.68.1
+        image: docker.io/outlinewiki/outline:0.71.0
         imagePullPolicy: IfNotPresent
         name: main
         ports:
