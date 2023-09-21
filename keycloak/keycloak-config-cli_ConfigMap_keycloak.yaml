@@ -16,8 +16,12 @@ data:
     "clientAuthenticatorType": "client-secret", "redirectUris": ["https://argo.ocf.berkeley.edu/auth/callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "hedgedoc", "name": "HedgeDoc", "description": "Collaborative
-    Markdown Notes", "baseUrl": "https://notes.ocf.berkeley.edu/", "clientAuthenticatorType":
+    markdown notes", "baseUrl": "https://notes.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://notes.ocf.berkeley.edu/auth/oauth2/callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "outline", "name": "Outline", "description": "Team knowledge
+    base & wiki", "baseUrl": "https://docs.ocf.berkeley.edu/", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://docs.ocf.berkeley.edu/auth/oidc.callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
     {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
