@@ -9,11 +9,11 @@ data:
   DEFAULT_LANGUAGE: en_US
   ENABLE_UPDATES: 'true'
   FORCE_HTTPS: 'true'
-  OIDC_AUTH_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/auth
+  OIDC_AUTH_URI: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/auth
   OIDC_CLIENT_ID: outline
-  OIDC_DISPLAY_NAME: OCF Auth
-  OIDC_TOKEN_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/token
-  OIDC_USERINFO_URI: https://auth.ocf.berkeley.edu/auth/realms/ocf/protocol/openid-connect/userinfo
+  OIDC_DISPLAY_NAME: OCF
+  OIDC_TOKEN_URI: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/token
+  OIDC_USERINFO_URI: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/userinfo
   PGSSLMODE: require
   PORT: '8080'
   SLACK_MESSAGE_ACTIONS: 'true'
