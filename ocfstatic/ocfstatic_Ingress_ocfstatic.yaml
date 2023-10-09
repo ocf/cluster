@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    io.cilium/websocket: enabled
+    kubernetes.io/tls-acme: 'true'
+    projectcontour.io/websocket-routes: /
+  name: ocfstatic
+spec:
+  ingressClassName: contour
+  rules:
+  - host: new.ocf.berkeley.edu
+    http:
+      paths:
+      - backend:
+          service:
+            name: ocfstatic
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - new.ocf.berkeley.edu
+    secretName: ocfstatic-tls

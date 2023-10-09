@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocfstatic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: ocfstatic
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: ocfstatic
+    spec:
+      containers:
+      - image: harbor.ocf.berkeley.edu/ocf/ocfstatic/ocfstatic:37a3c2a080be85710832ca2bdf2ebc7cdece3b6d
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 80
