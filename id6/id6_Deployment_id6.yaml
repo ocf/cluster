@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: id6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: id6
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: id6
+    spec:
+      containers:
+      - env:
+        - name: _DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: id6.ocf-id6.credentials.postgresql.acid.zalan.do
+        - name: _DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: id6.ocf-id6.credentials.postgresql.acid.zalan.do
+        - name: DISCORD_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: discord-token
+              name: id6
+        - name: CONFIG_FILE_PATH
+          value: /config/config.toml
+        - name: POSTGRES_CONN
+          value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-id6:5432/id6
+        image: harbor.ocf.berkeley.edu/ocf/id6/id6:8136e6393eecca6e2b90c25f480af0f49371a7ec
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /config
+          name: id6
+      volumes:
+      - configMap:
+          name: id6
+        name: id6
