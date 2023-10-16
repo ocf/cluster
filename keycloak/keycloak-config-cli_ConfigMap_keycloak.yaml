@@ -23,9 +23,13 @@ data:
     base & wiki", "baseUrl": "https://docs.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://docs.ocf.berkeley.edu/auth/oidc.callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
-    true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
-    {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
-    [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
+    true}, {"clientId": "id6", "name": "id6", "description": "Identification linking
+    engine", "baseUrl": "https://github.com/ocf/id6", "clientAuthenticatorType": "client-secret",
+    "redirectUris": ["https://discord.ocf.berkeley.edu/*"], "webOrigins": ["+"], "publicClient":
+    false, "protocol": "openid-connect", "enabled": true}], "clientScopes": [{"name":
+    "groups", "protocol": "openid-connect", "attributes": {"include.in.token.scope":
+    "true", "display.on.consent.screen": "true"}, "protocolMappers": [{"name": "groups",
+    "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
     "consentRequired": false, "config": {"full.path": "false", "id.token.claim": "true",
     "access.token.claim": "true", "claim.name": "groups", "userinfo.token.claim":
     "true"}}]}], "defaultDefaultClientScopes": ["acr", "email", "profile", "roles",
