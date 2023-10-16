@@ -26,14 +26,16 @@ data:
     true}, {"clientId": "id6", "name": "id6", "description": "Identification linking
     engine", "baseUrl": "https://github.com/ocf/id6", "clientAuthenticatorType": "client-secret",
     "redirectUris": ["https://discord.ocf.berkeley.edu/*"], "webOrigins": ["+"], "publicClient":
-    false, "protocol": "openid-connect", "enabled": true}], "clientScopes": [{"name":
-    "groups", "protocol": "openid-connect", "attributes": {"include.in.token.scope":
-    "true", "display.on.consent.screen": "true"}, "protocolMappers": [{"name": "groups",
-    "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
-    "consentRequired": false, "config": {"full.path": "false", "id.token.claim": "true",
-    "access.token.claim": "true", "claim.name": "groups", "userinfo.token.claim":
-    "true"}}]}], "defaultDefaultClientScopes": ["acr", "email", "profile", "roles",
-    "web-origins", "groups"], "components": {"org.keycloak.storage.UserStorageProvider":
+    false, "protocol": "openid-connect", "enabled": true, "protocolMappers": [{"name":
+    "audience", "protocol": "openid-connect", "protocolMapper": "oidc-audience-mapper",
+    "config": {"included.client.audience": "id6", "id.token.claim": "false", "access.token.claim":
+    "true"}}]}], "clientScopes": [{"name": "groups", "protocol": "openid-connect",
+    "attributes": {"include.in.token.scope": "true", "display.on.consent.screen":
+    "true"}, "protocolMappers": [{"name": "groups", "protocol": "openid-connect",
+    "protocolMapper": "oidc-group-membership-mapper", "consentRequired": false, "config":
+    {"full.path": "false", "id.token.claim": "true", "access.token.claim": "true",
+    "claim.name": "groups", "userinfo.token.claim": "true"}}]}], "defaultDefaultClientScopes":
+    ["acr", "email", "profile", "roles", "web-origins", "groups"], "components": {"org.keycloak.storage.UserStorageProvider":
     [{"name": "ldap", "providerId": "ldap", "config": {"enabled": ["true"], "vendor":
     ["other"], "connectionUrl": ["ldaps://ldap.ocf.berkeley.edu"], "useTruststoreSpi":
     ["ldapsOnly"], "connectionPooling": ["true"], "authType": ["none"], "editMode":
