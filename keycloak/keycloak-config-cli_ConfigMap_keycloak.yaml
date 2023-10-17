@@ -29,13 +29,17 @@ data:
     false, "protocol": "openid-connect", "enabled": true, "protocolMappers": [{"name":
     "audience", "protocol": "openid-connect", "protocolMapper": "oidc-audience-mapper",
     "config": {"included.client.audience": "id6", "id.token.claim": "false", "access.token.claim":
-    "true"}}]}], "clientScopes": [{"name": "groups", "protocol": "openid-connect",
-    "attributes": {"include.in.token.scope": "true", "display.on.consent.screen":
-    "true"}, "protocolMappers": [{"name": "groups", "protocol": "openid-connect",
-    "protocolMapper": "oidc-group-membership-mapper", "consentRequired": false, "config":
-    {"full.path": "false", "id.token.claim": "true", "access.token.claim": "true",
-    "claim.name": "groups", "userinfo.token.claim": "true"}}]}], "defaultDefaultClientScopes":
-    ["acr", "email", "profile", "roles", "web-origins", "groups"], "components": {"org.keycloak.storage.UserStorageProvider":
+    "true"}}]}, {"clientId": "macwiitl", "name": "MacWiitl", "description": "WIITL
+    Laptop Extension", "baseUrl": "https://macwiitl.ocf.berkeley.edu/", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://macwiitl.ocf.berkeley.edu/oauth2-callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
+    {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
+    [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
+    "consentRequired": false, "config": {"full.path": "false", "id.token.claim": "true",
+    "access.token.claim": "true", "claim.name": "groups", "userinfo.token.claim":
+    "true"}}]}], "defaultDefaultClientScopes": ["acr", "email", "profile", "roles",
+    "web-origins", "groups"], "components": {"org.keycloak.storage.UserStorageProvider":
     [{"name": "ldap", "providerId": "ldap", "config": {"enabled": ["true"], "vendor":
     ["other"], "connectionUrl": ["ldaps://ldap.ocf.berkeley.edu"], "useTruststoreSpi":
     ["ldapsOnly"], "connectionPooling": ["true"], "authType": ["none"], "editMode":
