@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: ocfstatic
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/ocfstatic/ocfstatic:232f2f7358051e8b74b26c79ba680789d53238ab
+      - image: harbor.ocf.berkeley.edu/ocf/ocfstatic/ocfstatic:3045e5e1aa52aa767ce65a065a110625ed6c5f28
         imagePullPolicy: IfNotPresent
         name: main
         ports:
