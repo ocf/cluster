@@ -1,7 +1,8 @@
 apiVersion: v1
 data:
   configuration: '{"id": "ocf", "realm": "ocf", "displayName": "OCF", "sslRequired":
-    "all", "enabled": true, "registrationAllowed": false, "loginWithEmailAllowed":
+    "all", "enabled": true, "ssoSessionIdleTimeout": 2592000, "ssoSessionMaxLifespan":
+    2592000, "offlineSessionIdleTimeout": 2592000, "registrationAllowed": false, "loginWithEmailAllowed":
     false, "loginTheme": "keywind", "accountTheme": "keycloak.v2", "adminTheme": "keycloak.v2",
     "emailTheme": "keycloak", "roles": {"realm": [{"name": "ocfstaff", "composite":
     false, "clientRole": false}, {"name": "ocfroot", "composite": false, "clientRole":
