@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-server
     app.kubernetes.io/part-of: argo-workflows
-    helm.sh/chart: argo-workflows-0.22.0
+    helm.sh/chart: argo-workflows-0.40.1
   name: argo-workflows-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io

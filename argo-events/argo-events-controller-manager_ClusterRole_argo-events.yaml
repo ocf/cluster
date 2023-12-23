@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-events-controller-manager
     app.kubernetes.io/part-of: argo-events
-    helm.sh/chart: argo-events-2.0.6
+    helm.sh/chart: argo-events-2.4.1
   name: argo-events-controller-manager
 rules:
 - apiGroups:
@@ -56,7 +56,6 @@ rules:
   - pods
   - pods/exec
   - configmaps
-  - secrets
   - services
   - persistentvolumeclaims
   verbs:
@@ -64,6 +63,17 @@ rules:
   - get
   - list
   - watch
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  verbs:
+  - create
+  - get
+  - list
   - update
   - patch
   - delete

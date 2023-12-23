@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   config: "metricsConfig:\n  enabled: true\n  path: /metrics\n  port: 9090\n  ignoreErrors:\
-    \ false\n  secure: false\n"
+    \ false\n  secure: false\nnodeEvents:\n  enabled: true\n"
 kind: ConfigMap
 metadata:
   labels:
@@ -10,5 +10,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-cm
     app.kubernetes.io/part-of: argo-workflows
-    helm.sh/chart: argo-workflows-0.22.0
+    helm.sh/chart: argo-workflows-0.40.1
   name: argo-workflows-workflow-controller-configmap
+  namespace: argo-workflows

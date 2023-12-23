@@ -7,11 +7,13 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-server
     app.kubernetes.io/part-of: argo-workflows
-    app.kubernetes.io/version: v3.4.4
-    helm.sh/chart: argo-workflows-0.22.0
+    app.kubernetes.io/version: v3.5.2
+    helm.sh/chart: argo-workflows-0.40.1
   name: argo-workflows-server
+  namespace: argo-workflows
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/instance: argo-workflows
@@ -24,14 +26,20 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argo-workflows-server
         app.kubernetes.io/part-of: argo-workflows
-        app.kubernetes.io/version: v3.4.4
-        helm.sh/chart: argo-workflows-0.22.0
+        app.kubernetes.io/version: v3.5.2
+        helm.sh/chart: argo-workflows-0.40.1
     spec:
       containers:
       - args:
         - server
         - --configmap=argo-workflows-workflow-controller-configmap
         - --secure=false
+        - --loglevel
+        - info
+        - --gloglevel
+        - '0'
+        - --log-format
+        - text
         env:
         - name: IN_CLUSTER
           value: 'true'
@@ -42,7 +50,7 @@ spec:
               fieldPath: metadata.namespace
         - name: BASE_HREF
           value: /
-        image: quay.io/argoproj/argocli:v3.4.4
+        image: quay.io/argoproj/argocli:v3.5.2
         imagePullPolicy: Always
         name: argo-server
         ports:

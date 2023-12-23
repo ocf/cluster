@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-repo-server
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.8.2
-    helm.sh/chart: argo-cd-5.45.0
+    app.kubernetes.io/version: v2.9.3
+    helm.sh/chart: argo-cd-5.51.6
   name: argocd-repo-server
   namespace: argocd
 spec:
@@ -21,15 +21,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cmd-params: 94ad516803805dfef6edba4fe3bf50cdc52d540f05a6d96de9f0afe1d15547a0
+        checksum/cm: 20b3c2f6d05196e45e0239bf675072ef67d0a722eebc0296c289c501f4ed31fc
+        checksum/cmd-params: 8acbc8d456808119f5a8344a59064e696a2c60f5e20310d5fba15f66d5ec0b2a
       labels:
         app.kubernetes.io/component: repo-server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-repo-server
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v2.8.2
-        helm.sh/chart: argo-cd-5.45.0
+        app.kubernetes.io/version: v2.9.3
+        helm.sh/chart: argo-cd-5.51.6
     spec:
       affinity:
         podAntiAffinity:
@@ -184,6 +185,18 @@ spec:
               key: reposerver.streamed.manifest.max.extracted.size
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_REPO_SERVER_HELM_MANIFEST_MAX_EXTRACTED_SIZE
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.helm.manifest.max.extracted.size
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_REPO_SERVER_DISABLE_HELM_MANIFEST_MAX_EXTRACTED_SIZE
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.disable.helm.manifest.max.extracted.size
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_GIT_MODULES_ENABLED
           valueFrom:
             configMapKeyRef:
@@ -196,7 +209,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/argocd:v2.8.2
+        image: quay.io/argoproj/argocd:v2.9.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -258,7 +271,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /var/run/argocd/argocd-cmp-server
-        image: quay.io/argoproj/argocd:v2.8.2
+        image: quay.io/argoproj/argocd:v2.9.3
         imagePullPolicy: IfNotPresent
         name: copyutil
         securityContext:
@@ -274,6 +287,7 @@ spec:
         - mountPath: /var/run/argocd
           name: var-files
       serviceAccountName: argocd-repo-server
+      terminationGracePeriodSeconds: 30
       volumes:
       - emptyDir: {}
         name: helm-working-dir

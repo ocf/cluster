@@ -23,6 +23,7 @@ spec:
       capabilities:
         drop:
         - ALL
+      readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
       seccompProfile:
@@ -33,7 +34,7 @@ spec:
       readOnly: true
   nodeSelector: {}
   restartPolicy: Never
-  tolerations: null
+  tolerations: []
   volumes:
   - configMap:
       name: argocd-redis-ha-configmap

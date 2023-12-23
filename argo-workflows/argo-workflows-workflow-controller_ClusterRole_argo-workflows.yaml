@@ -7,14 +7,13 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-workflow-controller
     app.kubernetes.io/part-of: argo-workflows
-    helm.sh/chart: argo-workflows-0.22.0
+    helm.sh/chart: argo-workflows-0.40.1
   name: argo-workflows-workflow-controller
 rules:
 - apiGroups:
   - ''
   resources:
   - pods
-  - pods/exec
   verbs:
   - create
   - get
@@ -23,6 +22,12 @@ rules:
   - update
   - patch
   - delete
+- apiGroups:
+  - ''
+  resources:
+  - pods/exec
+  verbs:
+  - create
 - apiGroups:
   - ''
   resources:

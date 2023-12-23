@@ -16,7 +16,7 @@ spec:
     - sh
     - -c
     - redis-cli -h argocd-redis-ha-haproxy -p 6379 info server
-    image: redis:7.0.11-alpine
+    image: redis:7.0.13-alpine
     name: argocd-service-test
     resources: {}
     securityContext:
@@ -24,10 +24,11 @@ spec:
       capabilities:
         drop:
         - ALL
+      readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
       seccompProfile:
         type: RuntimeDefault
   nodeSelector: {}
   restartPolicy: Never
-  tolerations: null
+  tolerations: []
