@@ -18,7 +18,7 @@ spec:
     env:
     - name: VAULT_ADDR
       value: https://vault.vault.svc:8200
-    image: hashicorp/vault:1.12.2
+    image: hashicorp/vault:1.15.2
     imagePullPolicy: IfNotPresent
     name: vault-server-test
     volumeMounts:
