@@ -6,10 +6,10 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 13.3.7
-    helm.sh/chart: teleport-cluster-13.3.7
-    teleport.dev/majorVersion: '13'
-  name: teleport-auth-v12
+    app.kubernetes.io/version: 14.2.4
+    helm.sh/chart: teleport-cluster-14.2.4
+    teleport.dev/majorVersion: '14'
+  name: teleport-auth-v14
   namespace: teleport
 spec:
   clusterIP: None
@@ -18,4 +18,4 @@ spec:
     app.kubernetes.io/component: auth
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/name: teleport-cluster
-    teleport.dev/majorVersion: '12'
+    teleport.dev/majorVersion: '14'

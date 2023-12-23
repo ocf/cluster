@@ -9,9 +9,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 13.3.7
-    helm.sh/chart: teleport-cluster-13.3.7
-    teleport.dev/majorVersion: '13'
+    app.kubernetes.io/version: 14.2.4
+    helm.sh/chart: teleport-cluster-14.2.4
+    teleport.dev/majorVersion: '14'
   name: teleport-proxy-test
   namespace: teleport
 spec:
@@ -25,7 +25,7 @@ spec:
         command:
         - teleport
         - configure
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:13.3.7
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:14.2.4
         imagePullPolicy: IfNotPresent
         name: teleport
         volumeMounts:
