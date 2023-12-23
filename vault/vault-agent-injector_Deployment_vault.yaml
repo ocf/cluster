@@ -45,7 +45,7 @@ spec:
         - name: AGENT_INJECT_VAULT_AUTH_PATH
           value: auth/kubernetes
         - name: AGENT_INJECT_VAULT_IMAGE
-          value: hashicorp/vault:1.14.0
+          value: hashicorp/vault:1.15.2
         - name: AGENT_INJECT_TLS_AUTO
           value: vault-agent-injector-cfg
         - name: AGENT_INJECT_TLS_AUTO_HOSTS
@@ -70,7 +70,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: hashicorp/vault-k8s:1.2.1
+        image: hashicorp/vault-k8s:1.3.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 2
