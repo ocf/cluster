@@ -49,23 +49,11 @@ spec:
               fieldPath: metadata.namespace
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
-        - name: CILIUM_CNI_CHAINING_MODE
-          valueFrom:
-            configMapKeyRef:
-              key: cni-chaining-mode
-              name: cilium-config
-              optional: true
-        - name: CILIUM_CUSTOM_CNI_CONF
-          valueFrom:
-            configMapKeyRef:
-              key: custom-cni-conf
-              name: cilium-config
-              optional: true
         - name: KUBERNETES_SERVICE_HOST
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
@@ -73,9 +61,19 @@ spec:
               command:
               - bash
               - -c
-              - '/cni-install.sh --enable-debug=false --cni-exclusive=true --log-file=/var/run/cilium/cilium-cni.log
-
-                '
+              - "set -o errexit\nset -o pipefail\nset -o nounset\n\n# When running\
+                \ in AWS ENI mode, it's likely that 'aws-node' has\n# had a chance\
+                \ to install SNAT iptables rules. These can result\n# in dropped traffic,\
+                \ so we should attempt to remove them.\n# We do it using a 'postStart'\
+                \ hook since this may need to run\n# for nodes which might have already\
+                \ been init'ed but may still\n# have dangling rules. This is safe\
+                \ because there are no\n# dependencies on anything that is part of\
+                \ the startup script\n# itself, and can be safely run multiple times\
+                \ per node (e.g. in\n# case of a restart).\nif [[ \"$(iptables-save\
+                \ | grep -E -c 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN')\" != \"0\" ]];\n\
+                then\n    echo 'Deleting iptables rules created by the AWS CNI VPC\
+                \ plugin'\n    iptables-save | grep -E -v 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN'\
+                \ | iptables-restore\nfi\necho 'Done!'\n"
           preStop:
             exec:
               command:
@@ -185,7 +183,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -208,7 +206,7 @@ spec:
           value: /run/cilium/cgroupv2
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: mount-cgroup
         securityContext:
@@ -241,7 +239,7 @@ spec:
         env:
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: apply-sysctl-overwrites
         securityContext:
@@ -267,7 +265,7 @@ spec:
         - /bin/bash
         - -c
         - --
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: mount-bpf-fs
         securityContext:
@@ -296,13 +294,9 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
         securityContext:
           capabilities:
             add:
@@ -326,7 +320,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.13.6@sha256:994b8b3b26d8a1ef74b51a163daa1ac02aceb9b16f794f8120f15a12011739dc
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
@@ -388,10 +382,22 @@ spec:
           type: FileOrCreate
         name: xtables-lock
       - name: clustermesh-secrets
-        secret:
+        projected:
           defaultMode: 256
-          optional: true
-          secretName: cilium-clustermesh
+          sources:
+          - secret:
+              name: cilium-clustermesh
+              optional: true
+          - secret:
+              items:
+              - key: tls.key
+                path: common-etcd-client.key
+              - key: tls.crt
+                path: common-etcd-client.crt
+              - key: ca.crt
+                path: common-etcd-client-ca.crt
+              name: clustermesh-apiserver-remote-cert
+              optional: true
       - hostPath:
           path: /proc/sys/net
           type: Directory
@@ -406,12 +412,12 @@ spec:
           sources:
           - secret:
               items:
-              - key: ca.crt
-                path: client-ca.crt
               - key: tls.crt
                 path: server.crt
               - key: tls.key
                 path: server.key
+              - key: ca.crt
+                path: client-ca.crt
               name: hubble-server-certs
               optional: true
   updateStrategy:

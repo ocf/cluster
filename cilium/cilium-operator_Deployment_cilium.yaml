@@ -16,8 +16,8 @@ spec:
       name: cilium-operator
   strategy:
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+      maxSurge: 25%
+      maxUnavailable: 50%
     type: RollingUpdate
   template:
     metadata:
@@ -63,7 +63,7 @@ spec:
           value: dna.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
-        image: quay.io/cilium/operator-generic:v1.13.6@sha256:753c1d0549032da83ec45333feec6f4b283331618a1f7fed2f7e2d36efbd4bc9
+        image: quay.io/cilium/operator-generic:v1.14.6@sha256:2f0bf8fb8362c7379f3bf95036b90ad5b67378ed05cd8eb0410c1afc13423848
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -75,6 +75,16 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 3
         name: cilium-operator
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            host: 127.0.0.1
+            path: /healthz
+            port: 9234
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 3
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /tmp/cilium/config-map

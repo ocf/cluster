@@ -25,7 +25,6 @@ rules:
   - ''
   resourceNames:
   - cilium-ca
-  - hubble-ca-secret
   resources:
   - secrets
   verbs:
