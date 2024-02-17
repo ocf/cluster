@@ -34,6 +34,10 @@ data:
     Laptop Extension", "baseUrl": "https://macwiitl.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://macwiitl.ocf.berkeley.edu/oauth2-callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "jenkins", "name": "Jenkins", "description": "Open source
+    automation server", "baseUrl": "https://jenkins.ocf.berkeley.edu/", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://jenkins.ocf.berkeley.edu/securityRealm/finishLogin"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
     {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
     [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
