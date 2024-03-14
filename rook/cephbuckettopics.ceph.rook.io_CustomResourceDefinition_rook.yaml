@@ -4,7 +4,6 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
     helm.sh/resource-policy: keep
-  creationTimestamp: null
   name: cephbuckettopics.ceph.rook.io
 spec:
   group: ceph.rook.io
@@ -80,8 +79,7 @@ spec:
                         type: boolean
                       sendCloudEvents:
                         description: 'Send the notifications with the CloudEvents
-                          header: https://github.com/cloudevents/spec/blob/main/cloudevents/adapters/aws-s3.md
-                          Supported for Ceph Quincy (v17) or newer.'
+                          header: https://github.com/cloudevents/spec/blob/main/cloudevents/adapters/aws-s3.md'
                         type: boolean
                       uri:
                         description: The URI of the HTTP endpoint to push notification

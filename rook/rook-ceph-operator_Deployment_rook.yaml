@@ -5,10 +5,11 @@ metadata:
     app.kubernetes.io/created-by: helm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: rook-ceph-operator
-    helm.sh/chart: rook-ceph-v1.12.3
+    helm.sh/chart: rook-ceph-v1.13.6
     operator: rook
     storage-backend: ceph
   name: rook-ceph-operator
+  namespace: rook
 spec:
   replicas: 1
   selector:
@@ -20,7 +21,7 @@ spec:
     metadata:
       labels:
         app: rook-ceph-operator
-        helm.sh/chart: rook-ceph-v1.12.3
+        helm.sh/chart: rook-ceph-v1.13.6
     spec:
       containers:
       - args:
@@ -33,10 +34,8 @@ spec:
           value: 'false'
         - name: ROOK_DISABLE_DEVICE_HOTPLUG
           value: 'false'
-        - name: DISCOVER_DAEMON_UDEV_BLACKLIST
-          value: ''
-        - name: ROOK_ENABLE_DISCOVERY_DAEMON
-          value: 'true'
+        - name: ROOK_DISCOVER_DEVICES_INTERVAL
+          value: 60m
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -52,18 +51,16 @@ spec:
         image: rook/ceph:v1.10.6
         imagePullPolicy: IfNotPresent
         name: rook-ceph-operator
-        ports:
-        - containerPort: 9443
-          name: https-webhook
-          protocol: TCP
         resources:
           limits:
-            cpu: 500m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 200m
             memory: 128Mi
         securityContext:
+          capabilities:
+            drop:
+            - ALL
           runAsGroup: 2016
           runAsNonRoot: true
           runAsUser: 2016
@@ -72,13 +69,14 @@ spec:
           name: rook-config
         - mountPath: /etc/ceph
           name: default-config-dir
-        - mountPath: /etc/webhook
-          name: webhook-cert
       serviceAccountName: rook-ceph-system
+      tolerations:
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 5
       volumes:
       - emptyDir: {}
         name: rook-config
       - emptyDir: {}
         name: default-config-dir
-      - emptyDir: {}
-        name: webhook-cert

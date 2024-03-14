@@ -4,7 +4,6 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
     helm.sh/resource-policy: keep
-  creationTimestamp: null
   name: cephblockpoolradosnamespaces.ceph.rook.io
 spec:
   group: ceph.rook.io
@@ -41,6 +40,16 @@ spec:
                 description: BlockPoolName is the name of Ceph BlockPool. Typically
                   it's the name of the CephBlockPool CR.
                 type: string
+                x-kubernetes-validations:
+                - message: blockPoolName is immutable
+                  rule: self == oldSelf
+              name:
+                description: The name of the CephBlockPoolRadosNamespaceSpec namespace.
+                  If not set, the default is the name of the CR.
+                type: string
+                x-kubernetes-validations:
+                - message: name is immutable
+                  rule: self == oldSelf
             required:
             - blockPoolName
             type: object
