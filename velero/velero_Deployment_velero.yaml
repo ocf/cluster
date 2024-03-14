@@ -103,6 +103,12 @@ spec:
         volumeMounts:
         - mountPath: /target
           name: plugins
+      - image: velero/velero-plugin-for-aws:v1.9.0
+        imagePullPolicy: IfNotPresent
+        name: velero-plugin-for-aws
+        volumeMounts:
+        - mountPath: /target
+          name: plugins
       restartPolicy: Always
       serviceAccountName: velero-server
       terminationGracePeriodSeconds: 3600
