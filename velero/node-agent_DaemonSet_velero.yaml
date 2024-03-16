@@ -60,11 +60,11 @@ spec:
           name: http-monitoring
         resources:
           limits:
-            cpu: 1000m
-            memory: 1024Mi
+            cpu: 4000m
+            memory: 16Gi
           requests:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 2000m
+            memory: 8Gi
         securityContext: null
         volumeMounts:
         - mountPath: /credentials
