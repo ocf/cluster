@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.6.0
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
   name: contour-envoy-metrics
   namespace: contour
 spec:
@@ -15,7 +16,7 @@ spec:
   - name: metrics
     port: 8002
     protocol: TCP
-    targetPort: 8002
+    targetPort: metrics
   selector:
     app.kubernetes.io/component: envoy
     app.kubernetes.io/instance: contour

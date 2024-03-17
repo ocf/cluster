@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.6.0
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
   name: contour-envoy
   namespace: contour
 spec:
@@ -22,7 +23,8 @@ spec:
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        helm.sh/chart: contour-12.6.0
+        app.kubernetes.io/version: 1.28.1
+        helm.sh/chart: contour-17.0.0
     spec:
       affinity:
         nodeAffinity: null
@@ -35,7 +37,7 @@ spec:
         - shutdown-manager
         command:
         - contour
-        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
+        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -44,16 +46,53 @@ spec:
               - contour
               - envoy
               - shutdown
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - contour
+          failureThreshold: 6
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 5
         name: shutdown-manager
+        readinessProbe:
+          exec:
+            command:
+            - pgrep
+            - contour
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 3
+          successThreshold: 1
+          timeoutSeconds: 1
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /admin
-          name: envoy-admin
+          name: empty-dir
+          subPath: app-admin-dir
       - args:
         - -c
         - /config/envoy.json
@@ -73,7 +112,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        image: docker.io/bitnami/envoy:1.26.4-debian-11-r20
+        image: docker.io/bitnami/envoy:1.28.1-debian-12-r4
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -93,15 +132,12 @@ spec:
         name: envoy
         ports:
         - containerPort: 8080
-          hostPort: 80
           name: http
           protocol: TCP
         - containerPort: 8443
-          hostPort: 443
           name: https
           protocol: TCP
         - containerPort: 8002
-          hostPort: 8002
           name: metrics
           protocol: TCP
         readinessProbe:
@@ -114,18 +150,37 @@ spec:
           successThreshold: 1
           timeoutSeconds: 1
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /config
-          name: envoy-config
+          name: empty-dir
+          subPath: app-conf-dir
         - mountPath: /certs
           name: envoycert
+          readOnly: true
         - mountPath: /admin
-          name: envoy-admin
+          name: empty-dir
+          subPath: app-admin-dir
       dnsPolicy: ClusterFirst
       hostNetwork: false
       initContainers:
@@ -145,31 +200,52 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
+        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
         imagePullPolicy: IfNotPresent
         name: envoy-initconfig
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /config
-          name: envoy-config
+          name: empty-dir
+          subPath: app-conf-dir
         - mountPath: /certs
           name: envoycert
           readOnly: true
         - mountPath: /admin
-          name: envoy-admin
+          name: empty-dir
+          subPath: app-admin-dir
       restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: contour-envoy
       terminationGracePeriodSeconds: 300
       volumes:
       - emptyDir: {}
-        name: envoy-admin
-      - emptyDir: {}
-        name: envoy-config
+        name: empty-dir
       - name: envoycert
         secret:
           secretName: envoycert

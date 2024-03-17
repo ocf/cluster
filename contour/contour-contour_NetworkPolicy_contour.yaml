@@ -1,5 +1,5 @@
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: contour
@@ -11,14 +11,17 @@ metadata:
   name: contour-contour
   namespace: contour
 spec:
-  endpoints:
-  - port: metrics
-  jobLabel: app.kubernetes.io/name
-  namespaceSelector:
-    matchNames:
-    - contour
-  selector:
+  egress:
+  - {}
+  ingress:
+  - ports:
+    - port: 8001
+    - port: 8000
+  podSelector:
     matchLabels:
       app.kubernetes.io/component: contour
       app.kubernetes.io/instance: contour
       app.kubernetes.io/name: contour
+  policyTypes:
+  - Ingress
+  - Egress

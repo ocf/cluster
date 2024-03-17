@@ -10,7 +10,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.6.0
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
   name: contour-contour-certgen
   namespace: contour
 spec:
@@ -24,8 +25,10 @@ spec:
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        helm.sh/chart: contour-12.6.0
+        app.kubernetes.io/version: 1.28.1
+        helm.sh/chart: contour-17.0.0
     spec:
+      automountServiceAccountToken: true
       containers:
       - args:
         - certgen
@@ -42,16 +45,55 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
+        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
         imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - contour
+          failureThreshold: 6
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 5
         name: contour
+        readinessProbe:
+          exec:
+            command:
+            - pgrep
+            - contour
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
       restartPolicy: Never
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: contour-contour-certgen

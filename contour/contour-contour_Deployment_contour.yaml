@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    helm.sh/chart: contour-12.6.0
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
   name: contour-contour
   namespace: contour
 spec:
@@ -19,13 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 4ef06f4342056abb83e57fd1eea5cabc7d2ed5e557c5db6faaa9677386725334
+        checksum/config: 7f979ecb3b210119d18c129473ccac2c2442c5bf7a0d68ef52014b7243352dd1
       labels:
         app.kubernetes.io/component: contour
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        helm.sh/chart: contour-12.6.0
+        app.kubernetes.io/version: 1.28.1
+        helm.sh/chart: contour-17.0.0
     spec:
       affinity:
         nodeAffinity: null
@@ -40,6 +42,7 @@ spec:
                   app.kubernetes.io/name: contour
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: true
       containers:
       - args:
         - serve
@@ -73,7 +76,7 @@ spec:
               fieldPath: metadata.name
         - name: BITNAMI_DEBUG
           value: 'false'
-        image: docker.io/bitnami/contour:1.25.2-debian-11-r22
+        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -102,11 +105,27 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /certs
           name: contourcert
@@ -117,6 +136,9 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: contour-contour
       volumes:
       - name: contourcert
