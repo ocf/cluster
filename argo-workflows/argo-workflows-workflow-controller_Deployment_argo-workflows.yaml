@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-workflow-controller
     app.kubernetes.io/part-of: argo-workflows
-    app.kubernetes.io/version: v3.5.2
-    helm.sh/chart: argo-workflows-0.40.1
+    app.kubernetes.io/version: v3.5.5
+    helm.sh/chart: argo-workflows-0.40.14
   name: argo-workflows-workflow-controller
   namespace: argo-workflows
 spec:
@@ -26,15 +26,15 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argo-workflows-workflow-controller
         app.kubernetes.io/part-of: argo-workflows
-        app.kubernetes.io/version: v3.5.2
-        helm.sh/chart: argo-workflows-0.40.1
+        app.kubernetes.io/version: v3.5.5
+        helm.sh/chart: argo-workflows-0.40.14
     spec:
       containers:
       - args:
         - --configmap
         - argo-workflows-workflow-controller-configmap
         - --executor-image
-        - quay.io/argoproj/argoexec:v3.5.2
+        - quay.io/argoproj/argoexec:v3.5.5
         - --loglevel
         - info
         - --gloglevel
@@ -54,7 +54,9 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        image: quay.io/argoproj/workflow-controller:v3.5.2
+        - name: LEADER_ELECTION_DISABLE
+          value: 'true'
+        image: quay.io/argoproj/workflow-controller:v3.5.5
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

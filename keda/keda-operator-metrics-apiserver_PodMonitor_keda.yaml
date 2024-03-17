@@ -1,23 +1,21 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  annotations: {}
   labels:
     app.kubernetes.io/component: operator
     app.kubernetes.io/instance: keda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.9.1
-    helm.sh/chart: keda-2.9.1
+    app.kubernetes.io/version: 2.13.1
+    helm.sh/chart: keda-2.13.2
   name: keda-operator-metrics-apiserver
 spec:
   namespaceSelector:
     matchNames:
     - keda
   podMetricsEndpoints:
-  - honorLabels: true
-    path: /metrics
+  - path: /metrics
     port: metrics
   selector:
     matchLabels:

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: fission-webhook
+    chart: fission-all-v1.20.1
+    svc: webhook-service
+  name: webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: fission-webhook
+      svc: webhook-service
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+      labels:
+        application: fission-webhook
+        svc: webhook-service
+    spec:
+      containers:
+      - args:
+        - --webhookPort
+        - '9443'
+        command:
+        - /fission-bundle
+        image: ghcr.io/fission/fission-bundle:v1.20.1
+        imagePullPolicy: IfNotPresent
+        name: webhook
+        ports:
+        - containerPort: 8080
+          name: metrics
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: serving-certs
+          readOnly: true
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      serviceAccountName: fission-webhook
+      volumes:
+      - name: serving-certs
+        secret:
+          secretName: fission-webhook-certs

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     application: fission-router
-    chart: fission-all-v1.17.0
+    chart: fission-all-v1.20.1
     svc: router
   name: router
 spec:

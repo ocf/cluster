@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    chart: fission-all-v1.17.0
+    chart: fission-all-v1.20.1
     messagequeue: keda
     svc: mqtrigger-keda
   name: mqtrigger-keda
@@ -31,21 +31,33 @@ spec:
         - name: CONNECTOR_IMAGE_PULL_POLICY
           value: IfNotPresent
         - name: KAFKA_IMAGE
-          value: fission/keda-kafka-http-connector:v0.11
+          value: ghcr.io/fission/keda-kafka-http-connector:v0.13
         - name: RABBITMQ_IMAGE
-          value: fission/keda-rabbitmq-http-connector:v0.10
+          value: ghcr.io/fission/keda-rabbitmq-http-connector:v0.11
         - name: AWS-KINESIS-STREAM_IMAGE
-          value: fission/keda-aws-kinesis-http-connector:v0.10
+          value: ghcr.io/fission/keda-aws-kinesis-http-connector:v0.11
         - name: AWS-SQS-QUEUE_IMAGE
-          value: fission/keda-aws-sqs-http-connector:v0.10
+          value: ghcr.io/fission/keda-aws-sqs-http-connector:v0.12
         - name: STAN_IMAGE
-          value: fission/keda-nats-streaming-http-connector:v0.12
+          value: ghcr.io/fission/keda-nats-streaming-http-connector:v0.14
         - name: NATS-JETSTREAM_IMAGE
-          value: fission/keda-nats-jetstream-http-connector:v0.2
+          value: ghcr.io/fission/keda-nats-jetstream-http-connector:v0.5
         - name: GCP-PUBSUB_IMAGE
-          value: fission/keda-gcp-pubsub-http-connector:v0.5
+          value: ghcr.io/fission/keda-gcp-pubsub-http-connector:v0.7
         - name: REDIS_IMAGE
-          value: fission/keda-redis-http-connector:v0.3
+          value: ghcr.io/fission/keda-redis-http-connector:v0.4
+        - name: FISSION_BUILDER_NAMESPACE
+          value: ''
+        - name: FISSION_FUNCTION_NAMESPACE
+          value: ''
+        - name: FISSION_DEFAULT_NAMESPACE
+          value: default
+        - name: FISSION_RESOURCE_NAMESPACES
+          value: default
+        - name: KUBE_CLIENT_QPS
+          value: '200'
+        - name: KUBE_CLIENT_BURST
+          value: '500'
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: ''
         - name: OTEL_EXPORTER_OTLP_INSECURE
@@ -56,10 +68,10 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
-        image: index.docker.io/fission/fission-bundle:v1.17.0
+        image: ghcr.io/fission/fission-bundle:v1.20.1
         imagePullPolicy: IfNotPresent
         name: mqtrigger-keda
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-      serviceAccountName: fission-svc
+      serviceAccountName: fission-keda

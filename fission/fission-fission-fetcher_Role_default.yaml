@@ -9,27 +9,11 @@ rules:
   resources:
   - configmaps
   - secrets
-  - pods
   verbs:
   - get
-  - list
-  - watch
-- apiGroups:
-  - ''
-  resources:
-  - events
-  verbs:
-  - '*'
 - apiGroups:
   - fission.io
   resources:
-  - canaryconfigs
-  - environments
-  - functions
-  - httptriggers
-  - kuberneteswatchtriggers
-  - messagequeuetriggers
   - packages
-  - timetriggers
   verbs:
-  - '*'
+  - get

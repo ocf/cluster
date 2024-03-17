@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     application: fission-router
-    chart: fission-all-v1.17.0
+    chart: fission-all-v1.20.1
     svc: router
   name: router
 spec:
@@ -59,6 +59,18 @@ spec:
           value: 'false'
         - name: DISPLAY_ACCESS_LOG
           value: 'false'
+        - name: FISSION_BUILDER_NAMESPACE
+          value: ''
+        - name: FISSION_FUNCTION_NAMESPACE
+          value: ''
+        - name: FISSION_DEFAULT_NAMESPACE
+          value: default
+        - name: FISSION_RESOURCE_NAMESPACES
+          value: default
+        - name: KUBE_CLIENT_QPS
+          value: '200'
+        - name: KUBE_CLIENT_BURST
+          value: '500'
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: ''
         - name: OTEL_EXPORTER_OTLP_INSECURE
@@ -69,7 +81,7 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
-        image: index.docker.io/fission/fission-bundle:v1.17.0
+        image: ghcr.io/fission/fission-bundle:v1.20.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -97,7 +109,12 @@ spec:
         - mountPath: /etc/config/config.yaml
           name: config-volume
           subPath: config.yaml
-      serviceAccountName: fission-svc
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      serviceAccountName: fission-router
       volumes:
       - configMap:
           name: feature-config

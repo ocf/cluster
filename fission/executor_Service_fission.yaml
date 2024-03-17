@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    chart: fission-all-v1.17.0
+    chart: fission-all-v1.20.1
     svc: executor
   name: executor
 spec:

@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    chart: fission-all-v1.17.0
-    name: fission-builder
-  name: fission-builder

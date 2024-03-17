@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations: {}
   labels:
     app: keda-operator-metrics-apiserver
     app.kubernetes.io/component: operator
@@ -9,18 +8,18 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator-metrics-apiserver
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.9.1
-    helm.sh/chart: keda-2.9.1
+    app.kubernetes.io/version: 2.13.1
+    helm.sh/chart: keda-2.13.2
   name: keda-operator-metrics-apiserver
   namespace: keda
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: keda-operator-metrics-apiserver
   template:
     metadata:
-      annotations: null
       labels:
         app: keda-operator-metrics-apiserver
         app.kubernetes.io/component: operator
@@ -28,8 +27,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keda-operator-metrics-apiserver
         app.kubernetes.io/part-of: keda-operator
-        app.kubernetes.io/version: 2.9.1
-        helm.sh/chart: keda-2.9.1
+        app.kubernetes.io/version: 2.13.1
+        helm.sh/chart: keda-2.13.2
     spec:
       automountServiceAccountToken: true
       containers:
@@ -38,40 +37,55 @@ spec:
         - --port=8080
         - --secure-port=6443
         - --logtostderr=true
+        - --stderrthreshold=ERROR
+        - --disable-compression=true
         - --metrics-service-address=keda-operator.keda.svc.cluster.local:9666
-        - --metrics-port=9022
-        - --metrics-path=/metrics
+        - --client-ca-file=/certs/ca.crt
+        - --tls-cert-file=/certs/tls.crt
+        - --tls-private-key-file=/certs/tls.key
+        - --cert-dir=/certs
         - --v=0
         env:
         - name: WATCH_NAMESPACE
           value: ''
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: KEDA_HTTP_DEFAULT_TIMEOUT
           value: '3000'
-        image: ghcr.io/kedacore/keda-metrics-apiserver:2.9.1
+        - name: KEDA_HTTP_MIN_TLS_VERSION
+          value: TLS12
+        image: ghcr.io/kedacore/keda-metrics-apiserver:2.13.1
         imagePullPolicy: Always
         livenessProbe:
+          failureThreshold: 3
           httpGet:
             path: /healthz
             port: 6443
             scheme: HTTPS
           initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
         name: keda-operator-metrics-apiserver
         ports:
         - containerPort: 6443
           name: https
           protocol: TCP
         - containerPort: 8080
-          name: http
-          protocol: TCP
-        - containerPort: 9022
           name: metrics
           protocol: TCP
         readinessProbe:
+          failureThreshold: 3
           httpGet:
             path: /readyz
             port: 6443
             scheme: HTTPS
           initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          timeoutSeconds: 1
         resources:
           limits:
             cpu: 1
@@ -84,9 +98,13 @@ spec:
           capabilities:
             drop:
             - ALL
+          readOnlyRootFilesystem: true
           seccompProfile:
             type: RuntimeDefault
-        volumeMounts: null
+        volumeMounts:
+        - mountPath: /certs
+          name: certificates
+          readOnly: true
       dnsPolicy: ClusterFirst
       hostNetwork: false
       nodeSelector:
@@ -94,4 +112,8 @@ spec:
       securityContext:
         runAsNonRoot: true
       serviceAccountName: keda-operator
-      volumes: null
+      volumes:
+      - name: certificates
+        secret:
+          defaultMode: 420
+          secretName: kedaorg-certs

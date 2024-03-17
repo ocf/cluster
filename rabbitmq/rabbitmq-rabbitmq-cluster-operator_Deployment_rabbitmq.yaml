@@ -7,7 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    helm.sh/chart: rabbitmq-cluster-operator-3.1.5
+    app.kubernetes.io/version: 2.7.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.0.0
   name: rabbitmq-rabbitmq-cluster-operator
   namespace: rabbitmq
 spec:
@@ -27,7 +28,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq-cluster-operator
         app.kubernetes.io/part-of: rabbitmq
-        helm.sh/chart: rabbitmq-cluster-operator-3.1.5
+        app.kubernetes.io/version: 2.7.0
+        helm.sh/chart: rabbitmq-cluster-operator-4.0.0
     spec:
       affinity:
         nodeAffinity: null
@@ -42,6 +44,7 @@ spec:
                   app.kubernetes.io/name: rabbitmq-cluster-operator
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: true
       containers:
       - args:
         - --metrics-bind-address=:9782
@@ -53,11 +56,11 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: DEFAULT_RABBITMQ_IMAGE
-          value: docker.io/bitnami/rabbitmq:3.10.13-debian-11-r6
+          value: docker.io/bitnami/rabbitmq:3.12.13-debian-12-r2
         - name: DEFAULT_USER_UPDATER_IMAGE
-          value: docker.io/bitnami/rmq-default-credential-updater:1.0.2-scratch-r12
+          value: docker.io/bitnami/rmq-default-credential-updater:1.0.4-debian-12-r14
         envFrom: null
-        image: docker.io/bitnami/rabbitmq-cluster-operator:2.0.0-scratch-r6
+        image: docker.io/bitnami/rabbitmq-cluster-operator:2.7.0-debian-12-r8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
@@ -83,13 +86,31 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
           readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
       initContainers: null
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: rabbitmq-rabbitmq-cluster-operator

@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-workflow-controller
     app.kubernetes.io/part-of: argo-workflows
-    app.kubernetes.io/version: v3.5.2
-    helm.sh/chart: argo-workflows-0.40.1
+    app.kubernetes.io/version: v3.5.5
+    helm.sh/chart: argo-workflows-0.40.14
   name: argo-workflows-workflow-controller
   namespace: argo-workflows
 spec:
