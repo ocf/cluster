@@ -151,13 +151,13 @@ spec:
           timeoutSeconds: 1
         resources:
           limits:
-            cpu: 150m
+            cpu: '1.5'
             ephemeral-storage: 1024Mi
-            memory: 192Mi
+            memory: 3072Mi
           requests:
-            cpu: 100m
+            cpu: '1.0'
             ephemeral-storage: 50Mi
-            memory: 128Mi
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -205,13 +205,13 @@ spec:
         name: envoy-initconfig
         resources:
           limits:
-            cpu: 150m
+            cpu: '1.5'
             ephemeral-storage: 1024Mi
-            memory: 192Mi
+            memory: 3072Mi
           requests:
-            cpu: 100m
+            cpu: '1.0'
             ephemeral-storage: 50Mi
-            memory: 128Mi
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
