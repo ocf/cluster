@@ -19,7 +19,7 @@ metadata:
 spec:
   ingressClassName: contour
   rules:
-  - host: argocd.example.com
+  - host: argo.ocf.berkeley.edu
     http:
       paths:
       - backend:
@@ -31,5 +31,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - argocd.example.com
+    - argo.ocf.berkeley.edu
     secretName: argocd-server-tls
