@@ -12,14 +12,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.9.3
-    helm.sh/chart: argo-cd-5.51.6
+    app.kubernetes.io/version: v2.10.3
+    helm.sh/chart: argo-cd-6.7.2
   name: argocd-server
   namespace: argocd
 spec:
   ingressClassName: contour
   rules:
-  - host: argo.ocf.berkeley.edu
+  - host: argocd.example.com
     http:
       paths:
       - backend:
@@ -31,5 +31,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - argo.ocf.berkeley.edu
+    - argocd.example.com
     secretName: argocd-server-tls

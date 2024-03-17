@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-core
   namespace: harbor
 spec:
@@ -21,14 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 40fb06a1af3e741381a6c6776a9b2d7277f984aca6ddddf14f34ab96b3e4f6eb
-        checksum/configmap-envvars: 6d7b4c83eceeb8289d9891010a9488f88456899ac30a34c1d25da0184a308bfb
+        checksum/configmap: 5681020228db3d1bc1e95bc019fd4f5c723b79ce8234c0f394ed8cc6c9ad47c4
+        checksum/configmap-envvars: 4864c87dcb66c416f764dd7842ae828649e1d77e8e5b71449f5400802503b9d7
       labels:
         app.kubernetes.io/component: core
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-17.1.0
+        app.kubernetes.io/version: 2.10.0
+        helm.sh/chart: harbor-20.1.2
     spec:
       affinity:
         nodeAffinity: null
@@ -63,7 +65,7 @@ spec:
             name: harbor-core-envvars
         - secretRef:
             name: harbor-core-envvars
-        image: docker.io/bitnami/harbor-core:2.8.3-debian-11-r0
+        image: docker.io/bitnami/harbor-core:2.10.0-debian-12-r11
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -91,13 +93,23 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits: {}
-          requests: {}
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
         - mountPath: /etc/core/app.conf
           name: config
           subPath: app.conf
@@ -113,7 +125,12 @@ spec:
           name: psc
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - configMap:
           items:
           - key: app.conf

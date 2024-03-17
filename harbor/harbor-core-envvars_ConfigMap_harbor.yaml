@@ -17,8 +17,7 @@ data:
   METRIC_PATH: /metrics
   METRIC_PORT: '8001'
   METRIC_SUBSYSTEM: core
-  NOTARY_URL: http://harbor-notary-server:4443
-  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING)
+  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING),%!s(MISSING),%!s(MISSING)
   PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: docker-hub,harbor,azure-acr,aws-ecr,google-gcr,quay,docker-registry,github-ghcr,jfrog-artifactory
   PORT: '8080'
   PORTAL_URL: http://harbor-portal:80
@@ -34,7 +33,6 @@ data:
   SYNC_REGISTRY: 'false'
   TOKEN_SERVICE_URL: http://harbor-core:80/service/token
   TRIVY_ADAPTER_URL: http://harbor-trivy:8080
-  WITH_NOTARY: 'true'
   WITH_TRIVY: 'true'
 kind: ConfigMap
 metadata:
@@ -43,6 +41,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-core-envvars
   namespace: harbor

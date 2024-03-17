@@ -8,7 +8,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-12.10.0
+    app.kubernetes.io/version: 16.2.0
+    helm.sh/chart: postgresql-14.3.3
   name: harbor-postgresql-hl
   namespace: harbor
 spec:

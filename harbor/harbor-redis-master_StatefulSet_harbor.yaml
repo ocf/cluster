@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-18.0.0
+    app.kubernetes.io/version: 7.2.4
+    helm.sh/chart: redis-18.19.2
   name: harbor-redis-master
   namespace: harbor
 spec:
@@ -28,7 +29,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-18.0.0
+        app.kubernetes.io/version: 7.2.4
+        helm.sh/chart: redis-18.19.2
     spec:
       affinity:
         nodeAffinity: null
@@ -43,7 +45,7 @@ spec:
                   app.kubernetes.io/name: redis
               topologyKey: kubernetes.io/hostname
             weight: 1
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       containers:
       - args:
         - -c
@@ -61,7 +63,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.2.0-debian-11-r0
+        image: docker.io/bitnami/redis:7.2.4-debian-12-r9
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -89,14 +91,12 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 2
-        resources:
-          limits: {}
-          requests: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          readOnlyRootFilesystem: false
           runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
@@ -112,13 +112,18 @@ spec:
         - mountPath: /opt/bitnami/redis/mounted-etc
           name: config
         - mountPath: /opt/bitnami/redis/etc/
-          name: redis-tmp-conf
+          name: empty-dir
+          subPath: app-conf-dir
         - mountPath: /tmp
-          name: tmp
+          name: empty-dir
+          subPath: tmp-dir
       enableServiceLinks: true
       securityContext:
         fsGroup: 1001
-      serviceAccountName: harbor-redis
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: harbor-redis-master
       terminationGracePeriodSeconds: 30
       volumes:
       - configMap:
@@ -133,9 +138,7 @@ spec:
           name: harbor-redis-configuration
         name: config
       - emptyDir: {}
-        name: redis-tmp-conf
-      - emptyDir: {}
-        name: tmp
+        name: empty-dir
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:

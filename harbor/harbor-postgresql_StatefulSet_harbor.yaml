@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-12.10.0
+    app.kubernetes.io/version: 16.2.0
+    helm.sh/chart: postgresql-14.3.3
   name: harbor-postgresql
   namespace: harbor
 spec:
@@ -26,7 +27,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        helm.sh/chart: postgresql-12.10.0
+        app.kubernetes.io/version: 16.2.0
+        helm.sh/chart: postgresql-14.3.3
       name: harbor-postgresql
     spec:
       affinity:
@@ -42,6 +44,7 @@ spec:
                   app.kubernetes.io/name: postgresql
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: false
       containers:
       - env:
         - name: BITNAMI_DEBUG
@@ -73,7 +76,7 @@ spec:
           value: error
         - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
           value: pgaudit
-        image: docker.io/bitnami/postgresql:13.11.0-debian-11-r80
+        image: docker.io/bitnami/postgresql:13.14.0-debian-12-r6
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -107,22 +110,31 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits: {}
-          requests:
-            cpu: 250m
-            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
           runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /opt/bitnami/postgresql/conf
+          name: empty-dir
+          subPath: app-conf-dir
+        - mountPath: /opt/bitnami/postgresql/tmp
+          name: empty-dir
+          subPath: app-tmp-dir
+        - mountPath: /opt/bitnami/postgresql/logs
+          name: empty-dir
+          subPath: app-logs-dir
         - mountPath: /docker-entrypoint-initdb.d/
           name: custom-init-scripts
         - mountPath: /bitnami/postgresql/conf/conf.d/
@@ -135,8 +147,13 @@ spec:
       hostNetwork: false
       securityContext:
         fsGroup: 1001
-      serviceAccountName: default
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: harbor-postgresql
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - configMap:
           name: harbor-postgresql-extended-configuration
         name: postgresql-extended-config

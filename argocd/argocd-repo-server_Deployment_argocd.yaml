@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-repo-server
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.9.3
-    helm.sh/chart: argo-cd-5.51.6
+    app.kubernetes.io/version: v2.10.3
+    helm.sh/chart: argo-cd-6.7.2
   name: argocd-repo-server
   namespace: argocd
 spec:
@@ -21,16 +21,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cm: 20b3c2f6d05196e45e0239bf675072ef67d0a722eebc0296c289c501f4ed31fc
-        checksum/cmd-params: 8acbc8d456808119f5a8344a59064e696a2c60f5e20310d5fba15f66d5ec0b2a
+        checksum/cm: 2c2c85fd516e6ff1ca44797465bd7f8f0fa2ad645c3086b7a41965088036595e
+        checksum/cmd-params: ed3c5a054b797394f5d6b15337e3cdd1ff2aeda1589e15b1298a73a55278d2fc
       labels:
         app.kubernetes.io/component: repo-server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-repo-server
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v2.9.3
-        helm.sh/chart: argo-cd-5.51.6
+        app.kubernetes.io/version: v2.10.3
+        helm.sh/chart: argo-cd-6.7.2
     spec:
       affinity:
         podAntiAffinity:
@@ -47,6 +47,8 @@ spec:
         - --port=8081
         - --metrics-port=8084
         env:
+        - name: ARGOCD_REPO_SERVER_NAME
+          value: argocd-repo-server
         - name: ARGOCD_RECONCILIATION_TIMEOUT
           valueFrom:
             configMapKeyRef:
@@ -155,6 +157,18 @@ spec:
               key: otlp.address
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_REPO_SERVER_OTLP_INSECURE
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.insecure
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_REPO_SERVER_OTLP_HEADERS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.headers
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_REPO_SERVER_MAX_COMBINED_DIRECTORY_MANIFESTS_SIZE
           valueFrom:
             configMapKeyRef:
@@ -203,13 +217,25 @@ spec:
               key: reposerver.enable.git.submodule
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_GIT_LS_REMOTE_PARALLELISM_LIMIT
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.git.lsremote.parallelism.limit
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_GIT_REQUEST_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.git.request.timeout
+              name: argocd-cmd-params-cm
+              optional: true
         - name: HELM_CACHE_HOME
           value: /helm-working-dir
         - name: HELM_CONFIG_HOME
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/argocd:v2.9.3
+        image: quay.io/argoproj/argocd:v2.10.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -271,7 +297,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /var/run/argocd/argocd-cmp-server
-        image: quay.io/argoproj/argocd:v2.9.3
+        image: quay.io/argoproj/argocd:v2.10.3
         imagePullPolicy: IfNotPresent
         name: copyutil
         securityContext:

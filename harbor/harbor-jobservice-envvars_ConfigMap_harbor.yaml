@@ -4,7 +4,7 @@ data:
   HTTPS_PROXY: ''
   HTTP_PROXY: ''
   LOG_LEVEL: debug
-  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-notary-server,harbor-notary-signer,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING)
+  NO_PROXY: harbor-core,harbor-jobservice,harbor-database,harbor-registry,harbor-portal,harbor-trivy,127.0.0.1,localhost,.local,.internal,%!s(MISSING),%!s(MISSING),%!s(MISSING),%!s(MISSING)
   REGISTRY_CONTROLLER_URL: http://harbor-registry:8080
   REGISTRY_CREDENTIAL_USERNAME: harbor_registry_user
   REGISTRY_URL: http://harbor-registry:5000
@@ -16,6 +16,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-jobservice-envvars
   namespace: harbor

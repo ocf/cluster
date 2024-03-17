@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-exporter
   namespace: harbor
 spec:

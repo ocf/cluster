@@ -3,7 +3,7 @@ kind: Role
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.23.0
+    chart: redis-ha-4.26.1
     heritage: Helm
     release: argocd
   name: argocd-redis-ha

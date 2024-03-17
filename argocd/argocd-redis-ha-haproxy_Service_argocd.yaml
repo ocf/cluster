@@ -4,7 +4,7 @@ metadata:
   annotations: null
   labels:
     app: redis-ha
-    chart: redis-ha-4.23.0
+    chart: redis-ha-4.26.1
     component: argocd-redis-ha-haproxy
     heritage: Helm
     release: argocd

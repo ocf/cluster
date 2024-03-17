@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-registry
   namespace: harbor
 spec:
@@ -21,13 +22,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: af6d2a505aa153c2192582330d9ae2a1f1458fed5131286c86d2a7348f7df312
+        checksum/configmap: 5d5236a6248520cf29a3b254af77be97847131b474eab1cdb49e442043110c3e
       labels:
         app.kubernetes.io/component: registry
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-17.1.0
+        app.kubernetes.io/version: 2.10.0
+        helm.sh/chart: harbor-20.1.2
     spec:
       affinity:
         nodeAffinity: null
@@ -50,7 +52,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registry:2.8.3-debian-11-r8
+        image: docker.io/bitnami/harbor-registry:2.10.0-debian-12-r12
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -80,13 +82,23 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits: {}
-          requests: {}
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
         - mountPath: /storage
           name: registry-data
           subPath: null
@@ -115,7 +127,7 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registryctl:2.8.3-debian-11-r0
+        image: docker.io/bitnami/harbor-registryctl:2.10.0-debian-12-r11
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -141,13 +153,23 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits: {}
-          requests: {}
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
         - mountPath: /storage
           name: registry-data
           subPath: null
@@ -160,7 +182,12 @@ spec:
       initContainers: null
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - name: registry-htpasswd
         secret:
           items:

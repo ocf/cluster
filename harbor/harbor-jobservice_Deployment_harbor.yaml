@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    helm.sh/chart: harbor-17.1.0
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
   name: harbor-jobservice
   namespace: harbor
 spec:
@@ -21,13 +22,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 2b3bc3dfa706799f9821a891a20d5730fb683a498f721b04514c741bd91427d1
+        checksum/configmap-env: 95692367d5f65dacad7e678f003cf618b97caea90ab4648b5b9addc370c93581
       labels:
         app.kubernetes.io/component: jobservice
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        helm.sh/chart: harbor-17.1.0
+        app.kubernetes.io/version: 2.10.0
+        helm.sh/chart: harbor-20.1.2
     spec:
       affinity:
         nodeAffinity: null
@@ -62,7 +64,7 @@ spec:
             name: harbor-jobservice-envvars
         - secretRef:
             name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.8.3-debian-11-r0
+        image: docker.io/bitnami/harbor-jobservice:2.10.0-debian-12-r12
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -90,32 +92,41 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits: {}
-          requests: {}
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
         - mountPath: /etc/jobservice/config.yml
           name: jobservice-config
           subPath: config.yml
         - mountPath: /var/log/jobs
           name: job-logs
           subPath: null
-        - mountPath: /var/scandata_exports
-          name: jobservice-scandata
-          subPath: null
       initContainers: null
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - name: jobservice-config
         secret:
           secretName: harbor-jobservice-config
       - name: job-logs
         persistentVolumeClaim:
           claimName: harbor-jobservice
-      - name: jobservice-scandata
-        persistentVolumeClaim:
-          claimName: harbor-jobservice-scandata
