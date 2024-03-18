@@ -10,6 +10,6 @@ metadata:
   name: velero-daily
   namespace: velero
 spec:
-  schedule: 4 0 * * *
+  schedule: 0 4 * * *
   template:
     ttl: 168h
