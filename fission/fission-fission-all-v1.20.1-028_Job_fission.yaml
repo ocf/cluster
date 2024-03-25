@@ -9,7 +9,7 @@ metadata:
     app: fission-all
     chart: fission-all-v1.20.1
     release: fission
-  name: fission-fission-all-v1.20.1-620
+  name: fission-fission-all-v1.20.1-028
 spec:
   backoffLimit: 0
   template:
