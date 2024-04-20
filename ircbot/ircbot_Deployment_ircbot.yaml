@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: ircbot
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/ircbot/ircbot:68f7f61ffd83160c492a2b47cd72917c7a4ca54d
+      - image: harbor.ocf.berkeley.edu/ocf/ircbot/ircbot:fcd4f68e6051e1f4114884e7fbd8b5820b5bfa30
         imagePullPolicy: IfNotPresent
         name: main
         ports:
