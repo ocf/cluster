@@ -13,8 +13,19 @@ spec:
         transpire.ocf.io/deployment: ircbot
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/ircbot/ircbot:e922586ca8dd1ef5f95682b2b049f01039347a12
+      - image: harbor.ocf.berkeley.edu/ocf/ircbot/ircbot:68f7f61ffd83160c492a2b47cd72917c7a4ca54d
         imagePullPolicy: IfNotPresent
         name: main
         ports:
         - containerPort: 8888
+        volumeMounts:
+        - mountPath: /etc/ocf-ircbot
+          name: config
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: config
+        secret:
+          secretName: ircbot
