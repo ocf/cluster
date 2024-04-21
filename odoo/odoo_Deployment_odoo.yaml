@@ -74,6 +74,10 @@ spec:
           value: 'no'
         - name: ODOO_SMTP_HOST
           value: smtp.ocf.berkeley.edu
+        - name: ODOO_SMTP_PORT_NUMBER
+          value: '587'
+        - name: ODOO_SMTP_USER
+          value: ocfodoo
         envFrom: null
         image: docker.io/bitnami/odoo:17.0.20240305-debian-12-r0
         imagePullPolicy: IfNotPresent
