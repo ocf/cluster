@@ -61,26 +61,6 @@ spec:
             secretKeyRef:
               key: password
               name: odoo.ocf-odoo-db.credentials.postgresql.acid.zalan.do
-        - name: POSTGRESQL_CLIENT_DATABASE_HOST
-          value: ocf-odoo-db
-        - name: POSTGRESQL_CLIENT_DATABASE_PORT_NUMBER
-          value: '5432'
-        - name: POSTGRESQL_CLIENT_POSTGRES_USER
-          value: postgres
-        - name: POSTGRESQL_CLIENT_POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: postgres-password
-              name: odoo.ocf-odoo-db.credentials.postgresql.acid.zalan.do
-        - name: POSTGRESQL_CLIENT_CREATE_DATABASE_NAME
-          value: odoo
-        - name: POSTGRESQL_CLIENT_CREATE_DATABASE_USERNAME
-          value: odoo
-        - name: POSTGRESQL_CLIENT_CREATE_DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: odoo.ocf-odoo-db.credentials.postgresql.acid.zalan.do
         - name: ODOO_EMAIL
           value: user@example.com
         - name: ODOO_PASSWORD
