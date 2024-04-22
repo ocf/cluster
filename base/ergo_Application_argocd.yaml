@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: odoo
+  name: ergo
   namespace: argocd
 spec:
   destination:
-    namespace: odoo
+    namespace: ergo
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: odoo
+    path: ergo
     repoURL: https://github.com/ocf/cluster.git
     targetRevision: HEAD
   syncPolicy:

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: 2ec8f273ced93e06
+    metallb.universe.tf/loadBalancerIPs: 169.229.226.83,2607:f140:8801::1:83
+  labels:
+    k8s.ocf.io/app: ergo
+    k8s.ocf.io/component: ircd
+  name: ergo
+spec:
+  ipFamilyPolicy: PreferDualStack
+  ports:
+  - name: websocket
+    port: 8097
+    targetPort: 8097
+  - name: irc
+    port: 6697
+    targetPort: 6697
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+  selector:
+    k8s.ocf.io/app: ergo
+    k8s.ocf.io/component: ircd
+  type: LoadBalancer
