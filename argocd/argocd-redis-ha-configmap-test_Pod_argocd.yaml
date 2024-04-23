@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    helm.sh/hook: test-success
+  labels:
+    app: redis-ha
+    chart: redis-ha-4.26.1
+    heritage: Helm
+    release: argocd
+  name: argocd-redis-ha-configmap-test
+  namespace: argocd
+spec:
+  containers:
+  - args:
+    - --shell=sh
+    - /readonly-config/init.sh
+    image: koalaman/shellcheck:v0.5.0
+    name: check-init
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    volumeMounts:
+    - mountPath: /readonly-config
+      name: config
+      readOnly: true
+  nodeSelector: {}
+  restartPolicy: Never
+  tolerations: []
+  volumes:
+  - configMap:
+      name: argocd-redis-ha-configmap
+    name: config

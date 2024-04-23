@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: contour
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
+  name: contour-contour
+  namespace: contour
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour
+  template:
+    metadata:
+      annotations:
+        checksum/config: 7f979ecb3b210119d18c129473ccac2c2442c5bf7a0d68ef52014b7243352dd1
+      labels:
+        app.kubernetes.io/component: contour
+        app.kubernetes.io/instance: contour
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: contour
+        app.kubernetes.io/version: 1.28.1
+        helm.sh/chart: contour-17.0.0
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: contour
+                  app.kubernetes.io/instance: contour
+                  app.kubernetes.io/name: contour
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - serve
+        - --incluster
+        - --xds-address=0.0.0.0
+        - --xds-port=8001
+        - --http-port=8000
+        - --envoy-service-http-port=8080
+        - --envoy-service-https-port=8443
+        - --contour-cafile=/certs/ca.crt
+        - --contour-cert-file=/certs/tls.crt
+        - --contour-key-file=/certs/tls.key
+        - --config-path=/config/contour.yaml
+        - --envoy-service-namespace=contour
+        - --envoy-service-name=contour-envoy
+        - --leader-election-resource-name=contour-contour-contour
+        - --log-format=text
+        - --kubernetes-debug=0
+        command:
+        - contour
+        env:
+        - name: CONTOUR_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: contour
+        ports:
+        - containerPort: 8001
+          name: xds
+          protocol: TCP
+        - containerPort: 8000
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: contourcert
+          readOnly: true
+        - mountPath: /config
+          name: contour-config
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: contour-contour
+      volumes:
+      - name: contourcert
+        secret:
+          secretName: contourcert
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: contour.yaml
+            path: contour.yaml
+          name: contour
+        name: contour-config

@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: post-install,post-upgrade,post-rollback
+    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+    helm.sh/hook-weight: '5'
+  labels:
+    app.kubernetes.io/component: keycloak-config-cli
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-16.1.2
+  name: keycloak-keycloak-config-cli
+  namespace: keycloak
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      annotations: null
+      labels:
+        app.kubernetes.io/component: keycloak-config-cli
+        app.kubernetes.io/instance: keycloak
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: keycloak
+        helm.sh/chart: keycloak-16.1.2
+    spec:
+      containers:
+      - command:
+        - java
+        - -jar
+        - /opt/bitnami/keycloak-config-cli/keycloak-config-cli.jar
+        env:
+        - name: KEYCLOAK_URL
+          value: http://keycloak-headless:8080/
+        - name: KEYCLOAK_USER
+          value: user
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: keycloak
+        - name: IMPORT_FILES_LOCATIONS
+          value: /config/*
+        - name: KEYCLOAK_AVAILABILITYCHECK_ENABLED
+          value: 'true'
+        image: docker.io/bitnami/keycloak-config-cli:5.8.0-debian-11-r30
+        imagePullPolicy: IfNotPresent
+        name: keycloak-config-cli
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: keycloak
+      volumes:
+      - configMap:
+          name: keycloak-config-cli
+        name: config-volume
+  ttlSecondsAfterFinished: 0

@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: fission-fission-builder
+  namespace: default
+rules:
+- apiGroups:
+  - fission.io
+  resources:
+  - packages
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get

@@ -1,0 +1,30 @@
+apiVersion: v1
+data:
+  apply-on-startup.yaml: "kind: token\nversion: v2\nmetadata:\n  name: teleport-proxy\n\
+    \  expires: \"3000-01-01T00:00:00Z\"\nspec:\n  roles: [Proxy]\n  join_method:\
+    \ kubernetes\n  kubernetes:\n    allow:\n      - service_account: \"teleport:teleport-proxy\"\
+    \n"
+  teleport.yaml: "auth_service:\n  authentication:\n    local_auth: true\n    second_factor:\
+    \ \"on\"\n    type: local\n    webauthn:\n      rp_id: tele.ocf.io\n  cluster_name:\
+    \ tele.ocf.io\n  enabled: true\n  license_file: /var/lib/license/license.pem\n\
+    \  proxy_listener_mode: separate\nkubernetes_service:\n  enabled: true\n  kube_cluster_name:\
+    \ dna.ocf.io\n  listen_addr: 0.0.0.0:3026\n  public_addr: teleport-auth.teleport.svc.cluster.local:3026\n\
+    proxy_service:\n  enabled: false\nssh_service:\n  enabled: false\nteleport:\n\
+    \  auth_server: 127.0.0.1:3025\n  log:\n    format:\n      extra_fields:\n   \
+    \   - timestamp\n      - level\n      - component\n      - caller\n      output:\
+    \ text\n    output: stderr\n    severity: INFO\nversion: v3\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: '4'
+  labels:
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: teleport-cluster
+    app.kubernetes.io/version: 14.2.4
+    helm.sh/chart: teleport-cluster-14.2.4
+    teleport.dev/majorVersion: '14'
+  name: teleport-auth-test
+  namespace: teleport

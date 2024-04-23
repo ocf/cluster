@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: router-monitor
+spec:
+  endpoints:
+  - targetPort: 8080
+  namespaceSelector:
+    matchNames:
+    - fission
+  selector:
+    matchLabels:
+      svc: router

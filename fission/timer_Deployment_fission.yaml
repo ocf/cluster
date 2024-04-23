@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    chart: fission-all-v1.20.1
+    svc: timer
+  name: timer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      svc: timer
+  template:
+    metadata:
+      labels:
+        svc: timer
+    spec:
+      containers:
+      - args:
+        - --timer
+        - --routerUrl
+        - http://router.fission
+        command:
+        - /fission-bundle
+        env:
+        - name: DEBUG_ENV
+          value: 'false'
+        - name: PPROF_ENABLED
+          value: 'false'
+        - name: FISSION_BUILDER_NAMESPACE
+          value: ''
+        - name: FISSION_FUNCTION_NAMESPACE
+          value: ''
+        - name: FISSION_DEFAULT_NAMESPACE
+          value: default
+        - name: FISSION_RESOURCE_NAMESPACES
+          value: default
+        - name: KUBE_CLIENT_QPS
+          value: '200'
+        - name: KUBE_CLIENT_BURST
+          value: '500'
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: ''
+        - name: OTEL_EXPORTER_OTLP_INSECURE
+          value: 'true'
+        - name: OTEL_TRACES_SAMPLER
+          value: parentbased_traceidratio
+        - name: OTEL_TRACES_SAMPLER_ARG
+          value: '0.1'
+        - name: OTEL_PROPAGATORS
+          value: tracecontext,baggage
+        image: ghcr.io/fission/fission-bundle:v1.20.1
+        imagePullPolicy: IfNotPresent
+        name: timer
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      serviceAccountName: fission-timer

@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ergo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s.ocf.io/app: ergo
+      k8s.ocf.io/component: ircd
+  serviceName: ergo
+  template:
+    metadata:
+      labels:
+        k8s.ocf.io/app: ergo
+        k8s.ocf.io/component: ircd
+    spec:
+      containers:
+      - image: ghcr.io/ergochat/ergo:v2.13.0
+        name: ergo
+        ports:
+        - containerPort: 8097
+        - containerPort: 6697
+        volumeMounts:
+        - mountPath: /ircd/db
+          name: ircd-volume
+        - mountPath: /ircd
+          name: ircd-config
+        - mountPath: /etc/ssl
+          name: ircd-tls
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:d6ffc1bd8e6bcaf1a609ae2a537fad27e60796ea
+        name: gamja
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - mountPath: /etc/ssl
+          name: ircd-tls
+      - args:
+        - -c
+        - "echo \"Watching /ircd/\";\ninotifyd - /ircd/:wMymndox /etc/ssl/:wMymndox\
+          \ | while read -r notifies ; do\n  echo \"$notifies\";\n  echo \"notify\
+          \ received, sending SIGHUP\";\n  pkill -HUP ergo;\ndone\necho \"Exiting.\"\
+          ;\n"
+        command:
+        - /bin/sh
+        image: ghcr.io/ergochat/ergo:v2.13.0
+        name: config-reloader
+        volumeMounts:
+        - mountPath: /ircd
+          name: ircd-config
+        - mountPath: /etc/ssl
+          name: ircd-tls
+      volumes:
+      - configMap:
+          name: ircd-config
+        name: ircd-config
+      - name: ircd-tls
+        secret:
+          secretName: ergo
+  volumeClaimTemplates:
+  - metadata:
+      name: ircd-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 16Gi
