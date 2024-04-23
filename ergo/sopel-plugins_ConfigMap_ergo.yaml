@@ -15,30 +15,49 @@ data:
     \            \"{}{}\\x0f\".format(GROUP_COLOR_MAPPING.get(group, \"\"), group)\n\
     \            for group in groups\n        ]\n\n        if \"creationTime\" in\
     \ attrs:\n            created = attrs[\"creationTime\"].strftime(\"%Y-%m-%d\"\
-    )\n        else:\n            created = \"unknown\"\n\n        bot.reply(\n  \
-    \          \"{user} ({uid}) | {name} | created {created} | groups: {groups}\"\
-    .format(\n                user=user,\n                uid=attrs[\"uidNumber\"\
-    ],\n                name=attrs[\"cn\"][0],\n                created=created,\n\
-    \                groups=\", \".join(groups),\n            ),\n            ping=False,\n\
-    \        )\n    else:\n        bot.reply(f\"{user} does not exist\", ping=False)\n\
-    \n\ndef alphanum(word):\n    return \"\".join(c for c in word.lower() if c in\
-    \ string.ascii_lowercase)\n\n\n@plugin.command(\"checkacct\")\ndef checkacct(bot,\
-    \ trigger):\n    \"\"\"Print matching OCF usernames.\"\"\"\n    search_term =\
-    \ trigger.group(1).strip()\n    keywords = search_term.split()\n\n    if len(keywords)\
-    \ > 0:\n        search = \"(&{})\".format(\n            \"\".join(\n         \
-    \       # all keywords must match either uid or cn\n                \"(|(uid=*{keyword}*)(cn=*{keyword}*))\"\
-    .format(\n                    keyword=alphanum(keyword),\n                )\n\
-    \                for keyword in keywords\n            ),\n        )\n\n      \
-    \  with ldap.ldap_ocf() as c:\n            c.search(\n                ldap.OCF_LDAP_PEOPLE,\n\
-    \                search,\n                attributes=(\"uid\", \"cn\"),\n    \
-    \            size_limit=5,\n            )\n\n            if len(c.response) >\
-    \ 0:\n                bot.reply(\n                    \", \".join(\n         \
-    \               sorted(\n                            \"{} ({})\".format(\n   \
-    \                             entry[\"attributes\"][\"uid\"][0],\n           \
-    \                     entry[\"attributes\"][\"cn\"][0],\n                    \
-    \        )\n                            for entry in c.response\n            \
-    \            ),\n                    ),\n                )\n            else:\n\
-    \                bot.reply(\"no results found\")\n"
+    )\n        else:\n            created = \"unknown\"\n\n        bot.say(\n    \
+    \        \"{user} ({uid}) | {name} | created {created} | groups: {groups}\".format(\n\
+    \                user=user,\n                uid=attrs[\"uidNumber\"],\n     \
+    \           name=attrs[\"cn\"][0],\n                created=created,\n       \
+    \         groups=\", \".join(groups),\n            ),\n        )\n    else:\n\
+    \        bot.say(f\"{user} does not exist\")\n\n\ndef alphanum(word):\n    return\
+    \ \"\".join(c for c in word.lower() if c in string.ascii_lowercase)\n\n\n@plugin.command(\"\
+    checkacct\")\ndef checkacct(bot, trigger):\n    \"\"\"Print matching OCF usernames.\"\
+    \"\"\n    search_term = trigger.group(1).strip()\n    keywords = search_term.split()\n\
+    \n    if len(keywords) > 0:\n        search = \"(&{})\".format(\n            \"\
+    \".join(\n                # all keywords must match either uid or cn\n       \
+    \         \"(|(uid=*{keyword}*)(cn=*{keyword}*))\".format(\n                 \
+    \   keyword=alphanum(keyword),\n                )\n                for keyword\
+    \ in keywords\n            ),\n        )\n\n        with ldap.ldap_ocf() as c:\n\
+    \            c.search(\n                ldap.OCF_LDAP_PEOPLE,\n              \
+    \  search,\n                attributes=(\"uid\", \"cn\"),\n                size_limit=5,\n\
+    \            )\n\n            if len(c.response) > 0:\n                bot.reply(\n\
+    \                    \", \".join(\n                        sorted(\n         \
+    \                   \"{} ({})\".format(\n                                entry[\"\
+    attributes\"][\"uid\"][0],\n                                entry[\"attributes\"\
+    ][\"cn\"][0],\n                            )\n                            for\
+    \ entry in c.response\n                        ),\n                    ),\n  \
+    \              )\n            else:\n                bot.reply(\"no results found\"\
+    )\n"
+  lab.py: "\"\"\"Get information about the lab.\"\"\"\n\nfrom ocflib.lab.stats import\
+    \ staff_in_lab\nfrom ocflib.lab.stats import users_in_lab_count\n\nfrom sopel\
+    \ import plugin\n\n\n@plugin.rule(r\"is ([a-z]+) in the lab\")\ndef in_lab(bot,\
+    \ trigger):\n    \"\"\"Check if a staffer is in the lab.\"\"\"\n    username =\
+    \ trigger.group(1).strip()\n    for session in staff_in_lab():\n        if username\
+    \ == session.user:\n            bot.reply(f\"{username} is in the lab\")\n   \
+    \         break\n    else:\n        bot.reply(f\"{username} is not in the lab\"\
+    )\n\n\ndef _prevent_ping(staffer):\n    \"\"\"Hack to prevent pinging the person\
+    \ by inserting a zero-width no-break space in their name.\"\"\"\n    return staffer[0]\
+    \ + \"\\u2060\" + staffer[1:]\n\n\n@plugin.rule(r\"(who is|who's) in the lab\"\
+    , r\"(?i)w+i+t+l+\")\ndef who_is_in_lab(bot, trigger):\n    \"\"\"Report on who\
+    \ is currently in the lab.\"\"\"\n    staff = {session.user for session in staff_in_lab()}\n\
+    \    total = users_in_lab_count()\n\n    if total != 1:\n        are_number_people\
+    \ = f\"are {total} people\"\n    else:\n        are_number_people = \"is 1 person\"\
+    \n\n    if staff:\n        staff_list = \": {}\".format(\n            \", \".join(sorted(_prevent_ping(staffer)\
+    \ for staffer in staff))\n        )\n    else:\n        staff_list = \"\"\n\n\
+    \    bot.reply(\n        \"there {} in the lab, including {} staff{}\".format(\n\
+    \            are_number_people,\n            len(staff),\n            staff_list,\n\
+    \        ),\n    )\n"
 kind: ConfigMap
 metadata:
   name: sopel-plugins
