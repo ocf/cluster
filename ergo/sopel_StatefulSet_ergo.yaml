@@ -16,7 +16,7 @@ spec:
         k8s.ocf.io/component: sopel
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/sopel:10c1881a9a6b304717ca9532424539d4eb3241f0
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/sopel:a6df597a208171b0ddffddd34edff11a68c75c3a
         name: sopel
         volumeMounts:
         - mountPath: /home/sopel/.sopel/default.cfg

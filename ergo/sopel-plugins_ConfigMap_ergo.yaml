@@ -52,35 +52,35 @@ data:
     \             func(bot)\n            except Exception as ex:\n               \
     \ error_msg = \"ircbot exception in thread {thread}.{function}: {exception}\"\
     .format(\n                    thread=func.__module__,\n                    function=func.__name__,\n\
-    \                    exception=ex,\n                )\n                bot.say(\"\
-    #rebuild\", error_msg)\n                bot.handle_error(\n                  \
-    \  textwrap.dedent(\n                        \"\"\"\n                    {error}\n\
-    \n                    {traceback}\n                    \"\"\",\n             \
-    \       ).format(\n                        error=error_msg,\n                \
-    \        traceback=format_exc(),\n                    ),\n                )\n\
-    \            # For now, just let it fail silently. We should consider uncommenting\
-    \ this block.\n            # finally:\n            # The thread has stopped, probably\
-    \ because it threw an error\n            # This shouldn't happen, so we stop the\
-    \ entire bot\n            # os._exit(1)\n\n        thread = threading.Thread(target=thread_func,\
-    \ daemon=True)\n        thread.start()\n\n    add_thread(celery_listener)\n\n\n\
-    @plugin.command(\"approve\")\n@plugin.require_admin(reply=True)\ndef approve(bot,\
-    \ trigger):\n    \"\"\"Approve a pending account.\"\"\"\n    user_name = trigger.group(1)\n\
-    \    tasks.approve_request.delay(user_name)\n    bot.reply(f\"approved {user_name},\
-    \ the account is being created\")\n\n\n@plugin.command(\"reject\")\n@plugin.require_admin(reply=True)\n\
-    def reject(bot, trigger):\n    \"\"\"Reject a pending account.\"\"\"\n    user_name\
-    \ = trigger.group(1)\n    tasks.reject_request.delay(user_name)\n    bot.reply(f\"\
-    rejected {user_name}, better luck next time\")\n\n\n@plugin.command(\"list\")\n\
-    @plugin.require_admin(reply=True)\ndef list_pending(bot, trigger):\n    \"\"\"\
-    List accounts pending approval.\"\"\"\n    task = tasks.get_pending_requests.delay()\n\
-    \    try:\n        task.wait(timeout=5)\n        if task.result:\n           \
-    \ for request in task.result:\n                bot.reply(request)\n        else:\n\
-    \            bot.reply(\"no pending requests\")\n    except exceptions.TimeoutError:\n\
-    \        bot.reply(\"timed out loading list of requests, sorry!\")\n\n\ndef celery_listener(bot):\n\
-    \    \"\"\"Listen for events from Celery, relay to IRC.\"\"\"\n    global tasks\n\
-    \n    while len(bot.channels.keys()) <= 0:\n        time.sleep(2)\n\n    celery\
-    \ = Celery(\n        broker=bot.settings.celery.broker,\n        backend=bot.settings.celery.backend,\n\
-    \    )\n    celery.conf.broker_use_ssl = {\n        \"ssl_ca_certs\": \"/etc/ssl/certs/ca-certificates.crt\"\
-    ,\n        \"ssl_cert_reqs\": ssl.CERT_REQUIRED,\n    }\n    # `redis_backend_use_ssl`\
+    \                    exception=ex,\n                )\n                bot.say(error_msg,\
+    \ \"#rebuild\")\n                bot.handle_error(\n                    textwrap.dedent(\n\
+    \                        \"\"\"\n                    {error}\n\n             \
+    \       {traceback}\n                    \"\"\",\n                    ).format(\n\
+    \                        error=error_msg,\n                        traceback=format_exc(),\n\
+    \                    ),\n                )\n            # For now, just let it\
+    \ fail silently. We should consider uncommenting this block.\n            # finally:\n\
+    \            # The thread has stopped, probably because it threw an error\n  \
+    \          # This shouldn't happen, so we stop the entire bot\n            # os._exit(1)\n\
+    \n        thread = threading.Thread(target=thread_func, daemon=True)\n       \
+    \ thread.start()\n\n    add_thread(celery_listener)\n\n\n@plugin.command(\"approve\"\
+    )\n@plugin.require_admin(reply=True)\ndef approve(bot, trigger):\n    \"\"\"Approve\
+    \ a pending account.\"\"\"\n    user_name = trigger.group(1)\n    tasks.approve_request.delay(user_name)\n\
+    \    bot.reply(f\"approved {user_name}, the account is being created\")\n\n\n\
+    @plugin.command(\"reject\")\n@plugin.require_admin(reply=True)\ndef reject(bot,\
+    \ trigger):\n    \"\"\"Reject a pending account.\"\"\"\n    user_name = trigger.group(1)\n\
+    \    tasks.reject_request.delay(user_name)\n    bot.reply(f\"rejected {user_name},\
+    \ better luck next time\")\n\n\n@plugin.command(\"list\")\n@plugin.require_admin(reply=True)\n\
+    def list_pending(bot, trigger):\n    \"\"\"List accounts pending approval.\"\"\
+    \"\n    task = tasks.get_pending_requests.delay()\n    try:\n        task.wait(timeout=5)\n\
+    \        if task.result:\n            for request in task.result:\n          \
+    \      bot.reply(request)\n        else:\n            bot.reply(\"no pending requests\"\
+    )\n    except exceptions.TimeoutError:\n        bot.reply(\"timed out loading\
+    \ list of requests, sorry!\")\n\n\ndef celery_listener(bot):\n    \"\"\"Listen\
+    \ for events from Celery, relay to IRC.\"\"\"\n    global tasks\n\n    while len(bot.channels.keys())\
+    \ <= 0:\n        time.sleep(2)\n\n    celery = Celery(\n        broker=bot.settings.celery.broker,\n\
+    \        backend=bot.settings.celery.backend,\n    )\n    celery.conf.broker_use_ssl\
+    \ = {\n        \"ssl_ca_certs\": \"/etc/ssl/certs/ca-certificates.crt\",\n   \
+    \     \"ssl_cert_reqs\": ssl.CERT_REQUIRED,\n    }\n    # `redis_backend_use_ssl`\
     \ is an OCF patch which was proposed upstream:\n    # https://github.com/celery/celery/pull/3831\n\
     \    celery.conf.redis_backend_use_ssl = {\n        \"ssl_cert_reqs\": ssl.CERT_NONE,\n\
     \    }\n\n    # TODO: stop using pickle\n    celery.conf.task_serializer = \"\
@@ -89,7 +89,7 @@ data:
     \        bot.settings.celery.broker,\n        ssl={\n            \"ssl_ca_certs\"\
     : \"/etc/ssl/certs/ca-certificates.crt\",\n            \"ssl_cert_reqs\": ssl.CERT_REQUIRED,\n\
     \        },\n    )\n\n    def bot_announce(targets, message):\n        for target\
-    \ in targets:\n            bot.say(target, message)\n\n    def on_account_created(event):\n\
+    \ in targets:\n            bot.say(message, target)\n\n    def on_account_created(event):\n\
     \        request = event[\"request\"]\n\n        if request[\"calnet_uid\"]:\n\
     \            uid_or_gid = \"Calnet UID: {}\".format(request[\"calnet_uid\"])\n\
     \        elif request[\"callink_oid\"]:\n            uid_or_gid = \"Callink OID:\
