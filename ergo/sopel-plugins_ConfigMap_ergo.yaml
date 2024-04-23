@@ -1,0 +1,44 @@
+apiVersion: v1
+data:
+  check.py: "\"\"\"Show information about OCF users.\"\"\"\n\nimport grp\nimport string\n\
+    \nfrom ocflib.account import search\nfrom ocflib.infra import ldap\nfrom sopel\
+    \ import plugin\n\n\nGROUP_COLOR_MAPPING = {\n    \"ocf\": \"\\x0314\",  # gray\n\
+    \    \"sorry\": \"\\x0304\",  # red\n    \"opstaff\": \"\\x0303\",  # green\n\
+    \    \"ocfstaff\": \"\\x0302\",  # blue\n    \"ocfroot\": \"\\x0307\",  # orange\n\
+    \    \"ocfapphost\": \"\\x0310\",  # cyan\n    \"ocfofficers\": \"\\x0306\", \
+    \ # purple\n    \"ocfalumni\": \"\\x0313\",  # pink\n}\n\n\n@plugin.command(\"\
+    check\")\ndef check(bot, trigger):\n    \"\"\"Print information about an OCF user.\"\
+    \"\"\n    user = trigger.group(1).strip()\n    attrs = search.user_attrs(user)\n\
+    \n    if attrs is not None:\n        groups = [grp.getgrgid(attrs[\"gidNumber\"\
+    ]).gr_name]\n        groups.extend(\n            sorted(group.gr_name for group\
+    \ in grp.getgrall() if user in group.gr_mem),\n        )\n        groups = [\n\
+    \            \"{}{}\\x0f\".format(GROUP_COLOR_MAPPING.get(group, \"\"), group)\n\
+    \            for group in groups\n        ]\n\n        if \"creationTime\" in\
+    \ attrs:\n            created = attrs[\"creationTime\"].strftime(\"%Y-%m-%d\"\
+    )\n        else:\n            created = \"unknown\"\n\n        bot.reply(\n  \
+    \          \"{user} ({uid}) | {name} | created {created} | groups: {groups}\"\
+    .format(\n                user=user,\n                uid=attrs[\"uidNumber\"\
+    ],\n                name=attrs[\"cn\"][0],\n                created=created,\n\
+    \                groups=\", \".join(groups),\n            ),\n            ping=False,\n\
+    \        )\n    else:\n        bot.reply(f\"{user} does not exist\", ping=False)\n\
+    \n\ndef alphanum(word):\n    return \"\".join(c for c in word.lower() if c in\
+    \ string.ascii_lowercase)\n\n\n@plugin.command(\"checkacct\")\ndef checkacct(bot,\
+    \ trigger):\n    \"\"\"Print matching OCF usernames.\"\"\"\n    search_term =\
+    \ trigger.group(1).strip()\n    keywords = search_term.split()\n\n    if len(keywords)\
+    \ > 0:\n        search = \"(&{})\".format(\n            \"\".join(\n         \
+    \       # all keywords must match either uid or cn\n                \"(|(uid=*{keyword}*)(cn=*{keyword}*))\"\
+    .format(\n                    keyword=alphanum(keyword),\n                )\n\
+    \                for keyword in keywords\n            ),\n        )\n\n      \
+    \  with ldap.ldap_ocf() as c:\n            c.search(\n                ldap.OCF_LDAP_PEOPLE,\n\
+    \                search,\n                attributes=(\"uid\", \"cn\"),\n    \
+    \            size_limit=5,\n            )\n\n            if len(c.response) >\
+    \ 0:\n                bot.reply(\n                    \", \".join(\n         \
+    \               sorted(\n                            \"{} ({})\".format(\n   \
+    \                             entry[\"attributes\"][\"uid\"][0],\n           \
+    \                     entry[\"attributes\"][\"cn\"][0],\n                    \
+    \        )\n                            for entry in c.response\n            \
+    \            ),\n                    ),\n                )\n            else:\n\
+    \                bot.reply(\"no results found\")\n"
+kind: ConfigMap
+metadata:
+  name: sopel-plugins
