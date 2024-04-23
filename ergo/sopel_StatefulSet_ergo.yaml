@@ -16,7 +16,7 @@ spec:
         k8s.ocf.io/component: sopel
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/sopel:a00e3e94f2568f9fd28d4664fd16af449c274f3a
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/sopel:405715476ea6ee169d4bc24d0bfa13a86a524513
         name: sopel
         volumeMounts:
         - mountPath: /home/sopel/.sopel/default.cfg
@@ -27,9 +27,9 @@ spec:
         - mountPath: /home/sopel/.sopel/plugins/
           name: sopel-plugins
       volumes:
-      - configMap:
-          name: sopel-config
-        name: sopel-config
+      - name: sopel-config
+        secret:
+          secretName: sopel-config
       - configMap:
           name: sopel-plugins
         name: sopel-plugins

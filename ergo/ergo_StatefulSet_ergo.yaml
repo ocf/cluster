@@ -28,7 +28,7 @@ spec:
           name: ircd-config
         - mountPath: /etc/ssl
           name: ircd-tls
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:a00e3e94f2568f9fd28d4664fd16af449c274f3a
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:405715476ea6ee169d4bc24d0bfa13a86a524513
         name: gamja
         ports:
         - containerPort: 80
