@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-16.1.2
+  name: keycloak
+  namespace: keycloak
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: keycloak
+      app.kubernetes.io/instance: keycloak
+      app.kubernetes.io/name: keycloak
+  serviceName: keycloak-headless
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-env-vars: de2f8a4fd27cdb55eddeace633af657257fbe510c9a381ab350b40a0e05c2ea7
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-secret-keytab: kvv2/data/keycloak/keycloak
+        vault.hashicorp.com/agent-inject-template-keytab: '{{- with secret "kvv2/data/keycloak/keycloak"
+          -}}{{ base64Decode .Data.data.keytab }}{{- end}}'
+        vault.hashicorp.com/role: keycloak
+        vault.hashicorp.com/service: https://vault.ocf.berkeley.edu/
+      labels:
+        app.kubernetes.io/component: keycloak
+        app.kubernetes.io/instance: keycloak
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: keycloak
+        helm.sh/chart: keycloak-16.1.2
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: keycloak
+                  app.kubernetes.io/name: keycloak
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: keycloak
+        - name: KEYCLOAK_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: keycloak.ocf-keycloak.credentials.postgresql.acid.zalan.do
+        - name: KEYCLOAK_HTTP_RELATIVE_PATH
+          value: /
+        envFrom:
+        - configMapRef:
+            name: keycloak-env-vars
+        image: docker.io/bitnami/keycloak:22.0.1-debian-11-r30
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 300
+          periodSeconds: 1
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: keycloak
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 7800
+          name: infinispan
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /realms/master
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /etc/krb5.conf
+          name: krb5-conf
+          subPath: krb5.conf
+        - mountPath: /opt/bitnami/keycloak/themes/keywind
+          name: keycloak
+          subPath: themes/keywind/theme/keywind
+      enableServiceLinks: true
+      initContainers:
+      - args:
+        - mkdir -p /keycloak/themes/keywind && (git -C /keycloak/themes/keywind pull
+          || git clone https://github.com/lukin/keywind /keycloak/themes/keywind)
+        command:
+        - /bin/sh
+        - -c
+        image: alpine/git
+        name: download-resources
+        volumeMounts:
+        - mountPath: /keycloak
+          name: keycloak
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: keycloak
+      volumes:
+      - configMap:
+          name: krb5-conf
+        name: krb5-conf
+      - name: keycloak
+        persistentVolumeClaim:
+          claimName: keycloak
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate

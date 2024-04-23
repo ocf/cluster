@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: contour
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
+  name: contour-contour
+  namespace: contour
+spec:
+  endpoints:
+  - port: metrics
+  jobLabel: app.kubernetes.io/name
+  namespaceSelector:
+    matchNames:
+    - contour
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour

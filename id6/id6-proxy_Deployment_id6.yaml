@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: id6-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: id6-proxy
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: id6-proxy
+    spec:
+      containers:
+      - args:
+        - --client-id=id6
+        - --client-secret=$(KEYCLOAK_SECRET)
+        - --encryption-key=$(ENCRYPTION_KEY)
+        - --redirection-url=https://discord.ocf.berkeley.edu/
+        - --discovery-url=https://idm.ocf.berkeley.edu/realms/ocf
+        - --enable-default-deny=true
+        - --enable-session-cookies
+        - --listen=:8000
+        - --upstream-url=http://id6
+        - --resources=uri=/*
+        - --headers=Host=discord.ocf.berkeley.edu
+        env:
+        - name: KEYCLOAK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: keycloak
+              name: id6
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              key: encryption_key
+              name: id6
+        image: quay.io/keycloak/keycloak-gatekeeper:6.0.1
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 8000

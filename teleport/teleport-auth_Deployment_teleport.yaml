@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: teleport
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: teleport-cluster
+    app.kubernetes.io/version: 14.2.4
+    helm.sh/chart: teleport-cluster-14.2.4
+    teleport.dev/majorVersion: '14'
+  name: teleport-auth
+  namespace: teleport
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: auth
+      app.kubernetes.io/instance: teleport
+      app.kubernetes.io/name: teleport-cluster
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksum/config: e7f890b7e6df5a84dcddcbe43948d374ad94b55ae3ab64eba8be101903b76c2f
+      labels:
+        app: teleport
+        app.kubernetes.io/component: auth
+        app.kubernetes.io/instance: teleport
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: teleport-cluster
+        app.kubernetes.io/version: 14.2.4
+        helm.sh/chart: teleport-cluster-14.2.4
+        teleport.dev/majorVersion: '14'
+    spec:
+      affinity:
+        podAntiAffinity: null
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - --diag-addr=0.0.0.0:3000
+        - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:14.2.4
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - teleport
+              - wait
+              - duration
+              - 30s
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /healthz
+            port: diag
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+        name: teleport
+        ports:
+        - containerPort: 3000
+          name: diag
+          protocol: TCP
+        - containerPort: 3025
+          name: auth
+          protocol: TCP
+        - containerPort: 3026
+          name: kube
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 12
+          httpGet:
+            path: /readyz
+            port: diag
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /var/lib/license
+          name: license
+          readOnly: true
+        - mountPath: /etc/teleport
+          name: config
+          readOnly: true
+        - mountPath: /var/lib/teleport
+          name: data
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: auth-serviceaccount-token
+          readOnly: true
+      serviceAccountName: teleport
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: auth-serviceaccount-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: token
+          - configMap:
+              items:
+              - key: ca.crt
+                path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - fieldRef:
+                  fieldPath: metadata.namespace
+                path: namespace
+      - name: license
+        secret:
+          secretName: license
+      - configMap:
+          name: teleport-auth
+        name: config
+      - name: data
+        persistentVolumeClaim:
+          claimName: teleport

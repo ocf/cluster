@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocf-io
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: ocf-io
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: ocf-io
+    spec:
+      containers:
+      - image: nginx:1.23.4
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          name: nginx-conf
+          subPath: nginx.conf
+      volumes:
+      - configMap:
+          name: ocf-io-nginx
+        name: nginx-conf

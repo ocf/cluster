@@ -1,0 +1,205 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: registry
+    app.kubernetes.io/instance: harbor
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: harbor
+    app.kubernetes.io/version: 2.10.0
+    helm.sh/chart: harbor-20.1.2
+  name: harbor-registry
+  namespace: harbor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: registry
+      app.kubernetes.io/instance: harbor
+      app.kubernetes.io/name: harbor
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: 5d5236a6248520cf29a3b254af77be97847131b474eab1cdb49e442043110c3e
+      labels:
+        app.kubernetes.io/component: registry
+        app.kubernetes.io/instance: harbor
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: harbor
+        app.kubernetes.io/version: 2.10.0
+        helm.sh/chart: harbor-20.1.2
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: registry
+                  app.kubernetes.io/instance: harbor
+                  app.kubernetes.io/name: harbor
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        envFrom:
+        - secretRef:
+            name: harbor-registry
+        image: docker.io/bitnami/harbor-registry:2.10.0-debian-12-r12
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /
+            port: registry
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: registry
+        ports:
+        - containerPort: 5000
+          name: registry
+        - containerPort: 5001
+          name: debug
+        - containerPort: 8001
+          name: metrics
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /
+            port: registry
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /storage
+          name: registry-data
+          subPath: null
+        - mountPath: /etc/registry/root.crt
+          name: registry-root-certificate
+          subPath: tls.crt
+        - mountPath: /etc/registry/passwd
+          name: registry-htpasswd
+          subPath: passwd
+        - mountPath: /etc/registry/config.yml
+          name: registry-config
+          subPath: config.yml
+      - env:
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        - name: CORE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: secret
+              name: harbor-core
+        - name: JOBSERVICE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: secret
+              name: harbor-jobservice
+        envFrom:
+        - secretRef:
+            name: harbor-registry
+        image: docker.io/bitnami/harbor-registryctl:2.10.0-debian-12-r11
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /api/health
+            port: registryctl
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: registryctl
+        ports:
+        - containerPort: 8080
+          name: registryctl
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /api/health
+            port: registryctl
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /storage
+          name: registry-data
+          subPath: null
+        - mountPath: /etc/registry/config.yml
+          name: registry-config
+          subPath: config.yml
+        - mountPath: /etc/registryctl/config.yml
+          name: registry-config
+          subPath: ctl-config.yml
+      initContainers: null
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      volumes:
+      - emptyDir: {}
+        name: empty-dir
+      - name: registry-htpasswd
+        secret:
+          items:
+          - key: REGISTRY_HTPASSWD
+            path: passwd
+          secretName: harbor-registry
+      - name: registry-root-certificate
+        secret:
+          secretName: harbor-core
+      - configMap:
+          name: harbor-registry
+        name: registry-config
+      - name: registry-data
+        persistentVolumeClaim:
+          claimName: harbor-registry

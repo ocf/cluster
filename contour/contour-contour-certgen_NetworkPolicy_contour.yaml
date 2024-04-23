@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/component: contour-certgen
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
+  name: contour-contour-certgen
+  namespace: contour
+spec:
+  egress:
+  - {}
+  ingress: null
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: contour-certgen
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour
+  policyTypes:
+  - Ingress
+  - Egress

@@ -1,0 +1,12 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  name: ocf-postgres-nvme
+spec:
+  numberOfInstances: 1
+  postgresql:
+    version: '14'
+  teamId: ocf
+  volume:
+    size: 512Gi
+    storageClass: rbd-nvme

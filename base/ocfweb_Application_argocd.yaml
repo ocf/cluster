@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocfweb
+  namespace: argocd
+spec:
+  destination:
+    namespace: ocfweb
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ocfweb
+    repoURL: https://github.com/ocf/cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true

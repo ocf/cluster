@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fission-storagesvc-fission-cr
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: fission-storagesvc-fission-cr
+subjects:
+- kind: ServiceAccount
+  name: fission-storagesvc
+  namespace: fission

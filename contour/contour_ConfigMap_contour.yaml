@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  contour.yaml: "accesslog-format: envoy\ndisablePermitInsecure: false\ntls:\n  fallback-certificate:\
+    \ {}"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: contour
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contour
+    app.kubernetes.io/version: 1.28.1
+    helm.sh/chart: contour-17.0.0
+  name: contour
+  namespace: contour

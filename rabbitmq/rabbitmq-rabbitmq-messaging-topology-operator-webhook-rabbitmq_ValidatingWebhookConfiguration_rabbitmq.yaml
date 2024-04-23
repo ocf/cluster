@@ -1,0 +1,267 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: rabbitmq/rabbitmq-rabbitmq-messaging-topology-operator-webhook
+  labels:
+    app.kubernetes.io/component: messaging-topology-operator
+    app.kubernetes.io/instance: rabbitmq
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rabbitmq-cluster-operator
+    app.kubernetes.io/part-of: rabbitmq
+    app.kubernetes.io/version: 1.13.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.0.0
+  name: rabbitmq-rabbitmq-messaging-topology-operator-webhook-rabbitmq
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-binding
+      port: 443
+  failurePolicy: Fail
+  name: vbinding.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bindings
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-exchange
+      port: 443
+  failurePolicy: Fail
+  name: vexchange.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - exchanges
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-federation
+      port: 443
+  failurePolicy: Fail
+  name: vfederation.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - federations
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-operatorpolicy
+      port: 443
+  failurePolicy: Fail
+  name: voperatorpolicy.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - operatorpolicies
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1alpha1-superstream
+      port: 443
+  failurePolicy: Fail
+  name: vsuperstream.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - superstreams
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-permission
+      port: 443
+  failurePolicy: Fail
+  name: vpermission.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - permissions
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-policy
+      port: 443
+  failurePolicy: Fail
+  name: vpolicy.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - policies
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-queue
+      port: 443
+  failurePolicy: Fail
+  name: vqueue.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - queues
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-schemareplication
+      port: 443
+  failurePolicy: Fail
+  name: vschemareplication.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - schemareplications
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-shovel
+      port: 443
+  failurePolicy: Fail
+  name: vshovel.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - shovels
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-user
+      port: 443
+  failurePolicy: Fail
+  name: vuser.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - users
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
+      namespace: rabbitmq
+      path: /validate-rabbitmq-com-v1beta1-vhost
+      port: 443
+  failurePolicy: Fail
+  name: vvhost.kb.io
+  rules:
+  - apiGroups:
+    - rabbitmq.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vhosts
+  sideEffects: None
