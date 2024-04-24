@@ -39,9 +39,9 @@ data:
     "client-secret", "redirectUris": ["https://jenkins.ocf.berkeley.edu/securityRealm/finishLogin"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "ergo", "name": "Ergo", "description": "IRC server", "baseUrl":
-    "https://irc-dev.ocf.berkeley.edu/", "clientAuthenticatorType": "client-secret",
-    "redirectUris": ["https://irc-dev.ocf.berkeley.edu/*"], "webOrigins": ["+"], "publicClient":
-    false, "protocol": "openid-connect", "enabled": true, "implicitFlowEnabled": true}],
+    "https://irc.ocf.berkeley.edu/", "clientAuthenticatorType": "client-secret", "redirectUris":
+    ["https://irc.ocf.berkeley.edu/*"], "webOrigins": ["+"], "publicClient": false,
+    "protocol": "openid-connect", "enabled": true, "implicitFlowEnabled": true}],
     "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
     {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
     [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
