@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: templates
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/templates/templates:3abf9e6f055f613f61e7a99a26630654a59c56b7
+      - image: harbor.ocf.berkeley.edu/ocf/templates/templates:8d9ececcd091d0e24578e34a7cfc77f39e4b23c2
         imagePullPolicy: IfNotPresent
         name: main
         ports:
