@@ -25,6 +25,7 @@ data:
   enable-auto-protect-node-port-range: 'true'
   enable-bgp-control-plane: 'false'
   enable-bpf-clock-probe: 'false'
+  enable-bpf-masquerade: 'true'
   enable-endpoint-health-checking: 'true'
   enable-endpoint-routes: 'true'
   enable-health-check-loadbalancer-ip: 'false'
@@ -94,7 +95,7 @@ data:
   proxy-max-requests-per-connection: '0'
   proxy-prometheus-port: '9964'
   remove-cilium-node-taints: 'true'
-  routing-mode: tunnel
+  routing-mode: native
   service-no-backend-response: reject
   set-cilium-is-up-condition: 'true'
   set-cilium-node-taints: 'true'
@@ -107,7 +108,6 @@ data:
   tofqdns-idle-connection-grace-period: 0s
   tofqdns-max-deferred-connection-deletes: '10000'
   tofqdns-proxy-response-max-delay: 100ms
-  tunnel-protocol: vxlan
   unmanaged-pod-watcher-interval: '15'
   vtep-cidr: ''
   vtep-endpoint: ''
