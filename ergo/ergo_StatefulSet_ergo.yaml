@@ -29,19 +29,19 @@ spec:
           name: ircd-volume
         - mountPath: /ircd
           name: ircd-config
-        - mountPath: /etc/ssl
+        - mountPath: /etc/ssl/server_certs
           name: ircd-tls
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:b7b5ed6831d0050d3e065403e40c075d8d71e434
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:edbc535fe68470b34164c315cbc51530811050b3
         name: gamja
         ports:
         - containerPort: 80
         - containerPort: 443
         volumeMounts:
-        - mountPath: /etc/ssl
+        - mountPath: /etc/ssl/server_certs
           name: ircd-tls
       - args:
         - -c
-        - "echo \"Watching /ircd/\";\ninotifyd - /ircd/:wMymndox /etc/ssl/:wMymndox\
+        - "echo \"Watching /ircd/\";\ninotifyd - /ircd/:wMymndox /etc/ssl/server_certs/:wMymndox\
           \ | while read -r notifies ; do\n  echo \"$notifies\";\n  echo \"notify\
           \ received, sending SIGHUP\";\n  pkill -HUP ergo;\ndone\necho \"Exiting.\"\
           ;\n"
@@ -52,7 +52,7 @@ spec:
         volumeMounts:
         - mountPath: /ircd
           name: ircd-config
-        - mountPath: /etc/ssl
+        - mountPath: /etc/ssl/server_certs
           name: ircd-tls
       volumes:
       - configMap:

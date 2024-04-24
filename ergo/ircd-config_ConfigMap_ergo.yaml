@@ -61,17 +61,17 @@ data:
     \  - 169.229.226.0/24\n    - 2607:f140:8801::/64\n    - 2607:f140:8800::/48\n\
     \    max-concurrent-connections: 16\n    max-connections-per-window: 32\n    throttle:\
     \ true\n    window: 10m\n  listeners:\n    127.0.0.1:6667: null\n    :6697:\n\
-    \      min-tls-version: 1.2\n      proxy: false\n      tls:\n        cert: /etc/ssl/tls.crt\n\
-    \        key: /etc/ssl/tls.key\n    :8097:\n      tls:\n        cert: /etc/ssl/tls.crt\n\
-    \        key: /etc/ssl/tls.key\n      websocket: true\n    '[::1]:6667': null\n\
-    \  lookup-hostnames: false\n  max-sendq: 96k\n  motd: ircd.motd\n  motd-formatting:\
-    \ true\n  name: irc-dev.ocf.berkeley.edu\n  proxy-allowed-from:\n  - localhost\n\
-    \  relaymsg:\n    available-to-chanops: true\n    enabled: true\n    separators:\
-    \ /\n  secure-nets: null\n  sts:\n    duration: 1mo2d5m\n    enabled: true\n \
-    \   port: 6697\n    preload: true\n  suppress-lusers: false\n  tor-listeners:\n\
-    \    max-connections: 64\n    max-connections-per-duration: 64\n    require-sasl:\
-    \ false\n    throttle-duration: 10m\n    vhost: tor-network.onion\n  unix-bind-mode:\
-    \ 511\n  webirc:\n  - certfp: 370fa3d1e64cfa5947255be412af899c8783c26d57e4ca334d01f458c55848e2\n\
+    \      min-tls-version: 1.2\n      proxy: false\n      tls:\n        cert: /etc/ssl/server_certs/tls.crt\n\
+    \        key: /etc/ssl/server_certs/tls.key\n    :8097:\n      tls:\n        cert:\
+    \ /etc/ssl/server_certs/tls.crt\n        key: /etc/ssl/server_certs/tls.key\n\
+    \      websocket: true\n    '[::1]:6667': null\n  lookup-hostnames: false\n  max-sendq:\
+    \ 96k\n  motd: ircd.motd\n  motd-formatting: true\n  name: irc-dev.ocf.berkeley.edu\n\
+    \  proxy-allowed-from:\n  - localhost\n  relaymsg:\n    available-to-chanops:\
+    \ true\n    enabled: true\n    separators: /\n  secure-nets: null\n  sts:\n  \
+    \  duration: 1mo2d5m\n    enabled: true\n    port: 6697\n    preload: true\n \
+    \ suppress-lusers: false\n  tor-listeners:\n    max-connections: 64\n    max-connections-per-duration:\
+    \ 64\n    require-sasl: false\n    throttle-duration: 10m\n    vhost: tor-network.onion\n\
+    \  unix-bind-mode: 511\n  webirc:\n  - certfp: 370fa3d1e64cfa5947255be412af899c8783c26d57e4ca334d01f458c55848e2\n\
     \    hosts:\n    - localhost\n  websockets:\n    allowed-origins:\n    - https://irc-dev.ocf.berkeley.edu\n"
 kind: ConfigMap
 metadata:
