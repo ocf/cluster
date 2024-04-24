@@ -19,7 +19,7 @@ spec:
       - envFrom:
         - secretRef:
             name: ircd-secrets
-        image: ghcr.io/ergochat/ergo:v2.13.0
+        image: ghcr.io/ergochat/ergo:master
         name: ergo
         ports:
         - containerPort: 8097
@@ -31,7 +31,7 @@ spec:
           name: ircd-config
         - mountPath: /etc/ssl
           name: ircd-tls
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:fadc083ea06ccb7ca518a15ff3936ab667476644
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:b7b5ed6831d0050d3e065403e40c075d8d71e434
         name: gamja
         ports:
         - containerPort: 80
@@ -47,7 +47,7 @@ spec:
           ;\n"
         command:
         - /bin/sh
-        image: ghcr.io/ergochat/ergo:v2.13.0
+        image: ghcr.io/ergochat/ergo:master
         name: config-reloader
         volumeMounts:
         - mountPath: /ircd
