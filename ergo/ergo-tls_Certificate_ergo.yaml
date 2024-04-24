@@ -4,7 +4,7 @@ metadata:
   name: ergo-tls
 spec:
   dnsNames:
-  - irc-dev.ocf.berkeley.edu
+  - irc.ocf.berkeley.edu
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt
