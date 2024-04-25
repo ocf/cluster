@@ -48,6 +48,8 @@ data:
     \    - defcon\n    - massmessage\n    extends: chat-moderator\n    title: Server\
     \ Admin\nopers:\n  njha:\n    auto: true\n    certfp: 37:0F:A3:D1:E6:4C:FA:59:47:25:5B:E4:12:AF:89:9C:87:83:C2:6D:57:E4:CA:33:4D:01:F4:58:C5:58:48:E2\n\
     \    class: server-admin\n    hidden: true\n    whois-line: 2020-2024 OCF Root\
+    \ Staff\n  oliverni:\n    auto: true\n    certfp: 5B:B7:F9:C7:AF:13:D7:46:A2:86:2B:88:C0:42:E9:F2:EF:D3:50:ED:3D:0C:F0:4C:DF:C1:D9:14:AE:D6:16:FA\n\
+    \    class: server-admin\n    hidden: true\n    whois-line: 2020-2024 OCF Root\
     \ Staff\nroleplay:\n  add-suffix: true\n  enabled: false\n  require-chanops: false\n\
     \  require-oper: true\nserver:\n  casemapping: ascii\n  check-ident: false\n \
     \ coerce-ident: ~u\n  compatibility:\n    allow-truncation: false\n    force-trailing:\
