@@ -25,6 +25,10 @@ spec:
             secretKeyRef:
               key: password
               name: mariadb-secret
+        - name: MARIADB_DATABASE
+          value: ergo_history
+        - name: MARIADB_USER
+          value: ergo
         image: docker.io/mariadb:11-jammy
         name: mariadb
         ports:
