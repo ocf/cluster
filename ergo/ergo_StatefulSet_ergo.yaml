@@ -16,7 +16,17 @@ spec:
         k8s.ocf.io/component: ircd
     spec:
       containers:
-      - envFrom:
+      - env:
+        - name: ERGO__DATASTORE__MYSQL__USER
+          value: ergo
+        - name: ERGO__DATASTORE__MYSQL__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: mariadb-secret
+        - name: ERGO__DATASTORE__MYSQL__HISTORY_DATABASE
+          value: ergo_history
+        envFrom:
         - secretRef:
             name: ircd-secrets
         image: ghcr.io/ergochat/ergo:master
@@ -31,7 +41,7 @@ spec:
           name: ircd-config
         - mountPath: /etc/ssl/server_certs
           name: ircd-tls
-      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:21307b396c7e8a5467cb2cbf063dec3cfdb5e2df
+      - image: harbor.ocf.berkeley.edu/ocf/ergo/gamja:b610b30ee481275c4ad61a878fadf28d6d94f625
         name: gamja
         ports:
         - containerPort: 80

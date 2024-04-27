@@ -14,39 +14,39 @@ data:
     \  enabled: true\n    introspection-timeout: 10s\n    introspection-url: https://idm.ocf.berkeley.edu/realms/ocf/protocol/openid-connect/token/introspect\n\
     \  registration:\n    allow-before-connect: true\n    bcrypt-cost: 4\n    email-verification:\n\
     \      address-blacklist: null\n      address-blacklist-syntax: glob\n      enabled:\
-    \ false\n      helo-domain: my.network\n      password-reset:\n        cooldown:\
+    \ false\n      helo-domain: ocf.berkeley.edu\n      password-reset:\n        cooldown:\
     \ 1h\n        enabled: false\n        timeout: 1d\n      require-tls: true\n \
-    \     sender: admin@my.network\n      timeout: 60s\n    enabled: false\n    throttling:\n\
-    \      duration: 10m\n      enabled: true\n      max-attempts: 30\n    verify-timeout:\
-    \ 32h\n  require-sasl:\n    enabled: false\n    exempted:\n    - localhost\n \
-    \ skip-server-password: false\n  vhosts:\n    enabled: true\n    max-length: 64\n\
-    \    valid-regexp: ^[0-9A-Za-z.\\-_/]+$\nallow-environment-overrides: true\nchannels:\n\
-    \  default-modes: +ntC\n  invite-expiration: 24h\n  list-delay: 0s\n  max-channels-per-client:\
-    \ 100\n  operator-only-creation: false\n  registration:\n    enabled: true\n \
-    \   max-channels-per-account: 15\n    operator-only: true\ndatastore:\n  autoupgrade:\
-    \ true\n  mysql:\n    enabled: false\n    history-database: ergo_history\n   \
-    \ host: localhost\n    max-conns: 4\n    password: hunter2\n    port: 3306\n \
-    \   timeout: 3s\n    user: ergo\n  path: /ircd/db/ircd.db\ndebug:\n  recover-from-errors:\
-    \ true\nextjwt: null\nfakelag:\n  burst-limit: 7\n  command-budgets:\n    CHATHISTORY:\
-    \ 16\n    MARKREAD: 16\n    MONITOR: 1\n    WHO: 4\n  cooldown: 2s\n  enabled:\
-    \ true\n  messages-per-window: 3\n  window: 1s\nhistory:\n  autoreplay-on-join:\
-    \ 0\n  autoresize-window: 3d\n  channel-length: 2048\n  chathistory-maxmessages:\
-    \ 1000\n  client-length: 256\n  enabled: true\n  persistent:\n    direct-messages:\
-    \ opt-out\n    enabled: false\n    registered-channels: opt-out\n    unregistered-channels:\
-    \ false\n  restrictions:\n    expire-time: 1w\n    grace-period: 1h\n    query-cutoff:\
-    \ none\n  retention:\n    allow-individual-delete: false\n    enable-account-indexing:\
-    \ false\n  tagmsg-storage:\n    default: false\n    whitelist:\n    - +draft/react\n\
-    \    - +react\n  znc-maxmessages: 2048\nlimits:\n  awaylen: 390\n  chan-list-modes:\
-    \ 60\n  channellen: 64\n  identlen: 20\n  kicklen: 390\n  monitor-entries: 100\n\
-    \  multiline:\n    max-bytes: 4096\n    max-lines: 100\n  nicklen: 32\n  registration-messages:\
-    \ 1024\n  topiclen: 390\n  whowas-entries: 100\nlock-file: /ircd/db/ircd.lock\n\
-    logging:\n- level: debug\n  method: stderr\n  type: '* -userinput -useroutput'\n\
-    network:\n  name: OCF\noper-classes:\n  chat-moderator:\n    capabilities:\n \
-    \   - kill\n    - ban\n    - nofakelag\n    - relaymsg\n    - vhosts\n    - sajoin\n\
-    \    - samode\n    - snomasks\n    - roleplay\n    title: Chat Moderator\n  server-admin:\n\
-    \    capabilities:\n    - rehash\n    - accreg\n    - chanreg\n    - history\n\
-    \    - defcon\n    - massmessage\n    extends: chat-moderator\n    title: Server\
-    \ Admin\nopers:\n  njha:\n    auto: true\n    certfp: 37:0F:A3:D1:E6:4C:FA:59:47:25:5B:E4:12:AF:89:9C:87:83:C2:6D:57:E4:CA:33:4D:01:F4:58:C5:58:48:E2\n\
+    \     sender: create@ocf.berkeley.edu\n      timeout: 60s\n    enabled: true\n\
+    \    throttling:\n      duration: 10m\n      enabled: true\n      max-attempts:\
+    \ 30\n    verify-timeout: 32h\n  require-sasl:\n    enabled: false\n    exempted:\n\
+    \    - localhost\n  skip-server-password: false\n  vhosts:\n    enabled: true\n\
+    \    max-length: 64\n    valid-regexp: ^[0-9A-Za-z.\\-_/]+$\nallow-environment-overrides:\
+    \ true\nchannels:\n  default-modes: +ntC\n  invite-expiration: 24h\n  list-delay:\
+    \ 0s\n  max-channels-per-client: 100\n  operator-only-creation: false\n  registration:\n\
+    \    enabled: true\n    max-channels-per-account: 15\n    operator-only: true\n\
+    datastore:\n  autoupgrade: true\n  mysql:\n    enabled: true\n    host: mariadb\n\
+    \    max-conns: 4\n    port: 3306\n    timeout: 3s\n  path: /ircd/db/ircd.db\n\
+    debug:\n  recover-from-errors: true\nextjwt: null\nfakelag:\n  burst-limit: 7\n\
+    \  command-budgets:\n    CHATHISTORY: 16\n    MARKREAD: 16\n    MONITOR: 1\n \
+    \   WHO: 4\n  cooldown: 2s\n  enabled: false\n  messages-per-window: 3\n  window:\
+    \ 1s\nhistory:\n  autoreplay-on-join: 0\n  autoresize-window: 3d\n  channel-length:\
+    \ 4096\n  chathistory-maxmessages: 2000\n  client-length: 512\n  enabled: true\n\
+    \  persistent:\n    direct-messages: opt-out\n    enabled: true\n    registered-channels:\
+    \ opt-out\n    unregistered-channels: false\n  restrictions:\n    expire-time:\
+    \ 4w\n    grace-period: 1h\n    query-cutoff: none\n  retention:\n    allow-individual-delete:\
+    \ false\n    enable-account-indexing: false\n  tagmsg-storage:\n    default: true\n\
+    \    whitelist:\n    - +draft/react\n    - +react\n  znc-maxmessages: 4096\nlimits:\n\
+    \  awaylen: 390\n  chan-list-modes: 60\n  channellen: 64\n  identlen: 20\n  kicklen:\
+    \ 390\n  monitor-entries: 100\n  multiline:\n    max-bytes: 4096\n    max-lines:\
+    \ 100\n  nicklen: 32\n  registration-messages: 1024\n  topiclen: 390\n  whowas-entries:\
+    \ 100\nlock-file: /ircd/db/ircd.lock\nlogging:\n- level: debug\n  method: stderr\n\
+    \  type: '* -userinput -useroutput'\nnetwork:\n  name: OCF\noper-classes:\n  chat-moderator:\n\
+    \    capabilities:\n    - kill\n    - ban\n    - nofakelag\n    - relaymsg\n \
+    \   - vhosts\n    - sajoin\n    - samode\n    - snomasks\n    - roleplay\n   \
+    \ title: Chat Moderator\n  server-admin:\n    capabilities:\n    - rehash\n  \
+    \  - accreg\n    - chanreg\n    - history\n    - defcon\n    - massmessage\n \
+    \   extends: chat-moderator\n    title: Server Admin\nopers:\n  njha:\n    auto:\
+    \ true\n    certfp: 37:0F:A3:D1:E6:4C:FA:59:47:25:5B:E4:12:AF:89:9C:87:83:C2:6D:57:E4:CA:33:4D:01:F4:58:C5:58:48:E2\n\
     \    class: server-admin\n    hidden: true\n    whois-line: 2020-2024 OCF Root\
     \ Staff\n  oliverni:\n    auto: true\n    certfp: 5B:B7:F9:C7:AF:13:D7:46:A2:86:2B:88:C0:42:E9:F2:EF:D3:50:ED:3D:0C:F0:4C:DF:C1:D9:14:AE:D6:16:FA\n\
     \    class: server-admin\n    hidden: true\n    whois-line: 2020-2024 OCF Root\
