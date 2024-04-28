@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.13.1
-    helm.sh/chart: keda-2.13.2
+    app.kubernetes.io/version: 2.14.0
+    helm.sh/chart: keda-2.14.0
   name: cloudeventsources.eventing.keda.sh
 spec:
   group: eventing.keda.sh
@@ -33,24 +33,60 @@ spec:
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              of an object.
+
+              Servers should convert recognized schemas to the latest internal value,
+              and
+
+              may reject unrecognized values.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
             description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              object represents.
+
+              Servers may infer this from the endpoint the client submits requests
+              to.
+
+              Cannot be updated.
+
+              In CamelCase.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             description: CloudEventSourceSpec defines the spec of CloudEventSource
             properties:
+              authenticationRef:
+                description: 'AuthenticationRef points to the TriggerAuthentication
+                  or ClusterTriggerAuthentication object that
+
+                  is used to authenticate the scaler with the environment'
+                properties:
+                  kind:
+                    description: Kind of the resource being referred to. Defaults
+                      to TriggerAuthentication.
+                    type: string
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
               clusterName:
                 type: string
               destination:
                 description: Destination defines the various ways to emit events
                 properties:
+                  azureEventGridTopic:
+                    properties:
+                      endpoint:
+                        type: string
+                    required:
+                    - endpoint
+                    type: object
                   http:
                     properties:
                       uri:
@@ -58,6 +94,28 @@ spec:
                     required:
                     - uri
                     type: object
+                type: object
+              eventSubscription:
+                description: EventSubscription defines filters for events
+                properties:
+                  excludedEventTypes:
+                    items:
+                      description: CloudEventType contains the list of cloudevent
+                        types
+                      enum:
+                      - keda.scaledobject.ready.v1
+                      - keda.scaledobject.failed.v1
+                      type: string
+                    type: array
+                  includedEventTypes:
+                    items:
+                      description: CloudEventType contains the list of cloudevent
+                        types
+                      enum:
+                      - keda.scaledobject.ready.v1
+                      - keda.scaledobject.failed.v1
+                      type: string
+                    type: array
                 type: object
             required:
             - destination

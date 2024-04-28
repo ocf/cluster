@@ -6,12 +6,14 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-16.1.2
+    app.kubernetes.io/version: 24.0.3
+    helm.sh/chart: keycloak-21.0.3
   name: keycloak
   namespace: keycloak
 spec:
   podManagementPolicy: Parallel
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/component: keycloak
@@ -21,7 +23,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env-vars: de2f8a4fd27cdb55eddeace633af657257fbe510c9a381ab350b40a0e05c2ea7
+        checksum/configmap-env-vars: 9df16023c84053f7b74026760edfd47137815d88bce80cdd03a2986a212f1e93
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-keytab: kvv2/data/keycloak/keycloak
         vault.hashicorp.com/agent-inject-template-keytab: '{{- with secret "kvv2/data/keycloak/keycloak"
@@ -33,7 +35,8 @@ spec:
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keycloak
-        helm.sh/chart: keycloak-16.1.2
+        app.kubernetes.io/version: 24.0.3
+        helm.sh/chart: keycloak-21.0.3
     spec:
       affinity:
         nodeAffinity: null
@@ -47,6 +50,7 @@ spec:
                   app.kubernetes.io/name: keycloak
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: true
       containers:
       - env:
         - name: KUBERNETES_NAMESPACE
@@ -71,7 +75,7 @@ spec:
         envFrom:
         - configMapRef:
             name: keycloak-env-vars
-        image: docker.io/bitnami/keycloak:22.0.1-debian-11-r30
+        image: docker.io/bitnami/keycloak:24.0.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -88,8 +92,7 @@ spec:
           name: http
           protocol: TCP
         - containerPort: 7800
-          name: infinispan
-          protocol: TCP
+          name: discovery
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -100,12 +103,40 @@ spec:
           successThreshold: 1
           timeoutSeconds: 1
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 750m
+            ephemeral-storage: 1024Mi
+            memory: 768Mi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 50Mi
+            memory: 512Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /opt/bitnami/keycloak/conf
+          name: empty-dir
+          subPath: app-conf-dir
+        - mountPath: /opt/bitnami/keycloak/lib/quarkus
+          name: empty-dir
+          subPath: app-quarkus-dir
+        - mountPath: /opt/bitnami/keycloak/data
+          name: empty-dir
+          subPath: app-data-dir
         - mountPath: /etc/krb5.conf
           name: krb5-conf
           subPath: krb5.conf
@@ -114,6 +145,47 @@ spec:
           subPath: themes/keywind/theme/keywind
       enableServiceLinks: true
       initContainers:
+      - args:
+        - -ec
+        - '#!/bin/bash
+
+          cp -r /opt/bitnami/keycloak/lib/quarkus/* /quarkus
+
+          '
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/keycloak:24.0.3-debian-12-r0
+        imagePullPolicy: IfNotPresent
+        name: init-quarkus-directory
+        resources:
+          limits:
+            cpu: 750m
+            ephemeral-storage: 1024Mi
+            memory: 768Mi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 50Mi
+            memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /quarkus
+          name: empty-dir
+          subPath: app-quarkus-dir
       - args:
         - mkdir -p /keycloak/themes/keywind && (git -C /keycloak/themes/keywind pull
           || git clone https://github.com/lukin/keywind /keycloak/themes/keywind)
@@ -127,8 +199,13 @@ spec:
           name: keycloak
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: keycloak
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - configMap:
           name: krb5-conf
         name: krb5-conf

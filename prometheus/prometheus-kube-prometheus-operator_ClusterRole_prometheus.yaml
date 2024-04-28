@@ -3,11 +3,13 @@ kind: ClusterRole
 metadata:
   labels:
     app: kube-prometheus-stack-operator
+    app.kubernetes.io/component: prometheus-operator
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-operator
@@ -17,12 +19,18 @@ rules:
   resources:
   - alertmanagers
   - alertmanagers/finalizers
+  - alertmanagers/status
   - alertmanagerconfigs
   - prometheuses
-  - prometheuses/status
   - prometheuses/finalizers
+  - prometheuses/status
+  - prometheusagents
+  - prometheusagents/finalizers
+  - prometheusagents/status
   - thanosrulers
   - thanosrulers/finalizers
+  - thanosrulers/status
+  - scrapeconfigs
   - servicemonitors
   - podmonitors
   - probes
@@ -76,6 +84,13 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - patch
+  - create
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingresses
@@ -83,3 +98,9 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - get

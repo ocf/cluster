@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    app.kubernetes.io/version: 1.28.1
-    helm.sh/chart: contour-17.0.0
+    app.kubernetes.io/version: 1.28.2
+    helm.sh/chart: contour-17.0.7
   name: contour-envoy
   namespace: contour
 spec:
@@ -23,8 +23,8 @@ spec:
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        app.kubernetes.io/version: 1.28.1
-        helm.sh/chart: contour-17.0.0
+        app.kubernetes.io/version: 1.28.2
+        helm.sh/chart: contour-17.0.7
     spec:
       affinity:
         nodeAffinity: null
@@ -35,9 +35,10 @@ spec:
       - args:
         - envoy
         - shutdown-manager
+        - --serve-port=8090
         command:
         - contour
-        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
+        image: docker.io/bitnami/contour:1.28.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -47,22 +48,22 @@ spec:
               - envoy
               - shutdown
         livenessProbe:
-          exec:
-            command:
-            - pgrep
-            - contour
           failureThreshold: 6
           initialDelaySeconds: 120
           periodSeconds: 20
           successThreshold: 1
+          tcpSocket:
+            port: http-shutdown
           timeoutSeconds: 5
         name: shutdown-manager
+        ports:
+        - containerPort: 8090
+          name: http-shutdown
         readinessProbe:
-          exec:
-            command:
-            - pgrep
-            - contour
           failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: http-shutdown
           initialDelaySeconds: 10
           periodSeconds: 3
           successThreshold: 1
@@ -112,7 +113,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        image: docker.io/bitnami/envoy:1.28.1-debian-12-r4
+        image: docker.io/bitnami/envoy:1.28.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -200,7 +201,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
+        image: docker.io/bitnami/contour:1.28.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         name: envoy-initconfig
         resources:

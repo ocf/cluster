@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 14.2.4
-    helm.sh/chart: teleport-cluster-14.2.4
-    teleport.dev/majorVersion: '14'
+    app.kubernetes.io/version: 15.2.5
+    helm.sh/chart: teleport-cluster-15.2.5
+    teleport.dev/majorVersion: '15'
   name: teleport-auth
   namespace: teleport
 spec:

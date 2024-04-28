@@ -7,13 +7,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: prometheus-node-exporter
     app.kubernetes.io/part-of: prometheus-node-exporter
-    app.kubernetes.io/version: 1.5.0
-    helm.sh/chart: prometheus-node-exporter-4.8.0
+    app.kubernetes.io/version: 1.7.0
+    helm.sh/chart: prometheus-node-exporter-4.32.0
     jobLabel: node-exporter
     release: prometheus
   name: prometheus-prometheus-node-exporter
   namespace: prometheus
 spec:
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/instance: prometheus
@@ -28,8 +29,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: prometheus-node-exporter
         app.kubernetes.io/part-of: prometheus-node-exporter
-        app.kubernetes.io/version: 1.5.0
-        helm.sh/chart: prometheus-node-exporter-4.8.0
+        app.kubernetes.io/version: 1.7.0
+        helm.sh/chart: prometheus-node-exporter-4.32.0
         jobLabel: node-exporter
         release: prometheus
     spec:
@@ -39,13 +40,14 @@ spec:
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
         - --path.rootfs=/host/root
+        - --path.udev.data=/host/root/run/udev/data
         - --web.listen-address=[$(HOST_IP)]:9100
         - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
         - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
         env:
         - name: HOST_IP
           value: 0.0.0.0
-        image: quay.io/prometheus/node-exporter:v1.5.0
+        image: quay.io/prometheus/node-exporter:v1.7.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -74,6 +76,8 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
+        securityContext:
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /host/proc
           name: proc
@@ -87,6 +91,8 @@ spec:
           readOnly: true
       hostNetwork: true
       hostPID: true
+      nodeSelector:
+        kubernetes.io/os: linux
       securityContext:
         fsGroup: 65534
         runAsGroup: 65534

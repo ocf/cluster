@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: kube-prometheus-stack
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
+    heritage: Helm
+    release: prometheus
+  name: prometheus-kube-prometheus-k8s.rules.container-memory-rss
+  namespace: prometheus
+spec:
+  groups:
+  - name: k8s.rules.container_memory_rss
+    rules:
+    - expr: "container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"\
+        , image!=\"\"}\n* on (cluster, namespace, pod) group_left(node) topk by (cluster,\
+        \ namespace, pod) (1,\n  max by (cluster, namespace, pod, node) (kube_pod_info{node!=\"\
+        \"})\n)"
+      record: node_namespace_pod_container:container_memory_rss

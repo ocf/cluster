@@ -7,13 +7,15 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: prometheus-node-exporter
     app.kubernetes.io/part-of: prometheus-node-exporter
-    app.kubernetes.io/version: 1.5.0
-    helm.sh/chart: prometheus-node-exporter-4.8.0
+    app.kubernetes.io/version: 1.7.0
+    helm.sh/chart: prometheus-node-exporter-4.32.0
     jobLabel: node-exporter
     release: prometheus
   name: prometheus-prometheus-node-exporter
   namespace: prometheus
 spec:
+  attachMetadata:
+    node: false
   endpoints:
   - port: http-metrics
     scheme: http

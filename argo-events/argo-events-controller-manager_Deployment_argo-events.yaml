@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: argo-events-controller-manager
     app.kubernetes.io/part-of: argo-events
     app.kubernetes.io/version: v1.9.1
-    helm.sh/chart: argo-events-2.4.3
+    helm.sh/chart: argo-events-2.4.4
   name: argo-events-controller-manager
   namespace: argo-events
 spec:
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 5ec3d573509e50aa4990327e68d05f55c436facd60ab970eb936ce83c801b757
+        checksum/config: 1b647b06b76d9d191cddd4255340fd1b4b31b032c973e85cde4065bcc73dc0d9
       labels:
         app.kubernetes.io/component: controller-manager
         app.kubernetes.io/instance: argo-events
@@ -29,7 +29,7 @@ spec:
         app.kubernetes.io/name: argo-events-controller-manager
         app.kubernetes.io/part-of: argo-events
         app.kubernetes.io/version: v1.9.1
-        helm.sh/chart: argo-events-2.4.3
+        helm.sh/chart: argo-events-2.4.4
     spec:
       containers:
       - args:

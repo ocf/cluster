@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubernetes-system-kubelet
@@ -44,10 +44,10 @@ spec:
           }} of its Pod capacity.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubelettoomanypods
         summary: Kubelet is running at capacity.
-      expr: "count by(cluster, node) (\n  (kube_pod_status_phase{job=\"kube-state-metrics\"\
-        ,phase=\"Running\"} == 1) * on(instance,pod,namespace,cluster) group_left(node)\
-        \ topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job=\"kube-state-metrics\"\
-        })\n)\n/\nmax by(cluster, node) (\n  kube_node_status_capacity{job=\"kube-state-metrics\"\
+      expr: "count by (cluster, node) (\n  (kube_pod_status_phase{job=\"kube-state-metrics\"\
+        ,phase=\"Running\"} == 1) * on (instance,pod,namespace,cluster) group_left(node)\
+        \ topk by (instance,pod,namespace,cluster) (1, kube_pod_info{job=\"kube-state-metrics\"\
+        })\n)\n/\nmax by (cluster, node) (\n  kube_node_status_capacity{job=\"kube-state-metrics\"\
         ,resource=\"pods\"} != 1\n) > 0.95"
       for: 15m
       labels:
@@ -58,7 +58,7 @@ spec:
           $value }} times in the last 15 minutes.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodereadinessflapping
         summary: Node readiness status is flapping.
-      expr: sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m]))
+      expr: sum(changes(kube_node_status_condition{job="kube-state-metrics",status="true",condition="Ready"}[15m]))
         by (cluster, node) > 2
       for: 15m
       labels:
@@ -81,8 +81,8 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletpodstartuplatencyhigh
         summary: Kubelet Pod startup latency is too high.
       expr: histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet",
-        metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on(cluster, instance)
-        group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}
+        metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on (cluster,
+        instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}
         > 60
       for: 15m
       labels:

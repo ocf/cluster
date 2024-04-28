@@ -6,16 +6,19 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubelet
   namespace: prometheus
 spec:
+  attachMetadata:
+    node: false
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
+    honorTimestamps: true
     port: https-metrics
     relabelings:
     - action: replace
@@ -28,6 +31,7 @@ spec:
       insecureSkipVerify: true
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
+    honorTimestamps: true
     metricRelabelings:
     - action: drop
       regex: container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)
@@ -67,6 +71,7 @@ spec:
       insecureSkipVerify: true
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
+    honorTimestamps: true
     path: /metrics/probes
     port: https-metrics
     relabelings:

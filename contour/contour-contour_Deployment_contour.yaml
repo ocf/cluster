@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    app.kubernetes.io/version: 1.28.1
-    helm.sh/chart: contour-17.0.0
+    app.kubernetes.io/version: 1.28.3
+    helm.sh/chart: contour-17.0.7
   name: contour-contour
   namespace: contour
 spec:
@@ -20,14 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7f979ecb3b210119d18c129473ccac2c2442c5bf7a0d68ef52014b7243352dd1
+        checksum/config: 5c77ad02e7b745300ca03fca66c14a803f71f0056edff837230fff3a62ed67d0
       labels:
         app.kubernetes.io/component: contour
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        app.kubernetes.io/version: 1.28.1
-        helm.sh/chart: contour-17.0.0
+        app.kubernetes.io/version: 1.28.3
+        helm.sh/chart: contour-17.0.7
     spec:
       affinity:
         nodeAffinity: null
@@ -76,7 +76,7 @@ spec:
               fieldPath: metadata.name
         - name: BITNAMI_DEBUG
           value: 'false'
-        image: docker.io/bitnami/contour:1.28.1-debian-12-r2
+        image: docker.io/bitnami/contour:1.28.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6

@@ -6,19 +6,26 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.12
+    app.kubernetes.io/version: 0.14.5
+    helm.sh/chart: metallb-6.1.2
   name: metallb:controller
-  namespace: metallb
 rules:
 - apiGroups:
   - ''
   resources:
   - services
+  - namespaces
   verbs:
   - get
   - list
   - watch
   - update
+- apiGroups:
+  - ''
+  resources:
+  - nodes
+  verbs:
+  - list
 - apiGroups:
   - ''
   resources:
@@ -33,13 +40,13 @@ rules:
   - create
   - patch
 - apiGroups:
-  - policy
-  resourceNames:
-  - metallb-controller
+  - ''
   resources:
-  - podsecuritypolicies
+  - namespaces
   verbs:
-  - use
+  - list
+  - watch
+  - get
 - apiGroups:
   - admissionregistration.k8s.io
   resources:

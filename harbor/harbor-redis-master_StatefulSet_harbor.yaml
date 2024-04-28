@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
     app.kubernetes.io/version: 7.2.4
-    helm.sh/chart: redis-18.19.2
+    helm.sh/chart: redis-19.1.0
   name: harbor-redis-master
   namespace: harbor
 spec:
@@ -30,7 +30,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
         app.kubernetes.io/version: 7.2.4
-        helm.sh/chart: redis-18.19.2
+        helm.sh/chart: redis-19.1.0
     spec:
       affinity:
         nodeAffinity: null
@@ -91,15 +91,25 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
-          readOnlyRootFilesystem: false
-          runAsGroup: 0
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:

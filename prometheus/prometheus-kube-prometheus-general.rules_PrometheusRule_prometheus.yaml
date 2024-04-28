@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-general.rules
@@ -22,8 +22,8 @@ spec:
           }} targets in {{ $labels.namespace }} namespace are down.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/general/targetdown
         summary: One or more targets are unreachable.
-      expr: 100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job,
-        namespace, service)) > 10
+      expr: 100 * (count(up == 0) BY (cluster, job, namespace, service) / count(up)
+        BY (cluster, job, namespace, service)) > 10
       for: 10m
       labels:
         severity: warning
@@ -69,7 +69,8 @@ spec:
           '
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/general/infoinhibitor
         summary: Info-level alert inhibition.
-      expr: ALERTS{severity = "info"} == 1 unless on(namespace) ALERTS{alertname !=
-        "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} == 1
+      expr: ALERTS{severity = "info"} == 1 unless on (namespace) ALERTS{alertname
+        != "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} ==
+        1
       labels:
         severity: none

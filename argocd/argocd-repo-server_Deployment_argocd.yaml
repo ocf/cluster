@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-repo-server
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.10.3
-    helm.sh/chart: argo-cd-6.7.2
+    app.kubernetes.io/version: v2.10.8
+    helm.sh/chart: argo-cd-6.7.17
   name: argocd-repo-server
   namespace: argocd
 spec:
@@ -21,16 +21,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cm: 2c2c85fd516e6ff1ca44797465bd7f8f0fa2ad645c3086b7a41965088036595e
-        checksum/cmd-params: ed3c5a054b797394f5d6b15337e3cdd1ff2aeda1589e15b1298a73a55278d2fc
+        checksum/cm: b6aa710bfc7a3044fb0124ba62d9f48b70fcb6f27d9544ebcd5b748293f5ac96
+        checksum/cmd-params: 2c6f008928253729ec099551d966c4948bcfe7d9151a37fd460487e7521f05a4
       labels:
         app.kubernetes.io/component: repo-server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-repo-server
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v2.10.3
-        helm.sh/chart: argo-cd-6.7.2
+        app.kubernetes.io/version: v2.10.8
+        helm.sh/chart: argo-cd-6.7.17
     spec:
       affinity:
         podAntiAffinity:
@@ -41,6 +41,7 @@ spec:
                   app.kubernetes.io/name: argocd-repo-server
               topologyKey: kubernetes.io/hostname
             weight: 100
+      automountServiceAccountToken: true
       containers:
       - args:
         - /usr/local/bin/argocd-repo-server
@@ -235,7 +236,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/argocd:v2.10.3
+        image: quay.io/argoproj/argocd:v2.10.8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -297,7 +298,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /var/run/argocd/argocd-cmp-server
-        image: quay.io/argoproj/argocd:v2.10.3
+        image: quay.io/argoproj/argocd:v2.10.8
         imagePullPolicy: IfNotPresent
         name: copyutil
         securityContext:

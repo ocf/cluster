@@ -8,8 +8,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.13.1
-    helm.sh/chart: keda-2.13.2
+    app.kubernetes.io/version: 2.14.0
+    helm.sh/chart: keda-2.14.0
   name: clustertriggerauthentications.keda.sh
 spec:
   group: keda.sh
@@ -52,13 +52,27 @@ spec:
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              of an object.
+
+              Servers should convert recognized schemas to the latest internal value,
+              and
+
+              may reject unrecognized values.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
             description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              object represents.
+
+              Servers may infer this from the endpoint the client submits requests
+              to.
+
+              Cannot be updated.
+
+              In CamelCase.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -135,9 +149,16 @@ spec:
                     - accessSecretKey
                     type: object
                   podIdentity:
-                    description: AuthPodIdentity allows users to select the platform
-                      native identity mechanism
+                    description: 'AuthPodIdentity allows users to select the platform
+                      native identity
+
+                      mechanism'
                     properties:
+                      identityAuthorityHost:
+                        description: Set identityAuthorityHost to override the default
+                          Azure authority host. If this is set, then the IdentityTenantID
+                          must also be set
+                        type: string
                       identityId:
                         type: string
                       identityOwner:
@@ -148,6 +169,11 @@ spec:
                         - keda
                         - workload
                         type: string
+                      identityTenantId:
+                        description: Set identityTenantId to override the default
+                          Azure tenant id. If this is set, then the IdentityID must
+                          also be set
+                        type: string
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
@@ -157,6 +183,7 @@ spec:
                         - aws
                         - aws-eks
                         - aws-kiam
+                        - none
                         type: string
                       roleArn:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
@@ -233,9 +260,16 @@ spec:
                     - tenantId
                     type: object
                   podIdentity:
-                    description: AuthPodIdentity allows users to select the platform
-                      native identity mechanism
+                    description: 'AuthPodIdentity allows users to select the platform
+                      native identity
+
+                      mechanism'
                     properties:
+                      identityAuthorityHost:
+                        description: Set identityAuthorityHost to override the default
+                          Azure authority host. If this is set, then the IdentityTenantID
+                          must also be set
+                        type: string
                       identityId:
                         type: string
                       identityOwner:
@@ -246,6 +280,11 @@ spec:
                         - keda
                         - workload
                         type: string
+                      identityTenantId:
+                        description: Set identityTenantId to override the default
+                          Azure tenant id. If this is set, then the IdentityID must
+                          also be set
+                        type: string
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
@@ -255,6 +294,7 @@ spec:
                         - aws
                         - aws-eks
                         - aws-kiam
+                        - none
                         type: string
                       roleArn:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
@@ -302,8 +342,10 @@ spec:
                 type: array
               env:
                 items:
-                  description: AuthEnvironment is used to authenticate using environment
-                    variables in the destination ScaleTarget spec
+                  description: 'AuthEnvironment is used to authenticate using environment
+                    variables
+
+                    in the destination ScaleTarget spec'
                   properties:
                     containerName:
                       type: string
@@ -344,9 +386,16 @@ spec:
                     - clientSecret
                     type: object
                   podIdentity:
-                    description: AuthPodIdentity allows users to select the platform
-                      native identity mechanism
+                    description: 'AuthPodIdentity allows users to select the platform
+                      native identity
+
+                      mechanism'
                     properties:
+                      identityAuthorityHost:
+                        description: Set identityAuthorityHost to override the default
+                          Azure authority host. If this is set, then the IdentityTenantID
+                          must also be set
+                        type: string
                       identityId:
                         type: string
                       identityOwner:
@@ -357,6 +406,11 @@ spec:
                         - keda
                         - workload
                         type: string
+                      identityTenantId:
+                        description: Set identityTenantId to override the default
+                          Azure tenant id. If this is set, then the IdentityID must
+                          also be set
+                        type: string
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
@@ -366,6 +420,7 @@ spec:
                         - aws
                         - aws-eks
                         - aws-kiam
+                        - none
                         type: string
                       roleArn:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
@@ -459,9 +514,16 @@ spec:
                 - secrets
                 type: object
               podIdentity:
-                description: AuthPodIdentity allows users to select the platform native
-                  identity mechanism
+                description: 'AuthPodIdentity allows users to select the platform
+                  native identity
+
+                  mechanism'
                 properties:
+                  identityAuthorityHost:
+                    description: Set identityAuthorityHost to override the default
+                      Azure authority host. If this is set, then the IdentityTenantID
+                      must also be set
+                    type: string
                   identityId:
                     type: string
                   identityOwner:
@@ -472,6 +534,11 @@ spec:
                     - keda
                     - workload
                     type: string
+                  identityTenantId:
+                    description: Set identityTenantId to override the default Azure
+                      tenant id. If this is set, then the IdentityID must also be
+                      set
+                    type: string
                   provider:
                     description: PodIdentityProvider contains the list of providers
                     enum:
@@ -481,6 +548,7 @@ spec:
                     - aws
                     - aws-eks
                     - aws-kiam
+                    - none
                     type: string
                   roleArn:
                     description: RoleArn sets the AWS RoleArn to be used. Mutually

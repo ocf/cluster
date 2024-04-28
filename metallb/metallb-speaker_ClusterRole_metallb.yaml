@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.12
+    app.kubernetes.io/version: 0.14.5
+    helm.sh/chart: metallb-6.1.2
   name: metallb-speaker
-  namespace: metallb
 rules:
 - apiGroups:
   - ''
@@ -16,6 +16,7 @@ rules:
   - services
   - endpoints
   - nodes
+  - namespaces
   verbs:
   - get
   - list
@@ -27,14 +28,6 @@ rules:
   verbs:
   - create
   - patch
-- apiGroups:
-  - policy
-  resourceNames:
-  - metallb-speaker
-  resources:
-  - podsecuritypolicies
-  verbs:
-  - use
 - apiGroups:
   - discovery.k8s.io
   resources:

@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
+    controller-gen.kubebuilder.io/version: v0.14.0
     helm.sh/resource-policy: keep
   name: cephobjectzones.ceph.rook.io
 spec:
@@ -18,6 +18,9 @@ spec:
     - jsonPath: .status.phase
       name: Phase
       type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
     name: v1
     schema:
       openAPIV3Schema:
@@ -25,13 +28,27 @@ spec:
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              of an object.
+
+              Servers should convert recognized schemas to the latest internal value,
+              and
+
+              may reject unrecognized values.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
             description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              object represents.
+
+              Servers may infer this from the endpoint the client submits requests
+              to.
+
+              Cannot be updated.
+
+              In CamelCase.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -39,16 +56,31 @@ spec:
             description: ObjectZoneSpec represent the spec of an ObjectZone
             properties:
               customEndpoints:
-                description: "If this zone cannot be accessed from other peer Ceph\
-                  \ clusters via the ClusterIP Service endpoint created by Rook, you\
-                  \ must set this to the externally reachable endpoint(s). You may\
-                  \ include the port in the definition. For example: \"https://my-object-store.my-domain.net:443\"\
-                  . In many cases, you should set this to the endpoint of the ingress\
-                  \ resource that makes the CephObjectStore associated with this CephObjectStoreZone\
-                  \ reachable to peer clusters. The list can have one or more endpoints\
-                  \ pointing to different RGW servers in the zone. \n If a CephObjectStore\
-                  \ endpoint is omitted from this list, that object store's gateways\
-                  \ will not receive multisite replication data (see CephObjectStore.spec.gateway.disableMultisiteSyncTraffic)."
+                description: 'If this zone cannot be accessed from other peer Ceph
+                  clusters via the ClusterIP Service
+
+                  endpoint created by Rook, you must set this to the externally reachable
+                  endpoint(s). You may
+
+                  include the port in the definition. For example: "https://my-object-store.my-domain.net:443".
+
+                  In many cases, you should set this to the endpoint of the ingress
+                  resource that makes the
+
+                  CephObjectStore associated with this CephObjectStoreZone reachable
+                  to peer clusters.
+
+                  The list can have one or more endpoints pointing to different RGW
+                  servers in the zone.
+
+
+
+                  If a CephObjectStore endpoint is omitted from this list, that object
+                  store''s gateways will
+
+                  not receive multisite replication data
+
+                  (see CephObjectStore.spec.gateway.disableMultisiteSyncTraffic).'
                 items:
                   type: string
                 nullable: true
@@ -57,11 +89,19 @@ spec:
                 description: The data pool settings
                 nullable: true
                 properties:
+                  application:
+                    description: The application name to set on the pool. Only expected
+                      to be set for rgw pools.
+                    type: string
                   compressionMode:
                     description: 'DEPRECATED: use Parameters instead, e.g., Parameters["compression_mode"]
-                      = "force" The inline compression mode in Bluestore OSD to set
-                      to (options are: none, passive, aggressive, force) Do NOT set
-                      a default value for kubebuilder as this will override the Parameters'
+                      = "force"
+
+                      The inline compression mode in Bluestore OSD to set to (options
+                      are: none, passive, aggressive, force)
+
+                      Do NOT set a default value for kubebuilder as this will override
+                      the Parameters'
                     enum:
                     - none
                     - passive
@@ -90,19 +130,22 @@ spec:
                         description: The algorithm for erasure coding
                         type: string
                       codingChunks:
-                        description: Number of coding chunks per object in an erasure
+                        description: 'Number of coding chunks per object in an erasure
                           coded storage pool (required for erasure-coded pool type).
+
                           This is the number of OSDs that can be lost simultaneously
-                          before data cannot be recovered.
+                          before data cannot be recovered.'
                         minimum: 0
                         type: integer
                       dataChunks:
-                        description: Number of data chunks per object in an erasure
+                        description: 'Number of data chunks per object in an erasure
                           coded storage pool (required for erasure-coded pool type).
+
                           The number of chunks required to recover an object when
-                          any single OSD is lost is the same as dataChunks so be aware
-                          that the larger the number of data chunks, the higher the
-                          cost of recovery.
+                          any single OSD is lost is the same
+
+                          as dataChunks so be aware that the larger the number of
+                          data chunks, the higher the cost of recovery.'
                         minimum: 0
                         type: integer
                     required:
@@ -167,8 +210,9 @@ spec:
                     nullable: true
                     properties:
                       maxBytes:
-                        description: MaxBytes represents the quota in bytes Deprecated
-                          in favor of MaxSize
+                        description: 'MaxBytes represents the quota in bytes
+
+                          Deprecated in favor of MaxSize'
                         format: int64
                         type: integer
                       maxObjects:
@@ -252,11 +296,19 @@ spec:
                 description: The metadata pool settings
                 nullable: true
                 properties:
+                  application:
+                    description: The application name to set on the pool. Only expected
+                      to be set for rgw pools.
+                    type: string
                   compressionMode:
                     description: 'DEPRECATED: use Parameters instead, e.g., Parameters["compression_mode"]
-                      = "force" The inline compression mode in Bluestore OSD to set
-                      to (options are: none, passive, aggressive, force) Do NOT set
-                      a default value for kubebuilder as this will override the Parameters'
+                      = "force"
+
+                      The inline compression mode in Bluestore OSD to set to (options
+                      are: none, passive, aggressive, force)
+
+                      Do NOT set a default value for kubebuilder as this will override
+                      the Parameters'
                     enum:
                     - none
                     - passive
@@ -285,19 +337,22 @@ spec:
                         description: The algorithm for erasure coding
                         type: string
                       codingChunks:
-                        description: Number of coding chunks per object in an erasure
+                        description: 'Number of coding chunks per object in an erasure
                           coded storage pool (required for erasure-coded pool type).
+
                           This is the number of OSDs that can be lost simultaneously
-                          before data cannot be recovered.
+                          before data cannot be recovered.'
                         minimum: 0
                         type: integer
                       dataChunks:
-                        description: Number of data chunks per object in an erasure
+                        description: 'Number of data chunks per object in an erasure
                           coded storage pool (required for erasure-coded pool type).
+
                           The number of chunks required to recover an object when
-                          any single OSD is lost is the same as dataChunks so be aware
-                          that the larger the number of data chunks, the higher the
-                          cost of recovery.
+                          any single OSD is lost is the same
+
+                          as dataChunks so be aware that the larger the number of
+                          data chunks, the higher the cost of recovery.'
                         minimum: 0
                         type: integer
                     required:
@@ -362,8 +417,9 @@ spec:
                     nullable: true
                     properties:
                       maxBytes:
-                        description: MaxBytes represents the quota in bytes Deprecated
-                          in favor of MaxSize
+                        description: 'MaxBytes represents the quota in bytes
+
+                          Deprecated in favor of MaxSize'
                         format: int64
                         type: integer
                       maxObjects:
@@ -447,6 +503,33 @@ spec:
                 default: true
                 description: Preserve pools on object zone deletion
                 type: boolean
+              sharedPools:
+                description: The pool information when configuring RADOS namespaces
+                  in existing pools.
+                nullable: true
+                properties:
+                  dataPoolName:
+                    description: The data pool used for creating RADOS namespaces
+                      in the object store
+                    type: string
+                    x-kubernetes-validations:
+                    - message: object store shared data pool is immutable
+                      rule: self == oldSelf
+                  metadataPoolName:
+                    description: The metadata pool used for creating RADOS namespaces
+                      in the object store
+                    type: string
+                    x-kubernetes-validations:
+                    - message: object store shared metadata pool is immutable
+                      rule: self == oldSelf
+                  preserveRadosNamespaceDataOnDelete:
+                    description: Whether the RADOS namespaces should be preserved
+                      on deletion of the object store
+                    type: boolean
+                required:
+                - dataPoolName
+                - metadataPoolName
+                type: object
               zoneGroup:
                 description: The display name for the ceph users
                 type: string

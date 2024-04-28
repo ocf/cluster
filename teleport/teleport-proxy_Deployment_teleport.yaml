@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 14.2.4
-    helm.sh/chart: teleport-cluster-14.2.4
-    teleport.dev/majorVersion: '14'
+    app.kubernetes.io/version: 15.2.5
+    helm.sh/chart: teleport-cluster-15.2.5
+    teleport.dev/majorVersion: '15'
   name: teleport-proxy
   namespace: teleport
 spec:
@@ -22,15 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 352734907bf0555e6f3eaa3320cb1b7615c265cbb96d27fdbeb9c37223bed08f
+        checksum/config: 2ef947150a66448bdc8c5484415ebac2656ea228b5cff8b770b4baac8d8dd83d
       labels:
         app.kubernetes.io/component: proxy
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 14.2.4
-        helm.sh/chart: teleport-cluster-14.2.4
-        teleport.dev/majorVersion: '14'
+        app.kubernetes.io/version: 15.2.5
+        helm.sh/chart: teleport-cluster-15.2.5
+        teleport.dev/majorVersion: '15'
     spec:
       affinity:
         podAntiAffinity: null
@@ -38,7 +38,7 @@ spec:
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:14.2.4
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:15.2.5
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -104,8 +104,8 @@ spec:
         - teleport
         - wait
         - no-resolve
-        - teleport-auth-v13.teleport.svc.cluster.local
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:14.2.4
+        - teleport-auth-v14.teleport.svc.cluster.local
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:15.2.5
         name: wait-auth-update
       serviceAccountName: teleport-proxy
       terminationGracePeriodSeconds: 60

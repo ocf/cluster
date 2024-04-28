@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-etcd
@@ -158,7 +158,8 @@ spec:
           defined quota on etcd instance {{ $labels.instance }}, please defrag or
           increase the quota as the writes to etcd will be disabled when it is full.'
         summary: etcd cluster database is running full.
-      expr: (last_over_time(etcd_mvcc_db_total_size_in_bytes[5m]) / last_over_time(etcd_server_quota_backend_bytes[5m]))*100
+      expr: (last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])
+        / last_over_time(etcd_server_quota_backend_bytes{job=~".*etcd.*"}[5m]))*100
         > 95
       for: 10m
       labels:
@@ -170,7 +171,8 @@ spec:
           past four hours on etcd instance {{ $labels.instance }}, please check as
           it might be disruptive.'
         summary: etcd cluster database growing very fast.
-      expr: predict_linear(etcd_mvcc_db_total_size_in_bytes[4h], 4*60*60) > etcd_server_quota_backend_bytes
+      expr: predict_linear(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[4h],
+        4*60*60) > etcd_server_quota_backend_bytes{job=~".*etcd.*"}
       for: 10m
       labels:
         severity: warning
@@ -183,8 +185,9 @@ spec:
         runbook_url: https://etcd.io/docs/v3.5/op-guide/maintenance/#defragmentation
         summary: etcd database size in use is less than 50% of the actual allocated
           storage.
-      expr: (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes[5m]))
-        < 0.5
+      expr: (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m])
+        / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) <
+        0.5 and etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"} > 104857600
       for: 10m
       labels:
         severity: warning

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kube-apiserver-burnrate.rules
@@ -16,14 +16,14 @@ spec:
   groups:
   - name: kube-apiserver-burnrate.rules
     rules:
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[1d]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[1d]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[1d]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[1d]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[1d]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[1d]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -32,14 +32,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate1d
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[1h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[1h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[1h]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[1h]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[1h]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[1h]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -48,14 +48,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate1h
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[2h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[2h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[2h]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[2h]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[2h]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[2h]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -64,14 +64,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate2h
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[30m]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[30m]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[30m]))\n        or\n        vector(0)\n  \
-        \    )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \    )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[30m]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[30m]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[30m]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -80,14 +80,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate30m
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[3d]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[3d]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[3d]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[3d]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[3d]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[3d]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -96,14 +96,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate3d
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[5m]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[5m]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[5m]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[5m]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[5m]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[5m]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -112,14 +112,14 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate5m
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[6h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[6h]))\n    -\n    (\n      (\n        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=~\"resource|\",le=\"1\"}[6h]))\n        or\n        vector(0)\n   \
-        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        \   )\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        ,scope=\"namespace\",le=\"5\"}[6h]))\n      +\n      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        ,scope=\"namespace\",le=\"5\"}[6h]))\n      +\n      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"LIST|GET\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,scope=\"cluster\",le=\"30\"}[6h]))\n    )\n  )\n  +\n  # errors\n  sum by\
         \ (cluster) (rate(apiserver_request_total{job=\"apiserver\",verb=~\"LIST|GET\"\
@@ -128,9 +128,9 @@ spec:
       labels:
         verb: read
       record: apiserver_request:burnrate6h
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[1d]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[1d]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[1d]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[1d]))\n)\n/\nsum\
@@ -139,9 +139,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate1d
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[1h]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[1h]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[1h]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[1h]))\n)\n/\nsum\
@@ -150,9 +150,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate1h
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[2h]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[2h]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[2h]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[2h]))\n)\n/\nsum\
@@ -161,9 +161,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate2h
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[30m]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[30m]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[30m]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[30m]))\n)\n/\n\
@@ -172,9 +172,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate30m
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[3d]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[3d]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[3d]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[3d]))\n)\n/\nsum\
@@ -183,9 +183,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate3d
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[5m]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[5m]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[5m]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[5m]))\n)\n/\nsum\
@@ -194,9 +194,9 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate5m
-    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job=\"\
+    - expr: "(\n  (\n    # too slow\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
-        }[6h]))\n    -\n    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job=\"\
+        }[6h]))\n    -\n    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",subresource!~\"proxy|attach|log|exec|portforward\"\
         ,le=\"1\"}[6h]))\n  )\n  +\n  sum by (cluster) (rate(apiserver_request_total{job=\"\
         apiserver\",verb=~\"POST|PUT|PATCH|DELETE\",code=~\"5..\"}[6h]))\n)\n/\nsum\

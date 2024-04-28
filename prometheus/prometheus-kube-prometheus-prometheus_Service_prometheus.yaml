@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
     self-monitor: 'true'
@@ -18,8 +18,13 @@ spec:
   - name: http-web
     port: 9090
     targetPort: 9090
+  - appProtocol: http
+    name: reloader-web
+    port: 8080
+    targetPort: reloader-web
   publishNotReadyAddresses: false
   selector:
     app.kubernetes.io/name: prometheus
-    prometheus: prometheus-kube-prometheus-prometheus
+    operator.prometheus.io/name: prometheus-kube-prometheus-prometheus
+  sessionAffinity: None
   type: ClusterIP

@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.13.1
-    helm.sh/chart: keda-2.13.2
+    app.kubernetes.io/version: 2.14.0
+    helm.sh/chart: keda-2.14.0
   name: keda-operator
 rules:
 - apiGroups:
@@ -16,6 +16,10 @@ rules:
   resources:
   - configmaps
   - configmaps/status
+  - limitranges
+  - pods
+  - services
+  - serviceaccounts
   verbs:
   - get
   - list
@@ -29,58 +33,14 @@ rules:
 - apiGroups:
   - ''
   resources:
-  - external
-  - pods
   - secrets
-  - services
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ''
-  resources:
-  - limitranges
   verbs:
   - list
   - watch
-- apiGroups:
-  - ''
-  resources:
-  - serviceaccounts
-  verbs:
-  - list
-  - watch
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - get
 - apiGroups:
   - '*'
   resources:
   - '*/scale'
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - validatingwebhookconfigurations
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apiregistration.k8s.io
-  resources:
-  - apiservices
   verbs:
   - get
   - list
@@ -93,6 +53,7 @@ rules:
   - deployments
   - statefulsets
   verbs:
+  - get
   - list
   - watch
 - apiGroups:
@@ -117,29 +78,12 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
-  - clustertriggerauthentications
-  - clustertriggerauthentications/status
-  verbs:
-  - '*'
-- apiGroups:
-  - keda.sh
-  resources:
   - scaledjobs
   - scaledjobs/finalizers
   - scaledjobs/status
-  verbs:
-  - '*'
-- apiGroups:
-  - keda.sh
-  resources:
   - scaledobjects
   - scaledobjects/finalizers
   - scaledobjects/status
-  verbs:
-  - '*'
-- apiGroups:
-  - keda.sh
-  resources:
   - triggerauthentications
   - triggerauthentications/status
   verbs:

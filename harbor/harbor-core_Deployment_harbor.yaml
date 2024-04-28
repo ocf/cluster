@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.10.0
-    helm.sh/chart: harbor-20.1.2
+    app.kubernetes.io/version: 2.10.2
+    helm.sh/chart: harbor-21.1.1
   name: harbor-core
   namespace: harbor
 spec:
@@ -22,15 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 5681020228db3d1bc1e95bc019fd4f5c723b79ce8234c0f394ed8cc6c9ad47c4
-        checksum/configmap-envvars: 4864c87dcb66c416f764dd7842ae828649e1d77e8e5b71449f5400802503b9d7
+        checksum/configmap: 766bd7a4e53f918814ea7dcf90b0069aa318309f34095c80e0cf398761496e90
+        checksum/configmap-envvars: e14fc482c1da63010bff9710bce3736765f8a6045ff114f49beb33652bdd03b8
       labels:
         app.kubernetes.io/component: core
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.10.0
-        helm.sh/chart: harbor-20.1.2
+        app.kubernetes.io/version: 2.10.2
+        helm.sh/chart: harbor-21.1.1
     spec:
       affinity:
         nodeAffinity: null
@@ -65,7 +65,7 @@ spec:
             name: harbor-core-envvars
         - secretRef:
             name: harbor-core-envvars
-        image: docker.io/bitnami/harbor-core:2.10.0-debian-12-r11
+        image: docker.io/bitnami/harbor-core:2.10.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -93,17 +93,26 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 750m
+            ephemeral-storage: 1024Mi
+            memory: 768Mi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 50Mi
+            memory: 512Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
           privileged: false
-          readOnlyRootFilesystem: false
-          runAsGroup: 0
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
-          seLinuxOptions: null
+          seLinuxOptions: {}
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:

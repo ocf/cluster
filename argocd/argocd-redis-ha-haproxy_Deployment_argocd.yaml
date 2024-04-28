@@ -26,6 +26,7 @@ spec:
         prometheus.io/scrape: 'true'
       labels:
         app: redis-ha-haproxy
+        app.kubernetes.io/name: argocd-redis-ha-haproxy
         release: argocd
       name: argocd-redis-ha-haproxy
     spec:

@@ -10,7 +10,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-16.1.2
+    app.kubernetes.io/version: 24.0.3
+    helm.sh/chart: keycloak-21.0.3
   name: keycloak-keycloak-config-cli
   namespace: keycloak
 spec:
@@ -23,8 +24,10 @@ spec:
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keycloak
-        helm.sh/chart: keycloak-16.1.2
+        app.kubernetes.io/version: 24.0.3
+        helm.sh/chart: keycloak-21.0.3
     spec:
+      automountServiceAccountToken: true
       containers:
       - command:
         - java
@@ -44,23 +47,47 @@ spec:
           value: /config/*
         - name: KEYCLOAK_AVAILABILITYCHECK_ENABLED
           value: 'true'
-        image: docker.io/bitnami/keycloak-config-cli:5.8.0-debian-11-r30
+        image: docker.io/bitnami/keycloak-config-cli:5.12.0-debian-12-r1
         imagePullPolicy: IfNotPresent
         name: keycloak-config-cli
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 750m
+            ephemeral-storage: 1024Mi
+            memory: 768Mi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 50Mi
+            memory: 512Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
         - mountPath: /config
           name: config-volume
       restartPolicy: Never
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: keycloak
       volumes:
+      - emptyDir: {}
+        name: empty-dir
       - configMap:
           name: keycloak-config-cli
         name: config-volume

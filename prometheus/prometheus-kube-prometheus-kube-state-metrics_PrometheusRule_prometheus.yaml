@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kube-state-metrics
@@ -24,8 +24,8 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricslisterrors
         summary: kube-state-metrics is experiencing errors in list operations.
       expr: "(sum(rate(kube_state_metrics_list_total{job=\"kube-state-metrics\",result=\"\
-        error\"}[5m]))\n  /\nsum(rate(kube_state_metrics_list_total{job=\"kube-state-metrics\"\
-        }[5m])))\n> 0.01"
+        error\"}[5m])) by (cluster)\n  /\nsum(rate(kube_state_metrics_list_total{job=\"\
+        kube-state-metrics\"}[5m])) by (cluster))\n> 0.01"
       for: 15m
       labels:
         severity: critical
@@ -37,8 +37,8 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricswatcherrors
         summary: kube-state-metrics is experiencing errors in watch operations.
       expr: "(sum(rate(kube_state_metrics_watch_total{job=\"kube-state-metrics\",result=\"\
-        error\"}[5m]))\n  /\nsum(rate(kube_state_metrics_watch_total{job=\"kube-state-metrics\"\
-        }[5m])))\n> 0.01"
+        error\"}[5m])) by (cluster)\n  /\nsum(rate(kube_state_metrics_watch_total{job=\"\
+        kube-state-metrics\"}[5m])) by (cluster))\n> 0.01"
       for: 15m
       labels:
         severity: critical
@@ -49,8 +49,8 @@ spec:
           not exposed at all.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricsshardingmismatch
         summary: kube-state-metrics sharding is misconfigured.
-      expr: stdvar (kube_state_metrics_total_shards{job="kube-state-metrics"}) !=
-        0
+      expr: stdvar (kube_state_metrics_total_shards{job="kube-state-metrics"}) by
+        (cluster) != 0
       for: 15m
       labels:
         severity: critical
@@ -60,9 +60,9 @@ spec:
           are not being exposed.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricsshardsmissing
         summary: kube-state-metrics shards are missing.
-      expr: "2^max(kube_state_metrics_total_shards{job=\"kube-state-metrics\"}) -\
-        \ 1\n  -\nsum( 2 ^ max by (shard_ordinal) (kube_state_metrics_shard_ordinal{job=\"\
-        kube-state-metrics\"}) )\n!= 0"
+      expr: "2^max(kube_state_metrics_total_shards{job=\"kube-state-metrics\"}) by\
+        \ (cluster) - 1\n  -\nsum( 2 ^ max by (cluster, shard_ordinal) (kube_state_metrics_shard_ordinal{job=\"\
+        kube-state-metrics\"}) ) by (cluster)\n!= 0"
       for: 15m
       labels:
         severity: critical

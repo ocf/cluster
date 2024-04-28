@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.12
+    app.kubernetes.io/version: 0.14.5
+    helm.sh/chart: metallb-6.1.2
   name: metallb-speaker
   namespace: metallb
 spec:
@@ -22,7 +23,8 @@ spec:
         app.kubernetes.io/instance: metallb
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: metallb
-        helm.sh/chart: metallb-4.1.12
+        app.kubernetes.io/version: 0.14.5
+        helm.sh/chart: metallb-6.1.2
     spec:
       affinity:
         nodeAffinity: null
@@ -37,9 +39,11 @@ spec:
                   app.kubernetes.io/name: metallb
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: true
       containers:
       - args:
         - --port=7472
+        - --log-level=info
         env:
         - name: METALLB_NODE_NAME
           valueFrom:
@@ -59,13 +63,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: METALLB_ML_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              key: secretkey
-              name: metallb-memberlist
+        - name: METALLB_ML_SECRET_KEY_PATH
+          value: /etc/memberlist
         envFrom: null
-        image: docker.io/bitnami/metallb-speaker:0.13.7-debian-11-r8
+        image: docker.io/bitnami/metallb-speaker:0.14.5-debian-12-r3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -90,8 +91,14 @@ spec:
           successThreshold: 1
           timeoutSeconds: 1
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -102,13 +109,32 @@ spec:
             drop:
             - ALL
           readOnlyRootFilesystem: true
+          runAsGroup: 0
           runAsUser: 0
+          seLinuxOptions: null
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /etc/memberlist
+          name: memberlist-secret
+          readOnly: true
       hostNetwork: true
       nodeSelector:
         kubernetes.io/os: linux
       securityContext:
         fsGroup: 0
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
       serviceAccountName: metallb-speaker
       terminationGracePeriodSeconds: 2
+      volumes:
+      - name: memberlist-secret
+        secret:
+          defaultMode: 292
+          items:
+          - key: secretkey
+            path: secretkey
+          secretName: metallb-memberlist
   updateStrategy:
     type: RollingUpdate

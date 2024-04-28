@@ -8,8 +8,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.13.1
-    helm.sh/chart: keda-2.13.2
+    app.kubernetes.io/version: 2.14.0
+    helm.sh/chart: keda-2.14.0
     name: keda-operator
   name: keda-operator
   namespace: keda
@@ -28,8 +28,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keda-operator
         app.kubernetes.io/part-of: keda-operator
-        app.kubernetes.io/version: 2.13.1
-        helm.sh/chart: keda-2.13.2
+        app.kubernetes.io/version: 2.14.0
+        helm.sh/chart: keda-2.14.0
         name: keda-operator
     spec:
       automountServiceAccountToken: true
@@ -69,7 +69,7 @@ spec:
           value: '3000'
         - name: KEDA_HTTP_MIN_TLS_VERSION
           value: TLS12
-        image: ghcr.io/kedacore/keda:2.13.1
+        image: ghcr.io/kedacore/keda:2.14.0
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-alertmanager.rules
@@ -43,8 +43,8 @@ spec:
       expr: "# Without max_over_time, failed scrapes could create false negatives,\
         \ see\n# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0\
         \ for details.\n  max_over_time(alertmanager_cluster_members{job=\"prometheus-kube-prometheus-alertmanager\"\
-        ,namespace=\"prometheus\"}[5m])\n< on (namespace,service) group_left\n  count\
-        \ by (namespace,service) (max_over_time(alertmanager_cluster_members{job=\"\
+        ,namespace=\"prometheus\"}[5m])\n< on (namespace,service,cluster) group_left\n\
+        \  count by (namespace,service,cluster) (max_over_time(alertmanager_cluster_members{job=\"\
         prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\"}[5m]))"
       for: 15m
       labels:
@@ -57,7 +57,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerfailedtosendalerts
         summary: An Alertmanager instance failed to send notifications.
       expr: "(\n  rate(alertmanager_notifications_failed_total{job=\"prometheus-kube-prometheus-alertmanager\"\
-        ,namespace=\"prometheus\"}[5m])\n/\n  rate(alertmanager_notifications_total{job=\"\
+        ,namespace=\"prometheus\"}[5m])\n/\n  ignoring (reason) group_left rate(alertmanager_notifications_total{job=\"\
         prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\"}[5m])\n\
         )\n> 0.01"
       for: 5m
@@ -73,8 +73,9 @@ spec:
           to a critical integration.
       expr: "min by (namespace,service, integration) (\n  rate(alertmanager_notifications_failed_total{job=\"\
         prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\", integration=~`.*`}[5m])\n\
-        /\n  rate(alertmanager_notifications_total{job=\"prometheus-kube-prometheus-alertmanager\"\
-        ,namespace=\"prometheus\", integration=~`.*`}[5m])\n)\n> 0.01"
+        /\n  ignoring (reason) group_left rate(alertmanager_notifications_total{job=\"\
+        prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\", integration=~`.*`}[5m])\n\
+        )\n> 0.01"
       for: 5m
       labels:
         severity: critical
@@ -88,8 +89,9 @@ spec:
           to a non-critical integration.
       expr: "min by (namespace,service, integration) (\n  rate(alertmanager_notifications_failed_total{job=\"\
         prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\", integration!~`.*`}[5m])\n\
-        /\n  rate(alertmanager_notifications_total{job=\"prometheus-kube-prometheus-alertmanager\"\
-        ,namespace=\"prometheus\", integration!~`.*`}[5m])\n)\n> 0.01"
+        /\n  ignoring (reason) group_left rate(alertmanager_notifications_total{job=\"\
+        prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\", integration!~`.*`}[5m])\n\
+        )\n> 0.01"
       for: 5m
       labels:
         severity: warning
@@ -99,7 +101,7 @@ spec:
           different configurations.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerconfiginconsistent
         summary: Alertmanager instances within the same cluster have different configurations.
-      expr: "count by (namespace,service) (\n  count_values by (namespace,service)\
+      expr: "count by (namespace,service,cluster) (\n  count_values by (namespace,service,cluster)\
         \ (\"config_hash\", alertmanager_config_hash{job=\"prometheus-kube-prometheus-alertmanager\"\
         ,namespace=\"prometheus\"})\n)\n!= 1"
       for: 20m
@@ -113,10 +115,10 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclusterdown
         summary: Half or more of the Alertmanager instances within the same cluster
           are down.
-      expr: "(\n  count by (namespace,service) (\n    avg_over_time(up{job=\"prometheus-kube-prometheus-alertmanager\"\
-        ,namespace=\"prometheus\"}[5m]) < 0.5\n  )\n/\n  count by (namespace,service)\
-        \ (\n    up{job=\"prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\"\
-        }\n  )\n)\n>= 0.5"
+      expr: "(\n  count by (namespace,service,cluster) (\n    avg_over_time(up{job=\"\
+        prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\"}[5m]) <\
+        \ 0.5\n  )\n/\n  count by (namespace,service,cluster) (\n    up{job=\"prometheus-kube-prometheus-alertmanager\"\
+        ,namespace=\"prometheus\"}\n  )\n)\n>= 0.5"
       for: 5m
       labels:
         severity: critical
@@ -128,9 +130,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclustercrashlooping
         summary: Half or more of the Alertmanager instances within the same cluster
           are crashlooping.
-      expr: "(\n  count by (namespace,service) (\n    changes(process_start_time_seconds{job=\"\
+      expr: "(\n  count by (namespace,service,cluster) (\n    changes(process_start_time_seconds{job=\"\
         prometheus-kube-prometheus-alertmanager\",namespace=\"prometheus\"}[10m])\
-        \ > 4\n  )\n/\n  count by (namespace,service) (\n    up{job=\"prometheus-kube-prometheus-alertmanager\"\
+        \ > 4\n  )\n/\n  count by (namespace,service,cluster) (\n    up{job=\"prometheus-kube-prometheus-alertmanager\"\
         ,namespace=\"prometheus\"}\n  )\n)\n>= 0.5"
       for: 5m
       labels:

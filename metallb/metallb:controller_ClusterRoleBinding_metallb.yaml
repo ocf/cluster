@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    helm.sh/chart: metallb-4.1.12
+    app.kubernetes.io/version: 0.14.5
+    helm.sh/chart: metallb-6.1.2
   name: metallb:controller
-  namespace: metallb
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

@@ -1,541 +1,74 @@
 apiVersion: v1
 data:
-  nodes-darwin.json: "{\n    \"__inputs\": [\n\n    ],\n    \"__requires\": [\n\n\
-    \    ],\n    \"annotations\": {\n        \"list\": [\n\n        ]\n    },\n  \
-    \  \"editable\": false,\n    \"gnetId\": null,\n    \"graphTooltip\": 1,\n   \
-    \ \"hideControls\": false,\n    \"id\": null,\n    \"links\": [\n\n    ],\n  \
-    \  \"refresh\": \"30s\",\n    \"rows\": [\n        {\n            \"collapse\"\
-    : false,\n            \"collapsed\": false,\n            \"panels\": [\n     \
-    \           {\n                    \"aliasColors\": {\n\n                    },\n\
-    \                    \"bars\": false,\n                    \"dashLength\": 10,\n\
-    \                    \"dashes\": false,\n                    \"datasource\": \"\
-    $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
-    : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 2,\n                    \"legend\": {\n                  \
-    \      \"alignAsTable\": false,\n                        \"avg\": false,\n   \
-    \                     \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 6,\n                    \"stack\": true,\n        \
-    \            \"steppedLine\": false,\n                    \"targets\": [\n   \
-    \                     {\n                            \"expr\": \"(\\n  (1 - sum\
-    \ without (mode) (rate(node_cpu_seconds_total{job=\\\"node-exporter\\\", mode=~\\\
-    \"idle|iowait|steal\\\", instance=\\\"$instance\\\"}[$__rate_interval])))\\n/\
-    \ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\\
-    \"node-exporter\\\", mode=\\\"idle\\\", instance=\\\"$instance\\\"})\\n)\\n\"\
-    ,\n                            \"format\": \"time_series\",\n                \
-    \            \"intervalFactor\": 5,\n                            \"legendFormat\"\
-    : \"{{cpu}}\",\n                            \"refId\": \"A\"\n               \
-    \         }\n                    ],\n                    \"thresholds\": [\n\n\
-    \                    ],\n                    \"timeFrom\": null,\n           \
-    \         \"timeShift\": null,\n                    \"title\": \"CPU Usage\",\n\
-    \                    \"tooltip\": {\n                        \"shared\": true,\n\
-    \                        \"sort\": 0,\n                        \"value_type\"\
-    : \"individual\"\n                    },\n                    \"type\": \"graph\"\
-    ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
-    \                        \"mode\": \"time\",\n                        \"name\"\
-    : null,\n                        \"show\": true,\n                        \"values\"\
-    : [\n\n                        ]\n                    },\n                   \
-    \ \"yaxes\": [\n                        {\n                            \"format\"\
-    : \"percentunit\",\n                            \"label\": null,\n           \
-    \                 \"logBase\": 1,\n                            \"max\": 1,\n \
-    \                           \"min\": 0,\n                            \"show\"\
-    : true\n                        },\n                        {\n              \
-    \              \"format\": \"percentunit\",\n                            \"label\"\
-    : null,\n                            \"logBase\": 1,\n                       \
-    \     \"max\": 1,\n                            \"min\": 0,\n                 \
-    \           \"show\": true\n                        }\n                    ]\n\
-    \                },\n                {\n                    \"aliasColors\": {\n\
-    \n                    },\n                    \"bars\": false,\n             \
-    \       \"dashLength\": 10,\n                    \"dashes\": false,\n        \
-    \            \"datasource\": \"$datasource\",\n                    \"fill\": 0,\n\
-    \                    \"fillGradient\": 0,\n                    \"gridPos\": {\n\
-    \n                    },\n                    \"id\": 3,\n                   \
-    \ \"legend\": {\n                        \"alignAsTable\": false,\n          \
-    \              \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 6,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"node_load1{job=\\\"node-exporter\\\", instance=\\\"\
-    $instance\\\"}\",\n                            \"format\": \"time_series\",\n\
-    \                            \"intervalFactor\": 2,\n                        \
-    \    \"legendFormat\": \"1m load average\",\n                            \"refId\"\
-    : \"A\"\n                        },\n                        {\n             \
-    \               \"expr\": \"node_load5{job=\\\"node-exporter\\\", instance=\\\"\
-    $instance\\\"}\",\n                            \"format\": \"time_series\",\n\
-    \                            \"intervalFactor\": 2,\n                        \
-    \    \"legendFormat\": \"5m load average\",\n                            \"refId\"\
-    : \"B\"\n                        },\n                        {\n             \
-    \               \"expr\": \"node_load15{job=\\\"node-exporter\\\", instance=\\\
-    \"$instance\\\"}\",\n                            \"format\": \"time_series\",\n\
-    \                            \"intervalFactor\": 2,\n                        \
-    \    \"legendFormat\": \"15m load average\",\n                            \"refId\"\
-    : \"C\"\n                        },\n                        {\n             \
-    \               \"expr\": \"count(node_cpu_seconds_total{job=\\\"node-exporter\\\
-    \", instance=\\\"$instance\\\", mode=\\\"idle\\\"})\",\n                     \
-    \       \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"logical cores\",\n     \
-    \                       \"refId\": \"D\"\n                        }\n        \
-    \            ],\n                    \"thresholds\": [\n\n                   \
-    \ ],\n                    \"timeFrom\": null,\n                    \"timeShift\"\
-    : null,\n                    \"title\": \"Load Average\",\n                  \
-    \  \"tooltip\": {\n                        \"shared\": true,\n               \
-    \         \"sort\": 0,\n                        \"value_type\": \"individual\"\
-    \n                    },\n                    \"type\": \"graph\",\n         \
-    \           \"xaxis\": {\n                        \"buckets\": null,\n       \
-    \                 \"mode\": \"time\",\n                        \"name\": null,\n\
-    \                        \"show\": true,\n                        \"values\":\
-    \ [\n\n                        ]\n                    },\n                   \
-    \ \"yaxes\": [\n                        {\n                            \"format\"\
-    : \"short\",\n                            \"label\": null,\n                 \
-    \           \"logBase\": 1,\n                            \"max\": null,\n    \
-    \                        \"min\": 0,\n                            \"show\": true\n\
-    \                        },\n                        {\n                     \
-    \       \"format\": \"short\",\n                            \"label\": null,\n\
-    \                            \"logBase\": 1,\n                            \"max\"\
-    : null,\n                            \"min\": 0,\n                           \
-    \ \"show\": true\n                        }\n                    ]\n         \
-    \       }\n            ],\n            \"repeat\": null,\n            \"repeatIteration\"\
-    : null,\n            \"repeatRowId\": null,\n            \"showTitle\": true,\n\
-    \            \"title\": \"CPU\",\n            \"titleSize\": \"h6\",\n       \
-    \     \"type\": \"row\"\n        },\n        {\n            \"collapse\": false,\n\
-    \            \"collapsed\": false,\n            \"panels\": [\n              \
-    \  {\n                    \"aliasColors\": {\n\n                    },\n     \
-    \               \"bars\": false,\n                    \"dashLength\": 10,\n  \
-    \                  \"dashes\": false,\n                    \"datasource\": \"\
-    $datasource\",\n                    \"fill\": 1,\n                    \"fillGradient\"\
-    : 0,\n                    \"gridPos\": {\n\n                    },\n         \
-    \           \"id\": 4,\n                    \"legend\": {\n                  \
-    \      \"alignAsTable\": false,\n                        \"avg\": false,\n   \
-    \                     \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 9,\n                    \"stack\": false,\n       \
-    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"node_memory_total_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}\",\n                        \
-    \    \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"Physical Memory\",\n   \
-    \                         \"refId\": \"A\"\n                        },\n     \
-    \                   {\n                            \"expr\": \"(\\n    node_memory_internal_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"} -\\n    node_memory_purgeable_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"} +\\n    node_memory_wired_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"} +\\n    node_memory_compressed_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}\\n)\\n\",\n                 \
-    \           \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"Memory Used\",\n       \
-    \                     \"refId\": \"B\"\n                        },\n         \
-    \               {\n                            \"expr\": \"(\\n    node_memory_internal_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"} -\\n    node_memory_purgeable_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}\\n)\\n\",\n                 \
-    \           \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"App Memory\",\n        \
-    \                    \"refId\": \"C\"\n                        },\n          \
-    \              {\n                            \"expr\": \"node_memory_wired_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}\",\n                        \
-    \    \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"Wired Memory\",\n      \
-    \                      \"refId\": \"D\"\n                        },\n        \
-    \                {\n                            \"expr\": \"node_memory_compressed_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}\",\n                        \
-    \    \"format\": \"time_series\",\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"Compressed\",\n        \
-    \                    \"refId\": \"E\"\n                        }\n           \
-    \         ],\n                    \"thresholds\": [\n\n                    ],\n\
-    \                    \"timeFrom\": null,\n                    \"timeShift\": null,\n\
-    \                    \"title\": \"Memory Usage\",\n                    \"tooltip\"\
-    : {\n                        \"shared\": true,\n                        \"sort\"\
-    : 0,\n                        \"value_type\": \"individual\"\n               \
-    \     },\n                    \"type\": \"graph\",\n                    \"xaxis\"\
-    : {\n                        \"buckets\": null,\n                        \"mode\"\
-    : \"time\",\n                        \"name\": null,\n                       \
-    \ \"show\": true,\n                        \"values\": [\n\n                 \
-    \       ]\n                    },\n                    \"yaxes\": [\n        \
-    \                {\n                            \"format\": \"bytes\",\n     \
-    \                       \"label\": null,\n                            \"logBase\"\
-    : 1,\n                            \"max\": null,\n                           \
-    \ \"min\": 0,\n                            \"show\": true\n                  \
-    \      },\n                        {\n                            \"format\":\
-    \ \"bytes\",\n                            \"label\": null,\n                 \
-    \           \"logBase\": 1,\n                            \"max\": null,\n    \
-    \                        \"min\": 0,\n                            \"show\": true\n\
-    \                        }\n                    ]\n                },\n      \
-    \          {\n                    \"datasource\": \"$datasource\",\n         \
-    \           \"fieldConfig\": {\n                        \"defaults\": {\n    \
-    \                        \"max\": 100,\n                            \"min\": 0,\n\
-    \                            \"thresholds\": {\n                             \
-    \   \"mode\": \"absolute\",\n                                \"steps\": [\n  \
-    \                                  {\n                                       \
-    \ \"color\": \"rgba(50, 172, 45, 0.97)\"\n                                   \
-    \ },\n                                    {\n                                \
-    \        \"color\": \"rgba(237, 129, 40, 0.89)\",\n                          \
-    \              \"value\": 80\n                                    },\n       \
-    \                             {\n                                        \"color\"\
-    : \"rgba(245, 54, 54, 0.9)\",\n                                        \"value\"\
-    : 90\n                                    }\n                                ]\n\
-    \                            },\n                            \"unit\": \"percent\"\
-    \n                        }\n                    },\n                    \"gridPos\"\
-    : {\n\n                    },\n                    \"id\": 5,\n              \
-    \      \"span\": 3,\n                    \"targets\": [\n                    \
-    \    {\n                            \"expr\": \"(\\n    (\\n      avg(node_memory_internal_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}) -\\n      avg(node_memory_purgeable_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}) +\\n      avg(node_memory_wired_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"}) +\\n      avg(node_memory_compressed_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"})\\n    ) /\\n    avg(node_memory_total_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\"})\\n)\\n*\\n100\\n\",\n      \
-    \                      \"format\": \"time_series\",\n                        \
-    \    \"intervalFactor\": 2,\n                            \"legendFormat\": \"\"\
-    \n                        }\n                    ],\n                    \"title\"\
-    : \"Memory Usage\",\n                    \"transparent\": false,\n           \
-    \         \"type\": \"gauge\"\n                }\n            ],\n           \
-    \ \"repeat\": null,\n            \"repeatIteration\": null,\n            \"repeatRowId\"\
-    : null,\n            \"showTitle\": true,\n            \"title\": \"Memory\",\n\
-    \            \"titleSize\": \"h6\",\n            \"type\": \"row\"\n        },\n\
-    \        {\n            \"collapse\": false,\n            \"collapsed\": false,\n\
-    \            \"panels\": [\n                {\n                    \"aliasColors\"\
-    : {\n\n                    },\n                    \"bars\": false,\n        \
-    \            \"dashLength\": 10,\n                    \"dashes\": false,\n   \
-    \                 \"datasource\": \"$datasource\",\n                    \"fill\"\
-    : 0,\n                    \"fillGradient\": 0,\n                    \"gridPos\"\
-    : {\n\n                    },\n                    \"id\": 6,\n              \
-    \      \"legend\": {\n                        \"alignAsTable\": false,\n     \
-    \                   \"avg\": false,\n                        \"current\": false,\n\
-    \                        \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n                        {\n\
-    \                            \"alias\": \"/ read| written/\",\n              \
-    \              \"yaxis\": 1\n                        },\n                    \
-    \    {\n                            \"alias\": \"/ io time/\",\n             \
-    \               \"yaxis\": 2\n                        }\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 6,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"rate(node_disk_read_bytes_total{job=\\\"node-exporter\\\
-    \", instance=\\\"$instance\\\", device=~\\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\\
-    \"}[$__rate_interval])\",\n                            \"format\": \"time_series\"\
-    ,\n                            \"intervalFactor\": 1,\n                      \
-    \      \"legendFormat\": \"{{device}} read\",\n                            \"\
-    refId\": \"A\"\n                        },\n                        {\n      \
-    \                      \"expr\": \"rate(node_disk_written_bytes_total{job=\\\"\
-    node-exporter\\\", instance=\\\"$instance\\\", device=~\\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\\
-    \"}[$__rate_interval])\",\n                            \"format\": \"time_series\"\
-    ,\n                            \"intervalFactor\": 1,\n                      \
-    \      \"legendFormat\": \"{{device}} written\",\n                           \
-    \ \"refId\": \"B\"\n                        },\n                        {\n  \
-    \                          \"expr\": \"rate(node_disk_io_time_seconds_total{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\", device=~\\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\\
-    \"}[$__rate_interval])\",\n                            \"format\": \"time_series\"\
-    ,\n                            \"intervalFactor\": 1,\n                      \
-    \      \"legendFormat\": \"{{device}} io time\",\n                           \
-    \ \"refId\": \"C\"\n                        }\n                    ],\n      \
-    \              \"thresholds\": [\n\n                    ],\n                 \
-    \   \"timeFrom\": null,\n                    \"timeShift\": null,\n          \
-    \          \"title\": \"Disk I/O\",\n                    \"tooltip\": {\n    \
-    \                    \"shared\": true,\n                        \"sort\": 0,\n\
-    \                        \"value_type\": \"individual\"\n                    },\n\
-    \                    \"type\": \"graph\",\n                    \"xaxis\": {\n\
-    \                        \"buckets\": null,\n                        \"mode\"\
-    : \"time\",\n                        \"name\": null,\n                       \
-    \ \"show\": true,\n                        \"values\": [\n\n                 \
-    \       ]\n                    },\n                    \"yaxes\": [\n        \
-    \                {\n                            \"format\": \"Bps\",\n       \
-    \                     \"label\": null,\n                            \"logBase\"\
-    : 1,\n                            \"max\": null,\n                           \
-    \ \"min\": null,\n                            \"show\": true\n               \
-    \         },\n                        {\n                            \"format\"\
-    : \"percentunit\",\n                            \"label\": null,\n           \
-    \                 \"logBase\": 1,\n                            \"max\": null,\n\
-    \                            \"min\": null,\n                            \"show\"\
-    : true\n                        }\n                    ]\n                },\n\
-    \                {\n                    \"datasource\": \"$datasource\",\n   \
-    \                 \"fieldConfig\": {\n                        \"defaults\": {\n\
-    \                            \"custom\": {\n\n                            },\n\
-    \                            \"thresholds\": {\n                             \
-    \   \"mode\": \"absolute\",\n                                \"steps\": [\n  \
-    \                                  {\n                                       \
-    \ \"color\": \"green\"\n                                    },\n             \
-    \                       {\n                                        \"color\":\
-    \ \"yellow\",\n                                        \"value\": 0.8\n      \
-    \                              },\n                                    {\n   \
-    \                                     \"color\": \"red\",\n                  \
-    \                      \"value\": 0.9\n                                    }\n\
-    \                                ]\n                            },\n         \
-    \                   \"unit\": \"decbytes\"\n                        },\n     \
-    \                   \"overrides\": [\n                            {\n        \
-    \                        \"matcher\": {\n                                    \"\
-    id\": \"byName\",\n                                    \"options\": \"Mounted\
-    \ on\"\n                                },\n                                \"\
-    properties\": [\n                                    {\n                     \
-    \                   \"id\": \"custom.width\",\n                              \
-    \          \"value\": 260\n                                    }\n           \
-    \                     ]\n                            },\n                    \
-    \        {\n                                \"matcher\": {\n                 \
-    \                   \"id\": \"byName\",\n                                    \"\
-    options\": \"Size\"\n                                },\n                    \
-    \            \"properties\": [\n                                    {\n      \
-    \                                  \"id\": \"custom.width\",\n               \
-    \                         \"value\": 93\n                                    }\n\
-    \                                ]\n                            },\n         \
-    \                   {\n                                \"matcher\": {\n      \
-    \                              \"id\": \"byName\",\n                         \
-    \           \"options\": \"Used\"\n                                },\n      \
-    \                          \"properties\": [\n                               \
-    \     {\n                                        \"id\": \"custom.width\",\n \
-    \                                       \"value\": 72\n                      \
-    \              }\n                                ]\n                        \
-    \    },\n                            {\n                                \"matcher\"\
-    : {\n                                    \"id\": \"byName\",\n               \
-    \                     \"options\": \"Available\"\n                           \
-    \     },\n                                \"properties\": [\n                \
-    \                    {\n                                        \"id\": \"custom.width\"\
-    ,\n                                        \"value\": 88\n                   \
-    \                 }\n                                ]\n                     \
-    \       },\n                            {\n                                \"\
-    matcher\": {\n                                    \"id\": \"byName\",\n      \
-    \                              \"options\": \"Used, %\"\n                    \
-    \            },\n                                \"properties\": [\n         \
-    \                           {\n                                        \"id\"\
-    : \"unit\",\n                                        \"value\": \"percentunit\"\
-    \n                                    },\n                                   \
-    \ {\n                                        \"id\": \"custom.displayMode\",\n\
-    \                                        \"value\": \"gradient-gauge\"\n     \
-    \                               },\n                                    {\n  \
-    \                                      \"id\": \"max\",\n                    \
-    \                    \"value\": 1\n                                    },\n  \
-    \                                  {\n                                       \
-    \ \"id\": \"min\",\n                                        \"value\": 0\n   \
-    \                                 }\n                                ]\n     \
-    \                       }\n                        ]\n                    },\n\
-    \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 7,\n                    \"span\": 6,\n                    \"targets\"\
-    : [\n                        {\n                            \"expr\": \"max by\
-    \ (mountpoint) (node_filesystem_size_bytes{job=\\\"node-exporter\\\", instance=\\\
-    \"$instance\\\", fstype!=\\\"\\\", mountpoint!=\\\"\\\"})\\n\",\n            \
-    \                \"format\": \"table\",\n                            \"instant\"\
-    : true,\n                            \"intervalFactor\": 2,\n                \
-    \            \"legendFormat\": \"\"\n                        },\n            \
-    \            {\n                            \"expr\": \"max by (mountpoint) (node_filesystem_avail_bytes{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\", fstype!=\\\"\\\", mountpoint!=\\\
-    \"\\\"})\\n\",\n                            \"format\": \"table\",\n         \
-    \                   \"instant\": true,\n                            \"intervalFactor\"\
-    : 2,\n                            \"legendFormat\": \"\"\n                   \
-    \     }\n                    ],\n                    \"title\": \"Disk Space Usage\"\
-    ,\n                    \"transformations\": [\n                        {\n   \
-    \                         \"id\": \"groupBy\",\n                            \"\
-    options\": {\n                                \"fields\": {\n                \
-    \                    \"Value #A\": {\n                                       \
-    \ \"aggregations\": [\n                                            \"lastNotNull\"\
-    \n                                        ],\n                               \
-    \         \"operation\": \"aggregate\"\n                                    },\n\
-    \                                    \"Value #B\": {\n                       \
-    \                 \"aggregations\": [\n                                      \
-    \      \"lastNotNull\"\n                                        ],\n         \
-    \                               \"operation\": \"aggregate\"\n               \
-    \                     },\n                                    \"mountpoint\":\
-    \ {\n                                        \"aggregations\": [\n\n         \
-    \                               ],\n                                        \"\
-    operation\": \"groupby\"\n                                    }\n            \
-    \                    }\n                            }\n                      \
-    \  },\n                        {\n                            \"id\": \"merge\"\
-    ,\n                            \"options\": {\n\n                            }\n\
-    \                        },\n                        {\n                     \
-    \       \"id\": \"calculateField\",\n                            \"options\":\
-    \ {\n                                \"alias\": \"Used\",\n                  \
-    \              \"binary\": {\n                                    \"left\": \"\
-    Value #A (lastNotNull)\",\n                                    \"operator\": \"\
-    -\",\n                                    \"reducer\": \"sum\",\n            \
-    \                        \"right\": \"Value #B (lastNotNull)\"\n             \
-    \                   },\n                                \"mode\": \"binary\",\n\
-    \                                \"reduce\": {\n                             \
-    \       \"reducer\": \"sum\"\n                                }\n            \
-    \                }\n                        },\n                        {\n  \
-    \                          \"id\": \"calculateField\",\n                     \
-    \       \"options\": {\n                                \"alias\": \"Used, %\"\
-    ,\n                                \"binary\": {\n                           \
-    \         \"left\": \"Used\",\n                                    \"operator\"\
-    : \"/\",\n                                    \"reducer\": \"sum\",\n        \
-    \                            \"right\": \"Value #A (lastNotNull)\"\n         \
-    \                       },\n                                \"mode\": \"binary\"\
-    ,\n                                \"reduce\": {\n                           \
-    \         \"reducer\": \"sum\"\n                                }\n          \
-    \                  }\n                        },\n                        {\n\
-    \                            \"id\": \"organize\",\n                         \
-    \   \"options\": {\n                                \"excludeByName\": {\n\n \
-    \                               },\n                                \"indexByName\"\
-    : {\n\n                                },\n                                \"\
-    renameByName\": {\n                                    \"Value #A (lastNotNull)\"\
-    : \"Size\",\n                                    \"Value #B (lastNotNull)\": \"\
-    Available\",\n                                    \"mountpoint\": \"Mounted on\"\
-    \n                                }\n                            }\n         \
-    \               },\n                        {\n                            \"\
-    id\": \"sortBy\",\n                            \"options\": {\n              \
-    \                  \"fields\": {\n\n                                },\n     \
-    \                           \"sort\": [\n                                    {\n\
-    \                                        \"field\": \"Mounted on\"\n         \
-    \                           }\n                                ]\n           \
-    \                 }\n                        }\n                    ],\n     \
-    \               \"transparent\": false,\n                    \"type\": \"table\"\
-    \n                }\n            ],\n            \"repeat\": null,\n         \
-    \   \"repeatIteration\": null,\n            \"repeatRowId\": null,\n         \
-    \   \"showTitle\": true,\n            \"title\": \"Disk\",\n            \"titleSize\"\
-    : \"h6\",\n            \"type\": \"row\"\n        },\n        {\n            \"\
-    collapse\": false,\n            \"collapsed\": false,\n            \"panels\"\
-    : [\n                {\n                    \"aliasColors\": {\n\n           \
-    \         },\n                    \"bars\": false,\n                    \"dashLength\"\
-    : 10,\n                    \"dashes\": false,\n                    \"datasource\"\
-    : \"$datasource\",\n                    \"description\": \"Network received (bits/s)\"\
-    ,\n                    \"fill\": 0,\n                    \"fillGradient\": 0,\n\
-    \                    \"gridPos\": {\n\n                    },\n              \
-    \      \"id\": 8,\n                    \"legend\": {\n                       \
-    \ \"alignAsTable\": false,\n                        \"avg\": false,\n        \
-    \                \"current\": false,\n                        \"max\": false,\n\
-    \                        \"min\": false,\n                        \"rightSide\"\
-    : false,\n                        \"show\": true,\n                        \"\
-    sideWidth\": null,\n                        \"total\": false,\n              \
-    \          \"values\": false\n                    },\n                    \"lines\"\
-    : true,\n                    \"linewidth\": 1,\n                    \"links\"\
-    : [\n\n                    ],\n                    \"nullPointMode\": \"null\"\
-    ,\n                    \"percentage\": false,\n                    \"pointradius\"\
-    : 5,\n                    \"points\": false,\n                    \"renderer\"\
-    : \"flot\",\n                    \"repeat\": null,\n                    \"seriesOverrides\"\
-    : [\n\n                    ],\n                    \"spaceLength\": 10,\n    \
-    \                \"span\": 6,\n                    \"stack\": false,\n       \
-    \             \"steppedLine\": false,\n                    \"targets\": [\n  \
-    \                      {\n                            \"expr\": \"rate(node_network_receive_bytes_total{job=\\\
-    \"node-exporter\\\", instance=\\\"$instance\\\", device!=\\\"lo\\\"}[$__rate_interval])\
-    \ * 8\",\n                            \"format\": \"time_series\",\n         \
-    \                   \"intervalFactor\": 1,\n                            \"legendFormat\"\
-    : \"{{device}}\",\n                            \"refId\": \"A\"\n            \
-    \            }\n                    ],\n                    \"thresholds\": [\n\
-    \n                    ],\n                    \"timeFrom\": null,\n          \
-    \          \"timeShift\": null,\n                    \"title\": \"Network Received\"\
-    ,\n                    \"tooltip\": {\n                        \"shared\": true,\n\
-    \                        \"sort\": 0,\n                        \"value_type\"\
-    : \"individual\"\n                    },\n                    \"type\": \"graph\"\
-    ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
-    \                        \"mode\": \"time\",\n                        \"name\"\
-    : null,\n                        \"show\": true,\n                        \"values\"\
-    : [\n\n                        ]\n                    },\n                   \
-    \ \"yaxes\": [\n                        {\n                            \"format\"\
-    : \"bps\",\n                            \"label\": null,\n                   \
-    \         \"logBase\": 1,\n                            \"max\": null,\n      \
-    \                      \"min\": 0,\n                            \"show\": true\n\
-    \                        },\n                        {\n                     \
-    \       \"format\": \"bps\",\n                            \"label\": null,\n \
-    \                           \"logBase\": 1,\n                            \"max\"\
-    : null,\n                            \"min\": 0,\n                           \
-    \ \"show\": true\n                        }\n                    ]\n         \
-    \       },\n                {\n                    \"aliasColors\": {\n\n    \
-    \                },\n                    \"bars\": false,\n                  \
-    \  \"dashLength\": 10,\n                    \"dashes\": false,\n             \
-    \       \"datasource\": \"$datasource\",\n                    \"description\"\
-    : \"Network transmitted (bits/s)\",\n                    \"fill\": 0,\n      \
-    \              \"fillGradient\": 0,\n                    \"gridPos\": {\n\n  \
-    \                  },\n                    \"id\": 9,\n                    \"\
-    legend\": {\n                        \"alignAsTable\": false,\n              \
-    \          \"avg\": false,\n                        \"current\": false,\n    \
-    \                    \"max\": false,\n                        \"min\": false,\n\
-    \                        \"rightSide\": false,\n                        \"show\"\
-    : true,\n                        \"sideWidth\": null,\n                      \
-    \  \"total\": false,\n                        \"values\": false\n            \
-    \        },\n                    \"lines\": true,\n                    \"linewidth\"\
-    : 1,\n                    \"links\": [\n\n                    ],\n           \
-    \         \"nullPointMode\": \"null\",\n                    \"percentage\": false,\n\
-    \                    \"pointradius\": 5,\n                    \"points\": false,\n\
-    \                    \"renderer\": \"flot\",\n                    \"repeat\":\
-    \ null,\n                    \"seriesOverrides\": [\n\n                    ],\n\
-    \                    \"spaceLength\": 10,\n                    \"span\": 6,\n\
-    \                    \"stack\": false,\n                    \"steppedLine\": false,\n\
-    \                    \"targets\": [\n                        {\n             \
-    \               \"expr\": \"rate(node_network_transmit_bytes_total{job=\\\"node-exporter\\\
-    \", instance=\\\"$instance\\\", device!=\\\"lo\\\"}[$__rate_interval]) * 8\",\n\
-    \                            \"format\": \"time_series\",\n                  \
-    \          \"intervalFactor\": 1,\n                            \"legendFormat\"\
-    : \"{{device}}\",\n                            \"refId\": \"A\"\n            \
-    \            }\n                    ],\n                    \"thresholds\": [\n\
-    \n                    ],\n                    \"timeFrom\": null,\n          \
-    \          \"timeShift\": null,\n                    \"title\": \"Network Transmitted\"\
-    ,\n                    \"tooltip\": {\n                        \"shared\": true,\n\
-    \                        \"sort\": 0,\n                        \"value_type\"\
-    : \"individual\"\n                    },\n                    \"type\": \"graph\"\
-    ,\n                    \"xaxis\": {\n                        \"buckets\": null,\n\
-    \                        \"mode\": \"time\",\n                        \"name\"\
-    : null,\n                        \"show\": true,\n                        \"values\"\
-    : [\n\n                        ]\n                    },\n                   \
-    \ \"yaxes\": [\n                        {\n                            \"format\"\
-    : \"bps\",\n                            \"label\": null,\n                   \
-    \         \"logBase\": 1,\n                            \"max\": null,\n      \
-    \                      \"min\": 0,\n                            \"show\": true\n\
-    \                        },\n                        {\n                     \
-    \       \"format\": \"bps\",\n                            \"label\": null,\n \
-    \                           \"logBase\": 1,\n                            \"max\"\
-    : null,\n                            \"min\": 0,\n                           \
-    \ \"show\": true\n                        }\n                    ]\n         \
-    \       }\n            ],\n            \"repeat\": null,\n            \"repeatIteration\"\
-    : null,\n            \"repeatRowId\": null,\n            \"showTitle\": true,\n\
-    \            \"title\": \"Network\",\n            \"titleSize\": \"h6\",\n   \
-    \         \"type\": \"row\"\n        }\n    ],\n    \"schemaVersion\": 14,\n \
-    \   \"style\": \"dark\",\n    \"tags\": [\n        \"node-exporter-mixin\"\n \
-    \   ],\n    \"templating\": {\n        \"list\": [\n            {\n          \
-    \      \"current\": {\n                    \"text\": \"default\",\n          \
-    \          \"value\": \"default\"\n                },\n                \"hide\"\
-    : 0,\n                \"label\": \"Data Source\",\n                \"name\": \"\
-    datasource\",\n                \"options\": [\n\n                ],\n        \
-    \        \"query\": \"prometheus\",\n                \"refresh\": 1,\n       \
-    \         \"regex\": \"\",\n                \"type\": \"datasource\"\n       \
-    \     },\n            {\n                \"allValue\": null,\n               \
-    \ \"current\": {\n\n                },\n                \"datasource\": \"$datasource\"\
-    ,\n                \"hide\": 0,\n                \"includeAll\": false,\n    \
-    \            \"label\": \"Instance\",\n                \"multi\": false,\n   \
-    \             \"name\": \"instance\",\n                \"options\": [\n\n    \
-    \            ],\n                \"query\": \"label_values(node_uname_info{job=\\\
-    \"node-exporter\\\", sysname=\\\"Darwin\\\"}, instance)\",\n                \"\
-    refresh\": 2,\n                \"regex\": \"\",\n                \"sort\": 0,\n\
-    \                \"tagValuesQuery\": \"\",\n                \"tags\": [\n\n  \
-    \              ],\n                \"tagsQuery\": \"\",\n                \"type\"\
-    : \"query\",\n                \"useTags\": false\n            }\n        ]\n \
-    \   },\n    \"time\": {\n        \"from\": \"now-1h\",\n        \"to\": \"now\"\
-    \n    },\n    \"timepicker\": {\n        \"refresh_intervals\": [\n          \
-    \  \"5s\",\n            \"10s\",\n            \"30s\",\n            \"1m\",\n\
-    \            \"5m\",\n            \"15m\",\n            \"30m\",\n           \
-    \ \"1h\",\n            \"2h\",\n            \"1d\"\n        ],\n        \"time_options\"\
-    : [\n            \"5m\",\n            \"15m\",\n            \"1h\",\n        \
-    \    \"6h\",\n            \"12h\",\n            \"24h\",\n            \"2d\",\n\
-    \            \"7d\",\n            \"30d\"\n        ]\n    },\n    \"timezone\"\
-    : \"utc\",\n    \"title\": \"Node Exporter / MacOS\",\n    \"version\": 0\n}"
+  nodes-darwin.json: '{"__inputs":[],"__requires":[],"annotations":{"list":[]},"editable":true,"gnetId":null,"graphTooltip":1,"hideControls":false,"id":null,"links":[],"refresh":"30s","rows":[{"collapse":false,"collapsed":false,"panels":[{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","fill":1,"fillGradient":0,"gridPos":{},"id":2,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[],"spaceLength":10,"span":6,"stack":true,"steppedLine":false,"targets":[{"expr":"(\n  (1
+    - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\",
+    instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu)
+    group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\",
+    mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n","format":"time_series","intervalFactor":5,"legendFormat":"{{cpu}}","refId":"A"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"CPU
+    Usage","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"percentunit","label":null,"logBase":1,"max":1,"min":0,"show":true},{"format":"percentunit","label":null,"logBase":1,"max":1,"min":0,"show":true}]},{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","fill":0,"fillGradient":0,"gridPos":{},"id":3,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[],"spaceLength":10,"span":6,"stack":false,"steppedLine":false,"targets":[{"expr":"node_load1{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"1m
+    load average","refId":"A"},{"expr":"node_load5{job=\"node-exporter\", instance=\"$instance\",
+    cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"5m
+    load average","refId":"B"},{"expr":"node_load15{job=\"node-exporter\", instance=\"$instance\",
+    cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"15m
+    load average","refId":"C"},{"expr":"count(node_cpu_seconds_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})","format":"time_series","intervalFactor":2,"legendFormat":"logical
+    cores","refId":"D"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"Load
+    Average","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"short","label":null,"logBase":1,"max":null,"min":0,"show":true},{"format":"short","label":null,"logBase":1,"max":null,"min":0,"show":true}]}],"repeat":null,"repeatIteration":null,"repeatRowId":null,"showTitle":true,"title":"CPU","titleSize":"h6","type":"row"},{"collapse":false,"collapsed":false,"panels":[{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","fill":1,"fillGradient":0,"gridPos":{},"id":4,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[],"spaceLength":10,"span":9,"stack":false,"steppedLine":false,"targets":[{"expr":"node_memory_total_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"Physical
+    Memory","refId":"A"},{"expr":"(\n    node_memory_internal_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_wired_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_compressed_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}\n)\n","format":"time_series","intervalFactor":2,"legendFormat":"Memory
+    Used","refId":"B"},{"expr":"(\n    node_memory_internal_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}\n)\n","format":"time_series","intervalFactor":2,"legendFormat":"App
+    Memory","refId":"C"},{"expr":"node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\",
+    cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"Wired
+    Memory","refId":"D"},{"expr":"node_memory_compressed_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}","format":"time_series","intervalFactor":2,"legendFormat":"Compressed","refId":"E"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"Memory
+    Usage","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"bytes","label":null,"logBase":1,"max":null,"min":0,"show":true},{"format":"bytes","label":null,"logBase":1,"max":null,"min":0,"show":true}]},{"datasource":"$datasource","fieldConfig":{"defaults":{"max":100,"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"rgba(50,
+    172, 45, 0.97)"},{"color":"rgba(237, 129, 40, 0.89)","value":80},{"color":"rgba(245,
+    54, 54, 0.9)","value":90}]},"unit":"percent"}},"gridPos":{},"id":5,"span":3,"targets":[{"expr":"(\n    (\n      avg(node_memory_internal_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}) -\n      avg(node_memory_purgeable_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_wired_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_compressed_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"})\n    ) /\n    avg(node_memory_total_bytes{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\"})\n)\n*\n100\n","format":"time_series","intervalFactor":2,"legendFormat":""}],"title":"Memory
+    Usage","transparent":false,"type":"gauge"}],"repeat":null,"repeatIteration":null,"repeatRowId":null,"showTitle":true,"title":"Memory","titleSize":"h6","type":"row"},{"collapse":false,"collapsed":false,"panels":[{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","fill":0,"fillGradient":0,"gridPos":{},"id":6,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[{"alias":"/
+    read| written/","yaxis":1},{"alias":"/ io time/","yaxis":2}],"spaceLength":10,"span":6,"stack":false,"steppedLine":false,"targets":[{"expr":"rate(node_disk_read_bytes_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])","format":"time_series","intervalFactor":1,"legendFormat":"{{device}}
+    read","refId":"A"},{"expr":"rate(node_disk_written_bytes_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])","format":"time_series","intervalFactor":1,"legendFormat":"{{device}}
+    written","refId":"B"},{"expr":"rate(node_disk_io_time_seconds_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])","format":"time_series","intervalFactor":1,"legendFormat":"{{device}}
+    io time","refId":"C"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"Disk
+    I/O","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"Bps","label":null,"logBase":1,"max":null,"min":null,"show":true},{"format":"percentunit","label":null,"logBase":1,"max":null,"min":null,"show":true}]},{"datasource":"$datasource","fieldConfig":{"defaults":{"custom":{},"thresholds":{"mode":"absolute","steps":[{"color":"green"},{"color":"yellow","value":0.8},{"color":"red","value":0.9}]},"unit":"decbytes"},"overrides":[{"matcher":{"id":"byName","options":"Mounted
+    on"},"properties":[{"id":"custom.width","value":260}]},{"matcher":{"id":"byName","options":"Size"},"properties":[{"id":"custom.width","value":93}]},{"matcher":{"id":"byName","options":"Used"},"properties":[{"id":"custom.width","value":72}]},{"matcher":{"id":"byName","options":"Available"},"properties":[{"id":"custom.width","value":88}]},{"matcher":{"id":"byName","options":"Used,
+    %"},"properties":[{"id":"unit","value":"percentunit"},{"id":"custom.displayMode","value":"gradient-gauge"},{"id":"max","value":1},{"id":"min","value":0}]}]},"gridPos":{},"id":7,"span":6,"targets":[{"expr":"max
+    by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\",
+    cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n","format":"table","instant":true,"intervalFactor":2,"legendFormat":""},{"expr":"max
+    by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\",
+    cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n","format":"table","instant":true,"intervalFactor":2,"legendFormat":""}],"title":"Disk
+    Space Usage","transformations":[{"id":"groupBy","options":{"fields":{"Value #A":{"aggregations":["lastNotNull"],"operation":"aggregate"},"Value
+    #B":{"aggregations":["lastNotNull"],"operation":"aggregate"},"mountpoint":{"aggregations":[],"operation":"groupby"}}}},{"id":"merge","options":{}},{"id":"calculateField","options":{"alias":"Used","binary":{"left":"Value
+    #A (lastNotNull)","operator":"-","reducer":"sum","right":"Value #B (lastNotNull)"},"mode":"binary","reduce":{"reducer":"sum"}}},{"id":"calculateField","options":{"alias":"Used,
+    %","binary":{"left":"Used","operator":"/","reducer":"sum","right":"Value #A (lastNotNull)"},"mode":"binary","reduce":{"reducer":"sum"}}},{"id":"organize","options":{"excludeByName":{},"indexByName":{},"renameByName":{"Value
+    #A (lastNotNull)":"Size","Value #B (lastNotNull)":"Available","mountpoint":"Mounted
+    on"}}},{"id":"sortBy","options":{"fields":{},"sort":[{"field":"Mounted on"}]}}],"transparent":false,"type":"table"}],"repeat":null,"repeatIteration":null,"repeatRowId":null,"showTitle":true,"title":"Disk","titleSize":"h6","type":"row"},{"collapse":false,"collapsed":false,"panels":[{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","description":"Network
+    received (bits/s)","fill":0,"fillGradient":0,"gridPos":{},"id":8,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[],"spaceLength":10,"span":6,"stack":false,"steppedLine":false,"targets":[{"expr":"rate(node_network_receive_bytes_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval])
+    * 8","format":"time_series","intervalFactor":1,"legendFormat":"{{device}}","refId":"A"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"Network
+    Received","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"bps","label":null,"logBase":1,"max":null,"min":0,"show":true},{"format":"bps","label":null,"logBase":1,"max":null,"min":0,"show":true}]},{"aliasColors":{},"bars":false,"dashLength":10,"dashes":false,"datasource":"$datasource","description":"Network
+    transmitted (bits/s)","fill":0,"fillGradient":0,"gridPos":{},"id":9,"legend":{"alignAsTable":false,"avg":false,"current":false,"max":false,"min":false,"rightSide":false,"show":true,"sideWidth":null,"total":false,"values":false},"lines":true,"linewidth":1,"links":[],"nullPointMode":"null","percentage":false,"pointradius":5,"points":false,"renderer":"flot","repeat":null,"seriesOverrides":[],"spaceLength":10,"span":6,"stack":false,"steppedLine":false,"targets":[{"expr":"rate(node_network_transmit_bytes_total{job=\"node-exporter\",
+    instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval])
+    * 8","format":"time_series","intervalFactor":1,"legendFormat":"{{device}}","refId":"A"}],"thresholds":[],"timeFrom":null,"timeShift":null,"title":"Network
+    Transmitted","tooltip":{"shared":true,"sort":0,"value_type":"individual"},"type":"graph","xaxis":{"buckets":null,"mode":"time","name":null,"show":true,"values":[]},"yaxes":[{"format":"bps","label":null,"logBase":1,"max":null,"min":0,"show":true},{"format":"bps","label":null,"logBase":1,"max":null,"min":0,"show":true}]}],"repeat":null,"repeatIteration":null,"repeatRowId":null,"showTitle":true,"title":"Network","titleSize":"h6","type":"row"}],"schemaVersion":14,"style":"dark","tags":["node-exporter-mixin"],"templating":{"list":[{"current":{"text":"default","value":"default"},"hide":0,"label":"Data
+    Source","name":"datasource","options":[],"query":"prometheus","refresh":1,"regex":"","type":"datasource"},{"allValue":null,"current":{},"datasource":"$datasource","hide":2,"includeAll":false,"label":"Cluster","multi":false,"name":"cluster","options":[],"query":"label_values(node_uname_info{job=\"node-exporter\",
+    sysname=\"Darwin\"}, cluster)","refresh":2,"regex":"","sort":0,"tagValuesQuery":"","tags":[],"tagsQuery":"","type":"query","useTags":false},{"allValue":null,"current":{},"datasource":"$datasource","hide":0,"includeAll":false,"label":"Instance","multi":false,"name":"instance","options":[],"query":"label_values(node_uname_info{job=\"node-exporter\",
+    cluster=\"$cluster\", sysname=\"Darwin\"}, instance)","refresh":2,"regex":"","sort":0,"tagValuesQuery":"","tags":[],"tagsQuery":"","type":"query","useTags":false}]},"time":{"from":"now-1h","to":"now"},"timepicker":{"refresh_intervals":["5s","10s","30s","1m","5m","15m","30m","1h","2h","1d"],"time_options":["5m","15m","1h","6h","12h","24h","2d","7d","30d"]},"timezone":
+    "utc","title":"Node Exporter / MacOS","version":0}'
 kind: ConfigMap
 metadata:
   annotations: {}
@@ -544,8 +77,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

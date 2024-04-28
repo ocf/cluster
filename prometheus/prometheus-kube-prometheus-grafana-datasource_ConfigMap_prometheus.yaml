@@ -2,7 +2,10 @@ apiVersion: v1
 data:
   datasource.yaml: "apiVersion: 1\ndatasources:\n- name: Prometheus\n  type: prometheus\n\
     \  uid: prometheus\n  url: http://prometheus-kube-prometheus-prometheus.prometheus:9090/\n\
-    \  access: proxy\n  isDefault: true\n  jsonData:\n    timeInterval: 30s"
+    \  access: proxy\n  isDefault: true\n  jsonData:\n    httpMethod: POST\n    timeInterval:\
+    \ 30s\n- name: Alertmanager\n  type: alertmanager\n  uid: alertmanager\n  url:\
+    \ http://prometheus-kube-prometheus-alertmanager.prometheus:9093/\n  access: proxy\n\
+    \  jsonData:\n    handleGrafanaManagedAlerts: false\n    implementation: prometheus"
 kind: ConfigMap
 metadata:
   labels:
@@ -10,8 +13,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     grafana_datasource: '1'
     heritage: Helm
     release: prometheus

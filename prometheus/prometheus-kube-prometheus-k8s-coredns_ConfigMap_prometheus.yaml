@@ -1,510 +1,77 @@
 apiVersion: v1
 data:
-  k8s-coredns.json: "{\n  \"annotations\": {\n    \"list\": [\n      {\n        \"\
-    builtIn\": 1,\n        \"datasource\": \"-- Grafana --\",\n        \"enable\"\
-    : true,\n        \"hide\": true,\n        \"iconColor\": \"rgba(0, 211, 255, 1)\"\
-    ,\n        \"name\": \"Annotations & Alerts\",\n        \"type\": \"dashboard\"\
-    \n      }\n    ]\n  },\n  \"description\": \"A dashboard for the CoreDNS DNS server\
-    \ with updated metrics for version 1.7.0+.  Based on the CoreDNS dashboard by\
-    \ buhay.\",\n  \"editable\": true,\n  \"gnetId\": 12539,\n  \"graphTooltip\":\
-    \ 0,\n  \"iteration\": 1603798405693,\n  \"links\": [\n    {\n      \"icon\":\
-    \ \"external link\",\n      \"tags\": [],\n      \"targetBlank\": true,\n    \
-    \  \"title\": \"CoreDNS.io\",\n      \"type\": \"link\",\n      \"url\": \"https://coredns.io\"\
-    \n    }\n  ],\n  \"panels\": [\n    {\n      \"aliasColors\": {},\n      \"bars\"\
-    : false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\"\
-    : \"$datasource\",\n      \"editable\": true,\n      \"error\": false,\n     \
-    \ \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\": {},\n   \
-    \       \"links\": [],\n          \"mappings\": [],\n          \"thresholds\"\
-    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
-    \     {\n                \"color\": \"green\",\n                \"value\": null\n\
-    \              },\n              {\n                \"color\": \"red\",\n    \
-    \            \"value\": 80\n              }\n            ]\n          }\n    \
-    \    },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\"\
-    : 0,\n      \"grid\": {},\n      \"gridPos\": {\n        \"h\": 7,\n        \"\
-    w\": 8,\n        \"x\": 0,\n        \"y\": 0\n      },\n      \"hiddenSeries\"\
-    : false,\n      \"id\": 2,\n      \"legend\": {\n        \"avg\": false,\n   \
-    \     \"current\": false,\n        \"max\": false,\n        \"min\": false,\n\
-    \        \"show\": true,\n        \"total\": false,\n        \"values\": false\n\
-    \      },\n      \"lines\": true,\n      \"linewidth\": 2,\n      \"links\": [],\n\
-    \      \"nullPointMode\": \"connected\",\n      \"options\": {\n        \"alertThreshold\"\
-    : true\n      },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\"\
-    ,\n      \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"\
-    flot\",\n      \"seriesOverrides\": [\n        {\n          \"alias\": \"total\"\
-    ,\n          \"yaxis\": 2\n        }\n      ],\n      \"spaceLength\": 10,\n \
-    \     \"stack\": true,\n      \"steppedLine\": false,\n      \"targets\": [\n\
-    \        {\n          \"expr\": \"sum(rate(coredns_dns_request_count_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (proto) or\\nsum(rate(coredns_dns_requests_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (proto)\",\n          \"format\"\
-    : \"time_series\",\n          \"interval\": \"\",\n          \"intervalFactor\"\
-    : 2,\n          \"legendFormat\": \"{{proto}}\",\n          \"refId\": \"A\",\n\
-    \          \"step\": 60\n        }\n      ],\n      \"thresholds\": [],\n    \
-    \  \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n\
-    \      \"title\": \"Requests (total)\",\n      \"tooltip\": {\n        \"shared\"\
-    : true,\n        \"sort\": 2,\n        \"value_type\": \"individual\"\n      },\n\
-    \      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n\
-    \        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n\
-    \        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"\
-    format\": \"pps\",\n          \"logBase\": 1,\n          \"max\": null,\n    \
-    \      \"min\": 0,\n          \"show\": true\n        },\n        {\n        \
-    \  \"format\": \"pps\",\n          \"logBase\": 1,\n          \"max\": null,\n\
-    \          \"min\": 0,\n          \"show\": true\n        }\n      ],\n      \"\
-    yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n\
-    \    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\"\
-    : 10,\n      \"dashes\": false,\n      \"datasource\": \"$datasource\",\n    \
-    \  \"editable\": true,\n      \"error\": false,\n      \"fieldConfig\": {\n  \
-    \      \"defaults\": {\n          \"custom\": {},\n          \"links\": []\n \
-    \       },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"\
-    fillGradient\": 0,\n      \"grid\": {},\n      \"gridPos\": {\n        \"h\":\
-    \ 7,\n        \"w\": 8,\n        \"x\": 8,\n        \"y\": 0\n      },\n     \
-    \ \"hiddenSeries\": false,\n      \"id\": 4,\n      \"legend\": {\n        \"\
-    avg\": false,\n        \"current\": false,\n        \"max\": false,\n        \"\
-    min\": false,\n        \"show\": true,\n        \"total\": false,\n        \"\
-    values\": false\n      },\n      \"lines\": true,\n      \"linewidth\": 2,\n \
-    \     \"links\": [],\n      \"nullPointMode\": \"connected\",\n      \"options\"\
-    : {\n        \"alertThreshold\": true\n      },\n      \"percentage\": false,\n\
-    \      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\": 5,\n      \"points\"\
-    : false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [\n      \
-    \  {\n          \"alias\": \"total\",\n          \"yaxis\": 2\n        },\n  \
-    \      {\n          \"alias\": \"other\",\n          \"yaxis\": 2\n        }\n\
-    \      ],\n      \"spaceLength\": 10,\n      \"stack\": true,\n      \"steppedLine\"\
-    : false,\n      \"targets\": [\n        {\n          \"expr\": \"sum(rate(coredns_dns_request_type_count_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (type) or \\nsum(rate(coredns_dns_requests_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (type)\",\n          \"interval\"\
-    : \"\",\n          \"intervalFactor\": 2,\n          \"legendFormat\": \"{{type}}\"\
-    ,\n          \"refId\": \"A\",\n          \"step\": 60\n        }\n      ],\n\
-    \      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\":\
-    \ [],\n      \"timeShift\": null,\n      \"title\": \"Requests (by qtype)\",\n\
-    \      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 2,\n     \
-    \   \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n   \
-    \   \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n  \
-    \      \"name\": null,\n        \"show\": true,\n        \"values\": []\n    \
-    \  },\n      \"yaxes\": [\n        {\n          \"format\": \"pps\",\n       \
-    \   \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n       \
-    \   \"show\": true\n        },\n        {\n          \"format\": \"pps\",\n  \
-    \        \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n  \
-    \        \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\"\
-    : false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\"\
-    : {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n\
-    \      \"datasource\": \"$datasource\",\n      \"editable\": true,\n      \"error\"\
-    : false,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
-    : {},\n          \"links\": []\n        },\n        \"overrides\": []\n      },\n\
-    \      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"grid\": {},\n      \"\
-    gridPos\": {\n        \"h\": 7,\n        \"w\": 8,\n        \"x\": 16,\n     \
-    \   \"y\": 0\n      },\n      \"hiddenSeries\": false,\n      \"id\": 6,\n   \
-    \   \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n    \
-    \    \"max\": false,\n        \"min\": false,\n        \"show\": true,\n     \
-    \   \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n\
-    \      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\": \"connected\"\
-    ,\n      \"options\": {\n        \"alertThreshold\": true\n      },\n      \"\
-    percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\"\
-    : 5,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
-    : [\n        {\n          \"alias\": \"total\",\n          \"yaxis\": 2\n    \
-    \    }\n      ],\n      \"spaceLength\": 10,\n      \"stack\": true,\n      \"\
-    steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"\
-    sum(rate(coredns_dns_request_count_total{job=\\\"coredns\\\",instance=~\\\"$instance\\\
-    \"}[5m])) by (zone) or\\nsum(rate(coredns_dns_requests_total{job=\\\"coredns\\\
-    \",instance=~\\\"$instance\\\"}[5m])) by (zone)\",\n          \"interval\": \"\
-    \",\n          \"intervalFactor\": 2,\n          \"legendFormat\": \"{{zone}}\"\
-    ,\n          \"refId\": \"A\",\n          \"step\": 60\n        }\n      ],\n\
-    \      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\":\
-    \ [],\n      \"timeShift\": null,\n      \"title\": \"Requests (by zone)\",\n\
-    \      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 2,\n     \
-    \   \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n   \
-    \   \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n  \
-    \      \"name\": null,\n        \"show\": true,\n        \"values\": []\n    \
-    \  },\n      \"yaxes\": [\n        {\n          \"format\": \"pps\",\n       \
-    \   \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n       \
-    \   \"show\": true\n        },\n        {\n          \"format\": \"pps\",\n  \
-    \        \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n  \
-    \        \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\"\
-    : false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\"\
-    : {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n\
-    \      \"datasource\": \"$datasource\",\n      \"editable\": true,\n      \"error\"\
-    : false,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
-    : {},\n          \"links\": []\n        },\n        \"overrides\": []\n      },\n\
-    \      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"grid\": {},\n      \"\
-    gridPos\": {\n        \"h\": 7,\n        \"w\": 12,\n        \"x\": 0,\n     \
-    \   \"y\": 7\n      },\n      \"hiddenSeries\": false,\n      \"id\": 8,\n   \
-    \   \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n    \
-    \    \"max\": false,\n        \"min\": false,\n        \"show\": true,\n     \
-    \   \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n\
-    \      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\": \"connected\"\
-    ,\n      \"options\": {\n        \"alertThreshold\": true\n      },\n      \"\
-    percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\"\
-    : 5,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
-    : [\n        {\n          \"alias\": \"total\",\n          \"yaxis\": 2\n    \
-    \    }\n      ],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"\
-    steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"\
-    sum(rate(coredns_dns_request_do_count_total{job=\\\"coredns\\\",instance=~\\\"\
-    $instance\\\"}[5m])) or\\nsum(rate(coredns_dns_do_requests_total{job=\\\"coredns\\\
-    \",instance=~\\\"$instance\\\"}[5m]))\",\n          \"interval\": \"\",\n    \
-    \      \"intervalFactor\": 2,\n          \"legendFormat\": \"DO\",\n         \
-    \ \"refId\": \"A\",\n          \"step\": 40\n        },\n        {\n         \
-    \ \"expr\": \"sum(rate(coredns_dns_request_count_total{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\"}[5m])) or\\nsum(rate(coredns_dns_requests_total{job=\\\"coredns\\\
-    \",instance=~\\\"$instance\\\"}[5m]))\",\n          \"interval\": \"\",\n    \
-    \      \"intervalFactor\": 2,\n          \"legendFormat\": \"total\",\n      \
-    \    \"refId\": \"B\",\n          \"step\": 40\n        }\n      ],\n      \"\
-    thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n   \
-    \   \"timeShift\": null,\n      \"title\": \"Requests (DO bit)\",\n      \"tooltip\"\
-    : {\n        \"shared\": true,\n        \"sort\": 2,\n        \"value_type\":\
-    \ \"cumulative\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n \
-    \       \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\": null,\n\
-    \        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\": [\n\
-    \        {\n          \"format\": \"pps\",\n          \"logBase\": 1,\n      \
-    \    \"max\": null,\n          \"min\": 0,\n          \"show\": true\n       \
-    \ },\n        {\n          \"format\": \"pps\",\n          \"logBase\": 1,\n \
-    \         \"max\": null,\n          \"min\": null,\n          \"show\": true\n\
-    \        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"\
-    alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n     \
-    \ \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n    \
-    \  \"datasource\": \"$datasource\",\n      \"editable\": true,\n      \"error\"\
-    : false,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
-    : {},\n          \"links\": []\n        },\n        \"overrides\": []\n      },\n\
-    \      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"grid\": {},\n      \"\
-    gridPos\": {\n        \"h\": 7,\n        \"w\": 6,\n        \"x\": 12,\n     \
-    \   \"y\": 7\n      },\n      \"hiddenSeries\": false,\n      \"id\": 10,\n  \
-    \    \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n   \
-    \     \"max\": false,\n        \"min\": false,\n        \"show\": true,\n    \
-    \    \"total\": false,\n        \"values\": false\n      },\n      \"lines\":\
-    \ true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
-    : \"connected\",\n      \"options\": {\n        \"alertThreshold\": true\n   \
-    \   },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n  \
-    \    \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
-    ,\n      \"seriesOverrides\": [\n        {\n          \"alias\": \"tcp:90\",\n\
-    \          \"yaxis\": 2\n        },\n        {\n          \"alias\": \"tcp:99\
-    \ \",\n          \"yaxis\": 2\n        },\n        {\n          \"alias\": \"\
-    tcp:50\",\n          \"yaxis\": 2\n        }\n      ],\n      \"spaceLength\"\
-    : 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\"\
-    : [\n        {\n          \"expr\": \"histogram_quantile(0.99, sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto))\"\
-    ,\n          \"interval\": \"\",\n          \"intervalFactor\": 2,\n         \
-    \ \"legendFormat\": \"{{proto}}:99 \",\n          \"refId\": \"A\",\n        \
-    \  \"step\": 60\n        },\n        {\n          \"expr\": \"histogram_quantile(0.90,\
-    \ sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto))\",\n          \"intervalFactor\"\
-    : 2,\n          \"legendFormat\": \"{{proto}}:90\",\n          \"refId\": \"B\"\
-    ,\n          \"step\": 60\n        },\n        {\n          \"expr\": \"histogram_quantile(0.50,\
-    \ sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto))\",\n          \"intervalFactor\"\
-    : 2,\n          \"legendFormat\": \"{{proto}}:50\",\n          \"refId\": \"C\"\
-    ,\n          \"step\": 60\n        }\n      ],\n      \"thresholds\": [],\n  \
-    \    \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n\
-    \      \"title\": \"Requests (size, udp)\",\n      \"tooltip\": {\n        \"\
-    shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"cumulative\"\n\
-    \      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\"\
-    : null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\"\
-    : true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n   \
-    \       \"format\": \"bytes\",\n          \"logBase\": 1,\n          \"max\":\
-    \ null,\n          \"min\": 0,\n          \"show\": true\n        },\n       \
-    \ {\n          \"format\": \"short\",\n          \"logBase\": 1,\n          \"\
-    max\": null,\n          \"min\": 0,\n          \"show\": true\n        }\n   \
-    \   ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\"\
-    : null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n\
-    \      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": \"\
-    $datasource\",\n      \"editable\": true,\n      \"error\": false,\n      \"fieldConfig\"\
-    : {\n        \"defaults\": {\n          \"custom\": {},\n          \"links\":\
-    \ []\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n  \
-    \    \"fillGradient\": 0,\n      \"grid\": {},\n      \"gridPos\": {\n       \
-    \ \"h\": 7,\n        \"w\": 6,\n        \"x\": 18,\n        \"y\": 7\n      },\n\
-    \      \"hiddenSeries\": false,\n      \"id\": 12,\n      \"legend\": {\n    \
-    \    \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n \
-    \       \"min\": false,\n        \"show\": true,\n        \"total\": false,\n\
-    \        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\"\
-    : 2,\n      \"links\": [],\n      \"nullPointMode\": \"connected\",\n      \"\
-    options\": {\n        \"alertThreshold\": true\n      },\n      \"percentage\"\
-    : false,\n      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\": 5,\n   \
-    \   \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
-    : [\n        {\n          \"alias\": \"tcp:90\",\n          \"yaxis\": 1\n   \
-    \     },\n        {\n          \"alias\": \"tcp:99 \",\n          \"yaxis\": 1\n\
-    \        },\n        {\n          \"alias\": \"tcp:50\",\n          \"yaxis\"\
-    : 1\n        }\n      ],\n      \"spaceLength\": 10,\n      \"stack\": false,\n\
-    \      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"\
-    expr\": \"histogram_quantile(0.99, sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le,proto))\"\
-    ,\n          \"format\": \"time_series\",\n          \"interval\": \"\",\n   \
-    \       \"intervalFactor\": 2,\n          \"legendFormat\": \"{{proto}}:99 \"\
-    ,\n          \"refId\": \"A\",\n          \"step\": 60\n        },\n        {\n\
-    \          \"expr\": \"histogram_quantile(0.90, sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le,proto))\"\
-    ,\n          \"format\": \"time_series\",\n          \"interval\": \"\",\n   \
-    \       \"intervalFactor\": 2,\n          \"legendFormat\": \"{{proto}}:90\",\n\
-    \          \"refId\": \"B\",\n          \"step\": 60\n        },\n        {\n\
-    \          \"expr\": \"histogram_quantile(0.50, sum(rate(coredns_dns_request_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le,proto))\"\
-    ,\n          \"format\": \"time_series\",\n          \"interval\": \"\",\n   \
-    \       \"intervalFactor\": 2,\n          \"legendFormat\": \"{{proto}}:50\",\n\
-    \          \"refId\": \"C\",\n          \"step\": 60\n        }\n      ],\n  \
-    \    \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n\
-    \      \"timeShift\": null,\n      \"title\": \"Requests (size,tcp)\",\n     \
-    \ \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"\
-    value_type\": \"cumulative\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
-    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
-    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
-    : [\n        {\n          \"format\": \"bytes\",\n          \"logBase\": 1,\n\
-    \          \"max\": null,\n          \"min\": 0,\n          \"show\": true\n \
-    \       },\n        {\n          \"format\": \"short\",\n          \"logBase\"\
-    : 1,\n          \"max\": null,\n          \"min\": 0,\n          \"show\": true\n\
-    \        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"\
-    alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n     \
-    \ \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n    \
-    \  \"datasource\": \"$datasource\",\n      \"editable\": true,\n      \"error\"\
-    : false,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
-    : {},\n          \"links\": []\n        },\n        \"overrides\": []\n      },\n\
-    \      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"grid\": {},\n      \"\
-    gridPos\": {\n        \"h\": 7,\n        \"w\": 12,\n        \"x\": 0,\n     \
-    \   \"y\": 14\n      },\n      \"hiddenSeries\": false,\n      \"id\": 14,\n \
-    \     \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n  \
-    \      \"max\": false,\n        \"min\": false,\n        \"show\": true,\n   \
-    \     \"total\": false,\n        \"values\": false\n      },\n      \"lines\"\
-    : true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
-    : \"connected\",\n      \"options\": {\n        \"alertThreshold\": true\n   \
-    \   },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n  \
-    \    \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
-    ,\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\"\
-    : true,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n    \
-    \      \"expr\": \"sum(rate(coredns_dns_response_rcode_count_total{job=\\\"coredns\\\
-    \",instance=~\\\"$instance\\\"}[5m])) by (rcode) or\\nsum(rate(coredns_dns_responses_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (rcode)\",\n          \"interval\"\
-    : \"\",\n          \"intervalFactor\": 2,\n          \"legendFormat\": \"{{rcode}}\"\
-    ,\n          \"refId\": \"A\",\n          \"step\": 40\n        }\n      ],\n\
-    \      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\":\
-    \ [],\n      \"timeShift\": null,\n      \"title\": \"Responses (by rcode)\",\n\
-    \      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 2,\n     \
-    \   \"value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n   \
-    \   \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n  \
-    \      \"name\": null,\n        \"show\": true,\n        \"values\": []\n    \
-    \  },\n      \"yaxes\": [\n        {\n          \"format\": \"pps\",\n       \
-    \   \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n       \
-    \   \"show\": true\n        },\n        {\n          \"format\": \"short\",\n\
-    \          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n\
-    \          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"\
-    align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"\
-    aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"\
-    dashes\": false,\n      \"datasource\": \"$datasource\",\n      \"editable\":\
-    \ true,\n      \"error\": false,\n      \"fieldConfig\": {\n        \"defaults\"\
-    : {\n          \"custom\": {},\n          \"links\": []\n        },\n        \"\
-    overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n  \
-    \    \"grid\": {},\n      \"gridPos\": {\n        \"h\": 7,\n        \"w\": 12,\n\
-    \        \"x\": 12,\n        \"y\": 14\n      },\n      \"hiddenSeries\": false,\n\
-    \      \"id\": 32,\n      \"legend\": {\n        \"avg\": false,\n        \"current\"\
-    : false,\n        \"max\": false,\n        \"min\": false,\n        \"show\":\
-    \ true,\n        \"total\": false,\n        \"values\": false\n      },\n    \
-    \  \"lines\": true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
-    : \"connected\",\n      \"options\": {\n        \"alertThreshold\": true\n   \
-    \   },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n  \
-    \    \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
-    ,\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\"\
-    : false,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n   \
-    \       \"expr\": \"histogram_quantile(0.99, sum(rate(coredns_dns_request_duration_seconds_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (le, job))\",\n          \"\
-    format\": \"time_series\",\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
-    : \"99%\",\n          \"refId\": \"A\",\n          \"step\": 40\n        },\n\
-    \        {\n          \"expr\": \"histogram_quantile(0.90, sum(rate(coredns_dns_request_duration_seconds_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (le))\",\n          \"format\"\
-    : \"time_series\",\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
-    : \"90%\",\n          \"refId\": \"B\",\n          \"step\": 40\n        },\n\
-    \        {\n          \"expr\": \"histogram_quantile(0.50, sum(rate(coredns_dns_request_duration_seconds_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (le))\",\n          \"format\"\
-    : \"time_series\",\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
-    : \"50%\",\n          \"refId\": \"C\",\n          \"step\": 40\n        }\n \
-    \     ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\"\
-    : [],\n      \"timeShift\": null,\n      \"title\": \"Responses (duration)\",\n\
-    \      \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n     \
-    \   \"value_type\": \"cumulative\"\n      },\n      \"type\": \"graph\",\n   \
-    \   \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n  \
-    \      \"name\": null,\n        \"show\": true,\n        \"values\": []\n    \
-    \  },\n      \"yaxes\": [\n        {\n          \"format\": \"s\",\n         \
-    \ \"logBase\": 1,\n          \"max\": null,\n          \"min\": 0,\n         \
-    \ \"show\": true\n        },\n        {\n          \"format\": \"short\",\n  \
-    \        \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n\
-    \          \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"\
-    align\": false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"\
-    aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"\
-    dashes\": false,\n      \"datasource\": \"$datasource\",\n      \"editable\":\
-    \ true,\n      \"error\": false,\n      \"fieldConfig\": {\n        \"defaults\"\
-    : {\n          \"custom\": {},\n          \"links\": []\n        },\n        \"\
-    overrides\": []\n      },\n      \"fill\": 1,\n      \"fillGradient\": 0,\n  \
-    \    \"grid\": {},\n      \"gridPos\": {\n        \"h\": 7,\n        \"w\": 12,\n\
-    \        \"x\": 0,\n        \"y\": 21\n      },\n      \"hiddenSeries\": false,\n\
-    \      \"id\": 18,\n      \"legend\": {\n        \"avg\": false,\n        \"current\"\
-    : false,\n        \"max\": false,\n        \"min\": false,\n        \"show\":\
-    \ true,\n        \"total\": false,\n        \"values\": false\n      },\n    \
-    \  \"lines\": true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
-    : \"connected\",\n      \"options\": {\n        \"alertThreshold\": true\n   \
-    \   },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n  \
-    \    \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
-    ,\n      \"seriesOverrides\": [\n        {\n          \"alias\": \"udp:50%\",\n\
-    \          \"yaxis\": 1\n        },\n        {\n          \"alias\": \"tcp:50%\"\
-    ,\n          \"yaxis\": 2\n        },\n        {\n          \"alias\": \"tcp:90%\"\
-    ,\n          \"yaxis\": 2\n        },\n        {\n          \"alias\": \"tcp:99%\"\
-    ,\n          \"yaxis\": 2\n        }\n      ],\n      \"spaceLength\": 10,\n \
-    \     \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n\
-    \        {\n          \"expr\": \"histogram_quantile(0.99, sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto))\
-    \ \",\n          \"interval\": \"\",\n          \"intervalFactor\": 2,\n     \
-    \     \"legendFormat\": \"{{proto}}:99%\",\n          \"refId\": \"A\",\n    \
-    \      \"step\": 40\n        },\n        {\n          \"expr\": \"histogram_quantile(0.90,\
-    \ sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto)) \",\n          \"interval\"\
-    : \"\",\n          \"intervalFactor\": 2,\n          \"legendFormat\": \"{{proto}}:90%\"\
-    ,\n          \"refId\": \"B\",\n          \"step\": 40\n        },\n        {\n\
-    \          \"expr\": \"histogram_quantile(0.50, sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"udp\\\"}[5m])) by (le,proto))\
-    \ \",\n          \"hide\": false,\n          \"intervalFactor\": 2,\n        \
-    \  \"legendFormat\": \"{{proto}}:50%\",\n          \"metric\": \"\",\n       \
-    \   \"refId\": \"C\",\n          \"step\": 40\n        }\n      ],\n      \"thresholds\"\
-    : [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\"\
-    : null,\n      \"title\": \"Responses (size, udp)\",\n      \"tooltip\": {\n \
-    \       \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"cumulative\"\
-    \n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\"\
-    : null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\"\
-    : true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n   \
-    \       \"format\": \"bytes\",\n          \"logBase\": 1,\n          \"max\":\
-    \ null,\n          \"min\": 0,\n          \"show\": true\n        },\n       \
-    \ {\n          \"format\": \"short\",\n          \"logBase\": 1,\n          \"\
-    max\": null,\n          \"min\": 0,\n          \"show\": true\n        }\n   \
-    \   ],\n      \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\"\
-    : null\n      }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n\
-    \      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": \"\
-    $datasource\",\n      \"editable\": true,\n      \"error\": false,\n      \"fieldConfig\"\
-    : {\n        \"defaults\": {\n          \"custom\": {},\n          \"links\":\
-    \ []\n        },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n  \
-    \    \"fillGradient\": 0,\n      \"grid\": {},\n      \"gridPos\": {\n       \
-    \ \"h\": 7,\n        \"w\": 12,\n        \"x\": 12,\n        \"y\": 21\n     \
-    \ },\n      \"hiddenSeries\": false,\n      \"id\": 20,\n      \"legend\": {\n\
-    \        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n\
-    \        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n\
-    \        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\"\
-    : 2,\n      \"links\": [],\n      \"nullPointMode\": \"connected\",\n      \"\
-    options\": {\n        \"alertThreshold\": true\n      },\n      \"percentage\"\
-    : false,\n      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\": 5,\n   \
-    \   \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
-    : [\n        {\n          \"alias\": \"udp:50%\",\n          \"yaxis\": 1\n  \
-    \      },\n        {\n          \"alias\": \"tcp:50%\",\n          \"yaxis\":\
-    \ 1\n        },\n        {\n          \"alias\": \"tcp:90%\",\n          \"yaxis\"\
-    : 1\n        },\n        {\n          \"alias\": \"tcp:99%\",\n          \"yaxis\"\
-    : 1\n        }\n      ],\n      \"spaceLength\": 10,\n      \"stack\": false,\n\
-    \      \"steppedLine\": false,\n      \"targets\": [\n        {\n          \"\
-    expr\": \"histogram_quantile(0.99, sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le,proto))\
-    \ \",\n          \"format\": \"time_series\",\n          \"intervalFactor\": 2,\n\
-    \          \"legendFormat\": \"{{proto}}:99%\",\n          \"refId\": \"A\",\n\
-    \          \"step\": 40\n        },\n        {\n          \"expr\": \"histogram_quantile(0.90,\
-    \ sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le,proto)) \",\n          \"format\"\
-    : \"time_series\",\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
-    : \"{{proto}}:90%\",\n          \"refId\": \"B\",\n          \"step\": 40\n  \
-    \      },\n        {\n          \"expr\": \"histogram_quantile(0.50, sum(rate(coredns_dns_response_size_bytes_bucket{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\",proto=\\\"tcp\\\"}[5m])) by (le, proto))\
-    \ \",\n          \"format\": \"time_series\",\n          \"intervalFactor\": 2,\n\
-    \          \"legendFormat\": \"{{proto}}:50%\",\n          \"metric\": \"\",\n\
-    \          \"refId\": \"C\",\n          \"step\": 40\n        }\n      ],\n  \
-    \    \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\": [],\n\
-    \      \"timeShift\": null,\n      \"title\": \"Responses (size, tcp)\",\n   \
-    \   \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"\
-    value_type\": \"cumulative\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
-    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
-    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
-    : [\n        {\n          \"format\": \"bytes\",\n          \"logBase\": 1,\n\
-    \          \"max\": null,\n          \"min\": 0,\n          \"show\": true\n \
-    \       },\n        {\n          \"format\": \"short\",\n          \"logBase\"\
-    : 1,\n          \"max\": null,\n          \"min\": 0,\n          \"show\": true\n\
-    \        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"\
-    alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n     \
-    \ \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n    \
-    \  \"datasource\": \"$datasource\",\n      \"editable\": true,\n      \"error\"\
-    : false,\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"custom\"\
-    : {},\n          \"links\": []\n        },\n        \"overrides\": []\n      },\n\
-    \      \"fill\": 1,\n      \"fillGradient\": 0,\n      \"grid\": {},\n      \"\
-    gridPos\": {\n        \"h\": 7,\n        \"w\": 12,\n        \"x\": 0,\n     \
-    \   \"y\": 28\n      },\n      \"hiddenSeries\": false,\n      \"id\": 22,\n \
-    \     \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n  \
-    \      \"max\": false,\n        \"min\": false,\n        \"show\": true,\n   \
-    \     \"total\": false,\n        \"values\": false\n      },\n      \"lines\"\
-    : true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
-    : \"connected\",\n      \"options\": {\n        \"alertThreshold\": true\n   \
-    \   },\n      \"percentage\": false,\n      \"pluginVersion\": \"7.2.0\",\n  \
-    \    \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
-    ,\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n      \"stack\"\
-    : true,\n      \"steppedLine\": false,\n      \"targets\": [\n        {\n    \
-    \      \"expr\": \"sum(coredns_cache_size{job=\\\"coredns\\\",instance=~\\\"$instance\\\
-    \"}) by (type) or\\nsum(coredns_cache_entries{job=\\\"coredns\\\",instance=~\\\
-    \"$instance\\\"}) by (type)\",\n          \"interval\": \"\",\n          \"intervalFactor\"\
-    : 2,\n          \"legendFormat\": \"{{type}}\",\n          \"refId\": \"A\",\n\
-    \          \"step\": 40\n        }\n      ],\n      \"thresholds\": [],\n    \
-    \  \"timeFrom\": null,\n      \"timeRegions\": [],\n      \"timeShift\": null,\n\
-    \      \"title\": \"Cache (size)\",\n      \"tooltip\": {\n        \"shared\"\
-    : true,\n        \"sort\": 2,\n        \"value_type\": \"cumulative\"\n      },\n\
-    \      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n\
-    \        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n\
-    \        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"\
-    format\": \"decbytes\",\n          \"logBase\": 1,\n          \"max\": null,\n\
-    \          \"min\": 0,\n          \"show\": true\n        },\n        {\n    \
-    \      \"format\": \"short\",\n          \"logBase\": 1,\n          \"max\": null,\n\
-    \          \"min\": 0,\n          \"show\": true\n        }\n      ],\n      \"\
-    yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n\
-    \    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\"\
-    : 10,\n      \"dashes\": false,\n      \"datasource\": \"$datasource\",\n    \
-    \  \"editable\": true,\n      \"error\": false,\n      \"fieldConfig\": {\n  \
-    \      \"defaults\": {\n          \"custom\": {},\n          \"links\": []\n \
-    \       },\n        \"overrides\": []\n      },\n      \"fill\": 1,\n      \"\
-    fillGradient\": 0,\n      \"grid\": {},\n      \"gridPos\": {\n        \"h\":\
-    \ 7,\n        \"w\": 12,\n        \"x\": 12,\n        \"y\": 28\n      },\n  \
-    \    \"hiddenSeries\": false,\n      \"id\": 24,\n      \"legend\": {\n      \
-    \  \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n   \
-    \     \"min\": false,\n        \"show\": true,\n        \"total\": false,\n  \
-    \      \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\"\
-    : 2,\n      \"links\": [],\n      \"nullPointMode\": \"connected\",\n      \"\
-    options\": {\n        \"alertThreshold\": true\n      },\n      \"percentage\"\
-    : false,\n      \"pluginVersion\": \"7.2.0\",\n      \"pointradius\": 5,\n   \
-    \   \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
-    : [\n        {\n          \"alias\": \"misses\",\n          \"yaxis\": 2\n   \
-    \     }\n      ],\n      \"spaceLength\": 10,\n      \"stack\": true,\n      \"\
-    steppedLine\": false,\n      \"targets\": [\n        {\n          \"expr\": \"\
-    sum(rate(coredns_cache_hits_total{job=\\\"coredns\\\",instance=~\\\"$instance\\\
-    \"}[5m])) by (type)\",\n          \"hide\": false,\n          \"intervalFactor\"\
-    : 2,\n          \"legendFormat\": \"hits:{{type}}\",\n          \"refId\": \"\
-    A\",\n          \"step\": 40\n        },\n        {\n          \"expr\": \"sum(rate(coredns_cache_misses_total{job=\\\
-    \"coredns\\\",instance=~\\\"$instance\\\"}[5m])) by (type)\",\n          \"hide\"\
-    : false,\n          \"intervalFactor\": 2,\n          \"legendFormat\": \"misses\"\
-    ,\n          \"refId\": \"B\",\n          \"step\": 40\n        }\n      ],\n\
-    \      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeRegions\":\
-    \ [],\n      \"timeShift\": null,\n      \"title\": \"Cache (hitrate)\",\n   \
-    \   \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 2,\n        \"\
-    value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
-    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
-    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
-    : [\n        {\n          \"format\": \"pps\",\n          \"logBase\": 1,\n  \
-    \        \"max\": null,\n          \"min\": 0,\n          \"show\": true\n   \
-    \     },\n        {\n          \"format\": \"pps\",\n          \"logBase\": 1,\n\
-    \          \"max\": null,\n          \"min\": 0,\n          \"show\": true\n \
-    \       }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n        \"\
-    alignLevel\": null\n      }\n    }\n  ],\n  \"refresh\": \"10s\",\n  \"schemaVersion\"\
-    : 26,\n  \"style\": \"dark\",\n  \"tags\": [\n    \"dns\",\n    \"coredns\"\n\
-    \  ],\n  \"templating\": {\n    \"list\": [\n      {\n        \"current\": {\n\
-    \          \"selected\": true,\n          \"text\": \"default\",\n          \"\
-    value\": \"default\"\n        },\n        \"hide\": 0,\n        \"includeAll\"\
-    : false,\n        \"label\": null,\n        \"multi\": false,\n        \"name\"\
-    : \"datasource\",\n        \"options\": [],\n        \"query\": \"prometheus\"\
-    ,\n        \"queryValue\": \"\",\n        \"refresh\": 1,\n        \"regex\":\
-    \ \"\",\n        \"skipUrlSync\": false,\n        \"type\": \"datasource\"\n \
-    \     },\n      {\n        \"allValue\": \".*\",\n        \"current\": {\n   \
-    \       \"selected\": true,\n          \"text\": \"All\",\n          \"value\"\
-    : \"$__all\"\n        },\n        \"datasource\": \"$datasource\",\n        \"\
-    definition\": \"label_values(up{job=\\\"coredns\\\"}, instance)\",\n        \"\
-    hide\": 0,\n        \"includeAll\": true,\n        \"label\": \"Instance\",\n\
-    \        \"multi\": false,\n        \"name\": \"instance\",\n        \"options\"\
-    : [],\n        \"query\": \"label_values(up{job=\\\"coredns\\\"}, instance)\"\
-    ,\n        \"refresh\": 1,\n        \"regex\": \"\",\n        \"skipUrlSync\"\
-    : false,\n        \"sort\": 3,\n        \"tagValuesQuery\": \"\",\n        \"\
-    tags\": [],\n        \"tagsQuery\": \"\",\n        \"type\": \"query\",\n    \
-    \    \"useTags\": false\n      }\n    ]\n  },\n  \"time\": {\n    \"from\": \"\
-    now-3h\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {\n    \"refresh_intervals\"\
-    : [\n      \"10s\",\n      \"30s\",\n      \"1m\",\n      \"5m\",\n      \"15m\"\
-    ,\n      \"30m\",\n      \"1h\",\n      \"2h\",\n      \"1d\"\n    ]\n  },\n \
-    \ \"timezone\": \"utc\",\n  \"title\": \"CoreDNS\",\n  \"uid\": \"vkQ0UHxik\"\
-    ,\n  \"version\": 2\n}"
+  k8s-coredns.json: '{"annotations":{"list":[{"builtIn":1,"datasource":{"type":"datasource","uid":"grafana"},"enable":true,"hide":true,"iconColor":"rgba(0,
+    211, 255, 1)","name":"Annotations & Alerts","type":"dashboard"}]},"description":"A
+    dashboard for the CoreDNS DNS server with updated metrics for version 1.7.0+.  Based
+    on the CoreDNS dashboard by buhay.","editable":true,"fiscalYearStartMonth":0,"gnetId":12539,"graphTooltip":0,"id":7,"links":[{"icon":"external
+    link","tags":[],"targetBlank":true,"title":"CoreDNS.io","type":"link","url":"https://coredns.io"}],"liveNow":false,"panels":[{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":8,"x":0,"y":0},"id":2,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_request_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (proto) or\nsum(rate(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (proto)","format":"time_series","interval":"","intervalFactor":2,"legendFormat":"{{
+    proto }}","refId":"A","step":60}],"title":"Requests (total)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":8,"x":8,"y":0},"id":4,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_request_type_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (type) or \nsum(rate(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (type)","interval":"","intervalFactor":2,"legendFormat":"{{ type }}","refId":"A","step":60}],"title":"Requests
+    (by qtype)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":8,"x":16,"y":0},"id":6,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_request_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (zone) or\nsum(rate(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (zone)","interval":"","intervalFactor":2,"legendFormat":"{{ zone }}","refId":"A","step":60}],"title":"Requests
+    (by zone)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":0,"y":7},"id":8,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_request_do_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    or\nsum(rate(coredns_dns_do_requests_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))","interval":"","intervalFactor":2,"legendFormat":"DO","refId":"A","step":40},{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_request_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    or\nsum(rate(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))","interval":"","intervalFactor":2,"legendFormat":"total","refId":"B","step":40}],"title":"Requests
+    (DO bit)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"bytes","unitScale":true},"overrides":[{"matcher":{"id":"byName","options":"tcp:90"},"properties":[{"id":"unit","value":"short"}]},{"matcher":{"id":"byName","options":"tcp:99
+    "},"properties":[{"id":"unit","value":"short"}]},{"matcher":{"id":"byName","options":"tcp:50"},"properties":[{"id":"unit","value":"short"}]}]},"gridPos":{"h":7,"w":6,"x":12,"y":7},"id":10,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"none"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.99,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto))","interval":"","intervalFactor":2,"legendFormat":"{{ proto }}:99
+    ","refId":"A","step":60},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.90,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto))","intervalFactor":2,"legendFormat":"{{ proto }}:90","refId":"B","step":60},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.50,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto))","intervalFactor":2,"legendFormat":"{{ proto }}:50","refId":"C","step":60}],"title":"Requests
+    (size, udp)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"bytes","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":6,"x":18,"y":7},"id":12,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"none"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.99,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le,proto))","format":"time_series","interval":"","intervalFactor":2,"legendFormat":"{{
+    proto }}:99 ","refId":"A","step":60},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.90,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le,proto))","format":"time_series","interval":"","intervalFactor":2,"legendFormat":"{{
+    proto }}:90","refId":"B","step":60},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.50,
+    sum(rate(coredns_dns_request_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le,proto))","format":"time_series","interval":"","intervalFactor":2,"legendFormat":"{{
+    proto }}:50","refId":"C","step":60}],"title":"Requests (size,tcp)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":0,"y":14},"id":14,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_dns_response_rcode_count_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (rcode) or\nsum(rate(coredns_dns_responses_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (rcode)","interval":"","intervalFactor":2,"legendFormat":"{{ rcode }}","refId":"A","step":40}],"title":"Responses
+    (by rcode)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"s","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":12,"y":14},"id":32,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"none"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.99,
+    sum(rate(coredns_dns_request_duration_seconds_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (le, job))","format":"time_series","intervalFactor":2,"legendFormat":"99%","refId":"A","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.90,
+    sum(rate(coredns_dns_request_duration_seconds_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (le))","format":"time_series","intervalFactor":2,"legendFormat":"90%","refId":"B","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.50,
+    sum(rate(coredns_dns_request_duration_seconds_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (le))","format":"time_series","intervalFactor":2,"legendFormat":"50%","refId":"C","step":40}],"title":"Responses
+    (duration)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"bytes","unitScale":true},"overrides":[{"matcher":{"id":"byName","options":"tcp:50%"},"properties":[{"id":"unit","value":"short"}]},{"matcher":{"id":"byName","options":"tcp:90%"},"properties":[{"id":"unit","value":"short"}]},{"matcher":{"id":"byName","options":"tcp:99%"},"properties":[{"id":"unit","value":"short"}]}]},"gridPos":{"h":7,"w":12,"x":0,"y":21},"id":18,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"none"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.99,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto)) ","interval":"","intervalFactor":2,"legendFormat":"{{ proto }}:99%","refId":"A","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.90,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto)) ","interval":"","intervalFactor":2,"legendFormat":"{{ proto }}:90%","refId":"B","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.50,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"udp\"}[5m]))
+    by (le,proto)) ","hide":false,"intervalFactor":2,"legendFormat":"{{ proto }}:50%","metric":"","refId":"C","step":40}],"title":"Responses
+    (size, udp)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"none"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"bytes","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":12,"y":21},"id":20,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"none"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.99,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le,proto)) ","format":"time_series","intervalFactor":2,"legendFormat":"{{
+    proto }}:99%","refId":"A","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.90,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le,proto)) ","format":"time_series","intervalFactor":2,"legendFormat":"{{
+    proto }}:90%","refId":"B","step":40},{"datasource":{"uid":"$datasource"},"expr":"histogram_quantile(0.50,
+    sum(rate(coredns_dns_response_size_bytes_bucket{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\",proto=\"tcp\"}[5m]))
+    by (le, proto)) ","format":"time_series","intervalFactor":2,"legendFormat":"{{
+    proto }}:50%","metric":"","refId":"C","step":40}],"title":"Responses (size, tcp)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"decbytes","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":0,"y":28},"id":22,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(coredns_cache_size{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"})
+    by (type) or\nsum(coredns_cache_entries{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"})
+    by (type)","interval":"","intervalFactor":2,"legendFormat":"{{ type }}","refId":"A","step":40}],"title":"Cache
+    (size)","type":"timeseries"},{"datasource":{"uid":"$datasource"},"fieldConfig":{"defaults":{"color":{"mode":"palette-classic"},"custom":{"axisBorderShow":false,"axisCenteredZero":false,"axisColorMode":"text","axisLabel":"","axisPlacement":"auto","barAlignment":0,"drawStyle":"line","fillOpacity":10,"gradientMode":"none","hideFrom":{"legend":false,"tooltip":false,"viz":false},"insertNulls":false,"lineInterpolation":"linear","lineWidth":2,"pointSize":5,"scaleDistribution":{"type":"linear"},"showPoints":"never","spanNulls":true,"stacking":{"group":"A","mode":"normal"},"thresholdsStyle":{"mode":"off"}},"links":[],"mappings":[],"min":0,"thresholds":{"mode":"absolute","steps":[{"color":"green","value":null},{"color":"red","value":80}]},"unit":"pps","unitScale":true},"overrides":[]},"gridPos":{"h":7,"w":12,"x":12,"y":28},"id":24,"links":[],"options":{"legend":{"calcs":[],"displayMode":"list","placement":"bottom","showLegend":true},"tooltip":{"mode":"multi","sort":"desc"}},"pluginVersion":"10.3.3","targets":[{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_cache_hits_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (type)","hide":false,"intervalFactor":2,"legendFormat":"hits:{{ type }}","refId":"A","step":40},{"datasource":{"uid":"$datasource"},"expr":"sum(rate(coredns_cache_misses_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[5m]))
+    by (type)","hide":false,"intervalFactor":2,"legendFormat":"misses","refId":"B","step":40}],"title":"Cache
+    (hitrate)","type":"timeseries"}],"refresh":"10s","schemaVersion":39,"tags":["dns","coredns"],"templating":{"list":[{"current":{},"hide":0,"includeAll":false,"multi":false,"name":"datasource","options":[],"query":"prometheus","queryValue":"","refresh":1,"regex":"","skipUrlSync":false,"type":"datasource"},{"allValue":".*","current":{"selected":false,"text":"All","value":"$__all"},"datasource":{"type":"prometheus","uid":"$datasource"},"definition":"label_values(coredns_dns_requests_total,
+    cluster)","hide":2,"includeAll":true,"label":"Cluster","multi":false,"name":"cluster","options":[],"query":"label_values(coredns_dns_requests_total,
+    cluster)","refresh":2,"regex":"","skipUrlSync":false,"sort":1,"tagValuesQuery":"","tagsQuery":"","type":"query","useTags":false},{"allValue":".*","current":{"selected":false,"text":"All","value":"$__all"},"datasource":{"type":"prometheus","uid":"${datasource}"},"definition":"label_values(coredns_dns_requests_total{cluster=~\"$cluster\"},job)","hide":0,"includeAll":true,"label":"Job","multi":false,"name":"job","options":[],"query":{"qryType":1,"query":"label_values(coredns_dns_requests_total{cluster=~\"$cluster\"},job)","refId":"PrometheusVariableQueryEditor-VariableQuery"},"refresh":2,"regex":"","skipUrlSync":false,"sort":1,"type":"query"},{"allValue":".*","current":{"selected":false,"text":"All","value":"$__all"},"datasource":{"type":"prometheus","uid":"$datasource"},"definition":"label_values(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\"},
+    instance)","hide":0,"includeAll":true,"label":"Instance","multi":false,"name":"instance","options":[],"query":"label_values(coredns_dns_requests_total{job=~\"$job\",cluster=~\"$cluster\"},
+    instance)","refresh":2,"regex":"","skipUrlSync":false,"sort":3,"tagValuesQuery":"","tagsQuery":"","type":"query","useTags":false}]},"time":{"from":"now-3h","to":"now"},"timepicker":{"refresh_intervals":["10s","30s","1m","5m","15m","30m","1h","2h","1d"]},"timezone":
+    "utc","title":"CoreDNS","uid":"vkQ0UHxik","version":3,"weekStart":""}'
 kind: ConfigMap
 metadata:
   annotations: {}
@@ -513,8 +80,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

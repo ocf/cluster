@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: vault
-    helm.sh/chart: vault-0.27.0
+    helm.sh/chart: vault-0.28.0
   name: vault
   namespace: vault
 spec:

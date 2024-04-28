@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator-system-auth-delegator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.13.1
-    helm.sh/chart: keda-2.13.2
+    app.kubernetes.io/version: 2.14.0
+    helm.sh/chart: keda-2.14.0
   name: keda-operator-system-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -16,5 +16,5 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: keda-operator
+  name: keda-metrics-server
   namespace: keda

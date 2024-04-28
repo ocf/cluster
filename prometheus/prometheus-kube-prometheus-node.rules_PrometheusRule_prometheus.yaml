@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-node.rules
@@ -16,13 +16,13 @@ spec:
   groups:
   - name: node.rules
     rules:
-    - expr: "topk by(cluster, namespace, pod) (1,\n  max by (cluster, node, namespace,\
+    - expr: "topk by (cluster, namespace, pod) (1,\n  max by (cluster, node, namespace,\
         \ pod) (\n    label_replace(kube_pod_info{job=\"kube-state-metrics\",node!=\"\
         \"}, \"pod\", \"$1\", \"pod\", \"(.*)\")\n))"
       record: 'node_namespace_pod:kube_pod_info:'
     - expr: "count by (cluster, node) (\n  node_cpu_seconds_total{mode=\"idle\",job=\"\
-        node-exporter\"}\n  * on (namespace, pod) group_left(node)\n  topk by(namespace,\
-        \ pod) (1, node_namespace_pod:kube_pod_info:)\n)"
+        node-exporter\"}\n  * on (cluster, namespace, pod) group_left(node)\n  topk\
+        \ by (cluster, namespace, pod) (1, node_namespace_pod:kube_pod_info:)\n)"
       record: node:node_num_cpu:sum
     - expr: "sum(\n  node_memory_MemAvailable_bytes{job=\"node-exporter\"} or\n  (\n\
         \    node_memory_Buffers_bytes{job=\"node-exporter\"} +\n    node_memory_Cached_bytes{job=\"\

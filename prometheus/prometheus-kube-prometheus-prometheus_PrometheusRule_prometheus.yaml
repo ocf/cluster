@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 43.1.1
-    chart: kube-prometheus-stack-43.1.1
+    app.kubernetes.io/version: 58.2.2
+    chart: kube-prometheus-stack-58.2.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-prometheus
@@ -33,6 +33,17 @@ spec:
       for: 10m
       labels:
         severity: critical
+    - alert: PrometheusSDRefreshFailure
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
+          refresh SD with mechanism {{$labels.mechanism}}.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheussdrefreshfailure
+        summary: Failed Prometheus SD refresh.
+      expr: increase(prometheus_sd_refresh_failures_total{job="prometheus-kube-prometheus-prometheus",namespace="prometheus"}[10m])
+        > 0
+      for: 20m
+      labels:
+        severity: warning
     - alert: PrometheusNotificationQueueRunningFull
       annotations:
         description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}}
@@ -108,12 +119,12 @@ spec:
           samples.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotingestingsamples
         summary: Prometheus is not ingesting samples.
-      expr: "(\n  rate(prometheus_tsdb_head_samples_appended_total{job=\"prometheus-kube-prometheus-prometheus\"\
-        ,namespace=\"prometheus\"}[5m]) <= 0\nand\n  (\n    sum without(scrape_job)\
-        \ (prometheus_target_metadata_cache_entries{job=\"prometheus-kube-prometheus-prometheus\"\
-        ,namespace=\"prometheus\"}) > 0\n  or\n    sum without(rule_group) (prometheus_rule_group_rules{job=\"\
+      expr: "(\n  sum without(type) (rate(prometheus_tsdb_head_samples_appended_total{job=\"\
+        prometheus-kube-prometheus-prometheus\",namespace=\"prometheus\"}[5m])) <=\
+        \ 0\nand\n  (\n    sum without(scrape_job) (prometheus_target_metadata_cache_entries{job=\"\
         prometheus-kube-prometheus-prometheus\",namespace=\"prometheus\"}) > 0\n \
-        \ )\n)"
+        \ or\n    sum without(rule_group) (prometheus_rule_group_rules{job=\"prometheus-kube-prometheus-prometheus\"\
+        ,namespace=\"prometheus\"}) > 0\n  )\n)"
       for: 10m
       labels:
         severity: warning
