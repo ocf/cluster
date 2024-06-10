@@ -12,4 +12,5 @@ metadata:
 spec:
   schedule: 0 4 * * *
   template:
+    snapshotMoveData: true
     ttl: 168h
