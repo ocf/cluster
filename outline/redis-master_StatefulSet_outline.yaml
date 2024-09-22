@@ -6,11 +6,13 @@ metadata:
     app.kubernetes.io/instance: redis
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-17.4.0
+    app.kubernetes.io/version: 7.4.0
+    helm.sh/chart: redis-20.1.4
   name: redis-master
   namespace: outline
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/component: master
@@ -20,16 +22,17 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 9c05c1c0e89a8c4136ba7e23c633e7ab1bb33b49d19e7e5c1c6e53b5f274f89d
-        checksum/health: dbfe35a41427d60d1957994c93741123252b605fd6873c57d4b3e51b3b15ac49
-        checksum/scripts: d30e5fa863ba420db841794ad8550d25664f5bf09c039c4aed94ae8ab5e68b9e
+        checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
+        checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
+        checksum/scripts: 560c33ff34d845009b51830c332aa05fa211444d1877d3526d3599be7543aaa5
         checksum/secret: null
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: redis
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-17.4.0
+        app.kubernetes.io/version: 7.4.0
+        helm.sh/chart: redis-20.1.4
     spec:
       affinity:
         nodeAffinity: null
@@ -44,6 +47,7 @@ spec:
                   app.kubernetes.io/name: redis
               topologyKey: kubernetes.io/hostname
             weight: 1
+      automountServiceAccountToken: false
       containers:
       - args:
         - -c
@@ -66,7 +70,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.0.7-debian-11-r2
+        image: docker.io/bitnami/redis:7.4.0-debian-12-r4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -95,10 +99,26 @@ spec:
           successThreshold: 1
           timeoutSeconds: 2
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
           runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /opt/bitnami/scripts/start-scripts
           name: start-scripts
@@ -109,12 +129,18 @@ spec:
         - mountPath: /opt/bitnami/redis/mounted-etc
           name: config
         - mountPath: /opt/bitnami/redis/etc/
-          name: redis-tmp-conf
+          name: empty-dir
+          subPath: app-conf-dir
         - mountPath: /tmp
-          name: tmp
+          name: empty-dir
+          subPath: tmp-dir
+      enableServiceLinks: true
       securityContext:
         fsGroup: 1001
-      serviceAccountName: redis
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: redis-master
       terminationGracePeriodSeconds: 30
       volumes:
       - configMap:
@@ -129,13 +155,13 @@ spec:
           name: redis-configuration
         name: config
       - emptyDir: {}
-        name: redis-tmp-conf
-      - emptyDir: {}
-        name: tmp
+        name: empty-dir
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: redis
