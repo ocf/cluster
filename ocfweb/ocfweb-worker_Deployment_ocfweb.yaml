@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 3c382fd1b1fff960153760fec50d0aad02a627c4
-        image: harbor.ocf.berkeley.edu/ocf/ocfweb/worker:3c382fd1b1fff960153760fec50d0aad02a627c4
+          value: db09d8e2b1ed18969820b0810332d5310b893b65
+        image: harbor.ocf.berkeley.edu/ocf/ocfweb/worker:db09d8e2b1ed18969820b0810332d5310b893b65
         imagePullPolicy: IfNotPresent
         name: main
         ports:
