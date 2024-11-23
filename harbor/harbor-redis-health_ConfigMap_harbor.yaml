@@ -53,7 +53,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    app.kubernetes.io/version: 7.2.4
-    helm.sh/chart: redis-19.1.0
+    app.kubernetes.io/version: 7.4.1
+    helm.sh/chart: redis-20.3.0
   name: harbor-redis-health
   namespace: harbor

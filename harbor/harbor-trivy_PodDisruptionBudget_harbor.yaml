@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: trivy
@@ -11,17 +11,9 @@ metadata:
   name: harbor-trivy
   namespace: harbor
 spec:
-  egress:
-  - {}
-  ingress:
-  - ports:
-    - port: 8080
-    - port: null
-  podSelector:
+  maxUnavailable: 1
+  selector:
     matchLabels:
       app.kubernetes.io/component: trivy
       app.kubernetes.io/instance: harbor
       app.kubernetes.io/name: harbor
-  policyTypes:
-  - Ingress
-  - Egress

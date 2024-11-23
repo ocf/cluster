@@ -6,12 +6,13 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    app.kubernetes.io/version: 7.2.4
-    helm.sh/chart: redis-19.1.0
+    app.kubernetes.io/version: 7.4.1
+    helm.sh/chart: redis-20.3.0
   name: harbor-redis-master
   namespace: harbor
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/component: master
@@ -29,8 +30,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        app.kubernetes.io/version: 7.2.4
-        helm.sh/chart: redis-19.1.0
+        app.kubernetes.io/version: 7.4.1
+        helm.sh/chart: redis-20.3.0
     spec:
       affinity:
         nodeAffinity: null
@@ -63,7 +64,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.2.4-debian-12-r9
+        image: docker.io/bitnami/redis:7.4.1-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -94,7 +95,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m

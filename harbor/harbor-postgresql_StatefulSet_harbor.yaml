@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.2.0
-    helm.sh/chart: postgresql-15.2.5
+    app.kubernetes.io/version: 17.0.0
+    helm.sh/chart: postgresql-16.2.0
   name: harbor-postgresql
   namespace: harbor
 spec:
@@ -27,8 +27,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        app.kubernetes.io/version: 16.2.0
-        helm.sh/chart: postgresql-15.2.5
+        app.kubernetes.io/version: 17.0.0
+        helm.sh/chart: postgresql-16.2.0
       name: harbor-postgresql
     spec:
       affinity:
@@ -76,7 +76,7 @@ spec:
           value: error
         - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
           value: pgaudit
-        image: docker.io/bitnami/postgresql:13.14.0-debian-12-r14
+        image: docker.io/bitnami/postgresql:14.13.0-debian-12-r26
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -113,7 +113,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -142,9 +142,6 @@ spec:
         - mountPath: /opt/bitnami/postgresql/tmp
           name: empty-dir
           subPath: app-tmp-dir
-        - mountPath: /opt/bitnami/postgresql/logs
-          name: empty-dir
-          subPath: app-logs-dir
         - mountPath: /docker-entrypoint-initdb.d/
           name: custom-init-scripts
         - mountPath: /bitnami/postgresql/conf/conf.d/

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.10.2
-    helm.sh/chart: harbor-21.1.1
+    app.kubernetes.io/version: 2.12.0
+    helm.sh/chart: harbor-24.0.2
   name: harbor-portal
   namespace: harbor
 spec:
@@ -27,8 +27,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.10.2
-        helm.sh/chart: harbor-21.1.1
+        app.kubernetes.io/version: 2.12.0
+        helm.sh/chart: harbor-24.0.2
     spec:
       affinity:
         nodeAffinity: null
@@ -49,17 +49,15 @@ spec:
         - name: BITNAMI_DEBUG
           value: 'false'
         envFrom: null
-        image: docker.io/bitnami/harbor-portal:2.10.2-debian-12-r0
+        image: docker.io/bitnami/harbor-portal:2.12.0-debian-12-r3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /
-            port: http
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: http
           timeoutSeconds: 5
         name: portal
         ports:
@@ -78,7 +76,7 @@ spec:
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -101,14 +99,53 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /etc/ssl/certs
+          name: empty-dir
+          subPath: etc-ssl-certs
         - mountPath: /opt/bitnami/nginx/conf/nginx.conf
           name: portal-config
           subPath: nginx.conf
+      initContainers:
+      - args:
+        - -ec
+        - cp -r /etc/ssl/certs/* /certs
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/harbor-portal:2.12.0-debian-12-r3
+        imagePullPolicy: IfNotPresent
+        name: certificate-volume
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: empty-dir
+          subPath: etc-ssl-certs
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
+      serviceAccountName: default
       volumes:
       - emptyDir: {}
         name: empty-dir

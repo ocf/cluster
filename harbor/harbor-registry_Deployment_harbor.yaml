@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.10.2
-    helm.sh/chart: harbor-21.1.1
+    app.kubernetes.io/version: 2.12.0
+    helm.sh/chart: harbor-24.0.2
   name: harbor-registry
   namespace: harbor
 spec:
@@ -22,14 +22,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: b196b03ebccd8b45be0ccc84b9b9eaf9edb9e0a614ebfb306db0d5720af082a8
+        checksum/configmap: e8f597b2300dee08d82a1159596260c2dff3bb544f556d480d559661fe8e9e9b
       labels:
         app.kubernetes.io/component: registry
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.10.2
-        helm.sh/chart: harbor-21.1.1
+        app.kubernetes.io/version: 2.12.0
+        helm.sh/chart: harbor-24.0.2
     spec:
       affinity:
         nodeAffinity: null
@@ -52,17 +52,15 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registry:2.10.2-debian-12-r0
+        image: docker.io/bitnami/harbor-registry:2.12.0-debian-12-r3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /
-            port: registry
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: registry
           timeoutSeconds: 5
         name: registry
         ports:
@@ -85,7 +83,7 @@ spec:
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -108,6 +106,9 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /etc/ssl/certs
+          name: empty-dir
+          subPath: etc-ssl-certs-server
         - mountPath: /storage
           name: registry-data
           subPath: null
@@ -136,17 +137,15 @@ spec:
         envFrom:
         - secretRef:
             name: harbor-registry
-        image: docker.io/bitnami/harbor-registryctl:2.10.2-debian-12-r0
+        image: docker.io/bitnami/harbor-registryctl:2.12.0-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /api/health
-            port: registryctl
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: registryctl
           timeoutSeconds: 5
         name: registryctl
         ports:
@@ -165,7 +164,7 @@ spec:
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -188,6 +187,9 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /etc/ssl/certs
+          name: empty-dir
+          subPath: etc-ssl-certs-controller
         - mountPath: /storage
           name: registry-data
           subPath: null
@@ -197,12 +199,81 @@ spec:
         - mountPath: /etc/registryctl/config.yml
           name: registry-config
           subPath: ctl-config.yml
-      initContainers: null
+      initContainers:
+      - args:
+        - -ec
+        - cp -r /etc/ssl/certs/* /certs
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/harbor-registry:2.12.0-debian-12-r3
+        imagePullPolicy: IfNotPresent
+        name: certificate-volume-server
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: empty-dir
+          subPath: etc-ssl-certs-server
+      - args:
+        - -ec
+        - cp -r /etc/ssl/certs/* /certs
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/harbor-registryctl:2.12.0-debian-12-r2
+        imagePullPolicy: IfNotPresent
+        name: certificate-volume-controller
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: empty-dir
+          subPath: etc-ssl-certs-controller
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
+      serviceAccountName: harbor-registry
       volumes:
       - emptyDir: {}
         name: empty-dir

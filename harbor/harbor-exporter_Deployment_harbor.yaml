@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.10.2
-    helm.sh/chart: harbor-21.1.1
+    app.kubernetes.io/version: 2.12.0
+    helm.sh/chart: harbor-24.0.2
   name: harbor-exporter
   namespace: harbor
 spec:
@@ -22,14 +22,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 9379e51045f0c04bd2b7fd3e0ee970cc1a4e6d43a832304e75521e6ac75f85ff
+        checksum/configmap-env: 4edab642d90a5e42331f288c38eb48ac313652d7e0c7a82d893639a5766102ba
       labels:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.10.2
-        helm.sh/chart: harbor-21.1.1
+        app.kubernetes.io/version: 2.12.0
+        helm.sh/chart: harbor-24.0.2
     spec:
       affinity:
         nodeAffinity: null
@@ -64,17 +64,15 @@ spec:
             name: harbor-exporter-envvars
         - secretRef:
             name: harbor-exporter-envvars
-        image: docker.io/bitnami/harbor-exporter:2.10.2-debian-12-r0
+        image: docker.io/bitnami/harbor-exporter:2.12.0-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /metrics
-            port: metrics
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: metrics
           timeoutSeconds: 5
         name: exporter
         ports:
@@ -93,7 +91,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -116,11 +114,50 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /etc/ssl/certs
+          name: empty-dir
+          subPath: etc-ssl-certs
+      initContainers:
+      - args:
+        - -ec
+        - cp -r /etc/ssl/certs/* /certs
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/harbor-exporter:2.12.0-debian-12-r2
+        imagePullPolicy: IfNotPresent
+        name: certificate-volume
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: empty-dir
+          subPath: etc-ssl-certs
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
+      serviceAccountName: default
       volumes:
       - emptyDir: {}
         name: empty-dir

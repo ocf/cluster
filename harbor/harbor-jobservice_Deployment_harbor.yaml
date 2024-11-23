@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.10.2
-    helm.sh/chart: harbor-21.1.1
+    app.kubernetes.io/version: 2.12.0
+    helm.sh/chart: harbor-24.0.2
   name: harbor-jobservice
   namespace: harbor
 spec:
@@ -22,14 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 1c47143728dcc56625859c6e53f9962d2137d3a084bb11105055deadb379249f
+        checksum/configmap-config: 903d1862486576bdd068bf86b133c146b59aa2550cb08f0dd9cb1cb7aabb22b0
+        checksum/configmap-env: 553bf8ea8b24f73d00541d9c804351bd9c2c3e3bdca162c5a3dde7329d6f6900
       labels:
         app.kubernetes.io/component: jobservice
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.10.2
-        helm.sh/chart: harbor-21.1.1
+        app.kubernetes.io/version: 2.12.0
+        helm.sh/chart: harbor-24.0.2
     spec:
       affinity:
         nodeAffinity: null
@@ -64,17 +65,15 @@ spec:
             name: harbor-jobservice-envvars
         - secretRef:
             name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.10.2-debian-12-r0
+        image: docker.io/bitnami/harbor-jobservice:2.12.0-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /api/v1/stats
-            port: http
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: http
           timeoutSeconds: 5
         name: jobservice
         ports:
@@ -95,7 +94,7 @@ spec:
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -118,24 +117,62 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /etc/ssl/certs
+          name: empty-dir
+          subPath: etc-ssl-certs
         - mountPath: /etc/jobservice/config.yml
           name: jobservice-config
           subPath: config.yml
         - mountPath: /var/log/jobs
           name: job-logs
           subPath: null
-      initContainers: null
+      initContainers:
+      - args:
+        - -ec
+        - cp -r /etc/ssl/certs/* /certs
+        command:
+        - /bin/bash
+        image: docker.io/bitnami/harbor-jobservice:2.12.0-debian-12-r2
+        imagePullPolicy: IfNotPresent
+        name: certificate-volume
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 2Gi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /certs
+          name: empty-dir
+          subPath: etc-ssl-certs
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
+      serviceAccountName: default
       volumes:
       - emptyDir: {}
         name: empty-dir
-      - name: jobservice-config
-        secret:
-          secretName: harbor-jobservice-config
+      - configMap:
+          name: harbor-jobservice-config
+        name: jobservice-config
       - name: job-logs
         persistentVolumeClaim:
           claimName: harbor-jobservice

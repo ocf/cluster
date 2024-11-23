@@ -1,27 +1,19 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
   labels:
-    app.kubernetes.io/component: trivy
+    app.kubernetes.io/component: jobservice
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
     app.kubernetes.io/version: 2.12.0
     helm.sh/chart: harbor-24.0.2
-  name: harbor-trivy
+  name: harbor-jobservice
   namespace: harbor
 spec:
-  egress:
-  - {}
-  ingress:
-  - ports:
-    - port: 8080
-    - port: null
-  podSelector:
+  maxUnavailable: 1
+  selector:
     matchLabels:
-      app.kubernetes.io/component: trivy
+      app.kubernetes.io/component: jobservice
       app.kubernetes.io/instance: harbor
       app.kubernetes.io/name: harbor
-  policyTypes:
-  - Ingress
-  - Egress
