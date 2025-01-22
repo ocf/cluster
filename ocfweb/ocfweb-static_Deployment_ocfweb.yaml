@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 631837105c268a9fbdad5309b44511ca33ec8b90
-        image: harbor.ocf.berkeley.edu/ocf/ocfweb/static:631837105c268a9fbdad5309b44511ca33ec8b90
+          value: 7ca7fc100109807bc1aa9084456dfa5bdc83894f
+        image: harbor.ocf.berkeley.edu/ocf/ocfweb/static:7ca7fc100109807bc1aa9084456dfa5bdc83894f
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
