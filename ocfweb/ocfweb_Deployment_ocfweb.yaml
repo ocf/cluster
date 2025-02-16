@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 8b81b6841ced6fbc88095823318cded7b232616a
-        image: ghcr.io/ocf/ocfweb-web:8b81b6841ced6fbc88095823318cded7b232616a
+          value: 2396812250bda83100753749b8a6a3fa0a0f64d9
+        image: ghcr.io/ocf/ocfweb-web:2396812250bda83100753749b8a6a3fa0a0f64d9
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -53,7 +53,7 @@ spec:
         - /etc/ocf
         - --repeat-delay
         - '60'
-        image: harbor.ocf.berkeley.edu/ocf/etc/sync:4c3eb1f6ba456ec30a2fbf21423364eaf0ae40bd
+        image: ghcr.io/ocf/etc-sync:0407f4c3b294910e4f0361745ed7d508b64ffda9
         name: sync-etc
         volumeMounts:
         - mountPath: /etc/ocf
