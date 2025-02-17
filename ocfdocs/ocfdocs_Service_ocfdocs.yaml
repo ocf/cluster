@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocfdocs
+spec:
+  ports:
+  - port: 80
+    targetPort: 15000
+  selector:
+    transpire.ocf.io/deployment: ocfdocs

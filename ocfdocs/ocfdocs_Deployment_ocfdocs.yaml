@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocfdocs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: ocfdocs
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: ocfdocs
+    spec:
+      containers:
+      - image: ghcr.io/ocf/ocfdocs:e4e346177a4f6df3b4bcca16a347ad21ae9ab247
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 15000
