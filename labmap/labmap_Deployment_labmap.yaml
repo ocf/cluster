@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: labmap
     spec:
       containers:
-      - image: harbor.ocf.berkeley.edu/ocf/labmap/labmap:c9ab0f6be77baa4b637ed0afec9c3a3cff600609
+      - image: ghcr.io/ocf/labmap:5c28b56a3ae8c66d7d95fba0aa2c5e43c8b8e59c
         imagePullPolicy: IfNotPresent
         name: main
         ports:
