@@ -33,7 +33,7 @@ spec:
           value: /config/config.toml
         - name: POSTGRES_CONN
           value: postgres://$(_DB_USER):$(_DB_PASS)@ocf-id6:5432/id6
-        image: harbor.ocf.berkeley.edu/ocf/id6/id6:f3bd4220754cd64ab002fd8a960cca71fe02aca4
+        image: ghcr.io/ocf/id6:7152c79878a0dd2b121ecb6bfae18cfe75b9fadb
         imagePullPolicy: IfNotPresent
         name: main
         ports:
