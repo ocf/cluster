@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    app.kubernetes.io/version: 24.0.3
-    helm.sh/chart: keycloak-21.0.3
+    app.kubernetes.io/version: 26.1.3
+    helm.sh/chart: keycloak-24.4.11
   name: keycloak
   namespace: keycloak
 spec:
@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env-vars: 9df16023c84053f7b74026760edfd47137815d88bce80cdd03a2986a212f1e93
+        checksum/configmap-env-vars: 4d811b33e6f52ee3607cd063dd390fc955d1a8d9ab77574af860e310a1fbfedf
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-keytab: kvv2/data/keycloak/keycloak
         vault.hashicorp.com/agent-inject-template-keytab: '{{- with secret "kvv2/data/keycloak/keycloak"
@@ -31,12 +31,13 @@ spec:
         vault.hashicorp.com/role: keycloak
         vault.hashicorp.com/service: https://vault.ocf.berkeley.edu/
       labels:
+        app.kubernetes.io/app-version: 26.1.3
         app.kubernetes.io/component: keycloak
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keycloak
-        app.kubernetes.io/version: 24.0.3
-        helm.sh/chart: keycloak-21.0.3
+        app.kubernetes.io/version: 26.1.3
+        helm.sh/chart: keycloak-24.4.11
     spec:
       affinity:
         nodeAffinity: null
@@ -60,7 +61,7 @@ spec:
               fieldPath: metadata.namespace
         - name: BITNAMI_DEBUG
           value: 'false'
-        - name: KEYCLOAK_ADMIN_PASSWORD
+        - name: KC_BOOTSTRAP_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               key: admin-password
@@ -72,24 +73,28 @@ spec:
               name: keycloak.ocf-keycloak.credentials.postgresql.acid.zalan.do
         - name: KEYCLOAK_HTTP_RELATIVE_PATH
           value: /
+        - name: KC_SPI_ADMIN_REALM
+          value: master
         envFrom:
         - configMapRef:
             name: keycloak-env-vars
-        image: docker.io/bitnami/keycloak:24.0.3-debian-12-r0
+        image: docker.io/bitnami/keycloak:26.1.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
-          httpGet:
-            path: /
-            port: http
           initialDelaySeconds: 300
           periodSeconds: 1
           successThreshold: 1
+          tcpSocket:
+            port: http
           timeoutSeconds: 5
         name: keycloak
         ports:
         - containerPort: 8080
           name: http
+          protocol: TCP
+        - containerPort: 9000
+          name: metrics
           protocol: TCP
         - containerPort: 7800
           name: discovery
@@ -105,7 +110,7 @@ spec:
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -128,6 +133,9 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
+        - mountPath: /bitnami/keycloak
+          name: empty-dir
+          subPath: app-volume-dir
         - mountPath: /opt/bitnami/keycloak/conf
           name: empty-dir
           subPath: app-conf-dir
@@ -137,6 +145,9 @@ spec:
         - mountPath: /opt/bitnami/keycloak/data
           name: empty-dir
           subPath: app-data-dir
+        - mountPath: /opt/bitnami/keycloak/providers
+          name: empty-dir
+          subPath: app-providers-dir
         - mountPath: /etc/krb5.conf
           name: krb5-conf
           subPath: krb5.conf
@@ -147,20 +158,33 @@ spec:
       initContainers:
       - args:
         - -ec
-        - '#!/bin/bash
+        - '. /opt/bitnami/scripts/liblog.sh
 
-          cp -r /opt/bitnami/keycloak/lib/quarkus/* /quarkus
+
+          info "Copying writable dirs to empty dir"
+
+          # In order to not break the application functionality we need to make some
+
+          # directories writable, so we need to copy it to an empty dir volume
+
+          cp -r --preserve=mode /opt/bitnami/keycloak/lib/quarkus /emptydir/app-quarkus-dir
+
+          cp -r --preserve=mode /opt/bitnami/keycloak/data /emptydir/app-data-dir
+
+          cp -r --preserve=mode /opt/bitnami/keycloak/providers /emptydir/app-providers-dir
+
+          info "Copy operation completed"
 
           '
         command:
         - /bin/bash
-        image: docker.io/bitnami/keycloak:24.0.3-debian-12-r0
+        image: docker.io/bitnami/keycloak:26.1.3-debian-12-r0
         imagePullPolicy: IfNotPresent
-        name: init-quarkus-directory
+        name: prepare-write-dirs
         resources:
           limits:
             cpu: 750m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 768Mi
           requests:
             cpu: 500m
@@ -180,12 +204,8 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
-        - mountPath: /tmp
+        - mountPath: /emptydir
           name: empty-dir
-          subPath: tmp-dir
-        - mountPath: /quarkus
-          name: empty-dir
-          subPath: app-quarkus-dir
       - args:
         - mkdir -p /keycloak/themes/keywind && (git -C /keycloak/themes/keywind pull
           || git clone https://github.com/lukin/keywind /keycloak/themes/keywind)
