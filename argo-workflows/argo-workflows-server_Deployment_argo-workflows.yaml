@@ -2,13 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app: server
     app.kubernetes.io/component: server
     app.kubernetes.io/instance: argo-workflows
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-server
     app.kubernetes.io/part-of: argo-workflows
-    app.kubernetes.io/version: v3.5.6
-    helm.sh/chart: argo-workflows-0.41.2
+    app.kubernetes.io/version: v3.6.5
+    helm.sh/chart: argo-workflows-0.45.11
   name: argo-workflows-server
   namespace: argo-workflows
 spec:
@@ -21,13 +22,14 @@ spec:
   template:
     metadata:
       labels:
+        app: server
         app.kubernetes.io/component: server
         app.kubernetes.io/instance: argo-workflows
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argo-workflows-server
         app.kubernetes.io/part-of: argo-workflows
-        app.kubernetes.io/version: v3.5.6
-        helm.sh/chart: argo-workflows-0.41.2
+        app.kubernetes.io/version: v3.6.5
+        helm.sh/chart: argo-workflows-0.45.11
     spec:
       containers:
       - args:
@@ -48,9 +50,9 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        - name: BASE_HREF
+        - name: ARGO_BASE_HREF
           value: /
-        image: quay.io/argoproj/argocli:v3.5.6
+        image: quay.io/argoproj/argocli:v3.6.5
         imagePullPolicy: Always
         name: argo-server
         ports:
@@ -77,6 +79,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: argo-workflows-server
+      terminationGracePeriodSeconds: 30
       volumes:
       - emptyDir: {}
         name: tmp

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-ha
     argocd-redis-ha: replica
-    chart: redis-ha-4.26.1
+    chart: redis-ha-4.29.4
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-server
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/init-config: 85dba46ea886e0c8cb4d0f96e22c670c443a3382034982d8e4303c5f99cae8a4
+        checksum/init-config: b68dc8787b7e4aba645184ae7440d40973a247d080c4cc8a47441bd66d6d2497
       labels:
         app: redis-ha
         argocd-redis-ha: replica
@@ -42,7 +42,13 @@ spec:
         - /data/conf/redis.conf
         command:
         - redis-server
-        image: public.ecr.aws/docker/library/redis:7.2.4-alpine
+        env:
+        - name: AUTH
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: argocd-redis
+        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -87,6 +93,17 @@ spec:
           runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/redis_readiness.sh
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
         volumeMounts:
         - mountPath: /readonly-config
           name: config
@@ -99,7 +116,13 @@ spec:
         - /data/conf/sentinel.conf
         command:
         - redis-sentinel
-        image: public.ecr.aws/docker/library/redis:7.2.4-alpine
+        env:
+        - name: AUTH
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: argocd-redis
+        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:
@@ -139,6 +162,17 @@ spec:
           runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/sentinel_liveness.sh
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
         volumeMounts:
         - mountPath: /data
           name: data
@@ -155,7 +189,12 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: public.ecr.aws/docker/library/redis:7.2.4-alpine
+        - name: AUTH
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: argocd-redis
+        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
         imagePullPolicy: IfNotPresent
         name: split-brain-fix
         resources: {}
@@ -187,7 +226,12 @@ spec:
           value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
         - name: SENTINEL_ID_2
           value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
-        image: public.ecr.aws/docker/library/redis:7.2.4-alpine
+        - name: AUTH
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: argocd-redis
+        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
         resources: {}

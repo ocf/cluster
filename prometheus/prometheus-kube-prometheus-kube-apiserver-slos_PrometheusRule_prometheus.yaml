@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 58.2.2
-    chart: kube-prometheus-stack-58.2.2
+    app.kubernetes.io/version: 70.2.1
+    chart: kube-prometheus-stack-70.2.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kube-apiserver-slos
@@ -18,14 +18,15 @@ spec:
     rules:
     - alert: KubeAPIErrorBudgetBurn
       annotations:
-        description: The API server is burning too much error budget.
+        description: The API server is burning too much error budget on cluster {{
+          $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
-      expr: 'sum(apiserver_request:burnrate1h) > (14.40 * 0.01000)
+      expr: 'sum by (cluster) (apiserver_request:burnrate1h) > (14.40 * 0.01000)
 
-        and
+        and on (cluster)
 
-        sum(apiserver_request:burnrate5m) > (14.40 * 0.01000)'
+        sum by (cluster) (apiserver_request:burnrate5m) > (14.40 * 0.01000)'
       for: 2m
       labels:
         long: 1h
@@ -33,14 +34,15 @@ spec:
         short: 5m
     - alert: KubeAPIErrorBudgetBurn
       annotations:
-        description: The API server is burning too much error budget.
+        description: The API server is burning too much error budget on cluster {{
+          $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
-      expr: 'sum(apiserver_request:burnrate6h) > (6.00 * 0.01000)
+      expr: 'sum by (cluster) (apiserver_request:burnrate6h) > (6.00 * 0.01000)
 
-        and
+        and on (cluster)
 
-        sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)'
+        sum by (cluster) (apiserver_request:burnrate30m) > (6.00 * 0.01000)'
       for: 15m
       labels:
         long: 6h
@@ -48,14 +50,15 @@ spec:
         short: 30m
     - alert: KubeAPIErrorBudgetBurn
       annotations:
-        description: The API server is burning too much error budget.
+        description: The API server is burning too much error budget on cluster {{
+          $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
-      expr: 'sum(apiserver_request:burnrate1d) > (3.00 * 0.01000)
+      expr: 'sum by (cluster) (apiserver_request:burnrate1d) > (3.00 * 0.01000)
 
-        and
+        and on (cluster)
 
-        sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)'
+        sum by (cluster) (apiserver_request:burnrate2h) > (3.00 * 0.01000)'
       for: 1h
       labels:
         long: 1d
@@ -63,14 +66,15 @@ spec:
         short: 2h
     - alert: KubeAPIErrorBudgetBurn
       annotations:
-        description: The API server is burning too much error budget.
+        description: The API server is burning too much error budget on cluster {{
+          $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
-      expr: 'sum(apiserver_request:burnrate3d) > (1.00 * 0.01000)
+      expr: 'sum by (cluster) (apiserver_request:burnrate3d) > (1.00 * 0.01000)
 
-        and
+        and on (cluster)
 
-        sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)'
+        sum by (cluster) (apiserver_request:burnrate6h) > (1.00 * 0.01000)'
       for: 3h
       labels:
         long: 3d

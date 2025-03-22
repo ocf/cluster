@@ -46,7 +46,7 @@ data:
     job=\"$cluster\"}[$__rate_interval])))","legendFormat":"{{instance}} peer round
     trip time"}],"title":"Peer round trip time","type":"timeseries"}],"refresh":"10s","schemaVersion":36,"tags":["etcd-mixin"],"templating":{"list":[{"label":"Data
     Source","name":"datasource","query":"prometheus","type":"datasource"},{"datasource":{"type":"prometheus","uid":"${datasource}"},"label":"cluster","name":"cluster","query":"label_values(etcd_server_has_leader{job=~\".*etcd.*\"},
-    job)","refresh":2,"type":"query","hide":2}]},"time":{"from":"now-15m","to":"now"},"timezone":
+    job)","refresh":2,"type":"query","allValue":".*","hide":2}]},"time":{"from":"now-15m","to":"now"},"timezone":
     "utc","title":"etcd","uid":"c2f4e12cdf69feb95caa41a5a1b423d9"}'
 kind: ConfigMap
 metadata:
@@ -56,8 +56,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 58.2.2
-    chart: kube-prometheus-stack-58.2.2
+    app.kubernetes.io/version: 70.2.1
+    chart: kube-prometheus-stack-70.2.1
     grafana_dashboard: '1'
     heritage: Helm
     release: prometheus

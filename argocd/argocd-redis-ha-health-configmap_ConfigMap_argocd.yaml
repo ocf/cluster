@@ -1,12 +1,17 @@
 apiVersion: v1
 data:
-  redis_liveness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p 6379\
-    \ \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ] && [ \"${response:0:7}\" !=\
-    \ \"LOADING\" ] ; then\n  echo \"$response\"\n  exit 1\nfi\necho \"response=$response\"\
-    \n"
-  redis_readiness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p 6379\
-    \ \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ] ; then\n  echo \"$response\"\
-    \n  exit 1\nfi\necho \"response=$response\"\n"
+  redis_liveness.sh: "response=$(\n  redis-cli \\\n    -a \"${AUTH}\" --no-auth-warning\
+    \ \\\n    -h localhost \\\n    -p 6379 \\\n    ping\n)\necho \"response=$response\"\
+    \ncase $response in\n  PONG|LOADING*) ;;\n  *) exit 1 ;;\nesac\nexit 0\n"
+  redis_readiness.sh: "response=$(\n  redis-cli \\\n    -a \"${AUTH}\" --no-auth-warning\
+    \ \\\n    -h localhost \\\n    -p 6379 \\\n    ping\n)\nif [ \"$response\" !=\
+    \ \"PONG\" ] ; then\n  echo \"ping=$response\"\n  exit 1\nfi\n\nresponse=$(\n\
+    \  redis-cli \\\n    -a \"${AUTH}\" --no-auth-warning \\\n    -h localhost \\\n\
+    \    -p 6379 \\\n    role\n)\nrole=$( echo \"$response\" | sed \"1!d\" )\nif [\
+    \ \"$role\" = \"master\" ]; then\n  echo \"role=$role\"\n  exit 0\nelif [ \"$role\"\
+    \ = \"slave\" ]; then\n  repl=$( echo \"$response\" | sed \"4!d\" )\n  echo \"\
+    role=$role; repl=$repl\"\n  if [ \"$repl\" = \"connected\" ]; then\n    exit 0\n\
+    \  else\n    exit 1\n  fi\nelse\n  echo \"role=$role\"\n  exit 1\nfi\n"
   sentinel_liveness.sh: "response=$(\n  redis-cli \\\n    -h localhost \\\n    -p\
     \ 26379 \\\n    ping\n)\nif [ \"$response\" != \"PONG\" ]; then\n  echo \"$response\"\
     \n  exit 1\nfi\necho \"response=$response\"\n"
@@ -14,7 +19,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: argocd-redis-ha
-    chart: redis-ha-4.26.1
+    chart: redis-ha-4.29.4
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-health-configmap

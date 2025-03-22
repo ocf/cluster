@@ -3,10 +3,9 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/instance: prometheus
-    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: grafana
-    app.kubernetes.io/version: 10.4.1
-    helm.sh/chart: grafana-7.3.9
+    app.kubernetes.io/version: 11.5.2
+    helm.sh/chart: grafana-8.10.4
   name: prometheus-grafana
   namespace: prometheus
 spec:
@@ -22,12 +21,14 @@ spec:
     metadata:
       annotations:
         checksum/config: 2c82bf0ce90b547d1cd2b86debf295ef4036e7531d6e5849f923a2a952afcaa1
-        checksum/sc-dashboard-provider-config: 593c0a8778b83f11fe80ccb21dfb20bc46705e2be3178df1dc4c89d164c8cd9c
+        checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
         checksum/secret: 032056e9c62bbe9d1daa41ee49cd3d9524c076f51ca4c65adadf4ef08ef28712
         kubectl.kubernetes.io/default-container: grafana
       labels:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/name: grafana
+        app.kubernetes.io/version: 11.5.2
+        helm.sh/chart: grafana-8.10.4
     spec:
       automountServiceAccountToken: true
       containers:
@@ -58,7 +59,7 @@ spec:
           value: http://localhost:3000/api/admin/provisioning/dashboards/reload
         - name: REQ_METHOD
           value: POST
-        image: quay.io/kiwigrid/k8s-sidecar:1.26.1
+        image: quay.io/kiwigrid/k8s-sidecar:1.30.0
         imagePullPolicy: IfNotPresent
         name: grafana-sc-dashboard
         securityContext:
@@ -96,7 +97,7 @@ spec:
           value: http://localhost:3000/api/admin/provisioning/datasources/reload
         - name: REQ_METHOD
           value: POST
-        image: quay.io/kiwigrid/k8s-sidecar:1.26.1
+        image: quay.io/kiwigrid/k8s-sidecar:1.30.0
         imagePullPolicy: IfNotPresent
         name: grafana-sc-datasources
         securityContext:
@@ -132,7 +133,7 @@ spec:
           value: /var/lib/grafana/plugins
         - name: GF_PATHS_PROVISIONING
           value: /etc/grafana/provisioning
-        image: docker.io/grafana/grafana:10.4.1
+        image: docker.io/grafana/grafana:11.5.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 10
@@ -152,6 +153,9 @@ spec:
         - containerPort: 9094
           name: gossip-udp
           protocol: UDP
+        - containerPort: 6060
+          name: profiling
+          protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/health
@@ -183,6 +187,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 472
       serviceAccountName: prometheus-grafana
+      shareProcessNamespace: false
       volumes:
       - configMap:
           name: prometheus-grafana

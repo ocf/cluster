@@ -7,9 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: prometheus-node-exporter
     app.kubernetes.io/part-of: prometheus-node-exporter
-    app.kubernetes.io/version: 1.7.0
-    helm.sh/chart: prometheus-node-exporter-4.32.0
-    jobLabel: node-exporter
+    app.kubernetes.io/version: 1.9.0
+    helm.sh/chart: prometheus-node-exporter-4.45.0
     release: prometheus
   name: prometheus-prometheus-node-exporter
   namespace: prometheus
@@ -29,11 +28,24 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: prometheus-node-exporter
         app.kubernetes.io/part-of: prometheus-node-exporter
-        app.kubernetes.io/version: 1.7.0
-        helm.sh/chart: prometheus-node-exporter-4.32.0
+        app.kubernetes.io/version: 1.9.0
+        helm.sh/chart: prometheus-node-exporter-4.45.0
         jobLabel: node-exporter
         release: prometheus
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/compute-type
+                operator: NotIn
+                values:
+                - fargate
+              - key: type
+                operator: NotIn
+                values:
+                - virtual-kubelet
       automountServiceAccountToken: false
       containers:
       - args:
@@ -47,7 +59,7 @@ spec:
         env:
         - name: HOST_IP
           value: 0.0.0.0
-        image: quay.io/prometheus/node-exporter:v1.7.0
+        image: quay.io/prometheus/node-exporter:v1.9.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -89,6 +101,7 @@ spec:
           mountPropagation: HostToContainer
           name: root
           readOnly: true
+      hostIPC: false
       hostNetwork: true
       hostPID: true
       nodeSelector:

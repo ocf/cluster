@@ -78,14 +78,15 @@ data:
     \ \"  using master ip (${DEFAULT_MASTER})\"\n        redis_update \"${DEFAULT_MASTER}\"\
     \n        sentinel_update \"${DEFAULT_MASTER}\"\n    fi\n}\n\nredis_ping() {\n\
     set +e\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
-    \ --key /tls-certs/redis.key ping\n    else\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_PORT}\" ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n\
-    \    retry=${1}\n    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n       \
-    \ if [ \"$(redis_ping)\" = \"PONG\" ]; then\n           ping='PONG'\n        \
-    \   break\n        fi\n        sleep $((sleep + i))\n        MASTER=$(sentinel_get_master)\n\
-    \    done\n    echo \"${ping}\"\n}\n\nfind_master() {\n    echo \"Verifying redis\
-    \ master..\"\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        echo \"  ping (${MASTER}:${REDIS_TLS_PORT})\"\
+    \ -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt\
+    \  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping\n    else\n   \
+    \     redis-cli -h \"${MASTER}\" -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_PORT}\"\
+    \ ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n    retry=${1}\n\
+    \    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n        if [ \"$(redis_ping)\"\
+    \ = \"PONG\" ]; then\n           ping='PONG'\n           break\n        fi\n \
+    \       sleep $((sleep + i))\n        MASTER=$(sentinel_get_master)\n    done\n\
+    \    echo \"${ping}\"\n}\n\nfind_master() {\n    echo \"Verifying redis master..\"\
+    \n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        echo \"  ping (${MASTER}:${REDIS_TLS_PORT})\"\
     \n    else\n        echo \"  ping (${MASTER}:${REDIS_PORT})\"\n    fi\n    if\
     \ [ \"$(redis_ping_retry 3)\" != \"PONG\" ]; then\n        echo \"  $(date) Can't\
     \ ping redis master (${MASTER})\"\n        echo \"Attempting to force failover\
@@ -123,26 +124,28 @@ data:
     \ for this pod..\"\n    echo \"  using (${SERVICE}-announce-${INDEX}) or (${SERVICE}-server-${INDEX})\"\
     \n    ANNOUNCE_IP=$(getent_hosts | awk '{ print $1 }')\n    echo \"  identified\
     \ announce (${ANNOUNCE_IP})\"\n}\n\nredis_role() {\nset +e\n    if [ \"$REDIS_PORT\"\
-    \ -eq 0 ]; then\n        ROLE=$(redis-cli  -p \"${REDIS_TLS_PORT}\" --tls --cacert\
-    \ /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info\
-    \ | grep role | sed 's/role://' | sed 's/\\r//')\n    else\n        ROLE=$(redis-cli\
-    \  -p \"${REDIS_PORT}\" info | grep role | sed 's/role://' | sed 's/\\r//')\n\
-    \    fi\nset -e\n}\n\nidentify_redis_master() {\nset +e\n    if [ \"$REDIS_PORT\"\
-    \ -eq 0 ]; then\n        REDIS_MASTER=$(redis-cli  -p \"${REDIS_TLS_PORT}\" --tls\
-    \ --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\
-    \ info | grep master_host | sed 's/master_host://' | sed 's/\\r//')\n    else\n\
-    \        REDIS_MASTER=$(redis-cli  -p \"${REDIS_PORT}\" info | grep master_host\
+    \ -eq 0 ]; then\n        ROLE=$(redis-cli  -a \"${AUTH}\" --no-auth-warning -p\
+    \ \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
+    \ --key /tls-certs/redis.key info | grep role | sed 's/role://' | sed 's/\\r//')\n\
+    \    else\n        ROLE=$(redis-cli  -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_PORT}\"\
+    \ info | grep role | sed 's/role://' | sed 's/\\r//')\n    fi\nset -e\n}\n\nidentify_redis_master()\
+    \ {\nset +e\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        REDIS_MASTER=$(redis-cli\
+    \  -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt\
+    \  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info | grep master_host\
+    \ | sed 's/master_host://' | sed 's/\\r//')\n    else\n        REDIS_MASTER=$(redis-cli\
+    \  -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_PORT}\" info | grep master_host\
     \ | sed 's/master_host://' | sed 's/\\r//')\n    fi\nset -e\n}\n\nreinit() {\n\
     set +e\n    sh /readonly-config/init.sh\n\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n\
-    \        echo \"shutdown\" | redis-cli  -p \"${REDIS_TLS_PORT}\" --tls --cacert\
-    \ /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key\n\
-    \    else\n        echo \"shutdown\" | redis-cli  -p \"${REDIS_PORT}\"\n    fi\n\
-    set -e\n}\n\nidentify_announce_ip\n\nwhile [ -z \"${ANNOUNCE_IP}\" ]; do\n   \
-    \ echo \"Error: Could not resolve the announce ip for this pod.\"\n    sleep 30\n\
-    \    identify_announce_ip\ndone\n\nwhile true; do\n    sleep 60\n\n    # where\
-    \ is redis master\n    identify_master\n\n    if [ \"$MASTER\" = \"$ANNOUNCE_IP\"\
-    \ ]; then\n        redis_role\n        if [ \"$ROLE\" != \"master\" ]; then\n\
-    \            reinit\n        fi\n    elif [ \"${MASTER}\" ]; then\n        identify_redis_master\n\
+    \        echo \"shutdown\" | redis-cli  -a \"${AUTH}\" --no-auth-warning -p \"\
+    ${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
+    \ --key /tls-certs/redis.key\n    else\n        echo \"shutdown\" | redis-cli\
+    \  -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_PORT}\"\n    fi\nset -e\n}\n\n\
+    identify_announce_ip\n\nwhile [ -z \"${ANNOUNCE_IP}\" ]; do\n    echo \"Error:\
+    \ Could not resolve the announce ip for this pod.\"\n    sleep 30\n    identify_announce_ip\n\
+    done\n\ntrap \"exit 0\" TERM\nwhile true; do\n    sleep 60\n\n    # where is redis\
+    \ master\n    identify_master\n\n    if [ \"$MASTER\" = \"$ANNOUNCE_IP\" ]; then\n\
+    \        redis_role\n        if [ \"$ROLE\" != \"master\" ]; then\n          \
+    \  reinit\n        fi\n    elif [ \"${MASTER}\" ]; then\n        identify_redis_master\n\
     \        if [ \"$REDIS_MASTER\" != \"$MASTER\" ]; then\n            reinit\n \
     \       fi\n    fi\ndone\n"
   haproxy.cfg: "defaults REDIS\n  mode tcp\n  timeout connect 4s\n  timeout server\
@@ -170,7 +173,8 @@ data:
     \ check inter 1s\n\n# decide redis backend to use\n#master\nfrontend ft_redis_master\n\
     \  bind [::]:6379 v4v6\n  use_backend bk_redis_master\n# Check all redis servers\
     \ to see if they think they are master\nbackend bk_redis_master\n  mode tcp\n\
-    \  option tcp-check\n  tcp-check connect\n  tcp-check send PING\\r\\n\n  tcp-check\
+    \  option tcp-check\n  tcp-check connect\n  tcp-check send \"AUTH ${AUTH}\"\\\
+    r\\n\n  tcp-check expect string +OK\n  tcp-check send PING\\r\\n\n  tcp-check\
     \ expect string +PONG\n  tcp-check send info\\ replication\\r\\n\n  tcp-check\
     \ expect string role:master\n  tcp-check send QUIT\\r\\n\n  tcp-check expect string\
     \ +OK\n  use-server R0 if { srv_is_up(R0) } { nbsrv(check_if_redis_is_master_0)\
@@ -278,14 +282,15 @@ data:
     \ \"  using master ip (${DEFAULT_MASTER})\"\n        redis_update \"${DEFAULT_MASTER}\"\
     \n        sentinel_update \"${DEFAULT_MASTER}\"\n    fi\n}\n\nredis_ping() {\n\
     set +e\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt\
-    \ --key /tls-certs/redis.key ping\n    else\n        redis-cli -h \"${MASTER}\"\
-    \ -p \"${REDIS_PORT}\" ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n\
-    \    retry=${1}\n    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n       \
-    \ if [ \"$(redis_ping)\" = \"PONG\" ]; then\n           ping='PONG'\n        \
-    \   break\n        fi\n        sleep $((sleep + i))\n        MASTER=$(sentinel_get_master)\n\
-    \    done\n    echo \"${ping}\"\n}\n\nfind_master() {\n    echo \"Verifying redis\
-    \ master..\"\n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        echo \"  ping (${MASTER}:${REDIS_TLS_PORT})\"\
+    \ -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_TLS_PORT}\" --tls --cacert /tls-certs/ca.crt\
+    \  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping\n    else\n   \
+    \     redis-cli -h \"${MASTER}\" -a \"${AUTH}\" --no-auth-warning -p \"${REDIS_PORT}\"\
+    \ ping\n    fi\nset -e\n}\n\nredis_ping_retry() {\n    ping=''\n    retry=${1}\n\
+    \    sleep=3\n    for i in $(seq 1 \"${retry}\"); do\n        if [ \"$(redis_ping)\"\
+    \ = \"PONG\" ]; then\n           ping='PONG'\n           break\n        fi\n \
+    \       sleep $((sleep + i))\n        MASTER=$(sentinel_get_master)\n    done\n\
+    \    echo \"${ping}\"\n}\n\nfind_master() {\n    echo \"Verifying redis master..\"\
+    \n    if [ \"$REDIS_PORT\" -eq 0 ]; then\n        echo \"  ping (${MASTER}:${REDIS_TLS_PORT})\"\
     \n    else\n        echo \"  ping (${MASTER}:${REDIS_PORT})\"\n    fi\n    if\
     \ [ \"$(redis_ping_retry 3)\" != \"PONG\" ]; then\n        echo \"  $(date) Can't\
     \ ping redis master (${MASTER})\"\n        echo \"Attempting to force failover\
@@ -357,24 +362,28 @@ data:
 
     save ""
 
+    requirepass replace-default-auth
+
+    masterauth replace-default-auth
+
     '
   sentinel.conf: "dir \"/data\"\nport 26379\n    sentinel down-after-milliseconds\
     \ argocd 10000\n    sentinel failover-timeout argocd 180000\n    maxclients 10000\n\
-    \    sentinel parallel-syncs argocd 5\n"
+    \    sentinel parallel-syncs argocd 5\nsentinel auth-pass argocd replace-default-auth\n"
   trigger-failover-if-master.sh: "get_redis_role() {\n  is_master=$(\n    redis-cli\
-    \ \\\n      -h localhost \\\n      -p 6379 \\\n      info | grep -c 'role:master'\
-    \ || true\n  )\n}\nget_redis_role\nif [[ \"$is_master\" -eq 1 ]]; then\n  echo\
-    \ \"This node is currently master, we trigger a failover.\"\n  response=$(\n \
-    \   redis-cli \\\n      -h localhost \\\n      -p 26379 \\\n      SENTINEL failover\
-    \ argocd\n  )\n  if [[ \"$response\" != \"OK\" ]] ; then\n    echo \"$response\"\
-    \n    exit 1\n  fi\n  timeout=30\n  while [[ \"$is_master\" -eq 1 && $timeout\
-    \ -gt 0 ]]; do\n    sleep 1\n    get_redis_role\n    timeout=$((timeout - 1))\n\
-    \  done\n  echo \"Failover successful\"\nfi\n"
+    \ \\\n      -a \"${AUTH}\" --no-auth-warning \\\n      -h localhost \\\n     \
+    \ -p 6379 \\\n      info | grep -c 'role:master' || true\n  )\n}\nget_redis_role\n\
+    if [[ \"$is_master\" -eq 1 ]]; then\n  echo \"This node is currently master, we\
+    \ trigger a failover.\"\n  response=$(\n    redis-cli \\\n      -h localhost \\\
+    \n      -p 26379 \\\n      SENTINEL failover argocd\n  )\n  if [[ \"$response\"\
+    \ != \"OK\" ]] ; then\n    echo \"$response\"\n    exit 1\n  fi\n  timeout=30\n\
+    \  while [[ \"$is_master\" -eq 1 && $timeout -gt 0 ]]; do\n    sleep 1\n    get_redis_role\n\
+    \    timeout=$((timeout - 1))\n  done\n  echo \"Failover successful\"\nfi\n"
 kind: ConfigMap
 metadata:
   labels:
     app: argocd-redis-ha
-    chart: redis-ha-4.26.1
+    chart: redis-ha-4.29.4
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap
