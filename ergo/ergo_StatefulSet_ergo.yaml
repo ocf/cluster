@@ -41,7 +41,7 @@ spec:
           name: ircd-config
         - mountPath: /etc/ssl/server_certs
           name: ircd-tls
-      - image: ghcr.io/ocf/ergo-gamja:05a7600604241dfb4d4d40c7b0ceaff75c1ddd90
+      - image: ghcr.io/ocf/ergo-gamja:6d5b8a1f736ab06f47a7b7c04b3bc31e57bbc31b
         name: gamja
         ports:
         - containerPort: 80

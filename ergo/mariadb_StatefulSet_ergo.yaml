@@ -36,6 +36,8 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: mariadb-data
+      securityContext:
+        fsGroup: 1000
   volumeClaimTemplates:
   - metadata:
       name: mariadb-data
