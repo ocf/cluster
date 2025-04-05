@@ -18,7 +18,7 @@ spec:
         - tv.ocf.berkeley.edu
         - -host
         - 0.0.0.0
-        image: harbor.ocf.berkeley.edu/ocf/jukebox/jukebox:cabf4437a4ca7bf504c21c81d2f9b3f0d1831b1d
+        image: ghcr.io/ocf/jukebox:3a0f6e4e7dcaea1aba4f3a14da93b4da7817714b
         imagePullPolicy: IfNotPresent
         name: main
         ports:
