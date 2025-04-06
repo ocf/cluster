@@ -16,7 +16,7 @@ spec:
         k8s.ocf.io/component: sopel
     spec:
       containers:
-      - image: ghcr.io/ocf/ergo-sopel:6d5b8a1f736ab06f47a7b7c04b3bc31e57bbc31b
+      - image: ghcr.io/ocf/ergo-sopel:61d423e989265bce8e269fd5521ac93e48ae2c0f
         name: sopel
         volumeMounts:
         - mountPath: /home/sopel/.sopel/default.cfg

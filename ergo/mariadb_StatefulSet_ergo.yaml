@@ -38,6 +38,8 @@ spec:
           name: mariadb-data
       securityContext:
         fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
   volumeClaimTemplates:
   - metadata:
       name: mariadb-data
