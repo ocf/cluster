@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 026327bc3fc65a490a620466b9d577a47afa3c75
-        image: ghcr.io/ocf/ocfweb-web:026327bc3fc65a490a620466b9d577a47afa3c75
+          value: 0bf1b87c1df54e94ca66d41612775e6e5670886f
+        image: ghcr.io/ocf/ocfweb-web:0bf1b87c1df54e94ca66d41612775e6e5670886f
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
