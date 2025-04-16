@@ -19,7 +19,7 @@ spec:
             name: ocfdocs
         - secretRef:
             name: ocfdocs
-        image: ghcr.io/ocf/ocfdocs:541f4c2bbb3fc3d2219a8a33f8d2a5adf08944ab
+        image: ghcr.io/ocf/ocfdocs:81469adf0682713493c105f56b9a3494f62d9405
         imagePullPolicy: IfNotPresent
         name: main
         ports:
