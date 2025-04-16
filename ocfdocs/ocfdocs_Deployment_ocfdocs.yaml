@@ -13,7 +13,13 @@ spec:
         transpire.ocf.io/deployment: ocfdocs
     spec:
       containers:
-      - image: ghcr.io/ocf/ocfdocs:22704668a12e059c34cd9c6422ee48d1a7634d9e
+      - env: []
+        envFrom:
+        - configMapRef:
+            name: ocfdocs
+        - secretRef:
+            name: ocfdocs
+        image: ghcr.io/ocf/ocfdocs:541f4c2bbb3fc3d2219a8a33f8d2a5adf08944ab
         imagePullPolicy: IfNotPresent
         name: main
         ports:
