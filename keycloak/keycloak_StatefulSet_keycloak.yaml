@@ -110,10 +110,10 @@ spec:
         resources:
           limits:
             cpu: 500m
-            memory: 2048Mi
+            memory: 4096Mi
           requests:
             cpu: 100m
-            memory: 1024Mi
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -182,10 +182,10 @@ spec:
         resources:
           limits:
             cpu: 500m
-            memory: 2048Mi
+            memory: 4096Mi
           requests:
             cpu: 100m
-            memory: 1024Mi
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
