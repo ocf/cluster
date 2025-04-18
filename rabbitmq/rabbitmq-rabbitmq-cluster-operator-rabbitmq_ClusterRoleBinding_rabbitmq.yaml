@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 2.12.1
-    helm.sh/chart: rabbitmq-cluster-operator-4.4.7
+    app.kubernetes.io/version: 2.8.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.2.5
   name: rabbitmq-rabbitmq-cluster-operator-rabbitmq
 roleRef:
   apiGroup: rbac.authorization.k8s.io

@@ -2,12 +2,13 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.1
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: shovels.rabbitmq.com
 spec:
   group: rabbitmq.com
   names:
     categories:
+    - all
     - rabbitmq
     kind: Shovel
     listKind: ShovelList
@@ -98,9 +99,6 @@ spec:
               destQueue:
                 description: amqp091 configuration
                 type: string
-              destQueueArgs:
-                type: object
-                x-kubernetes-preserve-unknown-fields: true
               name:
                 description: Required property; cannot be updated
                 type: string
@@ -122,18 +120,11 @@ spec:
                       Have to set either name or connectionSecret, but not both.'
                     properties:
                       name:
-                        default: ''
                         description: 'Name of the referent.
 
-                          This field is effectively required, but due to backwards
-                          compatibility is
+                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 
-                          allowed to be empty. Instances of this type with an empty
-                          value here are
-
-                          almost certainly wrong.
-
-                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          TODO: Add other useful fields. apiVersion, kind, uid?'
                         type: string
                     type: object
                     x-kubernetes-map-type: atomic
@@ -175,9 +166,6 @@ spec:
               srcQueue:
                 description: amqp091 configuration
                 type: string
-              srcQueueArgs:
-                type: object
-                x-kubernetes-preserve-unknown-fields: true
               uriSecret:
                 description: 'Secret contains the AMQP URI(s) to configure Shovel
                   destination and source.
@@ -190,18 +178,11 @@ spec:
                   Required property.'
                 properties:
                   name:
-                    default: ''
                     description: 'Name of the referent.
 
-                      This field is effectively required, but due to backwards compatibility
-                      is
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 
-                      allowed to be empty. Instances of this type with an empty value
-                      here are
-
-                      almost certainly wrong.
-
-                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
                     type: string
                 type: object
                 x-kubernetes-map-type: atomic

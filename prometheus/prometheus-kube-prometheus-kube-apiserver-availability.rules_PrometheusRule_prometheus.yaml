@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 70.7.0
-    chart: kube-prometheus-stack-70.7.0
+    app.kubernetes.io/version: 70.2.1
+    chart: kube-prometheus-stack-70.2.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kube-apiserver-availability.rules
@@ -39,37 +39,37 @@ spec:
       record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d
     - expr: "1 - (\n  (\n    # write too slow\n    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~\"\
         POST|PUT|PATCH|DELETE\"})\n    -\n    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        POST|PUT|PATCH|DELETE\",le=~\"1(\\\\.0)?\"} or vector(0))\n  ) +\n  (\n  \
-        \  # read too slow\n    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~\"\
-        LIST|GET\"})\n    -\n    (\n      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=~\"resource|\",le=~\"1(\\\\.0)?\"} or vector(0))\n      +\n\
-        \      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=\"namespace\",le=~\"5(\\\\.0)?\"} or vector(0))\n      +\n\
-        \      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=\"cluster\",le=~\"30(\\\\.0)?\"} or vector(0))\n    )\n \
-        \ ) +\n  # errors\n  sum by (cluster) (code:apiserver_request_total:increase30d{code=~\"\
-        5..\"} or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d)"
+        POST|PUT|PATCH|DELETE\",le=~\"1(\\\\.0)?\"})\n  ) +\n  (\n    # read too slow\n\
+        \    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~\"\
+        LIST|GET\"})\n    -\n    (\n      (\n        sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=~\"resource|\",le=~\"1(\\\\.0)?\"})\n        or\n       \
+        \ vector(0)\n      )\n      +\n      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=\"namespace\",le=~\"5(\\\\.0)?\"})\n      +\n      sum by\
+        \ (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=\"cluster\",le=~\"30(\\\\.0)?\"})\n    )\n  ) +\n  # errors\n\
+        \  sum by (cluster) (code:apiserver_request_total:increase30d{code=~\"5..\"\
+        } or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d)"
       labels:
         verb: all
       record: apiserver_request:availability30d
     - expr: "1 - (\n  sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~\"\
-        LIST|GET\"})\n  -\n  (\n    # too slow\n    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=~\"resource|\",le=~\"1(\\\\.0)?\"} or vector(0))\n    +\n\
-        \    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=\"namespace\",le=~\"5(\\\\.0)?\"} or vector(0))\n    +\n\
-        \    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        LIST|GET\",scope=\"cluster\",le=~\"30(\\\\.0)?\"} or vector(0))\n  )\n  +\n\
-        \  # errors\n  sum by (cluster) (code:apiserver_request_total:increase30d{verb=\"\
-        read\",code=~\"5..\"} or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d{verb=\"\
+        LIST|GET\"})\n  -\n  (\n    # too slow\n    (\n      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=~\"resource|\",le=~\"1(\\\\.0)?\"})\n      or\n      vector(0)\n\
+        \    )\n    +\n    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=\"namespace\",le=~\"5(\\\\.0)?\"})\n    +\n    sum by (cluster)\
+        \ (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
+        LIST|GET\",scope=\"cluster\",le=~\"30(\\\\.0)?\"})\n  )\n  +\n  # errors\n\
+        \  sum by (cluster) (code:apiserver_request_total:increase30d{verb=\"read\"\
+        ,code=~\"5..\"} or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d{verb=\"\
         read\"})"
       labels:
         verb: read
       record: apiserver_request:availability30d
     - expr: "1 - (\n  (\n    # too slow\n    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~\"\
         POST|PUT|PATCH|DELETE\"})\n    -\n    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~\"\
-        POST|PUT|PATCH|DELETE\",le=~\"1(\\\\.0)?\"} or vector(0))\n  )\n  +\n  # errors\n\
-        \  sum by (cluster) (code:apiserver_request_total:increase30d{verb=\"write\"\
-        ,code=~\"5..\"} or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d{verb=\"\
+        POST|PUT|PATCH|DELETE\",le=~\"1(\\\\.0)?\"})\n  )\n  +\n  # errors\n  sum\
+        \ by (cluster) (code:apiserver_request_total:increase30d{verb=\"write\",code=~\"\
+        5..\"} or vector(0))\n)\n/\nsum by (cluster) (code:apiserver_request_total:increase30d{verb=\"\
         write\"})"
       labels:
         verb: write

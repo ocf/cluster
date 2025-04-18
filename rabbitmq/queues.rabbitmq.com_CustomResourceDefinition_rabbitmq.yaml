@@ -2,12 +2,13 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.1
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: queues.rabbitmq.com
 spec:
   group: rabbitmq.com
   names:
     categories:
+    - all
     - rabbitmq
     kind: Queue
     listKind: QueueList
@@ -62,13 +63,6 @@ spec:
                 description: when set to true, queues that have had at least one consumer
                   before are deleted after the last consumer unsubscribes.
                 type: boolean
-              deleteIfEmpty:
-                description: when set to true, queues are deleted only if empty.
-                type: boolean
-              deleteIfUnused:
-                description: when set to true, queues are delete only if they have
-                  no consumer.
-                type: boolean
               durable:
                 description: When set to false queues does not survive server restart.
                 type: boolean
@@ -91,18 +85,11 @@ spec:
                       Have to set either name or connectionSecret, but not both.'
                     properties:
                       name:
-                        default: ''
                         description: 'Name of the referent.
 
-                          This field is effectively required, but due to backwards
-                          compatibility is
+                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 
-                          allowed to be empty. Instances of this type with an empty
-                          value here are
-
-                          almost certainly wrong.
-
-                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          TODO: Add other useful fields. apiVersion, kind, uid?'
                         type: string
                     type: object
                     x-kubernetes-map-type: atomic

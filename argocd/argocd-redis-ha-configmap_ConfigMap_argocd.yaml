@@ -330,7 +330,7 @@ data:
     \ announce (${ANNOUNCE_IP})\"\n}\n\nmkdir -p /data/conf/\n\necho \"Initializing\
     \ config..\"\ncopy_config\n\n# where is redis master\nidentify_master\n\nidentify_announce_ip\n\
     \nif [ -z \"${ANNOUNCE_IP}\" ]; then\n    \"Error: Could not resolve the announce\
-    \ ip for this pod\"\n    exit 1\nelif [ \"${MASTER}\" ]; then\n    find_master\n\
+    \ ip for this pod.\"\n    exit 1\nelif [ \"${MASTER}\" ]; then\n    find_master\n\
     else\n    setup_defaults\nfi\n\nif [ \"${AUTH:-}\" ]; then\n    echo \"Setting\
     \ redis auth values..\"\n    ESCAPED_AUTH=$(echo \"${AUTH}\" | sed -e 's/[\\/&]/\\\
     \\&/g');\n    sed -i \"s/replace-default-auth/${ESCAPED_AUTH}/\" \"${REDIS_CONF}\"\
@@ -383,7 +383,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: argocd-redis-ha
-    chart: redis-ha-4.33.2
+    chart: redis-ha-4.29.4
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap

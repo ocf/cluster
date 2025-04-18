@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 2.12.1
-    helm.sh/chart: rabbitmq-cluster-operator-4.4.7
+    app.kubernetes.io/version: 2.8.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.2.5
   name: rabbitmq-rabbitmq-cluster-operator
   namespace: rabbitmq
 spec:
@@ -29,8 +29,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq-cluster-operator
         app.kubernetes.io/part-of: rabbitmq
-        app.kubernetes.io/version: 2.12.1
-        helm.sh/chart: rabbitmq-cluster-operator-4.4.7
+        app.kubernetes.io/version: 2.8.0
+        helm.sh/chart: rabbitmq-cluster-operator-4.2.5
     spec:
       affinity:
         nodeAffinity: null
@@ -57,19 +57,20 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: DEFAULT_RABBITMQ_IMAGE
-          value: docker.io/bitnami/rabbitmq:4.0.7-debian-12-r1
+          value: docker.io/bitnami/rabbitmq:3.13.1-debian-12-r0
         - name: DEFAULT_USER_UPDATER_IMAGE
-          value: docker.io/bitnami/rmq-default-credential-updater:1.0.5-debian-12-r7
+          value: docker.io/bitnami/rmq-default-credential-updater:1.0.4-debian-12-r16
         envFrom: null
-        image: docker.io/bitnami/rabbitmq-cluster-operator:2.12.1-debian-12-r7
+        image: docker.io/bitnami/rabbitmq-cluster-operator:2.8.0-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
+          httpGet:
+            path: /metrics
+            port: http
           initialDelaySeconds: 5
           periodSeconds: 30
           successThreshold: 1
-          tcpSocket:
-            port: http
           timeoutSeconds: 5
         name: rabbitmq-cluster-operator
         ports:
@@ -88,7 +89,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 2Gi
+            ephemeral-storage: 1024Mi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -104,7 +105,7 @@ spec:
           runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
-          seLinuxOptions: {}
+          seLinuxOptions: null
           seccompProfile:
             type: RuntimeDefault
       initContainers: null
