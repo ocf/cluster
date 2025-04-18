@@ -91,4 +91,3 @@ spec:
       - configMap:
           name: keycloak-config-cli
         name: config-volume
-  ttlSecondsAfterFinished: 0
