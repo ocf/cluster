@@ -1,5 +1,5 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: rabbitmq-operator
@@ -11,11 +11,10 @@ metadata:
     helm.sh/chart: rabbitmq-cluster-operator-4.4.7
   name: rabbitmq-rabbitmq-cluster-operator
   namespace: rabbitmq
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: rabbitmq-rabbitmq-cluster-operator
-subjects:
-- kind: ServiceAccount
-  name: rabbitmq-rabbitmq-cluster-operator
-  namespace: rabbitmq
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: rabbitmq-operator
+      app.kubernetes.io/instance: rabbitmq
+      app.kubernetes.io/name: rabbitmq-cluster-operator

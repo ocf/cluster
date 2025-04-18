@@ -7,17 +7,17 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 1.13.0
-    helm.sh/chart: rabbitmq-cluster-operator-4.2.5
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.7
   name: rabbitmq-rabbitmq-messaging-topology-operator-webhook
   namespace: rabbitmq
 spec:
   ports:
-  - name: http
+  - name: https
     nodePort: null
     port: 443
     protocol: TCP
-    targetPort: http-webhook
+    targetPort: https-webhook
   selector:
     app.kubernetes.io/component: messaging-topology-operator
     app.kubernetes.io/instance: rabbitmq

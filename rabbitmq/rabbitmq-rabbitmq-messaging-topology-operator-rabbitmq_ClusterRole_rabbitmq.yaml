@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 1.13.0
-    helm.sh/chart: rabbitmq-cluster-operator-4.2.5
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.7
   name: rabbitmq-rabbitmq-messaging-topology-operator-rabbitmq
 rules:
 - apiGroups:
@@ -61,6 +61,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - bindings/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - exchanges
   verbs:
   - create
@@ -77,6 +83,12 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - exchanges/finalizers
+  verbs:
   - update
 - apiGroups:
   - rabbitmq.com
@@ -101,6 +113,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - federations/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - permissions
   verbs:
   - create
@@ -117,6 +135,12 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - permissions/finalizers
+  verbs:
   - update
 - apiGroups:
   - rabbitmq.com
@@ -141,6 +165,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - policies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - queues
   verbs:
   - create
@@ -157,6 +187,12 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - queues/finalizers
+  verbs:
   - update
 - apiGroups:
   - rabbitmq.com
@@ -195,6 +231,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - schemareplications/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - shovels
   verbs:
   - create
@@ -211,6 +253,12 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - shovels/finalizers
+  verbs:
   - update
 - apiGroups:
   - rabbitmq.com
@@ -235,6 +283,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - superstreams/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - users
   verbs:
   - create
@@ -251,6 +305,12 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - users/finalizers
+  verbs:
   - update
 - apiGroups:
   - rabbitmq.com
@@ -275,6 +335,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - vhosts/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - topicpermissions
   verbs:
   - create
@@ -295,6 +361,12 @@ rules:
 - apiGroups:
   - rabbitmq.com
   resources:
+  - topicpermissions/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
   - operatorpolicies
   verbs:
   - create
@@ -310,3 +382,11 @@ rules:
   - operatorpolicies/status
   verbs:
   - get
+  - patch
+  - update
+- apiGroups:
+  - rabbitmq.com
+  resources:
+  - operatorpolicies/finalizers
+  verbs:
+  - update

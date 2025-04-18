@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 70.2.1
-    chart: kube-prometheus-stack-70.2.1
+    app.kubernetes.io/version: 70.7.0
+    chart: kube-prometheus-stack-70.7.0
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubernetes-system-kubelet
@@ -31,6 +31,22 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: KubeNodePressure
+      annotations:
+        description: '{{ $labels.node }} on cluster {{ $labels.cluster }} has active
+          Condition {{ $labels.condition }}. This is caused by resource usage exceeding
+          eviction thresholds.'
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodepressure
+        summary: Node has as active Condition.
+      expr: 'kube_node_status_condition{job="kube-state-metrics",condition=~"(MemoryPressure|DiskPressure|PIDPressure)",status="true"}
+        == 1
+
+        and on (cluster, node)
+
+        kube_node_spec_unschedulable{job="kube-state-metrics"} == 0'
+      for: 10m
+      labels:
+        severity: info
     - alert: KubeNodeUnreachable
       annotations:
         description: '{{ $labels.node }} is unreachable and some workloads may be
@@ -73,6 +89,21 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: KubeNodeEviction
+      annotations:
+        description: Node {{ $labels.node }} on {{ $labels.cluster }} is evicting
+          Pods due to {{ $labels.eviction_signal }}.  Eviction occurs when eviction
+          thresholds are crossed, typically caused by Pods exceeding RAM/ephemeral-storage
+          limits.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodeeviction
+        summary: Node is evicting pods.
+      expr: "sum(rate(kubelet_evictions{job=\"kubelet\", metrics_path=\"/metrics\"\
+        }[15m])) by (cluster, eviction_signal, instance)\n* on (cluster, instance)\
+        \ group_left(node)\nmax by (cluster, instance, node) (\n  kubelet_node_name{job=\"\
+        kubelet\", metrics_path=\"/metrics\"}\n)\n> 0"
+      for: 0s
+      labels:
+        severity: info
     - alert: KubeletPlegDurationHigh
       annotations:
         description: The Kubelet Pod Lifecycle Event Generator has a 99th percentile

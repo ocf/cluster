@@ -5,7 +5,7 @@ metadata:
     helm.sh/hook: test-success
   labels:
     app: redis-ha
-    chart: redis-ha-4.29.4
+    chart: redis-ha-4.33.2
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap-test
@@ -15,7 +15,7 @@ spec:
   - args:
     - --shell=sh
     - /readonly-config/init.sh
-    image: koalaman/shellcheck:v0.5.0
+    image: koalaman/shellcheck:v0.10.0
     name: check-init
     resources: {}
     securityContext:
