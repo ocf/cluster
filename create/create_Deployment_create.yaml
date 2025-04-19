@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: create
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: create
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: create
+    spec:
+      containers:
+      - image: ghcr.io/ocf/create:404e9b628c79d9e493cb8c06354a0ebc76d08167
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - python
+            - -m
+            - create.healthcheck
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        name: main
+        ports:
+        - containerPort: 6378
+        readinessProbe:
+          exec:
+            command:
+            - python
+            - -m
+            - create.healthcheck
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        volumeMounts:
+        - mountPath: /home
+          name: nfs-export-home
+        - mountPath: /services
+          name: nfs-export-services
+        - mountPath: /etc/ocf-create
+          name: secrets
+          readOnly: true
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: nfs-export-home
+        nfs:
+          path: /opt/homes/home
+          server: homes
+      - name: nfs-export-services
+        nfs:
+          path: /opt/homes/services
+          server: services
+      - name: secrets
+        secret:
+          secretName: create
