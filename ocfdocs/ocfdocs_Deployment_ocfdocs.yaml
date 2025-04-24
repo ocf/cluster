@@ -15,11 +15,9 @@ spec:
       containers:
       - env: []
         envFrom:
-        - configMapRef:
-            name: ocfdocs
         - secretRef:
             name: ocfdocs
-        image: ghcr.io/ocf/ocfdocs:9e7af7c8be9aa07783186721cf405653cb0a866c
+        image: ghcr.io/ocf/ocfdocs:a07066f8e9508a1025065c01521bd6b2cd69081f
         imagePullPolicy: IfNotPresent
         name: main
         ports:
