@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: rt
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: rt
+    spec:
+      containers:
+      - env: []
+        envFrom:
+        - secretRef:
+            name: keycloak-secret
+        image: ghcr.io/ocf/rt:20f6e33e919e547f1ef310b074c0687fcab30ecc
+        imagePullPolicy: IfNotPresent
+        name: rt-nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /opt/share/secrets/rt
+          name: secrets
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: secrets
+        secret:
+          secretName: keycloak-secret
