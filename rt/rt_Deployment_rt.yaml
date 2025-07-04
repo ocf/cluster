@@ -13,11 +13,13 @@ spec:
         transpire.ocf.io/deployment: rt
     spec:
       containers:
-      - env: []
+      - env:
+        - name: SERVER_NAME
+          value: rt.ocf.berkeley.edu
         envFrom:
         - secretRef:
             name: keycloak-env
-        image: ghcr.io/ocf/rt:4c4558988a8c560486209dd59ba138fe059d4316
+        image: ghcr.io/ocf/rt:4e8e1750963b16200c088404cff7779667dd3ee5
         imagePullPolicy: IfNotPresent
         name: rt-nginx
         ports:
