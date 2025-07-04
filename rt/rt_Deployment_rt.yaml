@@ -17,7 +17,7 @@ spec:
         envFrom:
         - secretRef:
             name: keycloak-env
-        image: ghcr.io/ocf/rt:242bf85a86c2c2c2c1a225a6a256db62bd824862
+        image: ghcr.io/ocf/rt:9b958b6aecd73fe35bda5acd53c27200ea553a91
         imagePullPolicy: IfNotPresent
         name: rt-nginx
         ports:
