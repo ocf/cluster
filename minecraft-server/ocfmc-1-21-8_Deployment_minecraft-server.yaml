@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: ocfmc-1-21-8
     spec:
       containers:
-      - image: ghcr.io/ocf/minecraft-server-ocfmc-1-21-8:c4191dfff377cdca0183edabc5d1857b9ee48042
+      - image: ghcr.io/ocf/minecraft-server-ocfmc-1-21-8:4b16ebdeba910535b983485f2c3b8fd4830cc8b1
         imagePullPolicy: IfNotPresent
         name: main
         ports:

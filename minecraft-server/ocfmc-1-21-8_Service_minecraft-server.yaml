@@ -9,8 +9,3 @@ spec:
   selector:
     transpire.ocf.io/deployment: ocfmc-1-21-8
   type: LoadBalancer
-status:
-  loadBalancer:
-    ingress:
-    - ip: 169.229.226.85
-      ipMode: VIP
