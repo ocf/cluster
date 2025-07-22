@@ -8,3 +8,8 @@ spec:
     targetPort: 25565
   selector:
     transpire.ocf.io/deployment: ocfmc-1-21-8
+status:
+  loadBalancer:
+    ingress:
+    - ip: 169.229.226.85
+      ipMode: vip
