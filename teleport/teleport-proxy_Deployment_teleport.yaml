@@ -22,7 +22,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 65bf9b677ed4033f796874b4d30bd4f70c28a162fa6da403ca83e9eeb1c01e14
+        checksum/config: 148bff79abd2f5f8899aa36210d446a645690033a495c142b3991887acf80f2a
       labels:
         app.kubernetes.io/component: proxy
         app.kubernetes.io/instance: teleport

@@ -15,7 +15,7 @@ metadata:
   namespace: vault
 spec:
   rules:
-  - host: vault.ocf.berkeley.edu
+  - host: dev-vault.ocf.berkeley.edu
     http:
       paths:
       - backend:
@@ -27,5 +27,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - vault.ocf.berkeley.edu
+    - dev-vault.ocf.berkeley.edu
     secretName: vault-ingress-tls

@@ -12,7 +12,7 @@ metadata:
   name: teleport
   namespace: teleport
 spec:
-  loadBalancerIP: 169.229.226.82
+  loadBalancerIP: 169.229.226.106
   ports:
   - name: tls
     port: 443

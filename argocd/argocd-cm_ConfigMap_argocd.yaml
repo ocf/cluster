@@ -31,7 +31,7 @@ data:
   statusbadge.enabled: 'false'
   timeout.hard.reconciliation: 0s
   timeout.reconciliation: 180s
-  url: https://argo.ocf.berkeley.edu
+  url: https://dev-argo.ocf.berkeley.edu
 kind: ConfigMap
 metadata:
   labels:

@@ -13,8 +13,8 @@ metadata:
   namespace: teleport
 spec:
   dnsNames:
-  - tele.ocf.io
-  - '*.tele.ocf.io'
+  - dev-tele.ocf.io
+  - '*.dev-tele.ocf.io'
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

@@ -5,10 +5,10 @@ data:
     \ kubernetes\n  kubernetes:\n    allow:\n      - service_account: \"teleport:teleport-proxy\"\
     \n"
   teleport.yaml: "auth_service:\n  authentication:\n    local_auth: true\n    second_factor:\
-    \ \"on\"\n    type: local\n    webauthn:\n      rp_id: tele.ocf.io\n  cluster_name:\
-    \ tele.ocf.io\n  enabled: true\n  license_file: /var/lib/license/license.pem\n\
+    \ \"on\"\n    type: local\n    webauthn:\n      rp_id: dev-tele.ocf.io\n  cluster_name:\
+    \ dev-tele.ocf.io\n  enabled: true\n  license_file: /var/lib/license/license.pem\n\
     \  proxy_listener_mode: separate\nkubernetes_service:\n  enabled: true\n  kube_cluster_name:\
-    \ dna.ocf.io\n  listen_addr: 0.0.0.0:3026\n  public_addr: teleport-auth.teleport.svc.cluster.local:3026\n\
+    \ gravitywell.ocf.io\n  listen_addr: 0.0.0.0:3026\n  public_addr: teleport-auth.teleport.svc.cluster.local:3026\n\
     proxy_service:\n  enabled: false\nssh_service:\n  enabled: false\nteleport:\n\
     \  auth_server: 127.0.0.1:3025\n  log:\n    format:\n      extra_fields:\n   \
     \   - timestamp\n      - level\n      - component\n      - caller\n      output:\
