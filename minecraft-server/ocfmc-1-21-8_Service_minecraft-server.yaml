@@ -12,4 +12,4 @@ status:
   loadBalancer:
     ingress:
     - ip: 169.229.226.85
-      ipMode: vip
+      ipMode: VIP
