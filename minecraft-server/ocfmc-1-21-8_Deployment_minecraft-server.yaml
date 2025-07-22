@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocfmc-1-21-8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: ocfmc-1-21-8
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: ocfmc-1-21-8
+    spec:
+      containers:
+      - image: ghcr.io/ocf/minecraft-server-ocfmc-1-21-8:8c210129102cb0adc6d279b75df8613af1d98926
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 25565
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: ocfmc-1-21-8
