@@ -55,7 +55,7 @@ spec:
               divisor: '1'
               resource: limits.memory
         - name: KUBERNETES_SERVICE_HOST
-          value: dna.ocf.io
+          value: gravitywell.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
         image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426
@@ -186,7 +186,7 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
         - name: KUBERNETES_SERVICE_HOST
-          value: dna.ocf.io
+          value: gravitywell.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
         image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426
@@ -303,7 +303,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: dna.ocf.io
+          value: gravitywell.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
         image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426

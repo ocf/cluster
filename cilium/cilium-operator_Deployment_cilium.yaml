@@ -62,7 +62,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: dna.ocf.io
+          value: gravitywell.ocf.io
         - name: KUBERNETES_SERVICE_PORT
           value: '6443'
         image: quay.io/cilium/operator-generic:v1.15.4@sha256:404890a83cca3f28829eb7e54c1564bb6904708cdb7be04ebe69c2b60f164e9a
