@@ -8,6 +8,7 @@ spec:
     targetPort: 25565
   selector:
     transpire.ocf.io/deployment: ocfmc-1-21-8
+  type: LoadBalancer
 status:
   loadBalancer:
     ingress:
