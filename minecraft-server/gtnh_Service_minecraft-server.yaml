@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtnh
+spec:
+  ports:
+  - port: 25565
+    targetPort: 25565
+  selector:
+    transpire.ocf.io/deployment: gtnh
+  type: LoadBalancer

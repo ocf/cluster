@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ocfmc-1-21-8
+  name: gtnh
 spec:
   replicas: 1
   selector:
     matchLabels:
-      transpire.ocf.io/deployment: ocfmc-1-21-8
+      transpire.ocf.io/deployment: gtnh
   template:
     metadata:
       labels:
-        transpire.ocf.io/deployment: ocfmc-1-21-8
+        transpire.ocf.io/deployment: gtnh
     spec:
       containers:
-      - image: ghcr.io/ocf/minecraft-server-ocfmc-1-21-8:8cdb45bea0e4edb31b80512660773e5e0880667e
+      - image: ghcr.io/ocf/minecraft-server-gtnh:8cdb45bea0e4edb31b80512660773e5e0880667e
         imagePullPolicy: IfNotPresent
         name: main
         ports:
@@ -28,4 +28,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: ocfmc-1-21-8
+          claimName: gtnh
