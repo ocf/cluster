@@ -4,7 +4,7 @@ data:
   application.instanceLabelKey: argocd.argoproj.io/instance
   application.sync.impersonation.enabled: 'false'
   exec.enabled: 'false'
-  oidc.config: 'clientID: argocd
+  oidc.config: 'clientID: dev-argocd
 
     clientSecret: $oidc.keycloak.clientSecret
 
