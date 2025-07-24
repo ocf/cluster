@@ -9,5 +9,5 @@ spec:
   project: default
   source:
     path: base
-    ref: dev
     repoURL: https://github.com/ocf/cluster
+    targetRevision: dev
