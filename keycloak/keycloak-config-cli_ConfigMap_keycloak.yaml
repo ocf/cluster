@@ -20,6 +20,10 @@ data:
     CD for Kubernetes", "baseUrl": "https://argo.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://argo.ocf.berkeley.edu/auth/callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "dev-argocd", "name": "Devkube ArgoCD", "description": "Declarative
+    GitOps CD for Kubernetes", "baseUrl": "https://dev-argo.ocf.berkeley.edu/", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://dev-argo.ocf.berkeley.edu/auth/callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "hedgedoc", "name": "HedgeDoc", "description": "Collaborative
     markdown notes", "baseUrl": "https://notes.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://notes.ocf.berkeley.edu/auth/oauth2/callback"],
