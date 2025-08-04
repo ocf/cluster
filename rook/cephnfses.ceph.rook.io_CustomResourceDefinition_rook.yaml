@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.16.1
     helm.sh/resource-policy: keep
   name: cephnfses.ceph.rook.io
 spec:
@@ -86,7 +86,6 @@ spec:
                           will be placed into the `/etc/krb5.conf.rook/` directory.
 
 
-
                           If this is left empty, Rook will not add any files. This
                           allows you to manage the files
 
@@ -97,7 +96,6 @@ spec:
                           files via annotations on the
 
                           CephNFS spec (passed to the NFS server pods).
-
 
 
                           Rook configures Kerberos to log to stderr. We suggest removing
@@ -128,7 +126,9 @@ spec:
                                       - path
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                   name:
+                                    default: ''
                                     type: string
                                   optional:
                                     type: boolean
@@ -186,11 +186,13 @@ spec:
                                                         items:
                                                           type: string
                                                         type: array
+                                                        x-kubernetes-list-type: atomic
                                                     required:
                                                     - key
                                                     - operator
                                                     type: object
                                                   type: array
+                                                  x-kubernetes-list-type: atomic
                                                 matchLabels:
                                                   additionalProperties:
                                                     type: string
@@ -225,7 +227,9 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             name:
+                                              default: ''
                                               type: string
                                             optional:
                                               type: boolean
@@ -271,6 +275,7 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                           type: object
                                         secret:
                                           properties:
@@ -289,7 +294,9 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             name:
+                                              default: ''
                                               type: string
                                             optional:
                                               type: boolean
@@ -309,6 +316,7 @@ spec:
                                           type: object
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                 type: object
                               secret:
                                 properties:
@@ -330,6 +338,7 @@ spec:
                                       - path
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                   optional:
                                     type: boolean
                                   secretName:
@@ -378,7 +387,9 @@ spec:
                                       - path
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                   name:
+                                    default: ''
                                     type: string
                                   optional:
                                     type: boolean
@@ -436,11 +447,13 @@ spec:
                                                         items:
                                                           type: string
                                                         type: array
+                                                        x-kubernetes-list-type: atomic
                                                     required:
                                                     - key
                                                     - operator
                                                     type: object
                                                   type: array
+                                                  x-kubernetes-list-type: atomic
                                                 matchLabels:
                                                   additionalProperties:
                                                     type: string
@@ -475,7 +488,9 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             name:
+                                              default: ''
                                               type: string
                                             optional:
                                               type: boolean
@@ -521,6 +536,7 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                           type: object
                                         secret:
                                           properties:
@@ -539,7 +555,9 @@ spec:
                                                 - path
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             name:
+                                              default: ''
                                               type: string
                                             optional:
                                               type: boolean
@@ -559,6 +577,7 @@ spec:
                                           type: object
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                 type: object
                               secret:
                                 properties:
@@ -580,6 +599,7 @@ spec:
                                       - path
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                   optional:
                                     type: boolean
                                   secretName:
@@ -626,20 +646,29 @@ spec:
                             description: 'AdditionalFiles defines any number of additional
                               files that should be mounted into the SSSD
 
-                              sidecar. These files may be referenced by the sssd.conf
-                              config file.'
-                            items:
-                              description: 'SSSDSidecarAdditionalFile represents the
-                                source from where additional files for the the SSSD
+                              sidecar with a directory root of `/etc/sssd/rook-additional/`.
 
-                                configuration should come from and are made available.'
+                              These files may be referenced by the sssd.conf config
+                              file.'
+                            items:
+                              description: 'AdditionalVolumeMount represents the source
+                                from where additional files in pod containers
+
+                                should come from and what subdirectory they are made
+                                available in.'
                               properties:
                                 subPath:
-                                  description: 'SubPath defines the sub-path in `/etc/sssd/rook-additional/`
-                                    where the additional file(s)
+                                  description: 'SubPath defines the sub-path (subdirectory)
+                                    of the directory root where the volumeSource will
 
-                                    will be placed. Each subPath definition must be
-                                    unique and must not contain '':''.'
+                                    be mounted. All files/keys in the volume source''s
+                                    volume will be mounted to the subdirectory.
+
+                                    This is not the same as the Kubernetes `subPath`
+                                    volume mount option.
+
+                                    Each subPath definition must be unique and must
+                                    not contain '':''.'
                                   minLength: 1
                                   pattern: ^[^:]+$
                                   type: string
@@ -665,7 +694,9 @@ spec:
                                             - path
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         name:
+                                          default: ''
                                           type: string
                                         optional:
                                           type: boolean
@@ -723,11 +754,13 @@ spec:
                                                               items:
                                                                 type: string
                                                               type: array
+                                                              x-kubernetes-list-type: atomic
                                                           required:
                                                           - key
                                                           - operator
                                                           type: object
                                                         type: array
+                                                        x-kubernetes-list-type: atomic
                                                       matchLabels:
                                                         additionalProperties:
                                                           type: string
@@ -762,7 +795,9 @@ spec:
                                                       - path
                                                       type: object
                                                     type: array
+                                                    x-kubernetes-list-type: atomic
                                                   name:
+                                                    default: ''
                                                     type: string
                                                   optional:
                                                     type: boolean
@@ -808,6 +843,7 @@ spec:
                                                       - path
                                                       type: object
                                                     type: array
+                                                    x-kubernetes-list-type: atomic
                                                 type: object
                                               secret:
                                                 properties:
@@ -826,7 +862,9 @@ spec:
                                                       - path
                                                       type: object
                                                     type: array
+                                                    x-kubernetes-list-type: atomic
                                                   name:
+                                                    default: ''
                                                     type: string
                                                   optional:
                                                     type: boolean
@@ -846,6 +884,7 @@ spec:
                                                 type: object
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                       type: object
                                     secret:
                                       properties:
@@ -867,6 +906,7 @@ spec:
                                             - path
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         optional:
                                           type: boolean
                                         secretName:
@@ -905,11 +945,9 @@ spec:
                                   that are used by this container.
 
 
-
                                   This is an alpha field and requires enabling the
 
                                   DynamicResourceAllocation feature gate.
-
 
 
                                   This field is immutable. It can only be set for
@@ -926,6 +964,15 @@ spec:
                                         that resource available
 
                                         inside a container.'
+                                      type: string
+                                    request:
+                                      description: 'Request is the name chosen for
+                                        a request in the referenced claim.
+
+                                        If empty, everything from the claim is made
+                                        available, otherwise
+
+                                        only the result of this request.'
                                       type: string
                                   required:
                                   - name
@@ -1003,7 +1050,9 @@ spec:
                                           - path
                                           type: object
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                       name:
+                                        default: ''
                                         type: string
                                       optional:
                                         type: boolean
@@ -1061,11 +1110,13 @@ spec:
                                                             items:
                                                               type: string
                                                             type: array
+                                                            x-kubernetes-list-type: atomic
                                                         required:
                                                         - key
                                                         - operator
                                                         type: object
                                                       type: array
+                                                      x-kubernetes-list-type: atomic
                                                     matchLabels:
                                                       additionalProperties:
                                                         type: string
@@ -1100,7 +1151,9 @@ spec:
                                                     - path
                                                     type: object
                                                   type: array
+                                                  x-kubernetes-list-type: atomic
                                                 name:
+                                                  default: ''
                                                   type: string
                                                 optional:
                                                   type: boolean
@@ -1146,6 +1199,7 @@ spec:
                                                     - path
                                                     type: object
                                                   type: array
+                                                  x-kubernetes-list-type: atomic
                                               type: object
                                             secret:
                                               properties:
@@ -1164,7 +1218,9 @@ spec:
                                                     - path
                                                     type: object
                                                   type: array
+                                                  x-kubernetes-list-type: atomic
                                                 name:
+                                                  default: ''
                                                   type: string
                                                 optional:
                                                   type: boolean
@@ -1184,6 +1240,7 @@ spec:
                                               type: object
                                           type: object
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                     type: object
                                   secret:
                                     properties:
@@ -1205,6 +1262,7 @@ spec:
                                           - path
                                           type: object
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                       optional:
                                         type: boolean
                                       secretName:
@@ -1284,6 +1342,7 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                                x-kubernetes-list-type: atomic
                             type: object
                           failureThreshold:
                             description: 'Minimum consecutive failures for the probe
@@ -1302,11 +1361,11 @@ spec:
                                 format: int32
                                 type: integer
                               service:
+                                default: ''
                                 description: 'Service is the name of the service to
                                   place in the gRPC HealthCheckRequest
 
                                   (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
-
 
 
                                   If this is not specified, the default behavior is
@@ -1346,6 +1405,7 @@ spec:
                                   - value
                                   type: object
                                 type: array
+                                x-kubernetes-list-type: atomic
                               path:
                                 description: Path to access on the HTTP server.
                                 type: string
@@ -1450,11 +1510,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchFields:
                                       items:
                                         properties:
@@ -1466,11 +1528,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                   type: object
                                   x-kubernetes-map-type: atomic
                                 weight:
@@ -1481,6 +1545,7 @@ spec:
                               - weight
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                           requiredDuringSchedulingIgnoredDuringExecution:
                             properties:
                               nodeSelectorTerms:
@@ -1497,11 +1562,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchFields:
                                       items:
                                         properties:
@@ -1513,14 +1580,17 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                   type: object
                                   x-kubernetes-map-type: atomic
                                 type: array
+                                x-kubernetes-list-type: atomic
                             required:
                             - nodeSelectorTerms
                             type: object
@@ -1546,11 +1616,13 @@ spec:
                                                 items:
                                                   type: string
                                                 type: array
+                                                x-kubernetes-list-type: atomic
                                             required:
                                             - key
                                             - operator
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         matchLabels:
                                           additionalProperties:
                                             type: string
@@ -1580,11 +1652,13 @@ spec:
                                                 items:
                                                   type: string
                                                 type: array
+                                                x-kubernetes-list-type: atomic
                                             required:
                                             - key
                                             - operator
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         matchLabels:
                                           additionalProperties:
                                             type: string
@@ -1595,6 +1669,7 @@ spec:
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     topologyKey:
                                       type: string
                                   required:
@@ -1608,6 +1683,7 @@ spec:
                               - weight
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                           requiredDuringSchedulingIgnoredDuringExecution:
                             items:
                               properties:
@@ -1624,11 +1700,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchLabels:
                                       additionalProperties:
                                         type: string
@@ -1658,11 +1736,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchLabels:
                                       additionalProperties:
                                         type: string
@@ -1673,12 +1753,14 @@ spec:
                                   items:
                                     type: string
                                   type: array
+                                  x-kubernetes-list-type: atomic
                                 topologyKey:
                                   type: string
                               required:
                               - topologyKey
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                         type: object
                       podAntiAffinity:
                         properties:
@@ -1700,11 +1782,13 @@ spec:
                                                 items:
                                                   type: string
                                                 type: array
+                                                x-kubernetes-list-type: atomic
                                             required:
                                             - key
                                             - operator
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         matchLabels:
                                           additionalProperties:
                                             type: string
@@ -1734,11 +1818,13 @@ spec:
                                                 items:
                                                   type: string
                                                 type: array
+                                                x-kubernetes-list-type: atomic
                                             required:
                                             - key
                                             - operator
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                         matchLabels:
                                           additionalProperties:
                                             type: string
@@ -1749,6 +1835,7 @@ spec:
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     topologyKey:
                                       type: string
                                   required:
@@ -1762,6 +1849,7 @@ spec:
                               - weight
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                           requiredDuringSchedulingIgnoredDuringExecution:
                             items:
                               properties:
@@ -1778,11 +1866,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchLabels:
                                       additionalProperties:
                                         type: string
@@ -1812,11 +1902,13 @@ spec:
                                             items:
                                               type: string
                                             type: array
+                                            x-kubernetes-list-type: atomic
                                         required:
                                         - key
                                         - operator
                                         type: object
                                       type: array
+                                      x-kubernetes-list-type: atomic
                                     matchLabels:
                                       additionalProperties:
                                         type: string
@@ -1827,12 +1919,14 @@ spec:
                                   items:
                                     type: string
                                   type: array
+                                  x-kubernetes-list-type: atomic
                                 topologyKey:
                                   type: string
                               required:
                               - topologyKey
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                         type: object
                       tolerations:
                         items:
@@ -1866,11 +1960,13 @@ spec:
                                         items:
                                           type: string
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                     required:
                                     - key
                                     - operator
                                     type: object
                                   type: array
+                                  x-kubernetes-list-type: atomic
                                 matchLabels:
                                   additionalProperties:
                                     type: string
@@ -1919,11 +2015,9 @@ spec:
                           that are used by this container.
 
 
-
                           This is an alpha field and requires enabling the
 
                           DynamicResourceAllocation feature gate.
-
 
 
                           This field is immutable. It can only be set for containers.'
@@ -1938,6 +2032,15 @@ spec:
                                 available
 
                                 inside a container.'
+                              type: string
+                            request:
+                              description: 'Request is the name chosen for a request
+                                in the referenced claim.
+
+                                If empty, everything from the claim is made available,
+                                otherwise
+
+                                only the result of this request.'
                               type: string
                           required:
                           - name
