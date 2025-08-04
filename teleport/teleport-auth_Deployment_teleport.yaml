@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 16.4.12
-    helm.sh/chart: teleport-cluster-16.4.12
-    teleport.dev/majorVersion: '16'
+    app.kubernetes.io/version: 17.7.1
+    helm.sh/chart: teleport-cluster-17.7.1
+    teleport.dev/majorVersion: '17'
   name: teleport-auth
   namespace: teleport
 spec:
@@ -24,16 +24,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 83878b26e668dadee2e77e3045540ef59ae6e367ad98fff6b452827396b6b2bb
+        checksum/config: ffcfa92cdc95b141eeda8b3a97fc41dfaff609c3e804a738b3d0b1a09e5a66d9
       labels:
         app: teleport
         app.kubernetes.io/component: auth
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 16.4.12
-        helm.sh/chart: teleport-cluster-16.4.12
-        teleport.dev/majorVersion: '16'
+        app.kubernetes.io/version: 17.7.1
+        helm.sh/chart: teleport-cluster-17.7.1
+        teleport.dev/majorVersion: '17'
     spec:
       affinity:
         podAntiAffinity: null
@@ -42,7 +42,7 @@ spec:
       - args:
         - --diag-addr=0.0.0.0:3000
         - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:16.4.12
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:17.7.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -59,7 +59,7 @@ spec:
             port: diag
           initialDelaySeconds: 5
           periodSeconds: 5
-          timeoutSeconds: 1
+          timeoutSeconds: 5
         name: teleport
         ports:
         - containerPort: 3000
@@ -78,7 +78,8 @@ spec:
             port: diag
           initialDelaySeconds: 5
           periodSeconds: 5
-          timeoutSeconds: 1
+          successThreshold: 1
+          timeoutSeconds: 5
         volumeMounts:
         - mountPath: /var/lib/license
           name: license
@@ -93,6 +94,23 @@ spec:
           readOnly: true
       serviceAccountName: teleport
       terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: auth
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: auth
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
       volumes:
       - name: auth-serviceaccount-token
         projected:
