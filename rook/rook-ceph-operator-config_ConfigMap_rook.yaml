@@ -22,7 +22,6 @@ data:
     \    requests:\n      memory: 512Mi\n      cpu: 250m\n    limits:\n      memory:\
     \ 1Gi\n- name : liveness-prometheus\n  resource:\n    requests:\n      memory:\
     \ 128Mi\n      cpu: 50m\n    limits:\n      memory: 256Mi\n"
-  CSI_DISABLE_HOLDER_PODS: 'true'
   CSI_ENABLE_CEPHFS_SNAPSHOTTER: 'true'
   CSI_ENABLE_CSIADDONS: 'false'
   CSI_ENABLE_ENCRYPTION: 'false'
@@ -76,18 +75,18 @@ data:
     \ 256Mi\n"
   ROOK_CEPH_ALLOW_LOOP_DEVICES: 'false'
   ROOK_CEPH_COMMANDS_TIMEOUT_SECONDS: '15'
-  ROOK_CSIADDONS_IMAGE: quay.io/csiaddons/k8s-sidecar:v0.9.1
-  ROOK_CSI_ATTACHER_IMAGE: registry.k8s.io/sig-storage/csi-attacher:v4.6.1
-  ROOK_CSI_CEPH_IMAGE: quay.io/cephcsi/cephcsi:v3.12.3
+  ROOK_CSIADDONS_IMAGE: quay.io/csiaddons/k8s-sidecar:v0.11.0
+  ROOK_CSI_ATTACHER_IMAGE: registry.k8s.io/sig-storage/csi-attacher:v4.8.0
+  ROOK_CSI_CEPH_IMAGE: quay.io/cephcsi/cephcsi:v3.13.1
   ROOK_CSI_DISABLE_DRIVER: 'false'
   ROOK_CSI_ENABLE_CEPHFS: 'true'
   ROOK_CSI_ENABLE_NFS: 'false'
   ROOK_CSI_ENABLE_RBD: 'true'
   ROOK_CSI_IMAGE_PULL_POLICY: IfNotPresent
-  ROOK_CSI_PROVISIONER_IMAGE: registry.k8s.io/sig-storage/csi-provisioner:v5.0.1
-  ROOK_CSI_REGISTRAR_IMAGE: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.11.1
-  ROOK_CSI_RESIZER_IMAGE: registry.k8s.io/sig-storage/csi-resizer:v1.11.1
-  ROOK_CSI_SNAPSHOTTER_IMAGE: registry.k8s.io/sig-storage/csi-snapshotter:v8.0.1
+  ROOK_CSI_PROVISIONER_IMAGE: registry.k8s.io/sig-storage/csi-provisioner:v5.1.0
+  ROOK_CSI_REGISTRAR_IMAGE: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.13.0
+  ROOK_CSI_RESIZER_IMAGE: registry.k8s.io/sig-storage/csi-resizer:v1.13.1
+  ROOK_CSI_SNAPSHOTTER_IMAGE: registry.k8s.io/sig-storage/csi-snapshotter:v8.2.0
   ROOK_ENABLE_DISCOVERY_DAEMON: 'true'
   ROOK_LOG_LEVEL: INFO
   ROOK_OBC_WATCH_OPERATOR_NAMESPACE: 'true'

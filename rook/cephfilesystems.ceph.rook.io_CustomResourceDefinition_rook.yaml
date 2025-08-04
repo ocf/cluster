@@ -543,7 +543,8 @@ spec:
                           alive or ready to receive traffic.'
                         properties:
                           exec:
-                            description: Exec specifies the action to take.
+                            description: Exec specifies a command to execute in the
+                              container.
                             properties:
                               command:
                                 description: 'Command is the command line to execute
@@ -574,8 +575,7 @@ spec:
                             format: int32
                             type: integer
                           grpc:
-                            description: GRPC specifies an action involving a GRPC
-                              port.
+                            description: GRPC specifies a GRPC HealthCheckRequest.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -597,7 +597,8 @@ spec:
                             - port
                             type: object
                           httpGet:
-                            description: HTTPGet specifies the http request to perform.
+                            description: HTTPGet specifies an HTTP GET request to
+                              perform.
                             properties:
                               host:
                                 description: 'Host name to connect to, defaults to
@@ -673,8 +674,8 @@ spec:
                             format: int32
                             type: integer
                           tcpSocket:
-                            description: TCPSocket specifies an action involving a
-                              TCP port.
+                            description: TCPSocket specifies a connection to a TCP
+                              port.
                             properties:
                               host:
                                 description: 'Optional: Host name to connect to, defaults
@@ -1314,7 +1315,8 @@ spec:
                           alive or ready to receive traffic.'
                         properties:
                           exec:
-                            description: Exec specifies the action to take.
+                            description: Exec specifies a command to execute in the
+                              container.
                             properties:
                               command:
                                 description: 'Command is the command line to execute
@@ -1345,8 +1347,7 @@ spec:
                             format: int32
                             type: integer
                           grpc:
-                            description: GRPC specifies an action involving a GRPC
-                              port.
+                            description: GRPC specifies a GRPC HealthCheckRequest.
                             properties:
                               port:
                                 description: Port number of the gRPC service. Number
@@ -1368,7 +1369,8 @@ spec:
                             - port
                             type: object
                           httpGet:
-                            description: HTTPGet specifies the http request to perform.
+                            description: HTTPGet specifies an HTTP GET request to
+                              perform.
                             properties:
                               host:
                                 description: 'Host name to connect to, defaults to
@@ -1444,8 +1446,8 @@ spec:
                             format: int32
                             type: integer
                           tcpSocket:
-                            description: TCPSocket specifies an action involving a
-                              TCP port.
+                            description: TCPSocket specifies a connection to a TCP
+                              port.
                             properties:
                               host:
                                 description: 'Optional: Host name to connect to, defaults
