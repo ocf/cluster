@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 15.5.3
-    helm.sh/chart: teleport-cluster-15.5.3
-    teleport.dev/majorVersion: '15'
+    app.kubernetes.io/version: 17.7.1
+    helm.sh/chart: teleport-cluster-17.7.1
+    teleport.dev/majorVersion: '17'
   name: teleport-proxy
   namespace: teleport
 spec:
@@ -22,15 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 65bf9b677ed4033f796874b4d30bd4f70c28a162fa6da403ca83e9eeb1c01e14
+        checksum/config: 3ba82ce771907c24af9d0930537188cf36693c35b78b0ad982ba8f40a578c05b
       labels:
         app.kubernetes.io/component: proxy
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 15.5.3
-        helm.sh/chart: teleport-cluster-15.5.3
-        teleport.dev/majorVersion: '15'
+        app.kubernetes.io/version: 17.7.1
+        helm.sh/chart: teleport-cluster-17.7.1
+        teleport.dev/majorVersion: '17'
     spec:
       affinity:
         podAntiAffinity: null
@@ -38,7 +38,7 @@ spec:
       containers:
       - args:
         - --diag-addr=0.0.0.0:3000
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:15.5.3
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:17.7.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -105,11 +105,28 @@ spec:
         - teleport
         - wait
         - no-resolve
-        - teleport-auth-v14.teleport.svc.cluster.local
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:15.5.3
+        - teleport-auth-v16.teleport.svc.cluster.local
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:17.7.1
         name: wait-auth-update
       serviceAccountName: teleport-proxy
       terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
       volumes:
       - name: proxy-serviceaccount-token
         projected:

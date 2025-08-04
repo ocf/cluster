@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 15.5.3
-    helm.sh/chart: teleport-cluster-15.5.3
-    teleport.dev/majorVersion: '15'
+    app.kubernetes.io/version: 17.7.1
+    helm.sh/chart: teleport-cluster-17.7.1
+    teleport.dev/majorVersion: '17'
   name: teleport
 rules:
 - apiGroups:

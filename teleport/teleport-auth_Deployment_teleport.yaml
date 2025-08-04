@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 15.5.3
-    helm.sh/chart: teleport-cluster-15.5.3
-    teleport.dev/majorVersion: '15'
+    app.kubernetes.io/version: 17.7.1
+    helm.sh/chart: teleport-cluster-17.7.1
+    teleport.dev/majorVersion: '17'
   name: teleport-auth
   namespace: teleport
 spec:
@@ -24,16 +24,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 45aa1901705c43f75bc15e3a64d2c46532cee6092b3f4a487fae5dc67cb9306b
+        checksum/config: ffcfa92cdc95b141eeda8b3a97fc41dfaff609c3e804a738b3d0b1a09e5a66d9
       labels:
         app: teleport
         app.kubernetes.io/component: auth
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 15.5.3
-        helm.sh/chart: teleport-cluster-15.5.3
-        teleport.dev/majorVersion: '15'
+        app.kubernetes.io/version: 17.7.1
+        helm.sh/chart: teleport-cluster-17.7.1
+        teleport.dev/majorVersion: '17'
     spec:
       affinity:
         podAntiAffinity: null
@@ -42,7 +42,7 @@ spec:
       - args:
         - --diag-addr=0.0.0.0:3000
         - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:15.5.3
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:17.7.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -94,6 +94,23 @@ spec:
           readOnly: true
       serviceAccountName: teleport
       terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: auth
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: auth
+            app.kubernetes.io/instance: teleport
+            app.kubernetes.io/name: teleport-cluster
+        maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
       volumes:
       - name: auth-serviceaccount-token
         projected:
