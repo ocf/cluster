@@ -7,7 +7,7 @@ metadata:
   namespace: rook
 spec:
   cephVersion:
-    image: quay.io/ceph/ceph:v17.2.5
+    image: quay.io/ceph/ceph:v18.2.2
   dashboard:
     enabled: true
   dataDirHostPath: /var/lib/rook
