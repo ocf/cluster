@@ -11,6 +11,8 @@ spec:
     kind: CephCluster
     listKind: CephClusterList
     plural: cephclusters
+    shortNames:
+    - ceph
     singular: cephcluster
   scope: Namespaced
   versions:
@@ -97,6 +99,42 @@ spec:
                 description: Ceph Config options
                 nullable: true
                 type: object
+              cephConfigFromSecret:
+                additionalProperties:
+                  additionalProperties:
+                    description: SecretKeySelector selects a key of a Secret.
+                    properties:
+                      key:
+                        description: The key of the secret to select from.  Must be
+                          a valid secret key.
+                        type: string
+                      name:
+                        default: ''
+                        description: 'Name of the referent.
+
+                          This field is effectively required, but due to backwards
+                          compatibility is
+
+                          allowed to be empty. Instances of this type with an empty
+                          value here are
+
+                          almost certainly wrong.
+
+                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      optional:
+                        description: Specify whether the Secret or its key must be
+                          defined
+                        type: boolean
+                    required:
+                    - key
+                    type: object
+                    x-kubernetes-map-type: atomic
+                  type: object
+                description: CephConfigFromSecret works exactly like CephConfig but
+                  takes config value from Secret Key reference.
+                nullable: true
+                type: object
               cephVersion:
                 description: The version information that instructs Rook to orchestrate
                   a particular version of Ceph.
@@ -163,6 +201,14 @@ spec:
                         - quick
                         type: string
                     type: object
+                  wipeDevicesFromOtherClusters:
+                    description: 'WipeDevicesFromOtherClusters wipes the OSD disks
+                      belonging to other clusters. This is useful in scenarios where
+                      ceph cluster
+
+                      was reinstalled but OSD disk still contains the metadata from
+                      previous ceph cluster.'
+                    type: boolean
                 type: object
               continueUpgradeAfterChecksEvenIfNotHealthy:
                 description: ContinueUpgradeAfterChecksEvenIfNotHealthy defines if
@@ -215,6 +261,12 @@ spec:
                         description: Enables read affinity for CSI driver.
                         type: boolean
                     type: object
+                  skipUserCreation:
+                    description: 'SkipUserCreation determines whether CSI users and
+                      their associated secrets should be skipped.
+
+                      If set to true, the user must manually manage these secrets.'
+                    type: boolean
                 type: object
               dashboard:
                 description: Dashboard settings
@@ -810,6 +862,21 @@ spec:
                     maximum: 9
                     minimum: 0
                     type: integer
+                  externalMonIDs:
+                    description: 'ExternalMonIDs - optional list of monitor IDs which
+                      are deployed externally and not managed by Rook.
+
+                      If set, Rook will not remove mons with given IDs from quorum.
+
+                      This parameter is used only for local Rook cluster running in
+                      normal mode
+
+                      and will be ignored if external or stretched mode is used.
+
+                      leading'
+                    items:
+                      type: string
+                    type: array
                   failureDomainLabel:
                     type: string
                   stretchCluster:
@@ -1836,6 +1903,12 @@ spec:
                   exporter:
                     description: Ceph exporter configuration
                     properties:
+                      hostNetwork:
+                        description: Whether host networking is enabled for CephExporter.
+                          If not set, the network settings from CephCluster.spec.networking
+                          will be applied.
+                        nullable: true
+                        type: boolean
                       perfCountersPrioLimit:
                         default: 5
                         description: Only performance counters greater than or equal
@@ -2105,7 +2178,7 @@ spec:
                     x-kubernetes-validations:
                     - message: network provider must be disabled (reverted to empty
                         string) before a new provider is enabled
-                      rule: self == '' || self == oldSelf
+                      rule: self == '' || oldSelf == '' || self == oldSelf
                   selectors:
                     additionalProperties:
                       type: string
