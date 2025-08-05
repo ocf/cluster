@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: coredns
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: coredns
-    helm.sh/chart: coredns-1.29.0
+    helm.sh/chart: coredns-1.43.1
     k8s-app: coredns
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: CoreDNS
