@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq-cluster-operator
     app.kubernetes.io/part-of: rabbitmq
-    app.kubernetes.io/version: 1.13.0
-    helm.sh/chart: rabbitmq-cluster-operator-4.2.5
+    app.kubernetes.io/version: 1.17.3
+    helm.sh/chart: rabbitmq-cluster-operator-4.4.29
   name: rabbitmq-rabbitmq-messaging-topology-operator
   namespace: rabbitmq
 spec:
@@ -29,8 +29,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq-cluster-operator
         app.kubernetes.io/part-of: rabbitmq
-        app.kubernetes.io/version: 1.13.0
-        helm.sh/chart: rabbitmq-cluster-operator-4.2.5
+        app.kubernetes.io/version: 1.17.3
+        helm.sh/chart: rabbitmq-cluster-operator-4.4.29
     spec:
       affinity:
         nodeAffinity: null
@@ -50,28 +50,27 @@ spec:
       - args:
         - --metrics-bind-address=:8080
         command:
-        - /manager
+        - manager
         env:
         - name: OPERATOR_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
         envFrom: null
-        image: docker.io/bitnami/rmq-messaging-topology-operator:1.13.0-debian-12-r8
+        image: docker.io/bitnami/rmq-messaging-topology-operator:1.17.3-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
-          httpGet:
-            path: /metrics
-            port: http-metrics
           initialDelaySeconds: 5
           periodSeconds: 30
           successThreshold: 1
+          tcpSocket:
+            port: http-metrics
           timeoutSeconds: 5
         name: rabbitmq-cluster-operator
         ports:
         - containerPort: 9443
-          name: http-webhook
+          name: https-webhook
           protocol: TCP
         - containerPort: 8080
           name: http-metrics
@@ -88,7 +87,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -104,7 +103,7 @@ spec:
           runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
-          seLinuxOptions: null
+          seLinuxOptions: {}
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
