@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    app.kubernetes.io/version: 26.1.3
-    helm.sh/chart: keycloak-24.4.11
+    app.kubernetes.io/version: 26.3.2
+    helm.sh/chart: keycloak-24.9.0
   name: keycloak
   namespace: keycloak
 spec:
@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-env-vars: 4d811b33e6f52ee3607cd063dd390fc955d1a8d9ab77574af860e310a1fbfedf
+        checksum/configmap-env-vars: adfb9eebefc0b02efff8259591e60a139a63df1839e7c3b3055ac1ad0db038d4
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-keytab: kvv2/data/keycloak/keycloak
         vault.hashicorp.com/agent-inject-template-keytab: '{{- with secret "kvv2/data/keycloak/keycloak"
@@ -31,13 +31,13 @@ spec:
         vault.hashicorp.com/role: keycloak
         vault.hashicorp.com/service: https://vault.ocf.berkeley.edu/
       labels:
-        app.kubernetes.io/app-version: 26.1.3
+        app.kubernetes.io/app-version: 26.3.2
         app.kubernetes.io/component: keycloak
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keycloak
-        app.kubernetes.io/version: 26.1.3
-        helm.sh/chart: keycloak-24.4.11
+        app.kubernetes.io/version: 26.3.2
+        helm.sh/chart: keycloak-24.9.0
     spec:
       affinity:
         nodeAffinity: null
@@ -61,16 +61,10 @@ spec:
               fieldPath: metadata.namespace
         - name: BITNAMI_DEBUG
           value: 'false'
-        - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: admin-password
-              name: keycloak
-        - name: KEYCLOAK_DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: keycloak.ocf-keycloak.credentials.postgresql.acid.zalan.do
+        - name: KC_BOOTSTRAP_ADMIN_PASSWORD_FILE
+          value: /opt/bitnami/keycloak/secrets/admin-password
+        - name: KEYCLOAK_DATABASE_PASSWORD_FILE
+          value: /opt/bitnami/keycloak/secrets/db-password
         - name: KEYCLOAK_HTTP_RELATIVE_PATH
           value: /
         - name: KC_SPI_ADMIN_REALM
@@ -78,7 +72,7 @@ spec:
         envFrom:
         - configMapRef:
             name: keycloak-env-vars
-        image: docker.io/bitnami/keycloak:26.1.3-debian-12-r0
+        image: docker.io/bitnami/keycloak:26.3.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -146,6 +140,11 @@ spec:
         - mountPath: /opt/bitnami/keycloak/providers
           name: empty-dir
           subPath: app-providers-dir
+        - mountPath: /opt/bitnami/keycloak/themes
+          name: empty-dir
+          subPath: app-themes-dir
+        - mountPath: /opt/bitnami/keycloak/secrets
+          name: keycloak-secrets
         - mountPath: /etc/krb5.conf
           name: krb5-conf
           subPath: krb5.conf
@@ -165,18 +164,20 @@ spec:
 
           # directories writable, so we need to copy it to an empty dir volume
 
-          cp -r --preserve=mode /opt/bitnami/keycloak/lib/quarkus /emptydir/app-quarkus-dir
+          cp -r --preserve=mode,timestamps /opt/bitnami/keycloak/lib/quarkus /emptydir/app-quarkus-dir
 
-          cp -r --preserve=mode /opt/bitnami/keycloak/data /emptydir/app-data-dir
+          cp -r --preserve=mode,timestamps /opt/bitnami/keycloak/data /emptydir/app-data-dir
 
-          cp -r --preserve=mode /opt/bitnami/keycloak/providers /emptydir/app-providers-dir
+          cp -r --preserve=mode,timestamps /opt/bitnami/keycloak/providers /emptydir/app-providers-dir
+
+          cp -r --preserve=mode,timestamps /opt/bitnami/keycloak/themes /emptydir/app-themes-dir
 
           info "Copy operation completed"
 
           '
         command:
         - /bin/bash
-        image: docker.io/bitnami/keycloak:26.1.3-debian-12-r0
+        image: docker.io/bitnami/keycloak:26.3.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         name: prepare-write-dirs
         resources:
@@ -222,6 +223,16 @@ spec:
       volumes:
       - emptyDir: {}
         name: empty-dir
+      - name: keycloak-secrets
+        projected:
+          sources:
+          - secret:
+              name: keycloak
+          - secret:
+              items:
+              - key: password
+                path: db-password
+              name: keycloak.ocf-keycloak.credentials.postgresql.acid.zalan.do
       - configMap:
           name: krb5-conf
         name: krb5-conf
