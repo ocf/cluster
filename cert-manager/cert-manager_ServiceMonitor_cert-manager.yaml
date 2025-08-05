@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.14.5
-    helm.sh/chart: cert-manager-v1.14.5
+    app.kubernetes.io/version: v1.18.2
+    helm.sh/chart: cert-manager-v1.18.2
     prometheus: default
   name: cert-manager
   namespace: cert-manager
@@ -18,10 +18,23 @@ spec:
     interval: 60s
     path: /metrics
     scrapeTimeout: 30s
-    targetPort: 9402
+    targetPort: http-metrics
   jobLabel: cert-manager
   selector:
-    matchLabels:
-      app.kubernetes.io/component: controller
-      app.kubernetes.io/instance: cert-manager
-      app.kubernetes.io/name: cert-manager
+    matchExpressions:
+    - key: app.kubernetes.io/name
+      operator: In
+      values:
+      - cainjector
+      - cert-manager
+      - webhook
+    - key: app.kubernetes.io/instance
+      operator: In
+      values:
+      - cert-manager
+    - key: app.kubernetes.io/component
+      operator: In
+      values:
+      - cainjector
+      - controller
+      - webhook
