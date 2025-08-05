@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: postgres-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgres-operator
-    helm.sh/chart: postgres-operator-1.11.0
+    helm.sh/chart: postgres-operator-1.14.0
   name: postgres-operator
 rules:
 - apiGroups:
@@ -78,6 +78,7 @@ rules:
   - create
   - delete
   - get
+  - patch
   - update
 - apiGroups:
   - ''
@@ -142,6 +143,7 @@ rules:
   - get
   - list
   - patch
+  - update
 - apiGroups:
   - batch
   resources:

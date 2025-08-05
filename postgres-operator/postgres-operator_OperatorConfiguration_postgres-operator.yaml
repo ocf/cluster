@@ -19,7 +19,7 @@ configuration:
   debug:
     debug_logging: true
     enable_database_access: true
-  docker_image: ghcr.io/zalando/spilo-16:3.2-p2
+  docker_image: ghcr.io/zalando/spilo-17:4.0-p2
   enable_crd_registration: true
   enable_lazy_spilo_upgrade: false
   enable_pgversion_env_var: true
@@ -35,10 +35,12 @@ configuration:
     enable_cross_namespace_secret: false
     enable_finalizers: false
     enable_init_containers: true
+    enable_owner_references: false
     enable_persistent_volume_claim_deletion: true
     enable_pod_antiaffinity: false
     enable_pod_disruption_budget: true
     enable_readiness_probe: false
+    enable_secrets_deletion: true
     enable_sidecars: true
     oauth_token_secret_name: postgres-operator
     pdb_master_label_selector: true
@@ -75,11 +77,12 @@ configuration:
     ring_log_lines: 100
   logical_backup:
     logical_backup_cronjob_environment_secret: ''
-    logical_backup_docker_image: registry.opensource.zalan.do/acid/logical-backup:v1.11.0
+    logical_backup_docker_image: ghcr.io/zalando/postgres-operator/logical-backup:v1.13.0
     logical_backup_job_prefix: logical-backup-
     logical_backup_provider: s3
     logical_backup_s3_access_key_id: ''
     logical_backup_s3_bucket: my-bucket-url
+    logical_backup_s3_bucket_prefix: spilo
     logical_backup_s3_endpoint: ''
     logical_backup_s3_region: ''
     logical_backup_s3_retention_time: ''
@@ -87,9 +90,9 @@ configuration:
     logical_backup_s3_sse: AES256
     logical_backup_schedule: 30 00 * * *
   major_version_upgrade:
-    major_version_upgrade_mode: 'off'
-    minimal_major_version: '12'
-    target_major_version: '16'
+    major_version_upgrade_mode: manual
+    minimal_major_version: '13'
+    target_major_version: '17'
   max_instances: -1
   min_instances: -1
   patroni:
@@ -142,6 +145,6 @@ metadata:
     app.kubernetes.io/instance: postgres-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgres-operator
-    helm.sh/chart: postgres-operator-1.11.0
+    helm.sh/chart: postgres-operator-1.14.0
   name: postgres-operator
   namespace: postgres-operator
