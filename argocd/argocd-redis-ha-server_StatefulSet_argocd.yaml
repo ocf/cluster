@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-ha
     argocd-redis-ha: replica
-    chart: redis-ha-4.29.4
+    chart: redis-ha-4.33.7
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-server
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/init-config: b68dc8787b7e4aba645184ae7440d40973a247d080c4cc8a47441bd66d6d2497
+        checksum/init-config: 82644daf1d4b9011aaaa8bd50a33bdbca43ea12944a5f77ae5e99866826b1487
       labels:
         app: redis-ha
         argocd-redis-ha: replica
@@ -48,7 +48,7 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
-        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
+        image: ecr-public.aws.com/docker/library/redis:7.2.8-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -99,9 +99,9 @@ spec:
             - sh
             - -c
             - /health/redis_readiness.sh
-          failureThreshold: 3
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          failureThreshold: 5
+          initialDelaySeconds: 30
+          periodSeconds: 15
           successThreshold: 1
           timeoutSeconds: 15
         volumeMounts:
@@ -122,7 +122,7 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
-        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
+        image: ecr-public.aws.com/docker/library/redis:7.2.8-alpine
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:
@@ -194,7 +194,7 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
-        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
+        image: ecr-public.aws.com/docker/library/redis:7.2.8-alpine
         imagePullPolicy: IfNotPresent
         name: split-brain-fix
         resources: {}
@@ -231,7 +231,7 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
-        image: public.ecr.aws/docker/library/redis:7.4.2-alpine
+        image: ecr-public.aws.com/docker/library/redis:7.2.8-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
         resources: {}

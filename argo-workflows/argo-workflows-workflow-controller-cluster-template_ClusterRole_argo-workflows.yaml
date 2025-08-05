@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-workflows-workflow-controller
     app.kubernetes.io/part-of: argo-workflows
-    helm.sh/chart: argo-workflows-0.45.11
+    helm.sh/chart: argo-workflows-0.45.21
   name: argo-workflows-workflow-controller-cluster-template
 rules:
 - apiGroups:

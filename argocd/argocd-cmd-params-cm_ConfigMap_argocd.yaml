@@ -7,6 +7,8 @@ data:
   applicationsetcontroller.log.level: info
   applicationsetcontroller.namespaces: ''
   applicationsetcontroller.policy: sync
+  commitserver.log.format: text
+  commitserver.log.level: info
   controller.ignore.normalizer.jq.timeout: 1s
   controller.log.format: text
   controller.log.level: info
@@ -15,6 +17,11 @@ data:
   controller.self.heal.timeout.seconds: '5'
   controller.status.processors: '20'
   controller.sync.timeout.seconds: '0'
+  dexserver.log.format: text
+  dexserver.log.level: info
+  hydrator.enabled: 'false'
+  notificationscontroller.log.format: text
+  notificationscontroller.log.level: info
   otlp.address: ''
   redis.server: argocd-redis-ha-haproxy:6379
   repo.server: argocd-repo-server:8081
@@ -42,7 +49,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-cmd-params-cm
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.14.7
-    helm.sh/chart: argo-cd-7.8.13
+    app.kubernetes.io/version: v3.0.12
+    helm.sh/chart: argo-cd-8.2.5
   name: argocd-cmd-params-cm
   namespace: argocd

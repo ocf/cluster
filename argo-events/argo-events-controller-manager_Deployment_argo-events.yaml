@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-events-controller-manager
     app.kubernetes.io/part-of: argo-events
-    app.kubernetes.io/version: v1.9.1
-    helm.sh/chart: argo-events-2.4.4
+    app.kubernetes.io/version: v1.9.7
+    helm.sh/chart: argo-events-2.4.16
   name: argo-events-controller-manager
   namespace: argo-events
 spec:
@@ -21,27 +21,27 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1b647b06b76d9d191cddd4255340fd1b4b31b032c973e85cde4065bcc73dc0d9
+        checksum/config: 01a83375885990d0a4c6797b53dceda18ef0ad8c9bcee9f42ae2fdd37102112d
       labels:
         app.kubernetes.io/component: controller-manager
         app.kubernetes.io/instance: argo-events
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argo-events-controller-manager
         app.kubernetes.io/part-of: argo-events
-        app.kubernetes.io/version: v1.9.1
-        helm.sh/chart: argo-events-2.4.4
+        app.kubernetes.io/version: v1.9.7
+        helm.sh/chart: argo-events-2.4.16
     spec:
       containers:
       - args:
         - controller
         env:
         - name: ARGO_EVENTS_IMAGE
-          value: quay.io/argoproj/argo-events:v1.9.1
+          value: quay.io/argoproj/argo-events:v1.9.7
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: quay.io/argoproj/argo-events:v1.9.1
+        image: quay.io/argoproj/argo-events:v1.9.7
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3

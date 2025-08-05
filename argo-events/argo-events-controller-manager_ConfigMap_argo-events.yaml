@@ -10,10 +10,30 @@ data:
     \ \"store_dir\" as it has been hardcoded.\n      max_memory_store: -1\n      max_file_store:\
     \ -1\n    # The default properties of the streams to be created in this JetStream\
     \ service\n    streamConfig: |\n      maxMsgs: 1e+06\n      maxAge: 72h\n    \
-    \  maxBytes: 1GB\n      replicas: 3\n      duplicates: 300s\n    versions:\n \
-    \   - version: latest\n      natsImage: nats:latest\n      metricsExporterImage:\
-    \ natsio/prometheus-nats-exporter:latest\n      configReloaderImage: natsio/nats-server-config-reloader:latest\n\
-    \      startCommand: /nats-server\n"
+    \  maxBytes: 1GB\n      replicas: 3\n      duplicates: 300s\n      retention:\
+    \ 0\n      discard: 0\n    versions:\n    - version: latest\n      natsImage:\
+    \ nats:2.10.10\n      metricsExporterImage: natsio/prometheus-nats-exporter:0.14.0\n\
+    \      configReloaderImage: natsio/nats-server-config-reloader:0.14.0\n      startCommand:\
+    \ /nats-server\n    - version: 2.8.1\n      natsImage: nats:2.8.1\n      metricsExporterImage:\
+    \ natsio/prometheus-nats-exporter:0.9.1\n      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n\
+    \      startCommand: /nats-server\n    - version: 2.8.1-alpine\n      natsImage:\
+    \ nats:2.8.1-alpine\n      metricsExporterImage: natsio/prometheus-nats-exporter:0.9.1\n\
+    \      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n      startCommand:\
+    \ nats-server\n    - version: 2.8.2\n      natsImage: nats:2.8.2\n      metricsExporterImage:\
+    \ natsio/prometheus-nats-exporter:0.9.1\n      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n\
+    \      startCommand: /nats-server\n    - version: 2.8.2-alpine\n      natsImage:\
+    \ nats:2.8.2-alpine\n      metricsExporterImage: natsio/prometheus-nats-exporter:0.9.1\n\
+    \      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n      startCommand:\
+    \ nats-server\n    - version: 2.9.1\n      natsImage: nats:2.9.1\n      metricsExporterImage:\
+    \ natsio/prometheus-nats-exporter:0.9.1\n      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n\
+    \      startCommand: /nats-server\n    - version: 2.9.12\n      natsImage: nats:2.9.12\n\
+    \      metricsExporterImage: natsio/prometheus-nats-exporter:0.9.1\n      configReloaderImage:\
+    \ natsio/nats-server-config-reloader:0.7.0\n      startCommand: /nats-server\n\
+    \    - version: 2.9.16\n      natsImage: nats:2.9.16\n      metricsExporterImage:\
+    \ natsio/prometheus-nats-exporter:0.9.1\n      configReloaderImage: natsio/nats-server-config-reloader:0.7.0\n\
+    \      startCommand: /nats-server\n    - version: 2.10.10\n      natsImage: nats:2.10.10\n\
+    \      metricsExporterImage: natsio/prometheus-nats-exporter:0.14.0\n      configReloaderImage:\
+    \ natsio/nats-server-config-reloader:0.14.0\n      startCommand: /nats-server\n"
 kind: ConfigMap
 metadata:
   labels:
@@ -21,6 +41,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argo-events-controller-manager
     app.kubernetes.io/part-of: argo-events
-    helm.sh/chart: argo-events-2.4.4
+    helm.sh/chart: argo-events-2.4.16
   name: argo-events-controller-manager
   namespace: argo-events
