@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 70.2.1
-    chart: kube-prometheus-stack-70.2.1
+    app.kubernetes.io/version: 75.16.1
+    chart: kube-prometheus-stack-75.16.1
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-prometheus
@@ -23,7 +23,7 @@ spec:
               operator: In
               values:
               - prometheus
-            - key: prometheus
+            - key: app.kubernetes.io/instance
               operator: In
               values:
               - prometheus-kube-prometheus-prometheus
@@ -31,9 +31,11 @@ spec:
         weight: 100
   automountServiceAccountToken: true
   enableAdminAPI: false
+  enableOTLPReceiver: false
   externalUrl: http://prom.ocf.berkeley.edu/
   hostNetwork: false
-  image: quay.io/prometheus/prometheus:v3.2.1
+  image: quay.io/prometheus/prometheus:v3.5.0
+  imagePullPolicy: IfNotPresent
   listenLocal: false
   logFormat: logfmt
   logLevel: info
@@ -71,5 +73,5 @@ spec:
   shards: 1
   tsdb:
     outOfOrderTimeWindow: 0s
-  version: v3.2.1
+  version: v3.5.0
   walCompression: true

@@ -2,8 +2,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.2
-    operator.prometheus.io/version: 0.81.0
+    controller-gen.kubebuilder.io/version: v0.18.0
+    operator.prometheus.io/version: 0.83.0
   name: alertmanagers.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -94,6 +94,35 @@ spec:
 
               https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status'
             properties:
+              additionalArgs:
+                description: 'AdditionalArgs allows setting additional arguments for
+                  the ''Alertmanager'' container.
+
+                  It is intended for e.g. activating hidden flags which are not supported
+                  by
+
+                  the dedicated configuration options yet. The arguments are passed
+                  as-is to the
+
+                  Alertmanager container which may cause issues if they are invalid
+                  or not supported
+
+                  by the given Alertmanager version.'
+                items:
+                  description: Argument as part of the AdditionalArgs list.
+                  properties:
+                    name:
+                      description: Name of the argument, e.g. "scrape.discovery-reload-interval".
+                      minLength: 1
+                      type: string
+                    value:
+                      description: Argument value, e.g. 30s. Can be empty for name-only
+                        arguments (e.g. --storage.tsdb.no-lockfile)
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
               additionalPeers:
                 description: AdditionalPeers allows injecting a set of additional
                   Alertmanagers to peer with to form a highly available cluster.
@@ -503,10 +532,7 @@ spec:
                                     and labelSelector.
 
                                     Also, matchLabelKeys cannot be set when labelSelector
-                                    isn''t set.
-
-                                    This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                    feature gate (enabled by default).'
+                                    isn''t set.'
                                   items:
                                     type: string
                                   type: array
@@ -534,10 +560,7 @@ spec:
                                     and labelSelector.
 
                                     Also, mismatchLabelKeys cannot be set when labelSelector
-                                    isn''t set.
-
-                                    This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                    feature gate (enabled by default).'
+                                    isn''t set.'
                                   items:
                                     type: string
                                   type: array
@@ -783,10 +806,7 @@ spec:
                                 and labelSelector.
 
                                 Also, matchLabelKeys cannot be set when labelSelector
-                                isn''t set.
-
-                                This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                feature gate (enabled by default).'
+                                isn''t set.'
                               items:
                                 type: string
                               type: array
@@ -813,10 +833,7 @@ spec:
                                 and labelSelector.
 
                                 Also, mismatchLabelKeys cannot be set when labelSelector
-                                isn''t set.
-
-                                This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                feature gate (enabled by default).'
+                                isn''t set.'
                               items:
                                 type: string
                               type: array
@@ -1052,10 +1069,7 @@ spec:
                                     and labelSelector.
 
                                     Also, matchLabelKeys cannot be set when labelSelector
-                                    isn''t set.
-
-                                    This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                    feature gate (enabled by default).'
+                                    isn''t set.'
                                   items:
                                     type: string
                                   type: array
@@ -1083,10 +1097,7 @@ spec:
                                     and labelSelector.
 
                                     Also, mismatchLabelKeys cannot be set when labelSelector
-                                    isn''t set.
-
-                                    This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                    feature gate (enabled by default).'
+                                    isn''t set.'
                                   items:
                                     type: string
                                   type: array
@@ -1332,10 +1343,7 @@ spec:
                                 and labelSelector.
 
                                 Also, matchLabelKeys cannot be set when labelSelector
-                                isn''t set.
-
-                                This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                feature gate (enabled by default).'
+                                isn''t set.'
                               items:
                                 type: string
                               type: array
@@ -1362,10 +1370,7 @@ spec:
                                 and labelSelector.
 
                                 Also, mismatchLabelKeys cannot be set when labelSelector
-                                isn''t set.
-
-                                This is a beta field and requires enabling MatchLabelKeysInPodAffinity
-                                feature gate (enabled by default).'
+                                isn''t set.'
                               items:
                                 type: string
                               type: array
@@ -1807,8 +1812,8 @@ spec:
                               contain port numbers.
 
 
-                              It requires Prometheus >= v2.43.0 or Alertmanager >=
-                              0.25.0.'
+                              It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0
+                              or Thanos >= v0.32.0.'
                             type: string
                           oauth2:
                             description: OAuth2 client credentials used to fetch a
@@ -1930,8 +1935,8 @@ spec:
                                   contain port numbers.
 
 
-                                  It requires Prometheus >= v2.43.0 or Alertmanager
-                                  >= 0.25.0.'
+                                  It requires Prometheus >= v2.43.0, Alertmanager
+                                  >= v0.25.0 or Thanos >= v0.32.0.'
                                 type: string
                               proxyConnectHeader:
                                 additionalProperties:
@@ -1972,8 +1977,8 @@ spec:
                                   proxies during CONNECT requests.
 
 
-                                  It requires Prometheus >= v2.43.0 or Alertmanager
-                                  >= 0.25.0.'
+                                  It requires Prometheus >= v2.43.0, Alertmanager
+                                  >= v0.25.0 or Thanos >= v0.32.0.'
                                 type: object
                                 x-kubernetes-map-type: atomic
                               proxyFromEnvironment:
@@ -1982,13 +1987,13 @@ spec:
                                   and NO_PROXY).
 
 
-                                  It requires Prometheus >= v2.43.0 or Alertmanager
-                                  >= 0.25.0.'
+                                  It requires Prometheus >= v2.43.0, Alertmanager
+                                  >= v0.25.0 or Thanos >= v0.32.0.'
                                 type: boolean
                               proxyUrl:
                                 description: '`proxyURL` defines the HTTP proxy server
                                   to use.'
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               scopes:
                                 description: '`scopes` defines the OAuth2 scopes used
@@ -2169,7 +2174,8 @@ spec:
                                     description: 'Maximum acceptable TLS version.
 
 
-                                      It requires Prometheus >= v2.41.0.'
+                                      It requires Prometheus >= v2.41.0 or Thanos
+                                      >= v0.31.0.'
                                     enum:
                                     - TLS10
                                     - TLS11
@@ -2180,7 +2186,8 @@ spec:
                                     description: 'Minimum acceptable TLS version.
 
 
-                                      It requires Prometheus >= v2.35.0.'
+                                      It requires Prometheus >= v2.35.0 or Thanos
+                                      >= v0.28.0.'
                                     enum:
                                     - TLS10
                                     - TLS11
@@ -2241,8 +2248,8 @@ spec:
                               proxies during CONNECT requests.
 
 
-                              It requires Prometheus >= v2.43.0 or Alertmanager >=
-                              0.25.0.'
+                              It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0
+                              or Thanos >= v0.32.0.'
                             type: object
                             x-kubernetes-map-type: atomic
                           proxyFromEnvironment:
@@ -2251,13 +2258,13 @@ spec:
                               NO_PROXY).
 
 
-                              It requires Prometheus >= v2.43.0 or Alertmanager >=
-                              0.25.0.'
+                              It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0
+                              or Thanos >= v0.32.0.'
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server
                               to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           tlsConfig:
                             description: TLS configuration for the client.
@@ -2427,7 +2434,7 @@ spec:
                                 description: 'Maximum acceptable TLS version.
 
 
-                                  It requires Prometheus >= v2.41.0.'
+                                  It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.'
                                 enum:
                                 - TLS10
                                 - TLS11
@@ -2438,7 +2445,7 @@ spec:
                                 description: 'Minimum acceptable TLS version.
 
 
-                                  It requires Prometheus >= v2.35.0.'
+                                  It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.'
                                 enum:
                                 - TLS10
                                 - TLS11
@@ -2650,6 +2657,196 @@ spec:
                             required:
                             - host
                             - port
+                            type: object
+                          tlsConfig:
+                            description: The default TLS configuration for SMTP receivers
+                            properties:
+                              ca:
+                                description: Certificate authority used when verifying
+                                  server certificates.
+                                properties:
+                                  configMap:
+                                    description: ConfigMap containing data to use
+                                      for the targets.
+                                    properties:
+                                      key:
+                                        description: The key to select.
+                                        type: string
+                                      name:
+                                        default: ''
+                                        description: 'Name of the referent.
+
+                                          This field is effectively required, but
+                                          due to backwards compatibility is
+
+                                          allowed to be empty. Instances of this type
+                                          with an empty value here are
+
+                                          almost certainly wrong.
+
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the ConfigMap
+                                          or its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  secret:
+                                    description: Secret containing data to use for
+                                      the targets.
+                                    properties:
+                                      key:
+                                        description: The key of the secret to select
+                                          from.  Must be a valid secret key.
+                                        type: string
+                                      name:
+                                        default: ''
+                                        description: 'Name of the referent.
+
+                                          This field is effectively required, but
+                                          due to backwards compatibility is
+
+                                          allowed to be empty. Instances of this type
+                                          with an empty value here are
+
+                                          almost certainly wrong.
+
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the Secret or
+                                          its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                type: object
+                              cert:
+                                description: Client certificate to present when doing
+                                  client-authentication.
+                                properties:
+                                  configMap:
+                                    description: ConfigMap containing data to use
+                                      for the targets.
+                                    properties:
+                                      key:
+                                        description: The key to select.
+                                        type: string
+                                      name:
+                                        default: ''
+                                        description: 'Name of the referent.
+
+                                          This field is effectively required, but
+                                          due to backwards compatibility is
+
+                                          allowed to be empty. Instances of this type
+                                          with an empty value here are
+
+                                          almost certainly wrong.
+
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the ConfigMap
+                                          or its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  secret:
+                                    description: Secret containing data to use for
+                                      the targets.
+                                    properties:
+                                      key:
+                                        description: The key of the secret to select
+                                          from.  Must be a valid secret key.
+                                        type: string
+                                      name:
+                                        default: ''
+                                        description: 'Name of the referent.
+
+                                          This field is effectively required, but
+                                          due to backwards compatibility is
+
+                                          allowed to be empty. Instances of this type
+                                          with an empty value here are
+
+                                          almost certainly wrong.
+
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the Secret or
+                                          its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                type: object
+                              insecureSkipVerify:
+                                description: Disable target certificate validation.
+                                type: boolean
+                              keySecret:
+                                description: Secret containing the client key file
+                                  for the targets.
+                                properties:
+                                  key:
+                                    description: The key of the secret to select from.  Must
+                                      be a valid secret key.
+                                    type: string
+                                  name:
+                                    default: ''
+                                    description: 'Name of the referent.
+
+                                      This field is effectively required, but due
+                                      to backwards compatibility is
+
+                                      allowed to be empty. Instances of this type
+                                      with an empty value here are
+
+                                      almost certainly wrong.
+
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    type: string
+                                  optional:
+                                    description: Specify whether the Secret or its
+                                      key must be defined
+                                    type: boolean
+                                required:
+                                - key
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              maxVersion:
+                                description: 'Maximum acceptable TLS version.
+
+
+                                  It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.'
+                                enum:
+                                - TLS10
+                                - TLS11
+                                - TLS12
+                                - TLS13
+                                type: string
+                              minVersion:
+                                description: 'Minimum acceptable TLS version.
+
+
+                                  It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.'
+                                enum:
+                                - TLS10
+                                - TLS11
+                                - TLS12
+                                - TLS13
+                                type: string
+                              serverName:
+                                description: Used to verify the hostname for the targets.
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -2943,7 +3140,7 @@ spec:
                         description: 'Maximum acceptable TLS version.
 
 
-                          It requires Prometheus >= v2.41.0.'
+                          It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.'
                         enum:
                         - TLS10
                         - TLS11
@@ -2954,7 +3151,7 @@ spec:
                         description: 'Minimum acceptable TLS version.
 
 
-                          It requires Prometheus >= v2.35.0.'
+                          It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.'
                         enum:
                         - TLS10
                         - TLS11
@@ -3510,7 +3707,7 @@ spec:
                         Cannot be updated.'
                       items:
                         description: EnvFromSource represents the source of a set
-                          of ConfigMaps
+                          of ConfigMaps or Secrets
                         properties:
                           configMapRef:
                             description: The ConfigMap to select from
@@ -3536,8 +3733,8 @@ spec:
                             type: object
                             x-kubernetes-map-type: atomic
                           prefix:
-                            description: An optional identifier to prepend to each
-                              key in the ConfigMap. Must be a C_IDENTIFIER.
+                            description: Optional text to prepend to the name of each
+                              environment variable. Must be a C_IDENTIFIER.
                             type: string
                           secretRef:
                             description: The Secret to select from
@@ -3873,6 +4070,15 @@ spec:
                               - port
                               type: object
                           type: object
+                        stopSignal:
+                          description: 'StopSignal defines which signal will be sent
+                            to a container when it is being stopped.
+
+                            If not specified, the default is defined by the container
+                            runtime in use.
+
+                            StopSignal can only be set for Pods with a non-empty .spec.os.name'
+                          type: string
                       type: object
                     livenessProbe:
                       description: 'Periodic probe of container liveness.
@@ -5622,7 +5828,7 @@ spec:
                         Cannot be updated.'
                       items:
                         description: EnvFromSource represents the source of a set
-                          of ConfigMaps
+                          of ConfigMaps or Secrets
                         properties:
                           configMapRef:
                             description: The ConfigMap to select from
@@ -5648,8 +5854,8 @@ spec:
                             type: object
                             x-kubernetes-map-type: atomic
                           prefix:
-                            description: An optional identifier to prepend to each
-                              key in the ConfigMap. Must be a C_IDENTIFIER.
+                            description: Optional text to prepend to the name of each
+                              environment variable. Must be a C_IDENTIFIER.
                             type: string
                           secretRef:
                             description: The Secret to select from
@@ -5985,6 +6191,15 @@ spec:
                               - port
                               type: object
                           type: object
+                        stopSignal:
+                          description: 'StopSignal defines which signal will be sent
+                            to a container when it is being stopped.
+
+                            If not specified, the default is defined by the container
+                            runtime in use.
+
+                            StopSignal can only be set for Pods with a non-empty .spec.os.name'
+                          type: string
                       type: object
                     livenessProbe:
                       description: 'Periodic probe of container liveness.
@@ -7314,6 +7529,29 @@ spec:
                   - name
                   type: object
                 type: array
+              limits:
+                description: Defines the limits command line flags when starting Alertmanager.
+                properties:
+                  maxPerSilenceBytes:
+                    description: 'The maximum size of an individual silence as stored
+                      on disk. This corresponds to the Alertmanager''s
+
+                      `--silences.max-per-silence-bytes` flag.
+
+                      It requires Alertmanager >= v0.28.0.'
+                    pattern: (^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$
+                    type: string
+                  maxSilences:
+                    description: 'The maximum number active and pending silences.
+                      This corresponds to the
+
+                      Alertmanager''s `--silences.max-silences` flag.
+
+                      It requires Alertmanager >= v0.28.0.'
+                    format: int32
+                    minimum: 0
+                    type: integer
+                type: object
               listenLocal:
                 description: 'ListenLocal makes the Alertmanager server listen on
                   loopback, so that it
@@ -8984,6 +9222,21 @@ spec:
                   Deprecated: use ''image'' instead. The image tag can be specified
                   as part of the image URL.'
                 type: string
+              terminationGracePeriodSeconds:
+                description: 'Optional duration in seconds the pod needs to terminate
+                  gracefully.
+
+                  Value must be non-negative integer. The value zero indicates stop
+                  immediately via
+
+                  the kill signal (no opportunity to shut down) which may lead to
+                  data corruption.
+
+
+                  Defaults to 120 seconds.'
+                format: int64
+                minimum: 0
+                type: integer
               tolerations:
                 description: If specified, the pod's tolerations.
                 items:
@@ -9247,10 +9500,7 @@ spec:
 
 
                         If this value is nil, the behavior is equivalent to the Honor
-                        policy.
-
-                        This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread
-                        feature flag.'
+                        policy.'
                       type: string
                     nodeTaintsPolicy:
                       description: 'NodeTaintsPolicy indicates how we will treat node
@@ -9267,10 +9517,7 @@ spec:
 
 
                         If this value is nil, the behavior is equivalent to the Ignore
-                        policy.
-
-                        This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread
-                        feature flag.'
+                        policy.'
                       type: string
                     topologyKey:
                       description: 'TopologyKey is the key of node labels. Nodes that
@@ -10723,7 +10970,8 @@ spec:
                         The volume will be mounted read-only (ro) and non-executable
                         files (noexec).
 
-                        Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+                        Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath)
+                        before 1.33.
 
                         The field spec.securityContext.fsGroupChangePolicy has no
                         effect on this volume type.'
