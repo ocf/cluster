@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    app.kubernetes.io/version: 0.14.5
-    helm.sh/chart: metallb-6.1.2
+    app.kubernetes.io/version: 0.15.2
+    helm.sh/chart: metallb-6.4.20
   name: metallb-speaker
   namespace: metallb
 spec:
@@ -23,8 +23,8 @@ spec:
         app.kubernetes.io/instance: metallb
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: metallb
-        app.kubernetes.io/version: 0.14.5
-        helm.sh/chart: metallb-6.1.2
+        app.kubernetes.io/version: 0.15.2
+        helm.sh/chart: metallb-6.4.20
     spec:
       affinity:
         nodeAffinity: null
@@ -49,6 +49,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: METALLB_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name: METALLB_HOST
           valueFrom:
             fieldRef:
@@ -66,16 +70,15 @@ spec:
         - name: METALLB_ML_SECRET_KEY_PATH
           value: /etc/memberlist
         envFrom: null
-        image: docker.io/bitnami/metallb-speaker:0.14.5-debian-12-r3
+        image: docker.io/bitnami/metallb-speaker:0.15.2-debian-12-r4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
-          httpGet:
-            path: /metrics
-            port: metrics
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: metrics
           timeoutSeconds: 1
         name: metallb-speaker
         ports:
@@ -93,7 +96,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -111,7 +114,7 @@ spec:
           readOnlyRootFilesystem: true
           runAsGroup: 0
           runAsUser: 0
-          seLinuxOptions: null
+          seLinuxOptions: {}
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:

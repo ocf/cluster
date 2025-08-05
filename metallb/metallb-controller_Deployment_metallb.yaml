@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    app.kubernetes.io/version: 0.14.5
-    helm.sh/chart: metallb-6.1.2
+    app.kubernetes.io/version: 0.15.2
+    helm.sh/chart: metallb-6.4.20
   name: metallb-controller
   namespace: metallb
 spec:
@@ -27,8 +27,8 @@ spec:
         app.kubernetes.io/instance: metallb
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: metallb
-        app.kubernetes.io/version: 0.14.5
-        helm.sh/chart: metallb-6.1.2
+        app.kubernetes.io/version: 0.15.2
+        helm.sh/chart: metallb-6.4.20
     spec:
       affinity:
         nodeAffinity: null
@@ -56,16 +56,15 @@ spec:
         - name: METALLB_DEPLOYMENT
           value: metallb-controller
         envFrom: null
-        image: docker.io/bitnami/metallb-controller:0.14.5-debian-12-r2
+        image: docker.io/bitnami/metallb-controller:0.15.2-debian-12-r5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
-          httpGet:
-            path: /metrics
-            port: metrics
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
+          tcpSocket:
+            port: metrics
           timeoutSeconds: 1
         name: metallb-controller
         ports:
@@ -86,7 +85,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m
@@ -101,7 +100,7 @@ spec:
           runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
-          seLinuxOptions: null
+          seLinuxOptions: {}
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:

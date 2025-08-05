@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metallb
-    app.kubernetes.io/version: 0.14.5
-    helm.sh/chart: metallb-6.1.2
+    app.kubernetes.io/version: 0.15.2
+    helm.sh/chart: metallb-6.4.20
   name: metallb-webhook-service
   namespace: metallb
 spec:

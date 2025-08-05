@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: controller
@@ -11,19 +11,9 @@ metadata:
   name: metallb-controller
   namespace: metallb
 spec:
-  egress:
-  - {}
-  ingress:
-  - ports:
-    - port: 7472
-      protocol: TCP
-    - port: 9443
-      protocol: TCP
-  podSelector:
+  maxUnavailable: 1
+  selector:
     matchLabels:
       app.kubernetes.io/component: controller
       app.kubernetes.io/instance: metallb
       app.kubernetes.io/name: metallb
-  policyTypes:
-  - Ingress
-  - Egress
