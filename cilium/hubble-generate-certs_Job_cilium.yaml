@@ -19,21 +19,35 @@ spec:
       automountServiceAccountToken: true
       containers:
       - args:
-        - --cilium-namespace=cilium
-        - --ca-generate
+        - --ca-generate=true
         - --ca-reuse-secret
-        - --hubble-server-cert-generate
-        - --hubble-server-cert-common-name=*.default.hubble-grpc.cilium.io
-        - --hubble-server-cert-validity-duration=94608000s
-        - --hubble-relay-client-cert-generate
-        - --hubble-relay-client-cert-validity-duration=94608000s
+        - --ca-secret-namespace=cilium
+        - --ca-secret-name=cilium-ca
+        - --ca-common-name=Cilium CA
         command:
         - /usr/bin/cilium-certgen
-        image: quay.io/cilium/certgen:v0.1.11@sha256:5586de5019abc104637a9818a626956cd9b1e827327b958186ec412ae3d5dea6
+        env:
+        - name: CILIUM_CERTGEN_CONFIG
+          value: "certs:\n- name: hubble-server-certs\n  namespace: cilium\n  commonName:\
+            \ \"*.default.hubble-grpc.cilium.io\"\n  hosts:\n  - \"*.default.hubble-grpc.cilium.io\"\
+            \n  usage:\n  - signing\n  - key encipherment\n  - server auth\n  - client\
+            \ auth\n  validity: 8760h\n- name: hubble-relay-client-certs\n  namespace:\
+            \ cilium\n  commonName: \"*.hubble-relay.cilium.io\"\n  hosts:\n  - \"\
+            *.hubble-relay.cilium.io\"\n  usage:\n  - signing\n  - key encipherment\n\
+            \  - client auth\n  validity: 8760h\n"
+        image: quay.io/cilium/certgen:v0.2.4@sha256:de7b97b1d19a34b674d0c4bc1da4db999f04ae355923a9a994ac3a81e1a1b5ff
         imagePullPolicy: IfNotPresent
         name: certgen
-      hostNetwork: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      hostNetwork: false
       restartPolicy: OnFailure
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccount: hubble-generate-certs
       serviceAccountName: hubble-generate-certs
   ttlSecondsAfterFinished: 1800
