@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/instance: metrics-server
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: metrics-server
-    app.kubernetes.io/version: 0.7.1
-    helm.sh/chart: metrics-server-3.12.1
+    app.kubernetes.io/version: 0.8.0
+    helm.sh/chart: metrics-server-3.13.0
   name: metrics-server
   namespace: metrics-server
 spec:
@@ -29,7 +29,7 @@ spec:
         - --kubelet-use-node-status-port
         - --metric-resolution=15s
         - --authorization-always-allow-paths=/metrics
-        image: registry.k8s.io/metrics-server/metrics-server:v0.7.1
+        image: registry.k8s.io/metrics-server/metrics-server:v0.8.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -70,7 +70,6 @@ spec:
         - mountPath: /tmp
           name: tmp
       priorityClassName: system-cluster-critical
-      schedulerName: null
       serviceAccountName: metrics-server
       volumes:
       - emptyDir: {}
