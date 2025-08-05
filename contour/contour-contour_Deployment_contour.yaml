@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    app.kubernetes.io/version: 1.28.3
-    helm.sh/chart: contour-17.0.7
+    app.kubernetes.io/version: 1.32.0
+    helm.sh/chart: contour-21.0.12
   name: contour-contour
   namespace: contour
 spec:
@@ -20,14 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 5c77ad02e7b745300ca03fca66c14a803f71f0056edff837230fff3a62ed67d0
+        checksum/config: d979bf271b9e1e74aeef9bd45710a7e00651ed06e6bf4f8db5587a28b92eee11
       labels:
         app.kubernetes.io/component: contour
         app.kubernetes.io/instance: contour
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: contour
-        app.kubernetes.io/version: 1.28.3
-        helm.sh/chart: contour-17.0.7
+        app.kubernetes.io/version: 1.32.0
+        helm.sh/chart: contour-21.0.12
     spec:
       affinity:
         nodeAffinity: null
@@ -76,16 +76,15 @@ spec:
               fieldPath: metadata.name
         - name: BITNAMI_DEBUG
           value: 'false'
-        image: docker.io/bitnami/contour:1.28.3-debian-12-r0
+        image: docker.io/bitnami/contour:1.32.0-debian-12-r6
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
-          httpGet:
-            path: /healthz
-            port: 8000
           initialDelaySeconds: 120
           periodSeconds: 20
           successThreshold: 1
+          tcpSocket:
+            port: 8000
           timeoutSeconds: 5
         name: contour
         ports:
@@ -107,7 +106,7 @@ spec:
         resources:
           limits:
             cpu: 150m
-            ephemeral-storage: 1024Mi
+            ephemeral-storage: 2Gi
             memory: 192Mi
           requests:
             cpu: 100m

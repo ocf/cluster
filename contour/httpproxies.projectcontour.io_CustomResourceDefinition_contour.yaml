@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.18.0
   name: httpproxies.projectcontour.io
 spec:
   group: projectcontour.io
@@ -865,6 +865,8 @@ spec:
                                       request, no hash will be produced.'
                                     minLength: 1
                                     type: string
+                                required:
+                                - headerName
                                 type: object
                               queryParameterHashOptions:
                                 description: 'QueryParameterHashOptions should be
@@ -887,6 +889,8 @@ spec:
                                       request, no hash will be produced.'
                                     minLength: 1
                                     type: string
+                                required:
+                                - parameterName
                                 type: object
                               terminal:
                                 description: 'Terminal is a flag that allows for short-circuiting
@@ -1021,6 +1025,8 @@ spec:
                                                 of the descriptor entry.
                                               minLength: 1
                                               type: string
+                                          required:
+                                          - value
                                           type: object
                                         remoteAddress:
                                           description: 'RemoteAddress defines a descriptor
@@ -1050,6 +1056,9 @@ spec:
                                                 the request.
                                               minLength: 1
                                               type: string
+                                          required:
+                                          - descriptorKey
+                                          - headerName
                                           type: object
                                         requestHeaderValueMatch:
                                           description: 'RequestHeaderValueMatch defines
@@ -1202,10 +1211,14 @@ spec:
                                                 of the descriptor entry.
                                               minLength: 1
                                               type: string
+                                          required:
+                                          - value
                                           type: object
                                       type: object
                                     minItems: 1
                                     type: array
+                                required:
+                                - entries
                                 type: object
                               minItems: 1
                               type: array
@@ -1417,6 +1430,10 @@ spec:
                           enum:
                           - 301
                           - 302
+                          - 303
+                          - 307
+                          - 308
+                          format: int32
                           type: integer
                       type: object
                     responseHeadersPolicy:
@@ -1502,7 +1519,11 @@ spec:
 
                             - `reset`
 
+                            - `reset-before-request`
+
                             - `connect-failure`
+
+                            - `envoy-ratelimited`
 
                             - `retriable-4xx`
 
@@ -1511,6 +1532,8 @@ spec:
                             - `retriable-status-codes`
 
                             - `retriable-headers`
+
+                            - `http3-post-connect-failure`
 
                             Supported [gRPC conditions](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#x-envoy-retry-grpc-on):
 
@@ -1530,11 +1553,14 @@ spec:
                             - 5xx
                             - gateway-error
                             - reset
+                            - reset-before-request
                             - connect-failure
+                            - envoy-ratelimited
                             - retriable-4xx
                             - refused-stream
                             - retriable-status-codes
                             - retriable-headers
+                            - http3-post-connect-failure
                             - cancelled
                             - deadline-exceeded
                             - internal
@@ -2009,6 +2035,8 @@ spec:
                                     request, no hash will be produced.'
                                   minLength: 1
                                   type: string
+                              required:
+                              - headerName
                               type: object
                             queryParameterHashOptions:
                               description: 'QueryParameterHashOptions should be set
@@ -2030,6 +2058,8 @@ spec:
                                     request, no hash will be produced.'
                                   minLength: 1
                                   type: string
+                              required:
+                              - parameterName
                               type: object
                             terminal:
                               description: 'Terminal is a flag that allows for short-circuiting
@@ -2855,6 +2885,8 @@ spec:
                                               the descriptor entry.
                                             minLength: 1
                                             type: string
+                                        required:
+                                        - value
                                         type: object
                                       remoteAddress:
                                         description: 'RemoteAddress defines a descriptor
@@ -2883,6 +2915,9 @@ spec:
                                               of the header to look for on the request.
                                             minLength: 1
                                             type: string
+                                        required:
+                                        - descriptorKey
+                                        - headerName
                                         type: object
                                       requestHeaderValueMatch:
                                         description: 'RequestHeaderValueMatch defines
@@ -3030,10 +3065,14 @@ spec:
                                               the descriptor entry.
                                             minLength: 1
                                             type: string
+                                        required:
+                                        - value
                                         type: object
                                     type: object
                                   minItems: 1
                                   type: array
+                              required:
+                              - entries
                               type: object
                             minItems: 1
                             type: array
@@ -3526,17 +3565,7 @@ spec:
                       - Unknown
                       type: string
                     type:
-                      description: 'type of condition in CamelCase or in foo.example.com/CamelCase.
-
-                        ---
-
-                        Many .condition.type values are consistent across resources
-                        like Available, but because arbitrary conditions can be
-
-                        useful (see .node.status.conditions), the ability to deconflict
-                        is important.
-
-                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)'
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
                       maxLength: 316
                       pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
                       type: string
@@ -3681,6 +3710,8 @@ spec:
                             If used, every port defined in the service should have
                             an entry in it'
                           items:
+                            description: PortStatus represents the error condition
+                              of a service port
                             properties:
                               error:
                                 description: "Error is to record the problem with\
@@ -3689,8 +3720,7 @@ spec:
                                   \ values shall be specified in this file and those\
                                   \ shall use\n  CamelCase names\n- cloud provider\
                                   \ specific error values must have names that comply\
-                                  \ with the\n  format foo.example.com/CamelCase.\n\
-                                  ---\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)"
+                                  \ with the\n  format foo.example.com/CamelCase."
                                 maxLength: 316
                                 pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
                                 type: string
@@ -3700,13 +3730,13 @@ spec:
                                 format: int32
                                 type: integer
                               protocol:
-                                default: TCP
                                 description: 'Protocol is the protocol of the service
                                   port of which status is recorded here
 
                                   The supported values are: "TCP", "UDP", "SCTP"'
                                 type: string
                             required:
+                            - error
                             - port
                             - protocol
                             type: object
@@ -3714,6 +3744,7 @@ spec:
                           x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                 type: object
             type: object
         required:

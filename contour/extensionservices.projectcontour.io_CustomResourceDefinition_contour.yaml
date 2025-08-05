@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.18.0
   name: extensionservices.projectcontour.io
 spec:
   group: projectcontour.io
@@ -59,6 +59,40 @@ spec:
             description: ExtensionServiceSpec defines the desired state of an ExtensionService
               resource.
             properties:
+              circuitBreakerPolicy:
+                description: 'CircuitBreakerPolicy specifies the circuit breaker budget
+                  across the extension service.
+
+                  If defined this overrides the global circuit breaker budget.'
+                properties:
+                  maxConnections:
+                    description: The maximum number of connections that a single Envoy
+                      instance allows to the Kubernetes Service; defaults to 1024.
+                    format: int32
+                    type: integer
+                  maxPendingRequests:
+                    description: The maximum number of pending requests that a single
+                      Envoy instance allows to the Kubernetes Service; defaults to
+                      1024.
+                    format: int32
+                    type: integer
+                  maxRequests:
+                    description: The maximum parallel requests a single Envoy instance
+                      allows to the Kubernetes Service; defaults to 1024
+                    format: int32
+                    type: integer
+                  maxRetries:
+                    description: The maximum number of parallel retries a single Envoy
+                      instance allows to the Kubernetes Service; defaults to 3.
+                    format: int32
+                    type: integer
+                  perHostMaxConnections:
+                    description: 'PerHostMaxConnections is the maximum number of connections
+
+                      that Envoy will allow to each individual host in a cluster.'
+                    format: int32
+                    type: integer
+                type: object
               loadBalancerPolicy:
                 description: 'The policy for load balancing GRPC service requests.
                   Note that the
@@ -114,6 +148,8 @@ spec:
                                 request, no hash will be produced.'
                               minLength: 1
                               type: string
+                          required:
+                          - headerName
                           type: object
                         queryParameterHashOptions:
                           description: 'QueryParameterHashOptions should be set when
@@ -134,6 +170,8 @@ spec:
                                 request, no hash will be produced.'
                               minLength: 1
                               type: string
+                          required:
+                          - parameterName
                           type: object
                         terminal:
                           description: 'Terminal is a flag that allows for short-circuiting
@@ -516,17 +554,7 @@ spec:
                       - Unknown
                       type: string
                     type:
-                      description: 'type of condition in CamelCase or in foo.example.com/CamelCase.
-
-                        ---
-
-                        Many .condition.type values are consistent across resources
-                        like Available, but because arbitrary conditions can be
-
-                        useful (see .node.status.conditions), the ability to deconflict
-                        is important.
-
-                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)'
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
                       maxLength: 316
                       pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
                       type: string

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: contour
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: contour
-    app.kubernetes.io/version: 1.28.3
-    helm.sh/chart: contour-17.0.7
+    app.kubernetes.io/version: 1.32.0
+    helm.sh/chart: contour-21.0.12
   name: contour-envoy
   namespace: contour
 spec:
