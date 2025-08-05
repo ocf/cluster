@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator-minimal-cluster-role
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.14.0
-    helm.sh/chart: keda-2.14.0
+    app.kubernetes.io/version: 2.17.2
+    helm.sh/chart: keda-2.17.2
   name: keda-operator-minimal-cluster-role
 rules:
 - apiGroups:
@@ -17,7 +17,11 @@ rules:
   - clustertriggerauthentications
   - clustertriggerauthentications/status
   verbs:
-  - '*'
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - admissionregistration.k8s.io
   resources:
@@ -32,6 +36,19 @@ rules:
   - apiregistration.k8s.io
   resources:
   - apiservices
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - eventing.keda.sh
+  resources:
+  - cloudeventsources
+  - cloudeventsources/status
+  - clustercloudeventsources
+  - clustercloudeventsources/status
   verbs:
   - get
   - list

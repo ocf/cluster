@@ -2,14 +2,14 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.13.0
+    controller-gen.kubebuilder.io/version: v0.16.5
   labels:
     app.kubernetes.io/component: operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.14.0
-    helm.sh/chart: keda-2.14.0
+    app.kubernetes.io/version: 2.17.2
+    helm.sh/chart: keda-2.17.2
   name: triggerauthentications.keda.sh
 spec:
   group: keda.sh
@@ -176,12 +176,10 @@ spec:
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
-                        - azure
                         - azure-workload
                         - gcp
                         - aws
                         - aws-eks
-                        - aws-kiam
                         - none
                         type: string
                       roleArn:
@@ -199,6 +197,8 @@ spec:
                         name:
                           type: string
                         parameter:
+                          type: string
+                        secretKey:
                           type: string
                         versionId:
                           type: string
@@ -287,12 +287,10 @@ spec:
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
-                        - azure
                         - azure-workload
                         - gcp
                         - aws
                         - aws-eks
-                        - aws-kiam
                         - none
                         type: string
                       roleArn:
@@ -322,6 +320,18 @@ spec:
                 - secrets
                 - vaultUri
                 type: object
+              boundServiceAccountToken:
+                items:
+                  properties:
+                    parameter:
+                      type: string
+                    serviceAccountName:
+                      type: string
+                  required:
+                  - parameter
+                  - serviceAccountName
+                  type: object
+                type: array
               configMapTargetRef:
                 items:
                   description: AuthConfigMapTargetRef is used to authenticate using
@@ -413,12 +423,10 @@ spec:
                       provider:
                         description: PodIdentityProvider contains the list of providers
                         enum:
-                        - azure
                         - azure-workload
                         - gcp
                         - aws
                         - aws-eks
-                        - aws-kiam
                         - none
                         type: string
                       roleArn:
@@ -541,12 +549,10 @@ spec:
                   provider:
                     description: PodIdentityProvider contains the list of providers
                     enum:
-                    - azure
                     - azure-workload
                     - gcp
                     - aws
                     - aws-eks
-                    - aws-kiam
                     - none
                     type: string
                   roleArn:
