@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     application: fission-storage
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     svc: storagesvc
   name: storagesvc
 spec:

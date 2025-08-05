@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     application: fission-storage
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     svc: storagesvc
   name: storagesvc
 spec:
@@ -79,7 +79,7 @@ spec:
             secretKeyRef:
               key: STORAGE_S3_SECRET_ACCESS_KEY
               name: storage-s3-key
-        image: ghcr.io/fission/fission-bundle:v1.20.1
+        image: ghcr.io/fission/fission-bundle:v1.21.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

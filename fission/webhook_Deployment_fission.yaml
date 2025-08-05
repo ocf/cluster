@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     application: fission-webhook
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     svc: webhook-service
   name: webhook
 spec:
@@ -28,12 +28,13 @@ spec:
         - '9443'
         command:
         - /fission-bundle
-        image: ghcr.io/fission/fission-bundle:v1.20.1
+        image: ghcr.io/fission/fission-bundle:v1.21.0
         imagePullPolicy: IfNotPresent
         name: webhook
         ports:
         - containerPort: 8080
           name: metrics
+        resources: {}
         volumeMounts:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: serving-certs

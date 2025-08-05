@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     svc: buildermgr
   name: buildermgr
 spec:
@@ -28,7 +28,7 @@ spec:
         - /fission-bundle
         env:
         - name: FETCHER_IMAGE
-          value: fission/fetcher:v1.20.1
+          value: ghcr.io/fission/fetcher:v1.21.0
         - name: FETCHER_IMAGE_PULL_POLICY
           value: IfNotPresent
         - name: BUILDER_IMAGE_PULL_POLICY
@@ -44,6 +44,8 @@ spec:
         - name: FETCHER_MAXMEM
           value: ''
         - name: DEBUG_ENV
+          value: 'false'
+        - name: DISABLE_OWNER_REFERENCES
           value: 'false'
         - name: PPROF_ENABLED
           value: 'false'
@@ -71,7 +73,7 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
-        image: ghcr.io/fission/fission-bundle:v1.20.1
+        image: ghcr.io/fission/fission-bundle:v1.21.0
         imagePullPolicy: IfNotPresent
         name: buildermgr
         ports:

@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: fission-kafka-fission-cr
+  namespace: default
+rules:
+- apiGroups:
+  - fission.io
+  resources:
+  - environments
+  - functions
+  - messagequeuetriggers
+  - packages
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - update
+  - patch
+  - delete

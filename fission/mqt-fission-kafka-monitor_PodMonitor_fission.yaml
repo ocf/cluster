@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: mqt-fission-kafka-monitor
+spec:
+  namespaceSelector:
+    matchNames:
+    - fission
+  podMetricsEndpoints:
+  - path: /metrics
+    port: metrics
+  selector:
+    matchLabels:
+      svc: mqtrigger

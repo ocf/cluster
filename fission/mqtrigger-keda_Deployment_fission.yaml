@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     messagequeue: keda
     svc: mqtrigger-keda
   name: mqtrigger-keda
@@ -31,21 +31,21 @@ spec:
         - name: CONNECTOR_IMAGE_PULL_POLICY
           value: IfNotPresent
         - name: KAFKA_IMAGE
-          value: ghcr.io/fission/keda-kafka-http-connector:v0.13
+          value: ghcr.io/fission/keda-kafka-http-connector:v0.17
         - name: RABBITMQ_IMAGE
-          value: ghcr.io/fission/keda-rabbitmq-http-connector:v0.11
+          value: ghcr.io/fission/keda-rabbitmq-http-connector:v0.15
         - name: AWS-KINESIS-STREAM_IMAGE
-          value: ghcr.io/fission/keda-aws-kinesis-http-connector:v0.11
+          value: ghcr.io/fission/keda-aws-kinesis-http-connector:v0.15
         - name: AWS-SQS-QUEUE_IMAGE
-          value: ghcr.io/fission/keda-aws-sqs-http-connector:v0.12
+          value: ghcr.io/fission/keda-aws-sqs-http-connector:v0.16
         - name: STAN_IMAGE
-          value: ghcr.io/fission/keda-nats-streaming-http-connector:v0.14
+          value: ghcr.io/fission/keda-nats-streaming-http-connector:v0.18
         - name: NATS-JETSTREAM_IMAGE
-          value: ghcr.io/fission/keda-nats-jetstream-http-connector:v0.5
+          value: ghcr.io/fission/keda-nats-jetstream-http-connector:v0.9
         - name: GCP-PUBSUB_IMAGE
-          value: ghcr.io/fission/keda-gcp-pubsub-http-connector:v0.7
+          value: ghcr.io/fission/keda-gcp-pubsub-http-connector:v0.11
         - name: REDIS_IMAGE
-          value: ghcr.io/fission/keda-redis-http-connector:v0.4
+          value: ghcr.io/fission/keda-redis-http-connector:v0.8
         - name: FISSION_BUILDER_NAMESPACE
           value: ''
         - name: FISSION_FUNCTION_NAMESPACE
@@ -68,7 +68,7 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
-        image: ghcr.io/fission/fission-bundle:v1.20.1
+        image: ghcr.io/fission/fission-bundle:v1.21.0
         imagePullPolicy: IfNotPresent
         name: mqtrigger-keda
         resources: {}

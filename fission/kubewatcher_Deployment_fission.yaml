@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    chart: fission-all-v1.20.1
+    chart: fission-all-v1.21.0
     svc: kubewatcher
   name: kubewatcher
 spec:
@@ -49,7 +49,7 @@ spec:
           value: '0.1'
         - name: OTEL_PROPAGATORS
           value: tracecontext,baggage
-        image: ghcr.io/fission/fission-bundle:v1.20.1
+        image: ghcr.io/fission/fission-bundle:v1.21.0
         imagePullPolicy: IfNotPresent
         name: kubewatcher
         resources: {}
