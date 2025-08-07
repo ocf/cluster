@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET__FILE: /etc/secrets/keycloak-secret
+  GF_DATABASE_HOST: mysql
+  GF_DATABASE_NAME: ocfgrafana
+  GF_DATABASE_PASSWORD__FILE: /etc/secrets/mysql-pass
+  GF_DATABASE_TYPE: mysql
+  GF_DATABASE_USER: ocfgrafana
+  GF_SECURITY_ADMIN_PASSWORD__FILE: /etc/secrets/admin-pass
+  GF_SERVER_ROOT_URL: https://grafana.ocf.berkeley.edu/
+  GF_SESSION_COOKIE_SECURE: 'true'
+  GF_SESSION_PROVIDER: mysql
+  GF_SESSION_PROVIDER_CONFIG__FILE: /etc/secrets/provider-config
+kind: ConfigMap
+metadata:
+  name: grafana

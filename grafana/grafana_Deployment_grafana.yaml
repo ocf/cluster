@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: grafana
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: grafana
+    spec:
+      containers:
+      - env: []
+        envFrom:
+        - configMapRef:
+            name: grafana
+        - secretRef:
+            name: prometheus-auth
+        image: ghcr.io/ocf/grafana:440bd121b30235d4483192186008e6a90a40817b
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 3000

@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/instance: vault
         app.kubernetes.io/name: vault
         component: server
-        helm.sh/chart: vault-0.28.0
+        helm.sh/chart: vault-0.30.1
     spec:
       affinity:
         podAntiAffinity:
@@ -85,7 +85,7 @@ spec:
               fieldPath: metadata.name
         - name: HOME
           value: /home/vault
-        image: hashicorp/vault:1.16.1
+        image: hashicorp/vault:1.20.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
