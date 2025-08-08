@@ -6,7 +6,8 @@ data:
     \ settings of logger\n      base_dir: \"/var/log/jobs\"\n    sweeper:\n      duration:\
     \ 14 #days\n      settings: # Customized settings of sweeper\n        work_dir:\
     \ \"/var/log/jobs\"\n#Loggers for the job service\nloggers:\n  - name: \"STD_OUTPUT\"\
-    \n    level: DEBUG\nmetric:\n  enabled: true\n  path: /metrics\n  port: 8001\n"
+    \n    level: DEBUG\nmetric:\n  enabled: true\n  path: /metrics\n  port: 8001\n\
+    reaper:\n  max_update_hours: 24\n  max_dangling_hours: 168\n"
 kind: ConfigMap
 metadata:
   labels:
@@ -14,7 +15,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.12.0
-    helm.sh/chart: harbor-24.0.2
+    app.kubernetes.io/version: 2.13.2
+    helm.sh/chart: harbor-26.8.3
   name: harbor-jobservice-config
   namespace: harbor

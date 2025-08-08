@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.12.0
-    helm.sh/chart: harbor-24.0.2
+    app.kubernetes.io/version: 2.13.2
+    helm.sh/chart: harbor-26.8.3
   name: harbor-jobservice
   namespace: harbor
 spec:
@@ -22,15 +22,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap-config: 903d1862486576bdd068bf86b133c146b59aa2550cb08f0dd9cb1cb7aabb22b0
-        checksum/configmap-env: 553bf8ea8b24f73d00541d9c804351bd9c2c3e3bdca162c5a3dde7329d6f6900
+        checksum/configmap-config: cccd9276a1799457c79aea1f7abdfa3bd1ed37bf682c72cd6ea33ac4cdc140a0
+        checksum/configmap-env: a917f556b7576c6df9dd41be6e4b1797e1b53d871efbfe12a98a6e3c00f73ca6
       labels:
         app.kubernetes.io/component: jobservice
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: harbor
-        app.kubernetes.io/version: 2.12.0
-        helm.sh/chart: harbor-24.0.2
+        app.kubernetes.io/version: 2.13.2
+        helm.sh/chart: harbor-26.8.3
     spec:
       affinity:
         nodeAffinity: null
@@ -65,7 +65,7 @@ spec:
             name: harbor-jobservice-envvars
         - secretRef:
             name: harbor-jobservice-envvars
-        image: docker.io/bitnami/harbor-jobservice:2.12.0-debian-12-r2
+        image: docker.io/bitnami/harbor-jobservice:2.13.2-debian-12-r1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -132,7 +132,7 @@ spec:
         - cp -r /etc/ssl/certs/* /certs
         command:
         - /bin/bash
-        image: docker.io/bitnami/harbor-jobservice:2.12.0-debian-12-r2
+        image: docker.io/bitnami/harbor-jobservice:2.13.2-debian-12-r1
         imagePullPolicy: IfNotPresent
         name: certificate-volume
         resources:

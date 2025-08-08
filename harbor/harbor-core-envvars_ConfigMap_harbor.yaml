@@ -1,6 +1,7 @@
 apiVersion: v1
 data:
   ADMIRAL_URL: NA
+  ARTIFACT_PULL_ASYNC_FLUSH_DURATION: '10'
   CFG_EXPIRATION: '5'
   CHART_CACHE_DRIVER: redis
   CONFIG_PATH: /etc/core/app.conf
@@ -8,6 +9,8 @@ data:
   CORE_URL: http://harbor-core:80
   DATABASE_TYPE: postgresql
   EXT_ENDPOINT: https://harbor.ocf.berkeley.edu
+  GDPR_AUDIT_LOGS: 'false'
+  GDPR_DELETE_USER: 'false'
   HTTPS_PROXY: ''
   HTTP_PROXY: ''
   JOBSERVICE_URL: http://harbor-jobservice:80
@@ -23,9 +26,12 @@ data:
   PORTAL_URL: http://harbor-portal:80
   POSTGRESQL_DATABASE: registry
   POSTGRESQL_HOST: harbor-postgresql
+  POSTGRESQL_MAX_IDLE_CONNS: '100'
+  POSTGRESQL_MAX_OPEN_CONNS: '900'
   POSTGRESQL_PORT: '5432'
   POSTGRESQL_SSLMODE: disable
   POSTGRESQL_USERNAME: postgres
+  QUOTA_UPDATE_PROVIDER: db
   REGISTRY_CONTROLLER_URL: http://harbor-registry:8080
   REGISTRY_CREDENTIAL_USERNAME: harbor_registry_user
   REGISTRY_STORAGE_PROVIDER_NAME: filesystem
@@ -41,7 +47,7 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: harbor
-    app.kubernetes.io/version: 2.12.0
-    helm.sh/chart: harbor-24.0.2
+    app.kubernetes.io/version: 2.13.2
+    helm.sh/chart: harbor-26.8.3
   name: harbor-core-envvars
   namespace: harbor

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 17.0.0
-    helm.sh/chart: postgresql-16.2.0
+    app.kubernetes.io/version: 17.4.0
+    helm.sh/chart: postgresql-16.6.7
   name: harbor-postgresql
   namespace: harbor
 spec:
@@ -27,8 +27,8 @@ spec:
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        app.kubernetes.io/version: 17.0.0
-        helm.sh/chart: postgresql-16.2.0
+        app.kubernetes.io/version: 17.4.0
+        helm.sh/chart: postgresql-16.6.7
       name: harbor-postgresql
     spec:
       affinity:
@@ -55,11 +55,8 @@ spec:
           value: /bitnami/postgresql
         - name: PGDATA
           value: /bitnami/postgresql/data
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: postgres-password
-              name: harbor-postgresql
+        - name: POSTGRES_PASSWORD_FILE
+          value: /opt/bitnami/postgresql/secrets/postgres-password
         - name: POSTGRESQL_ENABLE_LDAP
           value: 'no'
         - name: POSTGRESQL_ENABLE_TLS
@@ -76,7 +73,7 @@ spec:
           value: error
         - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
           value: pgaudit
-        image: docker.io/bitnami/postgresql:14.13.0-debian-12-r26
+        image: docker.io/bitnami/postgresql:17.4.0-debian-12-r19
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -146,6 +143,8 @@ spec:
           name: custom-init-scripts
         - mountPath: /bitnami/postgresql/conf/conf.d/
           name: postgresql-extended-config
+        - mountPath: /opt/bitnami/postgresql/secrets/
+          name: postgresql-password
         - mountPath: /dev/shm
           name: dshm
         - mountPath: /bitnami/postgresql
@@ -164,6 +163,9 @@ spec:
       - configMap:
           name: harbor-postgresql-extended-configuration
         name: postgresql-extended-config
+      - name: postgresql-password
+        secret:
+          secretName: harbor-postgresql
       - configMap:
           name: harbor-postgresql-init-scripts
         name: custom-init-scripts

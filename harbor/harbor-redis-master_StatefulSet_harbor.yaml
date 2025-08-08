@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    app.kubernetes.io/version: 7.4.1
-    helm.sh/chart: redis-20.3.0
+    app.kubernetes.io/version: 8.0.0
+    helm.sh/chart: redis-21.0.0
   name: harbor-redis-master
   namespace: harbor
 spec:
@@ -22,16 +22,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
+        checksum/configmap: 2a9ab4a5432825504d910f022638674ce88eaefe9f9f595ad8bc107377d104fb
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
-        checksum/scripts: 43cdf68c28f3abe25ce017a82f74dbf2437d1900fd69df51a55a3edf6193d141
+        checksum/scripts: bdec350b84a1ace7cc118db113a21c9f160bde3425b07714e1c0c1da722621cf
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: harbor
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        app.kubernetes.io/version: 7.4.1
-        helm.sh/chart: redis-20.3.0
+        app.kubernetes.io/version: 8.0.0
+        helm.sh/chart: redis-21.0.0
     spec:
       affinity:
         nodeAffinity: null
@@ -49,7 +49,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - args:
-        - -c
+        - -ec
         - /opt/bitnami/scripts/start-scripts/start-master.sh
         command:
         - /bin/bash
@@ -64,13 +64,13 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.4.1-debian-12-r2
+        image: docker.io/bitnami/redis:8.0.0-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
-            - sh
-            - -c
+            - /bin/bash
+            - -ec
             - /health/ping_liveness_local.sh 5
           failureThreshold: 5
           initialDelaySeconds: 20
@@ -84,8 +84,8 @@ spec:
         readinessProbe:
           exec:
             command:
-            - sh
-            - -c
+            - /bin/bash
+            - -ec
             - /health/ping_readiness_local.sh 1
           failureThreshold: 5
           initialDelaySeconds: 20

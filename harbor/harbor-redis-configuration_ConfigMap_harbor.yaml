@@ -29,13 +29,14 @@ data:
     rename-command FLUSHALL ""
 
     # End of replica configuration'
+  users.acl: ''
 kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/instance: harbor
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    app.kubernetes.io/version: 7.4.1
-    helm.sh/chart: redis-20.3.0
+    app.kubernetes.io/version: 8.0.0
+    helm.sh/chart: redis-21.0.0
   name: harbor-redis-configuration
   namespace: harbor
