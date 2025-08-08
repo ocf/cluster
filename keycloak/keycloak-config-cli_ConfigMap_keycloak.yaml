@@ -49,8 +49,11 @@ data:
     true}, {"clientId": "ergo", "name": "Ergo", "description": "IRC server", "baseUrl":
     "https://irc.ocf.berkeley.edu/", "clientAuthenticatorType": "client-secret", "redirectUris":
     ["https://irc.ocf.berkeley.edu/*"], "webOrigins": ["+"], "publicClient": false,
-    "protocol": "openid-connect", "enabled": true, "implicitFlowEnabled": true}],
-    "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
+    "protocol": "openid-connect", "enabled": true, "implicitFlowEnabled": true}, {"clientId":
+    "vault", "name": "Vault", "description": "Secrets management", "baseUrl": "https://vault.ocf.berkeley.edu/",
+    "clientAuthenticatorType": "client-secret", "redirectUris": ["https://vault.ocf.berkeley.edu/ui/vault/auth/oidc/oidc/callback"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}], "clientScopes": [{"name": "groups", "protocol": "openid-connect", "attributes":
     {"include.in.token.scope": "true", "display.on.consent.screen": "true"}, "protocolMappers":
     [{"name": "groups", "protocol": "openid-connect", "protocolMapper": "oidc-group-membership-mapper",
     "consentRequired": false, "config": {"full.path": "false", "id.token.claim": "true",
