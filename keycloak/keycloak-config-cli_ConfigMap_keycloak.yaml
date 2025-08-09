@@ -13,8 +13,8 @@ data:
     "manage-realm", "manage-users", "manage-authorization", "realm-admin"]}}, {"name":
     "ocfstaff", "realmRoles": ["ocfstaff"]}, {"name": "opstaff", "realmRoles": ["opstaff"]},
     {"name": "sorry"}], "clients": [{"clientId": "matrix", "name": "matrix", "description":
-    "OCF Matrix Server", "baseUrl": "https://matrix.ocf.berkeley.edu", "clientAuthenticatorType":
-    "client-secret", "redirectUris": ["https://matrix.ocf.berkeley.edu/_synapse/client/oidc/callback"],
+    "OCF Matrix Server", "baseUrl": "https://matrix.ocf.io", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://matrix.ocf.io/_synapse/client/oidc/callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "rt", "name": "rt", "description": "Request Ticket tracker",
     "baseUrl": "https://rt.ocf.berkeley.edu", "clientAuthenticatorType": "client-secret",
