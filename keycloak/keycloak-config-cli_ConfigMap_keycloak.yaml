@@ -12,19 +12,23 @@ data:
     {"realm-management": ["manage-clients", "manage-events", "manage-identity-providers",
     "manage-realm", "manage-users", "manage-authorization", "realm-admin"]}}, {"name":
     "ocfstaff", "realmRoles": ["ocfstaff"]}, {"name": "opstaff", "realmRoles": ["opstaff"]},
-    {"name": "sorry"}], "clients": [{"clientId": "matrix", "name": "matrix", "description":
-    "OCF Matrix Server", "baseUrl": "https://matrix.ocf.io", "clientAuthenticatorType":
-    "client-secret", "redirectUris": ["https://matrix.ocf.io/_synapse/client/oidc/callback"],
+    {"name": "sorry"}], "clients": [{"clientId": "gapps", "name": "gapps", "description":
+    "Google Workspace", "baseUrl": "https://google.com", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["https://accounts.google.com/oidcrp/03ig9uvl20pcbgg/cb"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
-    true}, {"clientId": "rt", "name": "rt", "description": "Request Ticket tracker",
-    "baseUrl": "https://rt.ocf.berkeley.edu", "clientAuthenticatorType": "client-secret",
-    "redirectUris": ["https://rt.ocf.berkeley.edu/oauth2callback"], "webOrigins":
+    true}, {"clientId": "matrix", "name": "matrix", "description": "OCF Matrix Server",
+    "baseUrl": "https://matrix.ocf.io", "clientAuthenticatorType": "client-secret",
+    "redirectUris": ["https://matrix.ocf.io/_synapse/client/oidc/callback"], "webOrigins":
     ["+"], "publicClient": false, "protocol": "openid-connect", "enabled": true},
-    {"clientId": "argocd", "name": "ArgoCD", "description": "Declarative GitOps CD
-    for Kubernetes", "baseUrl": "https://argo.ocf.berkeley.edu/", "clientAuthenticatorType":
-    "client-secret", "redirectUris": ["https://argo.ocf.berkeley.edu/auth/callback"],
-    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
-    true}, {"clientId": "dev-argocd", "name": "Devkube ArgoCD", "description": "Declarative
+    {"clientId": "rt", "name": "rt", "description": "Request Ticket tracker", "baseUrl":
+    "https://rt.ocf.berkeley.edu", "clientAuthenticatorType": "client-secret", "redirectUris":
+    ["https://rt.ocf.berkeley.edu/oauth2callback"], "webOrigins": ["+"], "publicClient":
+    false, "protocol": "openid-connect", "enabled": true}, {"clientId": "argocd",
+    "name": "ArgoCD", "description": "Declarative GitOps CD for Kubernetes", "baseUrl":
+    "https://argo.ocf.berkeley.edu/", "clientAuthenticatorType": "client-secret",
+    "redirectUris": ["https://argo.ocf.berkeley.edu/auth/callback"], "webOrigins":
+    ["+"], "publicClient": false, "protocol": "openid-connect", "enabled": true},
+    {"clientId": "dev-argocd", "name": "Devkube ArgoCD", "description": "Declarative
     GitOps CD for Kubernetes", "baseUrl": "https://dev-argo.ocf.berkeley.edu/", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["https://dev-argo.ocf.berkeley.edu/auth/callback"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
