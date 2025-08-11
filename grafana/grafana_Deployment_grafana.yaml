@@ -18,8 +18,8 @@ spec:
         - configMapRef:
             name: grafana
         - secretRef:
-            name: prometheus-auth
-        image: ghcr.io/ocf/grafana:f0ffec30e52230d7262d5e196a23744d1a693f96
+            name: grafana
+        image: ghcr.io/ocf/grafana:4a1b79aa63b09e1938cabadf09fc24d0dff41a0b
         imagePullPolicy: IfNotPresent
         name: main
         ports:
