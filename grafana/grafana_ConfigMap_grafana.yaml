@@ -7,7 +7,7 @@ data:
   GF_SERVER_ROOT_URL: https://grafana.ocf.berkeley.edu/
   GF_SESSION_COOKIE_SECURE: 'true'
   GF_SESSION_PROVIDER: mysql
-  PROMETHEUS_AUTH_USER: ocfgrafana
+  PROMETHEUS_AUTH_USER: ocfadmin
 kind: ConfigMap
 metadata:
   name: grafana
