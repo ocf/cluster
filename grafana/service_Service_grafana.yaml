@@ -4,7 +4,7 @@ metadata:
   name: service
 spec:
   ports:
-  - port: 90
+  - port: 80
     targetPort: 3000
   selector:
     app: grafana
