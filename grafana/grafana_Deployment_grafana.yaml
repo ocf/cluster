@@ -19,7 +19,7 @@ spec:
             name: grafana
         - secretRef:
             name: grafana
-        image: ghcr.io/ocf/grafana:40851be2fd248402078b84dff451dbb2907196fb
+        image: ghcr.io/ocf/grafana:68d3928c1a1ec41e77dd2c9eeae3b9e4591d7d87
         imagePullPolicy: IfNotPresent
         name: main
         ports:
