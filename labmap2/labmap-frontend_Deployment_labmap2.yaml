@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labmap-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: labmap-frontend
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: labmap-frontend
+    spec:
+      containers:
+      - image: ghcr.io/ocf/labmap2-frontend:cd6f055ffb8e51b7eba38977befa781f444fb378
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 8080
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst

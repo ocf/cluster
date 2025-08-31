@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: labmap2
+  namespace: argocd
+spec:
+  destination:
+    namespace: labmap2
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: labmap2
+    repoURL: https://github.com/ocf/cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

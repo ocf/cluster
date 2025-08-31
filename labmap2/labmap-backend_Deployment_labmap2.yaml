@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labmap-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: labmap-backend
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: labmap-backend
+    spec:
+      containers:
+      - env: []
+        envFrom:
+        - secretRef:
+            name: labmap2
+        image: ghcr.io/ocf/labmap2-backend:cd6f055ffb8e51b7eba38977befa781f444fb378
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        name: main
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      dnsConfig:
+        searches:
+        - ocf.berkeley.edu
+      dnsPolicy: ClusterFirst
