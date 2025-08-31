@@ -17,7 +17,7 @@ spec:
         envFrom:
         - secretRef:
             name: labmap2
-        image: ghcr.io/ocf/labmap2-backend:a2dba83adb24a470264d026bce6a8ff93cf0e789
+        image: ghcr.io/ocf/labmap2-backend:f1e9b6458d5b9468de1075f8a1cf62193a28418d
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
