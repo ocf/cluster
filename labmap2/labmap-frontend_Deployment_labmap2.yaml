@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: labmap-frontend
     spec:
       containers:
-      - image: ghcr.io/ocf/labmap2-frontend:51c3f515f6daad0133e1d1c4823a18a060f44e27
+      - image: ghcr.io/ocf/labmap2-frontend:8597fe805ba4078aa595c22273062cae79c221ae
         imagePullPolicy: IfNotPresent
         name: main
         ports:
