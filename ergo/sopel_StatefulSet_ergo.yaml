@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sopel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s.ocf.io/app: ergo
+      k8s.ocf.io/component: sopel
+  serviceName: sopel
+  template:
+    metadata:
+      labels:
+        k8s.ocf.io/app: ergo
+        k8s.ocf.io/component: sopel
+    spec:
+      containers:
+      - image: ghcr.io/ocf/ergo-sopel:466aa8859cc18ee81f9f8d8bee97be2eefa1bbfa
+        name: sopel
+        volumeMounts:
+        - mountPath: /home/sopel/.sopel/default.cfg
+          name: sopel-config
+          subPath: default.cfg
+        - mountPath: /home/sopel/.sopel/
+          name: sopel-data
+        - mountPath: /home/sopel/.sopel/plugins/
+          name: sopel-plugins
+      volumes:
+      - name: sopel-config
+        secret:
+          secretName: sopel-config
+      - configMap:
+          name: sopel-plugins
+        name: sopel-plugins
+  volumeClaimTemplates:
+  - metadata:
+      name: sopel-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 32Gi
