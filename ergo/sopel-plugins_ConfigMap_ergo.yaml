@@ -8,7 +8,7 @@ data:
     \    \"ocfapphost\": \"\\x0310\",  # cyan\n    \"ocfofficers\": \"\\x0306\", \
     \ # purple\n    \"ocfalumni\": \"\\x0313\",  # pink\n}\n\n\n@plugin.command(\"\
     check\")\ndef check(bot, trigger):\n    \"\"\"Print information about an OCF user.\"\
-    \"\"\n    user = trigger.group(1).strip()\n    attrs = search.user_attrs(user)\n\
+    \"\"\n    user = trigger.group(2).strip()\n    attrs = search.user_attrs(user)\n\
     \n    if attrs is not None:\n        groups = [grp.getgrgid(attrs[\"gidNumber\"\
     ]).gr_name]\n        groups.extend(\n            sorted(group.gr_name for group\
     \ in grp.getgrall() if user in group.gr_mem),\n        )\n        groups = [\n\
@@ -23,7 +23,7 @@ data:
     \        bot.say(f\"{user} does not exist\")\n\n\ndef alphanum(word):\n    return\
     \ \"\".join(c for c in word.lower() if c in string.ascii_lowercase)\n\n\n@plugin.command(\"\
     checkacct\")\ndef checkacct(bot, trigger):\n    \"\"\"Print matching OCF usernames.\"\
-    \"\"\n    search_term = trigger.group(1).strip()\n    keywords = search_term.split()\n\
+    \"\"\n    search_term = trigger.group(2).strip()\n    keywords = search_term.split()\n\
     \n    if len(keywords) > 0:\n        search = \"(&{})\".format(\n            \"\
     \".join(\n                # all keywords must match either uid or cn\n       \
     \         \"(|(uid=*{keyword}*)(cn=*{keyword}*))\".format(\n                 \
@@ -64,10 +64,10 @@ data:
     \n        thread = threading.Thread(target=thread_func, daemon=True)\n       \
     \ thread.start()\n\n    add_thread(celery_listener)\n\n\n@plugin.command(\"approve\"\
     )\n@plugin.require_admin(reply=True)\ndef approve(bot, trigger):\n    \"\"\"Approve\
-    \ a pending account.\"\"\"\n    user_name = trigger.group(1)\n    tasks.approve_request.delay(user_name)\n\
+    \ a pending account.\"\"\"\n    user_name = trigger.group(2)\n    tasks.approve_request.delay(user_name)\n\
     \    bot.reply(f\"approved {user_name}, the account is being created\")\n\n\n\
     @plugin.command(\"reject\")\n@plugin.require_admin(reply=True)\ndef reject(bot,\
-    \ trigger):\n    \"\"\"Reject a pending account.\"\"\"\n    user_name = trigger.group(1)\n\
+    \ trigger):\n    \"\"\"Reject a pending account.\"\"\"\n    user_name = trigger.group(2)\n\
     \    tasks.reject_request.delay(user_name)\n    bot.reply(f\"rejected {user_name},\
     \ better luck next time\")\n\n\n@plugin.command(\"list\")\n@plugin.require_admin(reply=True)\n\
     def list_pending(bot, trigger):\n    \"\"\"List accounts pending approval.\"\"\
@@ -119,7 +119,7 @@ data:
     \ staff_in_lab\nfrom ocflib.lab.stats import users_in_lab_count\n\nfrom sopel\
     \ import plugin\n\n\n@plugin.rule(r\"is ([a-z]+) in the lab\")\ndef in_lab(bot,\
     \ trigger):\n    \"\"\"Check if a staffer is in the lab.\"\"\"\n    username =\
-    \ trigger.group(1).strip()\n    for session in staff_in_lab():\n        if username\
+    \ trigger.group(2).strip()\n    for session in staff_in_lab():\n        if username\
     \ == session.user:\n            bot.reply(f\"{username} is in the lab\")\n   \
     \         break\n    else:\n        bot.reply(f\"{username} is not in the lab\"\
     )\n\n\ndef _prevent_ping(staffer):\n    \"\"\"Hack to prevent pinging the person\
