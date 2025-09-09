@@ -88,22 +88,23 @@ data:
     \ = {\"pickle\"}\n\n    tasks = get_tasks(celery)\n\n    connection = Connection(\n\
     \        bot.settings.celery.broker,\n        ssl={\n            \"ssl_ca_certs\"\
     : \"/etc/ssl/certs/ca-certificates.crt\",\n            \"ssl_cert_reqs\": ssl.CERT_REQUIRED,\n\
-    \        },\n    )\n\n    def bot_announce(targets, message):\n        for target\
-    \ in targets:\n            bot.say(message, target)\n\n    def on_account_created(event):\n\
-    \        request = event[\"request\"]\n\n        if request[\"calnet_uid\"]:\n\
-    \            uid_or_gid = \"Calnet UID: {}\".format(request[\"calnet_uid\"])\n\
-    \        elif request[\"callink_oid\"]:\n            uid_or_gid = \"Callink OID:\
-    \ {}\".format(request[\"callink_oid\"])\n        else:\n            uid_or_gid\
-    \ = \"No Calnet UID or OID set\"\n\n        bot_announce(\n            IRC_CHANNELS_ANNOUNCE,\n\
-    \            \"{user} created ({real_name}, {uid_or_gid})\".format(\n        \
-    \        user=request[\"user_name\"],\n                real_name=request[\"real_name\"\
-    ],\n                uid_or_gid=uid_or_gid,\n            ),\n        )\n\n    def\
-    \ on_account_submitted(event):\n        request = event[\"request\"]\n       \
-    \ bot_announce(\n            IRC_CHANNELS_OPER,\n            \"{user} ({real_name})\
-    \ needs approval: {reasons}\".format(\n                user=request[\"user_name\"\
-    ],\n                real_name=request[\"real_name\"],\n                reasons=\"\
-    , \".join(request[\"reasons\"]),\n            ),\n        )\n\n    def on_account_approved(event):\n\
-    \        request = event[\"request\"]\n        bot_announce(\n            IRC_CHANNELS_ANNOUNCE,\n\
+    \        },\n        transport=\"redis\"\n    )\n\n    def bot_announce(targets,\
+    \ message):\n        for target in targets:\n            bot.say(message, target)\n\
+    \n    def on_account_created(event):\n        request = event[\"request\"]\n\n\
+    \        if request[\"calnet_uid\"]:\n            uid_or_gid = \"Calnet UID: {}\"\
+    .format(request[\"calnet_uid\"])\n        elif request[\"callink_oid\"]:\n   \
+    \         uid_or_gid = \"Callink OID: {}\".format(request[\"callink_oid\"])\n\
+    \        else:\n            uid_or_gid = \"No Calnet UID or OID set\"\n\n    \
+    \    bot_announce(\n            IRC_CHANNELS_ANNOUNCE,\n            \"{user} created\
+    \ ({real_name}, {uid_or_gid})\".format(\n                user=request[\"user_name\"\
+    ],\n                real_name=request[\"real_name\"],\n                uid_or_gid=uid_or_gid,\n\
+    \            ),\n        )\n\n    def on_account_submitted(event):\n        request\
+    \ = event[\"request\"]\n        bot_announce(\n            IRC_CHANNELS_OPER,\n\
+    \            \"{user} ({real_name}) needs approval: {reasons}\".format(\n    \
+    \            user=request[\"user_name\"],\n                real_name=request[\"\
+    real_name\"],\n                reasons=\", \".join(request[\"reasons\"]),\n  \
+    \          ),\n        )\n\n    def on_account_approved(event):\n        request\
+    \ = event[\"request\"]\n        bot_announce(\n            IRC_CHANNELS_ANNOUNCE,\n\
     \            \"{user} was approved, now pending creation.\".format(\n        \
     \        user=request[\"user_name\"],\n            ),\n        )\n\n    def on_account_rejected(event):\n\
     \        request = event[\"request\"]\n        bot_announce(\n            IRC_CHANNELS_ANNOUNCE,\n\
