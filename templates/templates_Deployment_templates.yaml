@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: templates
     spec:
       containers:
-      - image: ghcr.io/ocf/templates:611fd9506a0c6c2f68604a3743136f91da9f8dfb
+      - image: ghcr.io/ocf/templates:3bf11ef5324c617e829d3b3a1bc084c12b5fe026
         imagePullPolicy: IfNotPresent
         name: main
         ports:
