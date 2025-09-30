@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: github-runner
+  namespace: argocd
+spec:
+  destination:
+    namespace: github-runner
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: github-runner
+    repoURL: https://github.com/ocf/cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

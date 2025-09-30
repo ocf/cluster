@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      transpire.ocf.io/deployment: github-runner
+  template:
+    metadata:
+      labels:
+        transpire.ocf.io/deployment: github-runner
+    spec:
+      containers:
+      - env: []
+        envFrom:
+        - secretRef:
+            name: github-runner
+        image: ghcr.io/ocf/github-runner:d23bb219b92834db77cb25ac2bfb1043fd484649
+        imagePullPolicy: IfNotPresent
+        name: main
+        ports:
+        - containerPort: 443
