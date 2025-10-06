@@ -17,7 +17,7 @@ spec:
         envFrom:
         - secretRef:
             name: github-runner
-        image: ghcr.io/ocf/github-runner:8d65d4b0a86aab3f8a7d53873a7d9376bf2e4b8d
+        image: ghcr.io/ocf/github-runner:d92cac9cfc82d7c7da275e74eda3c9751d078f5a
         imagePullPolicy: IfNotPresent
         name: main
         ports:
