@@ -87,7 +87,7 @@ data:
     ["ocfAccount,account,posixAccount"], "customUserSearchFilter": ["(!(loginShell=/opt/share/utils/bin/sorried))"],
     "searchScope": ["1"], "pagination": ["true"], "importEnabled": ["true"], "batchSizeForSync":
     ["1000"], "fullSyncPeriod": ["604800"], "changedSyncPeriod": ["86400"], "allowKerberosAuthentication":
-    ["true"], "kerberosRealm": ["OCF.BERKELEY.EDU"], "serverPrincipal": ["HTTP/lb-81.ocf.berkeley.edu@OCF.BERKELEY.EDU"],
+    ["true"], "kerberosRealm": ["OCF.BERKELEY.EDU"], "serverPrincipal": ["HTTP/idm.ocf.berkeley.edu@OCF.BERKELEY.EDU"],
     "keyTab": ["/vault/secrets/keytab"], "debug": ["true"], "useKerberosForPasswordAuthentication":
     ["true"], "cachePolicy": ["DEFAULT"], "syncRegistrations": ["false"], "validatePasswordPolicy":
     ["false"], "trustEmail": ["true"], "priority": ["0"]}, "subComponents": {"org.keycloak.storage.ldap.mappers.LDAPStorageMapper":
