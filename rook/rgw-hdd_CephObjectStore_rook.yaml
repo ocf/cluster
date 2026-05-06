@@ -11,7 +11,6 @@ spec:
   gateway:
     instances: 1
     port: 80
-    securePort: 443
   metadataPool:
     deviceClass: nvme
     failureDomain: host
