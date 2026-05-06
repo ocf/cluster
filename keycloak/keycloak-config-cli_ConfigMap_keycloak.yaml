@@ -12,9 +12,17 @@ data:
     {"realm-management": ["manage-clients", "manage-events", "manage-identity-providers",
     "manage-realm", "manage-users", "manage-authorization", "realm-admin"]}}, {"name":
     "ocfstaff", "realmRoles": ["ocfstaff"]}, {"name": "opstaff", "realmRoles": ["opstaff"]},
-    {"name": "sorry"}], "clients": [{"clientId": "jenkins", "name": "jenkins", "description":
-    "OCF Jenkins", "baseUrl": "https://jenkins.ocf.berkeley.edu", "clientAuthenticatorType":
-    "client-secret", "redirectUris": ["https://jenkins.ocf.berkeley.edu/securityRealm/finishLogin"],
+    {"name": "sorry"}], "clients": [{"clientId": "reef", "name": "reef", "description":
+    "OCF Proxmox Node", "baseUrl": "http://reef.ocf.berkeley.edu:8006", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["http://reef.ocf.berkeley.edu:8006/*"], "webOrigins":
+    ["+"], "publicClient": false, "protocol": "openid-connect", "enabled": true},
+    {"clientId": "doorplug", "name": "doorplug", "description": "OCF Proxmox Node",
+    "baseUrl": "http://doorplug.ocf.berkeley.edu:8006", "clientAuthenticatorType":
+    "client-secret", "redirectUris": ["http://doorplug.ocf.berkeley.edu:8006/*"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "jenkins", "name": "jenkins", "description": "OCF Jenkins",
+    "baseUrl": "https://jenkins.ocf.berkeley.edu", "clientAuthenticatorType": "client-secret",
+    "redirectUris": ["https://jenkins.ocf.berkeley.edu/securityRealm/finishLogin"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "teleport", "name": "teleport", "description": "OCF Teleport",
     "baseUrl": "https://tele.ocf.io", "clientAuthenticatorType": "client-secret",
