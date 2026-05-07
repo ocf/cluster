@@ -12,12 +12,20 @@ data:
     {"realm-management": ["manage-clients", "manage-events", "manage-identity-providers",
     "manage-realm", "manage-users", "manage-authorization", "realm-admin"]}}, {"name":
     "ocfstaff", "realmRoles": ["ocfstaff"]}, {"name": "opstaff", "realmRoles": ["opstaff"]},
-    {"name": "sorry"}], "clients": [{"clientId": "reef", "name": "reef", "description":
-    "OCF Proxmox Node", "baseUrl": "http://reef.ocf.berkeley.edu:8006", "clientAuthenticatorType":
-    "client-secret", "redirectUris": ["http://reef.ocf.berkeley.edu:8006/*"], "webOrigins":
-    ["+"], "publicClient": false, "protocol": "openid-connect", "enabled": true},
-    {"clientId": "doorplug", "name": "doorplug", "description": "OCF Proxmox Node",
-    "baseUrl": "http://doorplug.ocf.berkeley.edu:8006", "clientAuthenticatorType":
+    {"name": "sorry"}], "clients": [{"clientId": "niks3", "name": "niks3", "description":
+    "OCF Nix binary cache (push auth)", "baseUrl": "https://cache.ocf.berkeley.edu",
+    "clientAuthenticatorType": "client-secret", "redirectUris": ["http://127.0.0.1/*",
+    "http://localhost/*"], "webOrigins": ["+"], "publicClient": true, "protocol":
+    "openid-connect", "enabled": true, "standardFlowEnabled": true, "directAccessGrantsEnabled":
+    false, "implicitFlowEnabled": false, "attributes": {"pkce.code.challenge.method":
+    "S256"}, "protocolMappers": [{"name": "audience", "protocol": "openid-connect",
+    "protocolMapper": "oidc-audience-mapper", "config": {"included.client.audience":
+    "niks3", "id.token.claim": "false", "access.token.claim": "true"}}]}, {"clientId":
+    "reef", "name": "reef", "description": "OCF Proxmox Node", "baseUrl": "http://reef.ocf.berkeley.edu:8006",
+    "clientAuthenticatorType": "client-secret", "redirectUris": ["http://reef.ocf.berkeley.edu:8006/*"],
+    "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
+    true}, {"clientId": "doorplug", "name": "doorplug", "description": "OCF Proxmox
+    Node", "baseUrl": "http://doorplug.ocf.berkeley.edu:8006", "clientAuthenticatorType":
     "client-secret", "redirectUris": ["http://doorplug.ocf.berkeley.edu:8006/*"],
     "webOrigins": ["+"], "publicClient": false, "protocol": "openid-connect", "enabled":
     true}, {"clientId": "jenkins", "name": "jenkins", "description": "OCF Jenkins",
