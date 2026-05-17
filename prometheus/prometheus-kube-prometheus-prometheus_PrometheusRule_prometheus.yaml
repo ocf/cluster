@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-prometheus
@@ -192,9 +192,9 @@ spec:
         summary: Prometheus remote write is behind.
       expr: "# Without max_over_time, failed scrapes could create false negatives,\
         \ see\n# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0\
-        \ for details.\n(\n  max_over_time(prometheus_remote_storage_highest_timestamp_in_seconds{job=\"\
-        prometheus-kube-prometheus-prometheus\",namespace=\"prometheus\"}[5m])\n-\
-        \ ignoring(remote_name, url) group_right\n  max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job=\"\
+        \ for details.\n(\n  max_over_time(prometheus_remote_storage_queue_highest_timestamp_seconds{job=\"\
+        prometheus-kube-prometheus-prometheus\",namespace=\"prometheus\"}[5m])\n-\n\
+        \  max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job=\"\
         prometheus-kube-prometheus-prometheus\",namespace=\"prometheus\"}[5m])\n)\n\
         > 120"
       for: 15m

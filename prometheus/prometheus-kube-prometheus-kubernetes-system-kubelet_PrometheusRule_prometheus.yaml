@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubernetes-system-kubelet
@@ -122,10 +122,11 @@ spec:
           on node {{ $labels.node }} on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletpodstartuplatencyhigh
         summary: Kubelet Pod startup latency is too high.
-      expr: histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet",
-        metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on (cluster,
-        instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}
-        > 60
+      expr: "histogram_quantile(0.99,\n  sum by (cluster, instance, le) (\n    topk\
+        \ by (cluster, instance, le, operation_type) (1,\n      rate(kubelet_pod_worker_duration_seconds_bucket{job=\"\
+        kubelet\", metrics_path=\"/metrics\"}[5m])\n    )\n  )\n)\n* on (cluster,\
+        \ instance) group_left(node)\ntopk by (cluster, instance, node) (1,\n  kubelet_node_name{job=\"\
+        kubelet\", metrics_path=\"/metrics\"}\n)\n> 60"
       for: 15m
       labels:
         severity: warning
@@ -188,12 +189,26 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: KubeletInstanceUnreachable
+      annotations:
+        description: A Kubelet instance has been unreachable for more than 15 minutes.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletinstanceunreachable
+        summary: Kubelet instance is unreachable.
+      expr: up{job="kubelet", metrics_path="/metrics"} == 0
+      for: 15m
+      labels:
+        severity: warning
     - alert: KubeletDown
       annotations:
-        description: Kubelet has disappeared from Prometheus target discovery.
+        description: Kubelet has disappeared from Prometheus target discovery on cluster
+          {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletdown
         summary: Target disappeared from Prometheus target discovery.
-      expr: absent(up{job="kubelet", metrics_path="/metrics"} == 1)
+      expr: 'count by (cluster) (kube_node_info{job="kube-state-metrics"})
+
+        unless on (cluster)
+
+        count by (cluster) (up{job="kubelet", metrics_path="/metrics"} == 1)'
       for: 15m
       labels:
         severity: critical

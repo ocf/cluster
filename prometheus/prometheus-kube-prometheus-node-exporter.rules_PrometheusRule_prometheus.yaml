@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-node-exporter.rules
@@ -50,3 +50,15 @@ spec:
     - expr: "sum without (device) (\n  rate(node_network_transmit_drop_total{job=\"\
         node-exporter\", device!=\"lo\"}[5m])\n)"
       record: instance:node_network_transmit_drop_excluding_lo:rate5m
+    - expr: "sum without (device) (\n  rate(node_network_receive_bytes_total{job=\"\
+        node-exporter\", device!~\"lo|veth.+\"}[5m])\n)"
+      record: instance:node_network_receive_bytes_physical:rate5m
+    - expr: "sum without (device) (\n  rate(node_network_transmit_bytes_total{job=\"\
+        node-exporter\", device!~\"lo|veth.+\"}[5m])\n)"
+      record: instance:node_network_transmit_bytes_physical:rate5m
+    - expr: "sum without (device) (\n  rate(node_network_receive_drop_total{job=\"\
+        node-exporter\", device!~\"lo|veth.+\"}[5m])\n)"
+      record: instance:node_network_receive_drop_physical:rate5m
+    - expr: "sum without (device) (\n  rate(node_network_transmit_drop_total{job=\"\
+        node-exporter\", device!~\"lo|veth.+\"}[5m])\n)"
+      record: instance:node_network_transmit_drop_physical:rate5m

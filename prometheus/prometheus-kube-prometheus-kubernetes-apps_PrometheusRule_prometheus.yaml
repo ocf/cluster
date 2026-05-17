@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubernetes-apps
@@ -34,9 +34,9 @@ spec:
           state for longer than 15 minutes on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodnotready
         summary: Pod has been in a non-ready state for more than 15 minutes.
-      expr: "sum by (namespace, pod, cluster) (\n  max by (namespace, pod, cluster)\
-        \ (\n    kube_pod_status_phase{job=\"kube-state-metrics\", namespace=~\".*\"\
-        , phase=~\"Pending|Unknown|Failed\"}\n  ) * on (namespace, pod, cluster) group_left(owner_kind)\
+      expr: "sum by (namespace, pod, job, cluster) (\n  max by (namespace, pod, job,\
+        \ cluster) (\n    kube_pod_status_phase{job=\"kube-state-metrics\", namespace=~\"\
+        .*\", phase=~\"Pending|Unknown\"}\n  ) * on (namespace, pod, cluster) group_left()\
         \ topk by (namespace, pod, cluster) (\n    1, max by (namespace, pod, owner_kind,\
         \ cluster) (kube_pod_owner{owner_kind!=\"Job\"})\n  )\n) > 0"
       for: 15m
@@ -230,9 +230,12 @@ spec:
           $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpamaxedout
         summary: HPA is running at max replicas
-      expr: "kube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\"\
-        , namespace=~\".*\"}\n  ==\nkube_horizontalpodautoscaler_spec_max_replicas{job=\"\
-        kube-state-metrics\", namespace=~\".*\"}"
+      expr: "(\n  kube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\"\
+        , namespace=~\".*\"}\n    ==\n  kube_horizontalpodautoscaler_spec_max_replicas{job=\"\
+        kube-state-metrics\", namespace=~\".*\"}\n)\nand on (namespace, horizontalpodautoscaler,\
+        \ cluster) (\n  kube_horizontalpodautoscaler_spec_max_replicas{job=\"kube-state-metrics\"\
+        , namespace=~\".*\"}\n    !=\n  kube_horizontalpodautoscaler_spec_min_replicas{job=\"\
+        kube-state-metrics\", namespace=~\".*\"}\n)"
       for: 15m
       labels:
         severity: warning

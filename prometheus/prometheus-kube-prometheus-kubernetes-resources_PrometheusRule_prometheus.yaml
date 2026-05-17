@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-kubernetes-resources
@@ -23,35 +23,15 @@ spec:
           node failure.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuovercommit
         summary: Cluster has overcommitted CPU resource requests.
-      expr: '(sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster)
-        -
-
-        sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
-        by (cluster) > 0
-
-        and
-
-        count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics",
-        role="control-plane"})) < 3)
-
-        or
-
-        (sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster)
-        -
-
-        (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
-        by (cluster) -
-
-        max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
-        by (cluster)) > 0
-
-        and
-
-        (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
-        by (cluster) -
-
-        max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
-        by (cluster)) > 0)'
+      expr: "# Non-HA clusters.\n(\n  (\n    sum by (cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})\n\
+        \    -\n    sum by (cluster) (kube_node_status_allocatable{job=\"kube-state-metrics\"\
+        ,resource=\"cpu\"}) > 0\n  )\n  and\n  count by (cluster) (max by (cluster,\
+        \ node) (kube_node_role{job=\"kube-state-metrics\", role=\"control-plane\"\
+        })) < 3\n)\nor\n# HA clusters.\n(\n  sum by (cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})\n\
+        \  -\n  (\n    # Skip clusters with only one allocatable node.\n    (\n  \
+        \    sum by (cluster) (kube_node_status_allocatable{job=\"kube-state-metrics\"\
+        ,resource=\"cpu\"})\n      -\n      max by (cluster) (kube_node_status_allocatable{job=\"\
+        kube-state-metrics\",resource=\"cpu\"})\n    ) > 0\n  ) > 0\n)"
       for: 10m
       labels:
         severity: warning
@@ -62,47 +42,28 @@ spec:
           failure.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryovercommit
         summary: Cluster has overcommitted memory resource requests.
-      expr: '(sum(namespace_memory:kube_pod_container_resource_requests:sum{}) by
-        (cluster) -
-
-        sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
-        by (cluster) > 0
-
-        and
-
-        count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics",
-        role="control-plane"})) < 3)
-
-        or
-
-        (sum(namespace_memory:kube_pod_container_resource_requests:sum{}) by (cluster)
-        -
-
-        (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
-        by (cluster) -
-
-        max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
-        by (cluster)) > 0
-
-        and
-
-        (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
-        by (cluster) -
-
-        max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
-        by (cluster)) > 0)'
+      expr: "# Non-HA clusters.\n(\n  (\n    sum by (cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})\n\
+        \    -\n    sum by (cluster) (kube_node_status_allocatable{job=\"kube-state-metrics\"\
+        ,resource=\"memory\"}) > 0\n  )\n  and\n  count by (cluster) (max by (cluster,\
+        \ node) (kube_node_role{job=\"kube-state-metrics\", role=\"control-plane\"\
+        })) < 3\n)\nor\n# HA clusters.\n(\n  sum by (cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})\n\
+        \  -\n  (\n    # Skip clusters with only one allocatable node.\n    (\n  \
+        \    sum by (cluster) (kube_node_status_allocatable{job=\"kube-state-metrics\"\
+        ,resource=\"memory\"})\n      -\n      max by (cluster) (kube_node_status_allocatable{job=\"\
+        kube-state-metrics\",resource=\"memory\"})\n    ) > 0\n  ) > 0\n)"
       for: 10m
       labels:
         severity: warning
     - alert: KubeCPUQuotaOvercommit
       annotations:
-        description: Cluster {{ $labels.cluster }}  has overcommitted CPU resource
+        description: Cluster {{ $labels.cluster }} has overcommitted CPU resource
           requests for Namespaces.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuquotaovercommit
         summary: Cluster has overcommitted CPU resource requests.
-      expr: "sum(min without(resource) (kube_resourcequota{job=\"kube-state-metrics\"\
-        , type=\"hard\", resource=~\"(cpu|requests.cpu)\"})) by (cluster)\n  /\nsum(kube_node_status_allocatable{resource=\"\
-        cpu\", job=\"kube-state-metrics\"}) by (cluster)\n  > 1.5"
+      expr: "sum by (cluster) (\n  min without(resource) (kube_resourcequota{job=\"\
+        kube-state-metrics\", type=\"hard\", resource=~\"(cpu|requests.cpu)\"})\n\
+        )\n/\nsum by (cluster) (\n  kube_node_status_allocatable{resource=\"cpu\"\
+        , job=\"kube-state-metrics\"}\n) > 1.5"
       for: 5m
       labels:
         severity: warning
@@ -112,10 +73,10 @@ spec:
           requests for Namespaces.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryquotaovercommit
         summary: Cluster has overcommitted memory resource requests.
-      expr: "sum(min without(resource) (kube_resourcequota{job=\"kube-state-metrics\"\
-        , type=\"hard\", resource=~\"(memory|requests.memory)\"})) by (cluster)\n\
-        \  /\nsum(kube_node_status_allocatable{resource=\"memory\", job=\"kube-state-metrics\"\
-        }) by (cluster)\n  > 1.5"
+      expr: "sum by (cluster) (\n  min without(resource) (kube_resourcequota{job=\"\
+        kube-state-metrics\", type=\"hard\", resource=~\"(memory|requests.memory)\"\
+        })\n)\n/\nsum by (cluster) (\n  kube_node_status_allocatable{resource=\"memory\"\
+        , job=\"kube-state-metrics\"}\n) > 1.5"
       for: 5m
       labels:
         severity: warning
@@ -125,9 +86,10 @@ spec:
           }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaalmostfull
         summary: Namespace quota is going to be full.
-      expr: "kube_resourcequota{job=\"kube-state-metrics\", type=\"used\"}\n  / ignoring(instance,\
-        \ job, type)\n(kube_resourcequota{job=\"kube-state-metrics\", type=\"hard\"\
-        } > 0)\n  > 0.9 < 1"
+      expr: "max without (instance, job, type) (\n  kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"used\"}\n)\n/ on (cluster, namespace, resource, resourcequota) group_left()\n\
+        (\n  max without (instance, job, type) (\n    kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"hard\"}\n  ) > 0\n)\n> 0.9 < 1"
       for: 15m
       labels:
         severity: info
@@ -137,9 +99,10 @@ spec:
           }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotafullyused
         summary: Namespace quota is fully used.
-      expr: "kube_resourcequota{job=\"kube-state-metrics\", type=\"used\"}\n  / ignoring(instance,\
-        \ job, type)\n(kube_resourcequota{job=\"kube-state-metrics\", type=\"hard\"\
-        } > 0)\n  == 1"
+      expr: "max without (instance, job, type) (\n  kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"used\"}\n)\n/ on (cluster, namespace, resource, resourcequota) group_left()\n\
+        (\n  max without (instance, job, type) (\n    kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"hard\"}\n  ) > 0\n)\n== 1"
       for: 15m
       labels:
         severity: info
@@ -149,9 +112,10 @@ spec:
           }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaexceeded
         summary: Namespace quota has exceeded the limits.
-      expr: "kube_resourcequota{job=\"kube-state-metrics\", type=\"used\"}\n  / ignoring(instance,\
-        \ job, type)\n(kube_resourcequota{job=\"kube-state-metrics\", type=\"hard\"\
-        } > 0)\n  > 1"
+      expr: "max without (instance, job, type) (\n  kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"used\"}\n)\n/ on (cluster, namespace, resource, resourcequota) group_left()\n\
+        (\n  max without (instance, job, type) (\n    kube_resourcequota{job=\"kube-state-metrics\"\
+        , type=\"hard\"}\n  ) > 0\n) > 1"
       for: 15m
       labels:
         severity: warning
@@ -162,12 +126,15 @@ spec:
           $labels.pod }} on cluster {{ $labels.cluster }}.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh
         summary: Processes experience elevated CPU throttling.
-      expr: "sum(increase(container_cpu_cfs_throttled_periods_total{container!=\"\"\
-        , job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", }[5m])) without (id,\
-        \ metrics_path, name, image, endpoint, job, node)\n  / on (cluster, namespace,\
-        \ pod, container, instance) group_left\nsum(increase(container_cpu_cfs_periods_total{job=\"\
-        kubelet\", metrics_path=\"/metrics/cadvisor\", }[5m])) without (id, metrics_path,\
-        \ name, image, endpoint, job, node)\n  > ( 25 / 100 )"
+      expr: "sum without (id, metrics_path, name, image, endpoint, job, node) (\n\
+        \  topk by (cluster, namespace, pod, container, instance) (1,\n    increase(\n\
+        \      container_cpu_cfs_throttled_periods_total{container!=\"\", job=\"kubelet\"\
+        , metrics_path=\"/metrics/cadvisor\", }\n    [5m])\n  )\n)\n/ on (cluster,\
+        \ namespace, pod, container, instance) group_left\nsum without (id, metrics_path,\
+        \ name, image, endpoint, job, node) (\n  topk by (cluster, namespace, pod,\
+        \ container, instance) (1,\n    increase(\n      container_cpu_cfs_periods_total{job=\"\
+        kubelet\", metrics_path=\"/metrics/cadvisor\", }\n    [5m])\n  )\n)\n> ( 25\
+        \ / 100 )"
       for: 15m
       labels:
         severity: info

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 75.16.1
-    chart: kube-prometheus-stack-75.16.1
+    app.kubernetes.io/version: 85.1.2
+    chart: kube-prometheus-stack-85.1.2
     heritage: Helm
     release: prometheus
   name: prometheus-kube-prometheus-general.rules
@@ -69,8 +69,8 @@ spec:
           '
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/general/infoinhibitor
         summary: Info-level alert inhibition.
-      expr: ALERTS{severity = "info"} == 1 unless on (namespace) ALERTS{alertname
-        != "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} ==
-        1
+      expr: group by (namespace) (ALERTS{severity = "info"} == 1) unless on (namespace)
+        group by (namespace) (ALERTS{alertname != "InfoInhibitor", alertstate = "firing",
+        severity =~ "warning|critical"} == 1)
       labels:
         severity: none

@@ -4,8 +4,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/name: grafana
-    app.kubernetes.io/version: 12.1.0
-    helm.sh/chart: grafana-9.3.1
+    app.kubernetes.io/version: 13.0.1-security-01
+    helm.sh/chart: grafana-12.3.3
   name: prometheus-grafana
   namespace: prometheus
 spec:
@@ -20,15 +20,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 2c82bf0ce90b547d1cd2b86debf295ef4036e7531d6e5849f923a2a952afcaa1
+        checksum/config: 680c2e8dbec17058e878e49266af33929370d9c5187d38ad746e527cbb42853c
         checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
-        checksum/secret: 032056e9c62bbe9d1daa41ee49cd3d9524c076f51ca4c65adadf4ef08ef28712
+        checksum/secret: a2f6a439c1097f53d35dc8374b5ad09cd8cd5bf2479f4ab3f0d05f7fe3abb6b1
         kubectl.kubernetes.io/default-container: grafana
       labels:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/name: grafana
-        app.kubernetes.io/version: 12.1.0
-        helm.sh/chart: grafana-9.3.1
+        app.kubernetes.io/version: 13.0.1-security-01
+        helm.sh/chart: grafana-12.3.3
     spec:
       automountServiceAccountToken: true
       containers:
@@ -59,7 +59,7 @@ spec:
           value: http://localhost:3000/api/admin/provisioning/dashboards/reload
         - name: REQ_METHOD
           value: POST
-        image: quay.io/kiwigrid/k8s-sidecar:1.30.3
+        image: quay.io/kiwigrid/k8s-sidecar:2.7.3
         imagePullPolicy: IfNotPresent
         name: grafana-sc-dashboard
         securityContext:
@@ -97,7 +97,7 @@ spec:
           value: http://localhost:3000/api/admin/provisioning/datasources/reload
         - name: REQ_METHOD
           value: POST
-        image: quay.io/kiwigrid/k8s-sidecar:1.30.3
+        image: quay.io/kiwigrid/k8s-sidecar:2.7.3
         imagePullPolicy: IfNotPresent
         name: grafana-sc-datasources
         securityContext:
@@ -133,13 +133,15 @@ spec:
           value: /var/lib/grafana/plugins
         - name: GF_PATHS_PROVISIONING
           value: /etc/grafana/provisioning
-        image: docker.io/grafana/grafana:12.1.0
+        - name: GF_UNIFIED_STORAGE_INDEX_PATH
+          value: /var/lib/grafana-search/bleve
+        image: docker.io/grafana/grafana:13.0.1-security-01
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 10
           httpGet:
             path: /api/health
-            port: 3000
+            port: grafana
           initialDelaySeconds: 60
           timeoutSeconds: 30
         name: grafana
@@ -159,12 +161,13 @@ spec:
         readinessProbe:
           httpGet:
             path: /api/health
-            port: 3000
+            port: grafana
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          privileged: false
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
@@ -173,6 +176,8 @@ spec:
           subPath: grafana.ini
         - mountPath: /var/lib/grafana
           name: storage
+        - mountPath: /var/lib/grafana-search
+          name: search
         - mountPath: /tmp/dashboards
           name: sc-dashboard-volume
         - mountPath: /etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml
@@ -194,6 +199,8 @@ spec:
         name: config
       - emptyDir: {}
         name: storage
+      - emptyDir: {}
+        name: search
       - emptyDir: {}
         name: sc-dashboard-volume
       - configMap:
