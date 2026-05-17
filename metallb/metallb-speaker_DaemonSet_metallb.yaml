@@ -70,7 +70,7 @@ spec:
         - name: METALLB_ML_SECRET_KEY_PATH
           value: /etc/memberlist
         envFrom: null
-        image: docker.io/bitnami/metallb-speaker:0.15.2-debian-12-r4
+        image: docker.io/bitnamilegacy/metallb-speaker:0.15.2-debian-12-r4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
