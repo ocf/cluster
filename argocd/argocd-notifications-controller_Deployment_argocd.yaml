@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-notifications-controller
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v3.0.12
-    helm.sh/chart: argo-cd-8.2.5
+    app.kubernetes.io/version: v3.4.2
+    helm.sh/chart: argo-cd-9.5.14
   name: argocd-notifications-controller
   namespace: argocd
 spec:
@@ -22,14 +22,16 @@ spec:
     type: Recreate
   template:
     metadata:
+      annotations:
+        checksum/cmd-params: f4f6bbc53e1541b7b745b92dec9078e82f013b0452e2541acd842a83255254ff
       labels:
         app.kubernetes.io/component: notifications-controller
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-notifications-controller
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v3.0.12
-        helm.sh/chart: argo-cd-8.2.5
+        app.kubernetes.io/version: v3.4.2
+        helm.sh/chart: argo-cd-9.5.14
     spec:
       affinity:
         podAntiAffinity:
@@ -85,7 +87,7 @@ spec:
               key: notificationscontroller.repo.server.plaintext
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v3.0.12
+        image: quay.io/argoproj/argocd:v3.4.2
         imagePullPolicy: IfNotPresent
         name: notifications-controller
         ports:

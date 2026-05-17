@@ -70,10 +70,10 @@ data:
     \  - wgpolicyk8s.io\n  kinds:\n  - PolicyReport\n  - ClusterPolicyReport\n  -\
     \ EphemeralReport\n  - ClusterEphemeralReport\n  - AdmissionReport\n  - ClusterAdmissionReport\n\
     \  - BackgroundScanReport\n  - ClusterBackgroundScanReport\n  - UpdateRequest\n"
-  server.rbac.log.enforce.enable: 'false'
   statusbadge.enabled: 'false'
   timeout.hard.reconciliation: 0s
-  timeout.reconciliation: 180s
+  timeout.reconciliation: 120s
+  timeout.reconciliation.jitter: 60s
   url: https://argo.ocf.berkeley.edu
 kind: ConfigMap
 metadata:
@@ -83,7 +83,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v3.0.12
-    helm.sh/chart: argo-cd-8.2.5
+    app.kubernetes.io/version: v3.4.2
+    helm.sh/chart: argo-cd-9.5.14
   name: argocd-cm
   namespace: argocd

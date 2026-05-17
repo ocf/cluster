@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v3.0.12
-    helm.sh/chart: argo-cd-8.2.5
+    app.kubernetes.io/version: v3.4.2
+    helm.sh/chart: argo-cd-9.5.14
   name: argocd-application-controller
   namespace: argocd
 spec:
@@ -22,16 +22,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cm: 3612ed888b7a5b1b40d32d1380de6e53e403e6f308359d28840c545e76b5f5e4
-        checksum/cmd-params: cb1020e7a1acb188ffd06bbbfb56d5624cf77ba90b35355a4c82acc588135b40
+        checksum/cm: 8ea1f4a3b37be619a0bc7d8967599704e4427f1e1c84aab131c34948a040a01e
+        checksum/cmd-params: f4f6bbc53e1541b7b745b92dec9078e82f013b0452e2541acd842a83255254ff
       labels:
         app.kubernetes.io/component: application-controller
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-application-controller
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v3.0.12
-        helm.sh/chart: argo-cd-8.2.5
+        app.kubernetes.io/version: v3.4.2
+        helm.sh/chart: argo-cd-9.5.14
     spec:
       affinity:
         podAntiAffinity:
@@ -152,6 +152,12 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: controller.self.heal.backoff.cooldown.seconds
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_SYNC_WAVE_DELAY
+          valueFrom:
+            configMapKeyRef:
+              key: controller.sync.wave.delay.seconds
               name: argocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATION_CONTROLLER_SYNC_TIMEOUT
@@ -324,7 +330,7 @@ spec:
               optional: true
         - name: KUBECACHEDIR
           value: /tmp/kubecache
-        image: quay.io/argoproj/argocd:v3.0.12
+        image: quay.io/argoproj/argocd:v3.4.2
         imagePullPolicy: IfNotPresent
         name: application-controller
         ports:

@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.33.7
+    chart: redis-ha-4.34.11
+    component: haproxy
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-haproxy
@@ -14,6 +15,7 @@ spec:
   selector:
     matchLabels:
       app: redis-ha-haproxy
+      component: haproxy
       release: argocd
   strategy:
     type: RollingUpdate
@@ -27,6 +29,7 @@ spec:
       labels:
         app: redis-ha-haproxy
         app.kubernetes.io/name: argocd-redis-ha-haproxy
+        component: haproxy
         release: argocd
       name: argocd-redis-ha-haproxy
     spec:
@@ -36,6 +39,7 @@ spec:
           - labelSelector:
               matchLabels:
                 app: redis-ha-haproxy
+                component: haproxy
                 release: argocd
             topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true

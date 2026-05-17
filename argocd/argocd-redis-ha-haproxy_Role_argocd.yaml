@@ -3,8 +3,8 @@ kind: Role
 metadata:
   labels:
     app: redis-ha
-    chart: redis-ha-4.33.7
-    component: argocd-redis-ha-haproxy
+    chart: redis-ha-4.34.11
+    component: haproxy
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-haproxy

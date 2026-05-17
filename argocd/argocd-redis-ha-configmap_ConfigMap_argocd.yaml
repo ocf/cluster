@@ -145,9 +145,20 @@ data:
     done\n\ntrap \"exit 0\" TERM\nwhile true; do\n    sleep 60\n\n    # where is redis\
     \ master\n    identify_master\n\n    if [ \"$MASTER\" = \"$ANNOUNCE_IP\" ]; then\n\
     \        redis_role\n        if [ \"$ROLE\" != \"master\" ]; then\n          \
-    \  reinit\n        fi\n    elif [ \"${MASTER}\" ]; then\n        identify_redis_master\n\
-    \        if [ \"$REDIS_MASTER\" != \"$MASTER\" ]; then\n            reinit\n \
-    \       fi\n    fi\ndone\n"
+    \  echo \"waiting for redis to become master\"\n            sleep 10\n       \
+    \     identify_master\n            redis_role\n            echo \"Redis role is\
+    \ $ROLE, expected role is master. No need to reinitialize.\"\n            if [\
+    \ \"$ROLE\" != \"master\" ]; then\n                echo \"Redis role is $ROLE,\
+    \ expected role is master, reinitializing\"\n                reinit\n        \
+    \    fi\n        fi\n    elif [ \"${MASTER}\" ]; then\n        identify_redis_master\n\
+    \        if [ \"$REDIS_MASTER\" != \"$MASTER\" ]; then\n            echo \"Redis\
+    \ master and local master are not the same. waiting.\"\n            sleep 10\n\
+    \            identify_master\n            identify_redis_master\n            echo\
+    \ \"Redis master is ${MASTER}, expected master is ${REDIS_MASTER}. No need to\
+    \ reinitialize.\"\n            if [ \"${REDIS_MASTER}\" != \"${MASTER}\" ]; then\n\
+    \                echo \"Redis master is ${MASTER}, expected master is ${REDIS_MASTER},\
+    \ reinitializing\"\n                reinit\n            fi\n        fi\n    fi\n\
+    done\n"
   haproxy.cfg: "defaults REDIS\n  mode tcp\n  timeout connect 4s\n  timeout server\
     \ 330s\n  timeout client 330s\n  timeout check 2s\n\nlisten health_check_http_url\n\
     \  bind [::]:8888  v4v6\n  mode http\n  monitor-uri /healthz\n  option      dontlognull\n\
@@ -383,7 +394,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: argocd-redis-ha
-    chart: redis-ha-4.33.7
+    chart: redis-ha-4.34.11
     heritage: Helm
     release: argocd
   name: argocd-redis-ha-configmap

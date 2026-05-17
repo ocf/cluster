@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-applicationset-controller
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v3.0.12
-    helm.sh/chart: argo-cd-8.2.5
+    app.kubernetes.io/version: v3.4.2
+    helm.sh/chart: argo-cd-9.5.14
   name: argocd-applicationset-controller
   namespace: argocd
 spec:
@@ -21,15 +21,15 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cmd-params: cb1020e7a1acb188ffd06bbbfb56d5624cf77ba90b35355a4c82acc588135b40
+        checksum/cmd-params: f4f6bbc53e1541b7b745b92dec9078e82f013b0452e2541acd842a83255254ff
       labels:
         app.kubernetes.io/component: applicationset-controller
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-applicationset-controller
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v3.0.12
-        helm.sh/chart: argo-cd-8.2.5
+        app.kubernetes.io/version: v3.4.2
+        helm.sh/chart: argo-cd-9.5.14
     spec:
       affinity:
         podAntiAffinity:
@@ -190,6 +190,12 @@ spec:
               key: applicationsetcontroller.enable.scm.providers
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.github.api.metrics
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_WEBHOOK_PARALLELISM_LIMIT
           valueFrom:
             configMapKeyRef:
@@ -202,7 +208,13 @@ spec:
               key: applicationsetcontroller.requeue.after
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v3.0.12
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_MAX_RESOURCES_STATUS_COUNT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.status.max.resources.count
+              name: argocd-cmd-params-cm
+              optional: true
+        image: quay.io/argoproj/argocd:v3.4.2
         imagePullPolicy: IfNotPresent
         name: applicationset-controller
         ports:
@@ -236,6 +248,8 @@ spec:
           name: gpg-keyring
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
+        - mountPath: /home/argocd/params
+          name: argocd-cmd-params-cm
         - mountPath: /tmp
           name: tmp
       dnsPolicy: ClusterFirst
@@ -268,3 +282,10 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - configMap:
+          items:
+          - key: applicationsetcontroller.profile.enabled
+            path: profiler.enabled
+          name: argocd-cmd-params-cm
+          optional: true
+        name: argocd-cmd-params-cm
