@@ -1,20 +1,24 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: '-10'
   labels:
-    app: workflow-controller
-    app.kubernetes.io/component: workflow-controller
+    app: crds
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: argo-workflows
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: argo-workflows-workflow-controller
+    app.kubernetes.io/name: argo-workflows-crd-install
     app.kubernetes.io/part-of: argo-workflows
     helm.sh/chart: argo-workflows-1.0.14
-  name: argo-workflows-workflow-controller
+  name: argo-workflows-crd-install
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argo-workflows-workflow-controller
+  name: argo-workflows-crd-install
 subjects:
 - kind: ServiceAccount
-  name: argo-workflows-workflow-controller
+  name: argo-workflows-crd-install
   namespace: argo-workflows

@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: '-5'
+  labels:
+    app: crds
+    app.kubernetes.io/component: crds
+    app.kubernetes.io/instance: argo-workflows
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argo-workflows-crd-install
+    app.kubernetes.io/part-of: argo-workflows
+    helm.sh/chart: argo-workflows-1.0.14
+  name: argo-workflows-crd-install
+  namespace: argo-workflows
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: crds
+        app.kubernetes.io/component: crds
+        app.kubernetes.io/instance: argo-workflows
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: argo-workflows-crd-install
+        app.kubernetes.io/part-of: argo-workflows
+        helm.sh/chart: argo-workflows-1.0.14
+    spec:
+      containers:
+      - command:
+        - kubectl
+        - apply
+        - --server-side
+        - --force-conflicts
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_clusterworkflowtemplates.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_cronworkflows.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workflowartifactgctasks.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workfloweventbindings.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workflows.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workflowtaskresults.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workflowtasksets.yaml
+        - -f
+        - https://raw.githubusercontent.com/argoproj/argo-helm/argo-workflows-1.0.14/charts/argo-workflows/files/crds/full/argoproj.io_workflowtemplates.yaml
+        env: null
+        image: registry.k8s.io/kubectl:v1.36.1
+        name: apply
+      restartPolicy: Never
+      serviceAccountName: argo-workflows-crd-install
