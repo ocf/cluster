@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 17.7.1
-    helm.sh/chart: teleport-cluster-17.7.1
-    teleport.dev/majorVersion: '17'
+    app.kubernetes.io/version: 18.8.1
+    helm.sh/chart: teleport-cluster-18.8.1
+    teleport.dev/majorVersion: '18'
   name: teleport-auth
   namespace: teleport
 spec:
@@ -24,16 +24,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: ffcfa92cdc95b141eeda8b3a97fc41dfaff609c3e804a738b3d0b1a09e5a66d9
+        checksum/config: 4c1460e74dda50df44d0490dd8df0dd30f938b8166b1a0f91d5c27aed24e117e
       labels:
         app: teleport
         app.kubernetes.io/component: auth
         app.kubernetes.io/instance: teleport
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: teleport-cluster
-        app.kubernetes.io/version: 17.7.1
-        helm.sh/chart: teleport-cluster-17.7.1
-        teleport.dev/majorVersion: '17'
+        app.kubernetes.io/version: 18.8.1
+        helm.sh/chart: teleport-cluster-18.8.1
+        teleport.dev/majorVersion: '18'
     spec:
       affinity:
         podAntiAffinity: null
@@ -42,7 +42,7 @@ spec:
       - args:
         - --diag-addr=0.0.0.0:3000
         - --apply-on-startup=/etc/teleport/apply-on-startup.yaml
-        image: public.ecr.aws/gravitational/teleport-ent-distroless:17.7.1
+        image: public.ecr.aws/gravitational/teleport-ent-distroless:18.8.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:

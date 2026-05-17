@@ -4,9 +4,9 @@ data:
     \  expires: \"2050-01-01T00:00:00Z\"\nspec:\n  roles: [Proxy]\n  join_method:\
     \ kubernetes\n  kubernetes:\n    allow:\n      - service_account: \"teleport:teleport-proxy\"\
     \n"
-  teleport.yaml: "auth_service:\n  authentication:\n    local_auth: true\n    second_factor:\
-    \ \"on\"\n    type: local\n    webauthn:\n      rp_id: tele.ocf.io\n  cluster_name:\
-    \ tele.ocf.io\n  enabled: true\n  license_file: /var/lib/license/license.pem\n\
+  teleport.yaml: "auth_service:\n  authentication:\n    local_auth: true\n    second_factors:\n\
+    \    - otp\n    - webauthn\n    type: local\n    webauthn:\n      rp_id: tele.ocf.io\n\
+    \  cluster_name: tele.ocf.io\n  enabled: true\n  license_file: /var/lib/license/license.pem\n\
     \  proxy_listener_mode: separate\nkubernetes_service:\n  enabled: true\n  kube_cluster_name:\
     \ dna.ocf.io\n  listen_addr: 0.0.0.0:3026\n  public_addr: teleport-auth.teleport.svc.cluster.local:3026\n\
     proxy_service:\n  enabled: false\nssh_service:\n  enabled: false\nteleport:\n\
@@ -20,8 +20,8 @@ metadata:
     app.kubernetes.io/instance: teleport
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: teleport-cluster
-    app.kubernetes.io/version: 17.7.1
-    helm.sh/chart: teleport-cluster-17.7.1
-    teleport.dev/majorVersion: '17'
+    app.kubernetes.io/version: 18.8.1
+    helm.sh/chart: teleport-cluster-18.8.1
+    teleport.dev/majorVersion: '18'
   name: teleport-auth
   namespace: teleport
