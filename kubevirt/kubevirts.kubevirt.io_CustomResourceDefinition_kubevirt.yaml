@@ -193,6 +193,20 @@ spec:
                       defaultArchitecture:
                         type: string
                       ppc64le:
+                        description: 'Deprecated: ppc64le architecture is no longer
+                          supported.'
+                        properties:
+                          emulatedMachines:
+                            items:
+                              type: string
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          machineType:
+                            type: string
+                          ovmfPath:
+                            type: string
+                        type: object
+                      s390x:
                         properties:
                           emulatedMachines:
                             items:
@@ -269,6 +283,133 @@ spec:
                         type: object
                     type: object
                     x-kubernetes-map-type: atomic
+                  changedBlockTrackingLabelSelectors:
+                    description: 'ChangedBlockTrackingLabelSelectors defines label
+                      selectors. VMs matching these selectors will have changed block
+                      tracking enabled.
+
+                      Enabling changedBlockTracking is mandatory for performing storage-agnostic
+                      backups and incremental backups.'
+                    nullable: true
+                    properties:
+                      namespaceLabelSelector:
+                        description: NamespaceSelector will enable changedBlockTracking
+                          on all VMs running inside namespaces that match the label
+                          selector.
+                        properties:
+                          matchExpressions:
+                            description: matchExpressions is a list of label selector
+                              requirements. The requirements are ANDed.
+                            items:
+                              description: 'A label selector requirement is a selector
+                                that contains values, a key, and an operator that
+
+                                relates the key and values.'
+                              properties:
+                                key:
+                                  description: key is the label key that the selector
+                                    applies to.
+                                  type: string
+                                operator:
+                                  description: 'operator represents a key''s relationship
+                                    to a set of values.
+
+                                    Valid operators are In, NotIn, Exists and DoesNotExist.'
+                                  type: string
+                                values:
+                                  description: 'values is an array of string values.
+                                    If the operator is In or NotIn,
+
+                                    the values array must be non-empty. If the operator
+                                    is Exists or DoesNotExist,
+
+                                    the values array must be empty. This array is
+                                    replaced during a strategic
+
+                                    merge patch.'
+                                  items:
+                                    type: string
+                                  type: array
+                                  x-kubernetes-list-type: atomic
+                              required:
+                              - key
+                              - operator
+                              type: object
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: 'matchLabels is a map of {key,value} pairs.
+                              A single {key,value} in the matchLabels
+
+                              map is equivalent to an element of matchExpressions,
+                              whose key field is "key", the
+
+                              operator is "In", and the values array contains only
+                              "value". The requirements are ANDed.'
+                            type: object
+                        type: object
+                        x-kubernetes-map-type: atomic
+                      virtualMachineLabelSelector:
+                        description: VirtualMachineSelector will enable changedBlockTracking
+                          on all VMs that match the label selector.
+                        properties:
+                          matchExpressions:
+                            description: matchExpressions is a list of label selector
+                              requirements. The requirements are ANDed.
+                            items:
+                              description: 'A label selector requirement is a selector
+                                that contains values, a key, and an operator that
+
+                                relates the key and values.'
+                              properties:
+                                key:
+                                  description: key is the label key that the selector
+                                    applies to.
+                                  type: string
+                                operator:
+                                  description: 'operator represents a key''s relationship
+                                    to a set of values.
+
+                                    Valid operators are In, NotIn, Exists and DoesNotExist.'
+                                  type: string
+                                values:
+                                  description: 'values is an array of string values.
+                                    If the operator is In or NotIn,
+
+                                    the values array must be non-empty. If the operator
+                                    is Exists or DoesNotExist,
+
+                                    the values array must be empty. This array is
+                                    replaced during a strategic
+
+                                    merge patch.'
+                                  items:
+                                    type: string
+                                  type: array
+                                  x-kubernetes-list-type: atomic
+                              required:
+                              - key
+                              - operator
+                              type: object
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: 'matchLabels is a map of {key,value} pairs.
+                              A single {key,value} in the matchLabels
+
+                              map is equivalent to an element of matchExpressions,
+                              whose key field is "key", the
+
+                              operator is "In", and the values array contains only
+                              "value". The requirements are ANDed.'
+                            type: object
+                        type: object
+                        x-kubernetes-map-type: atomic
+                    type: object
                   commonInstancetypesDeployment:
                     description: CommonInstancetypesDeployment controls the deployment
                       of common-instancetypes resources
@@ -353,6 +494,16 @@ spec:
 
                           Defaults to 10'
                         type: integer
+                      disabledFeatureGates:
+                        description: 'DisabledFeatureGates specifies a list of experimental
+                          feature gates to disable.
+
+                          A feature gate must not appear in both FeatureGates and
+                          DisabledFeatureGates.'
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: atomic
                       diskVerification:
                         description: DiskVerification holds container disks verification
                           limits
@@ -367,11 +518,15 @@ spec:
                         - memoryLimit
                         type: object
                       featureGates:
-                        description: FeatureGates is the list of experimental features
-                          to enable. Defaults to none
+                        description: 'FeatureGates specifies a list of experimental
+                          feature gates to enable. Defaults to none.
+
+                          A feature gate must not appear in both FeatureGates and
+                          DisabledFeatureGates.'
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       logVerbosity:
                         description: LogVerbosity sets log verbosity level of  various
                           components
@@ -409,6 +564,7 @@ spec:
                           can lead to crashes. Use carefully.
 
                           Defaults to 100'
+                        minimum: 10
                         type: integer
                       minimumClusterTSCFrequency:
                         description: 'Allow overriding the automatically determined
@@ -499,6 +655,25 @@ spec:
                             type: object
                         type: object
                     type: object
+                  hypervisors:
+                    description: Hypervisors holds information regarding the hypervisor
+                      configurations supported on this cluster.
+                    items:
+                      description: HypervisorConfiguration holds information regarding
+                        the hypervisor present on cluster nodes.
+                      properties:
+                        name:
+                          description: 'Name is the name of the hypervisor.
+
+                            Supported values are: "kvm", "hyperv-direct".'
+                          enum:
+                          - kvm
+                          - hyperv-direct
+                          type: string
+                      type: object
+                    maxItems: 1
+                    type: array
+                    x-kubernetes-list-type: atomic
                   imagePullPolicy:
                     description: PullPolicy describes a policy for if/when to pull
                       a container image
@@ -641,6 +816,15 @@ spec:
                     description: MediatedDevicesConfiguration holds information about
                       MDEV types to be defined, if available
                     properties:
+                      enabled:
+                        description: 'Enable the creation and removal of mediated
+                          devices by virt-handler
+
+                          Replaces the deprecated DisableMDEVConfiguration feature
+                          gate
+
+                          Defaults to true'
+                        type: boolean
                       mediatedDeviceTypes:
                         items:
                           type: string
@@ -814,8 +998,19 @@ spec:
                           indicates the migration will be unsafe to the guest. Defaults
                           to false'
                         type: boolean
+                      utilityVolumesTimeout:
+                        description: 'UtilityVolumesTimeout is the maximum number
+                          of seconds a migration can wait in Pending state
+
+                          for utility volumes to be detached. If utility volumes are
+                          still present after this timeout,
+
+                          the migration will be marked as Failed. Defaults to 150'
+                        format: int64
+                        type: integer
                     type: object
                   minCPUModel:
+                    description: deprecated
                     type: string
                   network:
                     description: NetworkConfiguration holds network options
@@ -1017,6 +1212,26 @@ spec:
                         type: array
                         x-kubernetes-list-type: atomic
                     type: object
+                  roleAggregationStrategy:
+                    description: 'RoleAggregationStrategy controls whether RBAC cluster
+                      roles should be aggregated
+
+                      to the default Kubernetes roles (admin, edit, view).
+
+                      When set to "AggregateToDefault" (default) or not specified,
+                      the aggregate-to-* labels are added to the cluster roles.
+
+                      When set to "Manual", the labels are not added, and roles will
+                      not be aggregated to the default roles.
+
+                      Setting this field to "Manual" requires the OptOutRoleAggregation
+                      feature gate to be enabled.
+
+                      This is an Alpha feature and subject to change.'
+                    enum:
+                    - AggregateToDefault
+                    - Manual
+                    type: string
                   seccompConfiguration:
                     description: SeccompConfiguration holds Seccomp configuration
                       for Kubevirt components
@@ -1136,6 +1351,17 @@ spec:
                         - VersionTLS12
                         - VersionTLS13
                         type: string
+                    type: object
+                  virtTemplateDeployment:
+                    description: VirtTemplateDeployment controls the deployment of
+                      virt-template components
+                    nullable: true
+                    properties:
+                      enabled:
+                        description: Enabled controls the deployment of virt-template
+                          resources, defaults to True when feature gate is enabled.
+                        nullable: true
+                        type: boolean
                     type: object
                   virtualMachineInstancesPerNode:
                     type: integer
@@ -1742,11 +1968,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -1776,11 +1998,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -2045,11 +2263,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -2078,11 +2292,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -2225,10 +2435,10 @@ spec:
                                   expressions, etc.),
 
                                   compute a sum by iterating through the elements
-                                  of this field and adding
+                                  of this field and subtracting
 
-                                  "weight" to the sum if the node has pods which matches
-                                  the corresponding podAffinityTerm; the
+                                  "weight" from the sum if the node has pods which
+                                  matches the corresponding podAffinityTerm; the
 
                                   node(s) with the highest sum are the most preferred.'
                                 items:
@@ -2336,11 +2546,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -2370,11 +2576,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -2639,11 +2841,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -2672,11 +2870,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -3427,11 +3621,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -3461,11 +3651,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -3730,11 +3916,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -3763,11 +3945,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -3910,10 +4088,10 @@ spec:
                                   expressions, etc.),
 
                                   compute a sum by iterating through the elements
-                                  of this field and adding
+                                  of this field and subtracting
 
-                                  "weight" to the sum if the node has pods which matches
-                                  the corresponding podAffinityTerm; the
+                                  "weight" from the sum if the node has pods which
+                                  matches the corresponding podAffinityTerm; the
 
                                   node(s) with the highest sum are the most preferred.'
                                 items:
@@ -4021,11 +4199,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -4055,11 +4229,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -4324,11 +4494,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -4357,11 +4523,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -4859,6 +5021,20 @@ spec:
                       defaultArchitecture:
                         type: string
                       ppc64le:
+                        description: 'Deprecated: ppc64le architecture is no longer
+                          supported.'
+                        properties:
+                          emulatedMachines:
+                            items:
+                              type: string
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          machineType:
+                            type: string
+                          ovmfPath:
+                            type: string
+                        type: object
+                      s390x:
                         properties:
                           emulatedMachines:
                             items:
@@ -4935,6 +5111,133 @@ spec:
                         type: object
                     type: object
                     x-kubernetes-map-type: atomic
+                  changedBlockTrackingLabelSelectors:
+                    description: 'ChangedBlockTrackingLabelSelectors defines label
+                      selectors. VMs matching these selectors will have changed block
+                      tracking enabled.
+
+                      Enabling changedBlockTracking is mandatory for performing storage-agnostic
+                      backups and incremental backups.'
+                    nullable: true
+                    properties:
+                      namespaceLabelSelector:
+                        description: NamespaceSelector will enable changedBlockTracking
+                          on all VMs running inside namespaces that match the label
+                          selector.
+                        properties:
+                          matchExpressions:
+                            description: matchExpressions is a list of label selector
+                              requirements. The requirements are ANDed.
+                            items:
+                              description: 'A label selector requirement is a selector
+                                that contains values, a key, and an operator that
+
+                                relates the key and values.'
+                              properties:
+                                key:
+                                  description: key is the label key that the selector
+                                    applies to.
+                                  type: string
+                                operator:
+                                  description: 'operator represents a key''s relationship
+                                    to a set of values.
+
+                                    Valid operators are In, NotIn, Exists and DoesNotExist.'
+                                  type: string
+                                values:
+                                  description: 'values is an array of string values.
+                                    If the operator is In or NotIn,
+
+                                    the values array must be non-empty. If the operator
+                                    is Exists or DoesNotExist,
+
+                                    the values array must be empty. This array is
+                                    replaced during a strategic
+
+                                    merge patch.'
+                                  items:
+                                    type: string
+                                  type: array
+                                  x-kubernetes-list-type: atomic
+                              required:
+                              - key
+                              - operator
+                              type: object
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: 'matchLabels is a map of {key,value} pairs.
+                              A single {key,value} in the matchLabels
+
+                              map is equivalent to an element of matchExpressions,
+                              whose key field is "key", the
+
+                              operator is "In", and the values array contains only
+                              "value". The requirements are ANDed.'
+                            type: object
+                        type: object
+                        x-kubernetes-map-type: atomic
+                      virtualMachineLabelSelector:
+                        description: VirtualMachineSelector will enable changedBlockTracking
+                          on all VMs that match the label selector.
+                        properties:
+                          matchExpressions:
+                            description: matchExpressions is a list of label selector
+                              requirements. The requirements are ANDed.
+                            items:
+                              description: 'A label selector requirement is a selector
+                                that contains values, a key, and an operator that
+
+                                relates the key and values.'
+                              properties:
+                                key:
+                                  description: key is the label key that the selector
+                                    applies to.
+                                  type: string
+                                operator:
+                                  description: 'operator represents a key''s relationship
+                                    to a set of values.
+
+                                    Valid operators are In, NotIn, Exists and DoesNotExist.'
+                                  type: string
+                                values:
+                                  description: 'values is an array of string values.
+                                    If the operator is In or NotIn,
+
+                                    the values array must be non-empty. If the operator
+                                    is Exists or DoesNotExist,
+
+                                    the values array must be empty. This array is
+                                    replaced during a strategic
+
+                                    merge patch.'
+                                  items:
+                                    type: string
+                                  type: array
+                                  x-kubernetes-list-type: atomic
+                              required:
+                              - key
+                              - operator
+                              type: object
+                            type: array
+                            x-kubernetes-list-type: atomic
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: 'matchLabels is a map of {key,value} pairs.
+                              A single {key,value} in the matchLabels
+
+                              map is equivalent to an element of matchExpressions,
+                              whose key field is "key", the
+
+                              operator is "In", and the values array contains only
+                              "value". The requirements are ANDed.'
+                            type: object
+                        type: object
+                        x-kubernetes-map-type: atomic
+                    type: object
                   commonInstancetypesDeployment:
                     description: CommonInstancetypesDeployment controls the deployment
                       of common-instancetypes resources
@@ -5019,6 +5322,16 @@ spec:
 
                           Defaults to 10'
                         type: integer
+                      disabledFeatureGates:
+                        description: 'DisabledFeatureGates specifies a list of experimental
+                          feature gates to disable.
+
+                          A feature gate must not appear in both FeatureGates and
+                          DisabledFeatureGates.'
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: atomic
                       diskVerification:
                         description: DiskVerification holds container disks verification
                           limits
@@ -5033,11 +5346,15 @@ spec:
                         - memoryLimit
                         type: object
                       featureGates:
-                        description: FeatureGates is the list of experimental features
-                          to enable. Defaults to none
+                        description: 'FeatureGates specifies a list of experimental
+                          feature gates to enable. Defaults to none.
+
+                          A feature gate must not appear in both FeatureGates and
+                          DisabledFeatureGates.'
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       logVerbosity:
                         description: LogVerbosity sets log verbosity level of  various
                           components
@@ -5075,6 +5392,7 @@ spec:
                           can lead to crashes. Use carefully.
 
                           Defaults to 100'
+                        minimum: 10
                         type: integer
                       minimumClusterTSCFrequency:
                         description: 'Allow overriding the automatically determined
@@ -5165,6 +5483,25 @@ spec:
                             type: object
                         type: object
                     type: object
+                  hypervisors:
+                    description: Hypervisors holds information regarding the hypervisor
+                      configurations supported on this cluster.
+                    items:
+                      description: HypervisorConfiguration holds information regarding
+                        the hypervisor present on cluster nodes.
+                      properties:
+                        name:
+                          description: 'Name is the name of the hypervisor.
+
+                            Supported values are: "kvm", "hyperv-direct".'
+                          enum:
+                          - kvm
+                          - hyperv-direct
+                          type: string
+                      type: object
+                    maxItems: 1
+                    type: array
+                    x-kubernetes-list-type: atomic
                   imagePullPolicy:
                     description: PullPolicy describes a policy for if/when to pull
                       a container image
@@ -5307,6 +5644,15 @@ spec:
                     description: MediatedDevicesConfiguration holds information about
                       MDEV types to be defined, if available
                     properties:
+                      enabled:
+                        description: 'Enable the creation and removal of mediated
+                          devices by virt-handler
+
+                          Replaces the deprecated DisableMDEVConfiguration feature
+                          gate
+
+                          Defaults to true'
+                        type: boolean
                       mediatedDeviceTypes:
                         items:
                           type: string
@@ -5480,8 +5826,19 @@ spec:
                           indicates the migration will be unsafe to the guest. Defaults
                           to false'
                         type: boolean
+                      utilityVolumesTimeout:
+                        description: 'UtilityVolumesTimeout is the maximum number
+                          of seconds a migration can wait in Pending state
+
+                          for utility volumes to be detached. If utility volumes are
+                          still present after this timeout,
+
+                          the migration will be marked as Failed. Defaults to 150'
+                        format: int64
+                        type: integer
                     type: object
                   minCPUModel:
+                    description: deprecated
                     type: string
                   network:
                     description: NetworkConfiguration holds network options
@@ -5683,6 +6040,26 @@ spec:
                         type: array
                         x-kubernetes-list-type: atomic
                     type: object
+                  roleAggregationStrategy:
+                    description: 'RoleAggregationStrategy controls whether RBAC cluster
+                      roles should be aggregated
+
+                      to the default Kubernetes roles (admin, edit, view).
+
+                      When set to "AggregateToDefault" (default) or not specified,
+                      the aggregate-to-* labels are added to the cluster roles.
+
+                      When set to "Manual", the labels are not added, and roles will
+                      not be aggregated to the default roles.
+
+                      Setting this field to "Manual" requires the OptOutRoleAggregation
+                      feature gate to be enabled.
+
+                      This is an Alpha feature and subject to change.'
+                    enum:
+                    - AggregateToDefault
+                    - Manual
+                    type: string
                   seccompConfiguration:
                     description: SeccompConfiguration holds Seccomp configuration
                       for Kubevirt components
@@ -5802,6 +6179,17 @@ spec:
                         - VersionTLS12
                         - VersionTLS13
                         type: string
+                    type: object
+                  virtTemplateDeployment:
+                    description: VirtTemplateDeployment controls the deployment of
+                      virt-template components
+                    nullable: true
+                    properties:
+                      enabled:
+                        description: Enabled controls the deployment of virt-template
+                          resources, defaults to True when feature gate is enabled.
+                        nullable: true
+                        type: boolean
                     type: object
                   virtualMachineInstancesPerNode:
                     type: integer
@@ -6408,11 +6796,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -6442,11 +6826,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -6711,11 +7091,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -6744,11 +7120,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -6891,10 +7263,10 @@ spec:
                                   expressions, etc.),
 
                                   compute a sum by iterating through the elements
-                                  of this field and adding
+                                  of this field and subtracting
 
-                                  "weight" to the sum if the node has pods which matches
-                                  the corresponding podAffinityTerm; the
+                                  "weight" from the sum if the node has pods which
+                                  matches the corresponding podAffinityTerm; the
 
                                   node(s) with the highest sum are the most preferred.'
                                 items:
@@ -7002,11 +7374,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -7036,11 +7404,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -7305,11 +7669,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -7338,11 +7698,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -8093,11 +8449,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -8127,11 +8479,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -8396,11 +8744,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -8429,11 +8773,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -8576,10 +8916,10 @@ spec:
                                   expressions, etc.),
 
                                   compute a sum by iterating through the elements
-                                  of this field and adding
+                                  of this field and subtracting
 
-                                  "weight" to the sum if the node has pods which matches
-                                  the corresponding podAffinityTerm; the
+                                  "weight" from the sum if the node has pods which
+                                  matches the corresponding podAffinityTerm; the
 
                                   node(s) with the highest sum are the most preferred.'
                                 items:
@@ -8687,11 +9027,7 @@ spec:
                                             both matchLabelKeys and labelSelector.
 
                                             Also, matchLabelKeys cannot be set when
-                                            labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -8721,11 +9057,7 @@ spec:
                                             both mismatchLabelKeys and labelSelector.
 
                                             Also, mismatchLabelKeys cannot be set
-                                            when labelSelector isn''t set.
-
-                                            This is a beta field and requires enabling
-                                            MatchLabelKeysInPodAffinity feature gate
-                                            (enabled by default).'
+                                            when labelSelector isn''t set.'
                                           items:
                                             type: string
                                           type: array
@@ -8990,11 +9322,7 @@ spec:
                                         matchLabelKeys and labelSelector.
 
                                         Also, matchLabelKeys cannot be set when labelSelector
-                                        isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        isn''t set.'
                                       items:
                                         type: string
                                       type: array
@@ -9023,11 +9351,7 @@ spec:
                                         mismatchLabelKeys and labelSelector.
 
                                         Also, mismatchLabelKeys cannot be set when
-                                        labelSelector isn''t set.
-
-                                        This is a beta field and requires enabling
-                                        MatchLabelKeysInPodAffinity feature gate (enabled
-                                        by default).'
+                                        labelSelector isn''t set.'
                                       items:
                                         type: string
                                       type: array
