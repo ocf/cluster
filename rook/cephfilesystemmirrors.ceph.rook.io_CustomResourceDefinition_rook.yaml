@@ -596,7 +596,7 @@ spec:
                       that are used by this container.
 
 
-                      This is an alpha field and requires enabling the
+                      This field depends on the
 
                       DynamicResourceAllocation feature gate.
 
