@@ -5,11 +5,12 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     app: cert-manager
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.18.2
-    helm.sh/chart: cert-manager-v1.18.2
+    app.kubernetes.io/version: v1.20.2
+    helm.sh/chart: cert-manager-v1.20.2
   name: challenges.acme.cert-manager.io
 spec:
   group: acme.cert-manager.io
@@ -103,13 +104,17 @@ spec:
                   Challenge will be marked as failed.'
                 properties:
                   group:
-                    description: Group of the resource being referred to.
+                    description: 'Group of the issuer being referred to.
+
+                      Defaults to ''cert-manager.io''.'
                     type: string
                   kind:
-                    description: Kind of the resource being referred to.
+                    description: 'Kind of the issuer being referred to.
+
+                      Defaults to ''Issuer''.'
                     type: string
                   name:
-                    description: Name of the resource being referred to.
+                    description: Name of the issuer being referred to.
                     type: string
                 required:
                 - name
@@ -350,6 +355,18 @@ spec:
 
                               If set, ClientID and ClientSecret must also be set.'
                             type: string
+                          zoneType:
+                            description: "ZoneType determines which type of Azure\
+                              \ DNS zone to use.\n\nValid values are:\n  - AzurePublicZone\
+                              \  (default): Use a public Azure DNS zone.\n  - AzurePrivateZone:\
+                              \ Use an Azure Private DNS zone.\n\nIf not specified,\
+                              \ AzurePublicZone is used.\n\nSupport for Azure Private\
+                              \ DNS zones is currently\nexperimental and may change\
+                              \ in future releases."
+                            enum:
+                            - AzurePublicZone
+                            - AzurePrivateZone
+                            type: string
                         required:
                         - resourceGroupName
                         - subscriptionID
@@ -499,11 +516,24 @@ spec:
                           to manage DNS01 challenge records.'
                         properties:
                           nameserver:
-                            description: "The IP address or hostname of an authoritative\
-                              \ DNS server supporting\nRFC2136 in the form host:port.\
-                              \ If the host is an IPv6 address it must be\nenclosed\
-                              \ in square brackets (e.g [2001:db8::1])\_; port is\
-                              \ optional.\nThis field is required."
+                            description: 'The IP address or hostname of an authoritative
+                              DNS server supporting
+
+                              RFC2136 in the form host:port. If the host is an IPv6
+                              address it must be
+
+                              enclosed in square brackets (e.g [2001:db8::1]); port
+                              is optional.
+
+                              This field is required.'
+                            type: string
+                          protocol:
+                            description: Protocol to use for dynamic DNS update queries.
+                              Valid values are (case-sensitive) ``TCP`` and ``UDP``;
+                              ``UDP`` (default).
+                            enum:
+                            - TCP
+                            - UDP
                             type: string
                           tsigAlgorithm:
                             description: 'The TSIG Algorithm configured in the DNS
@@ -559,10 +589,10 @@ spec:
 
                               Cannot be set when SecretAccessKeyID is set.
 
-                              If neither the Access Key nor Key ID are set, we fall-back
-                              to using env
+                              If neither the Access Key nor Key ID are set, we fall
+                              back to using env
 
-                              vars, shared credentials file or AWS Instance metadata,
+                              vars, shared credentials file, or AWS Instance metadata,
 
                               see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials'
                             type: string
@@ -574,10 +604,10 @@ spec:
 
                               Cannot be set when AccessKeyID is set.
 
-                              If neither the Access Key nor Key ID are set, we fall-back
-                              to using env
+                              If neither the Access Key nor Key ID are set, we fall
+                              back to using env
 
-                              vars, shared credentials file or AWS Instance metadata,
+                              vars, shared credentials file, or AWS Instance metadata,
 
                               see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials'
                             properties:
@@ -631,6 +661,7 @@ spec:
                                         items:
                                           type: string
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                       name:
                                         description: Name of the ServiceAccount used
                                           to request a token.
@@ -709,10 +740,10 @@ spec:
                           secretAccessKeySecretRef:
                             description: 'The SecretAccessKey is used for authentication.
 
-                              If neither the Access Key nor Key ID are set, we fall-back
-                              to using env
+                              If neither the Access Key nor Key ID are set, we fall
+                              back to using env
 
-                              vars, shared credentials file or AWS Instance metadata,
+                              vars, shared credentials file, or AWS Instance metadata,
 
                               see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials'
                             properties:
@@ -1104,6 +1135,7 @@ spec:
                               - name
                               type: object
                             type: array
+                            x-kubernetes-list-type: atomic
                           podTemplate:
                             description: 'Optional pod template used to configure
                               the ACME challenge solver pods
@@ -1648,11 +1680,7 @@ spec:
 
                                                         Also, matchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -1688,11 +1716,7 @@ spec:
 
                                                         Also, mismatchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -2001,11 +2025,7 @@ spec:
 
                                                     Also, matchLabelKeys cannot be
                                                     set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -2040,11 +2060,7 @@ spec:
 
                                                     Also, mismatchLabelKeys cannot
                                                     be set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -2209,9 +2225,9 @@ spec:
                                               expressions, etc.),
 
                                               compute a sum by iterating through the
-                                              elements of this field and adding
+                                              elements of this field and subtracting
 
-                                              "weight" to the sum if the node has
+                                              "weight" from the sum if the node has
                                               pods which matches the corresponding
                                               podAffinityTerm; the
 
@@ -2345,11 +2361,7 @@ spec:
 
                                                         Also, matchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -2385,11 +2397,7 @@ spec:
 
                                                         Also, mismatchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -2698,11 +2706,7 @@ spec:
 
                                                     Also, matchLabelKeys cannot be
                                                     set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -2737,11 +2741,7 @@ spec:
 
                                                     Also, mismatchLabelKeys cannot
                                                     be set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -2907,6 +2907,9 @@ spec:
                                       type: object
                                       x-kubernetes-map-type: atomic
                                     type: array
+                                    x-kubernetes-list-map-keys:
+                                    - name
+                                    x-kubernetes-list-type: map
                                   nodeSelector:
                                     additionalProperties:
                                       type: string
@@ -2921,6 +2924,58 @@ spec:
                                   priorityClassName:
                                     description: If specified, the pod's priorityClassName.
                                     type: string
+                                  resources:
+                                    description: 'If specified, the pod''s resource
+                                      requirements.
+
+                                      These values override the global resource configuration
+                                      flags.
+
+                                      Note that when only specifying resource limits,
+                                      ensure they are greater than or equal
+
+                                      to the corresponding global resource requests
+                                      configured via controller flags
+
+                                      (--acme-http01-solver-resource-request-cpu,
+                                      --acme-http01-solver-resource-request-memory).
+
+                                      Kubernetes will reject pod creation if limits
+                                      are lower than requests, causing challenge failures.'
+                                    properties:
+                                      limits:
+                                        additionalProperties:
+                                          anyOf:
+                                          - type: integer
+                                          - type: string
+                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                          x-kubernetes-int-or-string: true
+                                        description: 'Limits describes the maximum
+                                          amount of compute resources allowed.
+
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                                        type: object
+                                      requests:
+                                        additionalProperties:
+                                          anyOf:
+                                          - type: integer
+                                          - type: string
+                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                          x-kubernetes-int-or-string: true
+                                        description: 'Requests describes the minimum
+                                          amount of compute resources required.
+
+                                          If Requests is omitted for a container,
+                                          it defaults to Limits if that is explicitly
+                                          specified,
+
+                                          otherwise to the global values configured
+                                          via controller flags. Requests cannot exceed
+                                          Limits.
+
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                                        type: object
+                                    type: object
                                   securityContext:
                                     description: If specified, the pod's security
                                       context
@@ -3128,6 +3183,7 @@ spec:
                                           format: int64
                                           type: integer
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                       sysctls:
                                         description: 'Sysctls hold a list of namespaced
                                           sysctls used for the pod. Pods with unsupported
@@ -3153,6 +3209,7 @@ spec:
                                           - value
                                           type: object
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                     type: object
                                   serviceAccountName:
                                     description: If specified, the pod's service account
@@ -3187,13 +3244,16 @@ spec:
                                           description: 'Operator represents a key''s
                                             relationship to the value.
 
-                                            Valid operators are Exists and Equal.
-                                            Defaults to Equal.
+                                            Valid operators are Exists, Equal, Lt,
+                                            and Gt. Defaults to Equal.
 
                                             Exists is equivalent to wildcard for value,
                                             so that a pod can
 
-                                            tolerate all taints of a particular category.'
+                                            tolerate all taints of a particular category.
+
+                                            Lt and Gt perform numeric comparisons
+                                            (requires feature gate TaintTolerationComparisonOperators).'
                                           type: string
                                         tolerationSeconds:
                                           description: 'TolerationSeconds represents
@@ -3219,6 +3279,7 @@ spec:
                                           type: string
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                 type: object
                             type: object
                           serviceType:
@@ -3857,11 +3918,7 @@ spec:
 
                                                         Also, matchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -3897,11 +3954,7 @@ spec:
 
                                                         Also, mismatchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -4210,11 +4263,7 @@ spec:
 
                                                     Also, matchLabelKeys cannot be
                                                     set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -4249,11 +4298,7 @@ spec:
 
                                                     Also, mismatchLabelKeys cannot
                                                     be set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -4418,9 +4463,9 @@ spec:
                                               expressions, etc.),
 
                                               compute a sum by iterating through the
-                                              elements of this field and adding
+                                              elements of this field and subtracting
 
-                                              "weight" to the sum if the node has
+                                              "weight" from the sum if the node has
                                               pods which matches the corresponding
                                               podAffinityTerm; the
 
@@ -4554,11 +4599,7 @@ spec:
 
                                                         Also, matchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -4594,11 +4635,7 @@ spec:
 
                                                         Also, mismatchLabelKeys cannot
                                                         be set when labelSelector
-                                                        isn''t set.
-
-                                                        This is a beta field and requires
-                                                        enabling MatchLabelKeysInPodAffinity
-                                                        feature gate (enabled by default).'
+                                                        isn''t set.'
                                                       items:
                                                         type: string
                                                       type: array
@@ -4907,11 +4944,7 @@ spec:
 
                                                     Also, matchLabelKeys cannot be
                                                     set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -4946,11 +4979,7 @@ spec:
 
                                                     Also, mismatchLabelKeys cannot
                                                     be set when labelSelector isn''t
-                                                    set.
-
-                                                    This is a beta field and requires
-                                                    enabling MatchLabelKeysInPodAffinity
-                                                    feature gate (enabled by default).'
+                                                    set.'
                                                   items:
                                                     type: string
                                                   type: array
@@ -5116,6 +5145,9 @@ spec:
                                       type: object
                                       x-kubernetes-map-type: atomic
                                     type: array
+                                    x-kubernetes-list-map-keys:
+                                    - name
+                                    x-kubernetes-list-type: map
                                   nodeSelector:
                                     additionalProperties:
                                       type: string
@@ -5130,6 +5162,58 @@ spec:
                                   priorityClassName:
                                     description: If specified, the pod's priorityClassName.
                                     type: string
+                                  resources:
+                                    description: 'If specified, the pod''s resource
+                                      requirements.
+
+                                      These values override the global resource configuration
+                                      flags.
+
+                                      Note that when only specifying resource limits,
+                                      ensure they are greater than or equal
+
+                                      to the corresponding global resource requests
+                                      configured via controller flags
+
+                                      (--acme-http01-solver-resource-request-cpu,
+                                      --acme-http01-solver-resource-request-memory).
+
+                                      Kubernetes will reject pod creation if limits
+                                      are lower than requests, causing challenge failures.'
+                                    properties:
+                                      limits:
+                                        additionalProperties:
+                                          anyOf:
+                                          - type: integer
+                                          - type: string
+                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                          x-kubernetes-int-or-string: true
+                                        description: 'Limits describes the maximum
+                                          amount of compute resources allowed.
+
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                                        type: object
+                                      requests:
+                                        additionalProperties:
+                                          anyOf:
+                                          - type: integer
+                                          - type: string
+                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                          x-kubernetes-int-or-string: true
+                                        description: 'Requests describes the minimum
+                                          amount of compute resources required.
+
+                                          If Requests is omitted for a container,
+                                          it defaults to Limits if that is explicitly
+                                          specified,
+
+                                          otherwise to the global values configured
+                                          via controller flags. Requests cannot exceed
+                                          Limits.
+
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                                        type: object
+                                    type: object
                                   securityContext:
                                     description: If specified, the pod's security
                                       context
@@ -5337,6 +5421,7 @@ spec:
                                           format: int64
                                           type: integer
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                       sysctls:
                                         description: 'Sysctls hold a list of namespaced
                                           sysctls used for the pod. Pods with unsupported
@@ -5362,6 +5447,7 @@ spec:
                                           - value
                                           type: object
                                         type: array
+                                        x-kubernetes-list-type: atomic
                                     type: object
                                   serviceAccountName:
                                     description: If specified, the pod's service account
@@ -5396,13 +5482,16 @@ spec:
                                           description: 'Operator represents a key''s
                                             relationship to the value.
 
-                                            Valid operators are Exists and Equal.
-                                            Defaults to Equal.
+                                            Valid operators are Exists, Equal, Lt,
+                                            and Gt. Defaults to Equal.
 
                                             Exists is equivalent to wildcard for value,
                                             so that a pod can
 
-                                            tolerate all taints of a particular category.'
+                                            tolerate all taints of a particular category.
+
+                                            Lt and Gt perform numeric comparisons
+                                            (requires feature gate TaintTolerationComparisonOperators).'
                                           type: string
                                         tolerationSeconds:
                                           description: 'TolerationSeconds represents
@@ -5428,6 +5517,7 @@ spec:
                                           type: string
                                       type: object
                                     type: array
+                                    x-kubernetes-list-type: atomic
                                 type: object
                             type: object
                           serviceType:
@@ -5473,6 +5563,7 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       dnsZones:
                         description: 'List of DNSZones that this solver will be used
                           to solve.
@@ -5499,6 +5590,7 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       matchLabels:
                         additionalProperties:
                           type: string
@@ -5601,6 +5693,10 @@ spec:
         - metadata
         - spec
         type: object
+    selectableFields:
+    - jsonPath: .spec.issuerRef.group
+    - jsonPath: .spec.issuerRef.kind
+    - jsonPath: .spec.issuerRef.name
     served: true
     storage: true
     subresources:

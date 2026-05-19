@@ -5,11 +5,12 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     app: cert-manager
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.18.2
-    helm.sh/chart: cert-manager-v1.18.2
+    app.kubernetes.io/version: v1.20.2
+    helm.sh/chart: cert-manager-v1.20.2
   name: certificates.cert-manager.io
 spec:
   group: cert-manager.io
@@ -26,7 +27,7 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+    - jsonPath: .status.conditions[?(@.type == "Ready")].status
       name: Ready
       type: string
     - jsonPath: .spec.secretName
@@ -36,7 +37,7 @@ spec:
       name: Issuer
       priority: 1
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Ready")].message
+    - jsonPath: .status.conditions[?(@.type == "Ready")].message
       name: Status
       priority: 1
       type: string
@@ -117,6 +118,7 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-type: atomic
               commonName:
                 description: 'Requested common name X509 certificate subject attribute.
 
@@ -138,6 +140,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               duration:
                 description: 'Requested ''duration'' (i.e. lifetime) of the Certificate.
                   Note that the
@@ -159,6 +162,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               encodeUsagesInRequest:
                 description: 'Whether the KeyUsage and ExtKeyUsage extensions should
                   be set in the encoded CSR.
@@ -175,6 +179,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               isCA:
                 description: 'Requested basic constraints isCA value.
 
@@ -205,13 +210,17 @@ spec:
                   The `name` field of the reference must always be specified.'
                 properties:
                   group:
-                    description: Group of the resource being referred to.
+                    description: 'Group of the issuer being referred to.
+
+                      Defaults to ''cert-manager.io''.'
                     type: string
                   kind:
-                    description: Kind of the resource being referred to.
+                    description: 'Kind of the issuer being referred to.
+
+                      Defaults to ''Issuer''.'
                     type: string
                   name:
-                    description: Name of the resource being referred to.
+                    description: Name of the issuer being referred to.
                     type: string
                 required:
                 - name
@@ -447,12 +456,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       emailAddresses:
                         description: EmailAddresses is a list of Email Addresses that
                           are permitted or excluded.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       ipRanges:
                         description: 'IPRanges is a list of IP Ranges that are permitted
                           or excluded.
@@ -461,12 +472,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       uriDomains:
                         description: URIDomains is a list of URI domains that are
                           permitted or excluded.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                     type: object
                   permitted:
                     description: Permitted contains the constraints in which the names
@@ -478,12 +491,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       emailAddresses:
                         description: EmailAddresses is a list of Email Addresses that
                           are permitted or excluded.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       ipRanges:
                         description: 'IPRanges is a list of IP Ranges that are permitted
                           or excluded.
@@ -492,12 +507,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       uriDomains:
                         description: URIDomains is a list of URI domains that are
                           permitted or excluded.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                     type: object
                 type: object
               otherNames:
@@ -532,6 +549,7 @@ spec:
                       type: string
                   type: object
                 type: array
+                x-kubernetes-list-type: atomic
               privateKey:
                 description: 'Private key options. These include the key algorithm
                   and size, the used
@@ -601,14 +619,7 @@ spec:
                       Default is `Always`.
 
                       The default was changed from `Never` to `Always` in cert-manager
-                      >=v1.18.0.
-
-                      The new default can be disabled by setting the
-
-                      `--feature-gates=DefaultPrivateKeyRotationPolicyAlways=false`
-                      option on
-
-                      the controller component.'
+                      >=v1.18.0.'
                     enum:
                     - Never
                     - Always
@@ -795,31 +806,37 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   localities:
                     description: Cities to be used on the Certificate.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   organizationalUnits:
                     description: Organizational Units to be used on the Certificate.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   organizations:
                     description: Organizations to be used on the Certificate.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   postalCodes:
                     description: Postal codes to be used on the Certificate.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   provinces:
                     description: State/Provinces to be used on the Certificate.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   serialNumber:
                     description: Serial number to be used on the Certificate.
                     type: string
@@ -828,12 +845,14 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                 type: object
               uris:
                 description: Requested URI subject alternative names.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               usages:
                 description: 'Requested key usages and extended key usages.
 
@@ -930,6 +949,7 @@ spec:
                   - netscape sgc
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
             required:
             - issuerRef
             - secretName
@@ -1102,6 +1122,10 @@ spec:
                 type: integer
             type: object
         type: object
+    selectableFields:
+    - jsonPath: .spec.issuerRef.group
+    - jsonPath: .spec.issuerRef.kind
+    - jsonPath: .spec.issuerRef.name
     served: true
     storage: true
     subresources:
