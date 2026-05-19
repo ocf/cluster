@@ -9,6 +9,7 @@ metadata:
   namespace: cilium
 spec:
   concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
@@ -16,7 +17,6 @@ spec:
           labels:
             k8s-app: hubble-generate-certs
         spec:
-          affinity: null
           automountServiceAccountToken: true
           containers:
           - args:
@@ -37,7 +37,7 @@ spec:
                 \ \"*.hubble-relay.cilium.io\"\n  hosts:\n  - \"*.hubble-relay.cilium.io\"\
                 \n  usage:\n  - signing\n  - key encipherment\n  - client auth\n \
                 \ validity: 8760h\n"
-            image: quay.io/cilium/certgen:v0.2.4@sha256:de7b97b1d19a34b674d0c4bc1da4db999f04ae355923a9a994ac3a81e1a1b5ff
+            image: quay.io/cilium/certgen:v0.4.3@sha256:d63d1cb3ee6db2167cb1ca9e7e31f30b6197846fcf42505d8f59e2f090a42c86
             imagePullPolicy: IfNotPresent
             name: certgen
             securityContext:
@@ -50,7 +50,6 @@ spec:
           securityContext:
             seccompProfile:
               type: RuntimeDefault
-          serviceAccount: hubble-generate-certs
           serviceAccountName: hubble-generate-certs
-      ttlSecondsAfterFinished: 1800
   schedule: 0 0 1 */4 *
+  successfulJobsHistoryLimit: 3

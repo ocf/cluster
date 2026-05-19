@@ -26,12 +26,12 @@ spec:
     spec:
       automountServiceAccountToken: true
       containers:
-      - image: quay.io/cilium/hubble-ui:v0.13.2@sha256:9e37c1296b802830834cc87342a9182ccbb71ffebb711971e849221bd9d59392
+      - image: quay.io/cilium/hubble-ui:v0.13.5@sha256:f7d514fc54d784ed6df9d58cf0e97648b143f92b766dd1780ed3fc845bd4c516
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8081
+            port: http
         name: frontend
         ports:
         - containerPort: 8081
@@ -39,7 +39,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /
-            port: 8081
+            port: http
         securityContext:
           allowPrivilegeEscalation: false
         terminationMessagePolicy: FallbackToLogsOnError
@@ -54,7 +54,7 @@ spec:
           value: '8090'
         - name: FLOWS_API_ADDR
           value: hubble-relay:80
-        image: quay.io/cilium/hubble-ui-backend:v0.13.2@sha256:a034b7e98e6ea796ed26df8f4e71f83fc16465a19d166eff67a03b822c0bfa15
+        image: quay.io/cilium/hubble-ui-backend:v0.13.5@sha256:fac0c300ae119274edca11fd89b1ad23c788792d8bc4ea2ba631c709e8d3c688
         imagePullPolicy: IfNotPresent
         name: backend
         ports:
