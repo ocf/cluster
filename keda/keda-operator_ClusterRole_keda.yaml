@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keda-operator
     app.kubernetes.io/part-of: keda-operator
-    app.kubernetes.io/version: 2.17.2
-    helm.sh/chart: keda-2.17.2
+    app.kubernetes.io/version: 2.19.0
+    helm.sh/chart: keda-2.19.0
   name: keda-operator
 rules:
 - apiGroups:
@@ -31,6 +31,14 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
 - apiGroups:
   - ''
   resources:
