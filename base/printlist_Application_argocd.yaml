@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: printlist
+  namespace: argocd
+spec:
+  destination:
+    namespace: printlist
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: printlist
+    repoURL: https://github.com/ocf/cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
