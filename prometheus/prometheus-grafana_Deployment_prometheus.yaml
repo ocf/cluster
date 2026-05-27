@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/name: grafana
     app.kubernetes.io/version: 13.0.1-security-01
-    helm.sh/chart: grafana-12.3.3
+    helm.sh/chart: grafana-12.4.1
   name: prometheus-grafana
   namespace: prometheus
 spec:
@@ -22,13 +22,13 @@ spec:
       annotations:
         checksum/config: 680c2e8dbec17058e878e49266af33929370d9c5187d38ad746e527cbb42853c
         checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
-        checksum/secret: df2dea54e1528dd5562dd9116dc6c6de487888c63cce86adb2761be8cbb7db93
+        checksum/secret: 0c755d91c299398d025a7a85e61c61f5e163b99a5193ff7bc2892b88817c5f4f
         kubectl.kubernetes.io/default-container: grafana
       labels:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/name: grafana
         app.kubernetes.io/version: 13.0.1-security-01
-        helm.sh/chart: grafana-12.3.3
+        helm.sh/chart: grafana-12.4.1
     spec:
       automountServiceAccountToken: true
       containers:
