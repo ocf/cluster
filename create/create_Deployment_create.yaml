@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: create
     spec:
       containers:
-      - image: ghcr.io/ocf/create:6553af94c4235bad23a646e2d727cf92736c1089
+      - image: ghcr.io/ocf/create:08bea23005b0cc7c0a3810d4fe4342d44d8a09a4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -48,11 +48,11 @@ spec:
       volumes:
       - name: nfs-export-home
         nfs:
-          path: /opt/homes/home
+          path: /home
           server: homes.ocf.berkeley.edu
       - name: nfs-export-services
         nfs:
-          path: /opt/homes/services
+          path: /services
           server: services.ocf.berkeley.edu
       - name: secrets
         secret:
