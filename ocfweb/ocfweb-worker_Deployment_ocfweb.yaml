@@ -19,8 +19,8 @@ spec:
         - name: OCFWEB_TESTING
           value: '0'
         - name: OCFWEB_PROD_VERSION
-          value: 6e8171fffaf05b147aa06c73e122f6841e8cb96c
-        image: ghcr.io/ocf/ocfweb-worker:6e8171fffaf05b147aa06c73e122f6841e8cb96c
+          value: 26bb02bd83ff506cc7eb68197f4aa8a0f8d7bf01
+        image: ghcr.io/ocf/ocfweb-worker:26bb02bd83ff506cc7eb68197f4aa8a0f8d7bf01
         imagePullPolicy: IfNotPresent
         name: main
         ports:
