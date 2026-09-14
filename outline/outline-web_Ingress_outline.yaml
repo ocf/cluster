@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: contour
   rules:
-  - host: outline.ocf.berkeley.edu
+  - host: docs.ocf.berkeley.edu
     http:
       paths:
       - backend:
@@ -23,5 +23,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - outline.ocf.berkeley.edu
+    - docs.ocf.berkeley.edu
     secretName: outline-web-tls
