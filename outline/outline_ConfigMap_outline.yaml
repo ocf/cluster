@@ -17,7 +17,7 @@ data:
   PGSSLMODE: require
   PORT: '8080'
   SLACK_MESSAGE_ACTIONS: 'true'
-  URL: https://docs.ocf.berkeley.edu
+  URL: https://outline.ocf.berkeley.edu
 kind: ConfigMap
 metadata:
   name: outline
