@@ -21,11 +21,15 @@ data:
     "S256"}, "protocolMappers": [{"name": "audience", "protocol": "openid-connect",
     "protocolMapper": "oidc-audience-mapper", "config": {"included.client.audience":
     "niks3", "id.token.claim": "false", "access.token.claim": "true"}}]}, {"clientId":
-    "kubernetes-staging", "name": "kubernetes-staging", "description": "OCF Kubernetes
-    Staging Cluster", "baseUrl": "", "clientAuthenticatorType": "client-secret", "redirectUris":
+    "kubernetes-prod", "name": "kubernetes-prod", "description": "OCF Kubernetes Production
+    Cluster", "baseUrl": "", "clientAuthenticatorType": "client-secret", "redirectUris":
     ["http://localhost:8000", "http://localhost:18000"], "webOrigins": ["+"], "publicClient":
-    false, "protocol": "openid-connect", "enabled": true}, {"clientId": "aquarium",
-    "name": "aquarium", "description": "OCF Proxmox", "baseUrl": "https://reef.ocf.berkeley.edu:8006",
+    false, "protocol": "openid-connect", "enabled": true}, {"clientId": "kubernetes-staging",
+    "name": "kubernetes-staging", "description": "OCF Kubernetes Staging Cluster",
+    "baseUrl": "", "clientAuthenticatorType": "client-secret", "redirectUris": ["http://localhost:8000",
+    "http://localhost:18000"], "webOrigins": ["+"], "publicClient": false, "protocol":
+    "openid-connect", "enabled": true}, {"clientId": "aquarium", "name": "aquarium",
+    "description": "OCF Proxmox", "baseUrl": "https://reef.ocf.berkeley.edu:8006",
     "clientAuthenticatorType": "client-secret", "redirectUris": ["https://reef.ocf.berkeley.edu:8006/*",
     "https://yuu.ocf.berkeley.edu:8006/*", "https://paws.ocf.berkeley.edu:8006/*",
     "https://doorplug.ocf.berkeley.edu:8006/*", "https://coral.ocf.berkeley.edu:8006/*"],
