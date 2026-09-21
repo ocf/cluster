@@ -1,24 +1,28 @@
 apiVersion: v1
 data:
+  BITNAMI_DEBUG: 'false'
   JAVA_OPTS_APPEND: -Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local
+  KC_BOOTSTRAP_ADMIN_PASSWORD_FILE: /opt/bitnami/keycloak/secrets/admin-password
   KC_BOOTSTRAP_ADMIN_USERNAME: user
+  KC_CACHE: ispn
   KC_CACHE_CONFIG_FILE: cache-ispn.xml
-  KC_CACHE_STACK: kubernetes
-  KC_CACHE_TYPE: ispn
-  KEYCLOAK_DATABASE_HOST: ocf-keycloak
-  KEYCLOAK_DATABASE_NAME: keycloak
-  KEYCLOAK_DATABASE_PORT: '5432'
-  KEYCLOAK_DATABASE_SCHEMA: public
-  KEYCLOAK_DATABASE_USER: keycloak
-  KEYCLOAK_ENABLE_HTTPS: 'false'
-  KEYCLOAK_ENABLE_STATISTICS: 'true'
-  KEYCLOAK_HOSTNAME: https://idm.ocf.berkeley.edu/
-  KEYCLOAK_HOSTNAME_STRICT: 'false'
-  KEYCLOAK_HTTP_PORT: '8080'
-  KEYCLOAK_LOG_LEVEL: INFO
-  KEYCLOAK_LOG_OUTPUT: default
+  KC_CACHE_STACK: jdbc-ping
+  KC_DB_PASSWORD_FILE: /opt/bitnami/keycloak/secrets/db-password
+  KC_DB_SCHEMA: public
+  KC_DB_URL: jdbc:postgresql://ocf-keycloak:5432/keycloak?currentSchema=public
+  KC_DB_USERNAME: keycloak
+  KC_HOSTNAME: https://idm.ocf.berkeley.edu/
+  KC_HOSTNAME_STRICT: 'false'
+  KC_HTTP_ENABLED: 'true'
+  KC_HTTP_MANAGEMENT_PORT: '9000'
+  KC_HTTP_PORT: '8080'
+  KC_HTTP_RELATIVE_PATH: /
+  KC_LOG_CONSOLE_OUTPUT: default
+  KC_LOG_LEVEL: INFO
+  KC_METRICS_ENABLED: 'true'
+  KC_PROXY_HEADERS: xforwarded
+  KC_SPI_ADMIN_REALM: master
   KEYCLOAK_PRODUCTION: 'true'
-  KEYCLOAK_PROXY_HEADERS: xforwarded
 kind: ConfigMap
 metadata:
   labels:
@@ -26,7 +30,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    app.kubernetes.io/version: 26.3.2
-    helm.sh/chart: keycloak-24.9.0
+    app.kubernetes.io/part-of: keycloak
+    app.kubernetes.io/version: 26.3.3
+    helm.sh/chart: keycloak-25.2.0
   name: keycloak-env-vars
   namespace: keycloak
