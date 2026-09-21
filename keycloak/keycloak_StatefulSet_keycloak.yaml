@@ -6,9 +6,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: keycloak
-    app.kubernetes.io/part-of: keycloak
-    app.kubernetes.io/version: 26.3.3
-    helm.sh/chart: keycloak-25.2.0
+    app.kubernetes.io/version: 26.3.2
+    helm.sh/chart: keycloak-24.9.0
   name: keycloak
   namespace: keycloak
 spec:
@@ -20,12 +19,11 @@ spec:
       app.kubernetes.io/component: keycloak
       app.kubernetes.io/instance: keycloak
       app.kubernetes.io/name: keycloak
-      app.kubernetes.io/part-of: keycloak
   serviceName: keycloak-headless
   template:
     metadata:
       annotations:
-        checksum/configmap-env-vars: a9d4b98fb71f96dd6a74b5929c93a0e1aca6a7c6e6a89a524a6206391e7f7156
+        checksum/configmap-env-vars: adfb9eebefc0b02efff8259591e60a139a63df1839e7c3b3055ac1ad0db038d4
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-keytab: kvv2/data/keycloak/keycloak
         vault.hashicorp.com/agent-inject-template-keytab: '{{- with secret "kvv2/data/keycloak/keycloak"
@@ -33,13 +31,13 @@ spec:
         vault.hashicorp.com/role: keycloak
         vault.hashicorp.com/service: https://vault.ocf.berkeley.edu/
       labels:
+        app.kubernetes.io/app-version: 26.3.2
         app.kubernetes.io/component: keycloak
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: keycloak
-        app.kubernetes.io/part-of: keycloak
-        app.kubernetes.io/version: 26.3.3
-        helm.sh/chart: keycloak-25.2.0
+        app.kubernetes.io/version: 26.3.2
+        helm.sh/chart: keycloak-24.9.0
     spec:
       affinity:
         nodeAffinity: null
@@ -49,7 +47,6 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/component: keycloak
                   app.kubernetes.io/instance: keycloak
                   app.kubernetes.io/name: keycloak
               topologyKey: kubernetes.io/hostname
@@ -62,14 +59,24 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        - name: KC_BOOTSTRAP_ADMIN_PASSWORD_FILE
+          value: /opt/bitnami/keycloak/secrets/admin-password
+        - name: KEYCLOAK_DATABASE_PASSWORD_FILE
+          value: /opt/bitnami/keycloak/secrets/db-password
+        - name: KEYCLOAK_HTTP_RELATIVE_PATH
+          value: /
+        - name: KC_SPI_ADMIN_REALM
+          value: master
         envFrom:
         - configMapRef:
             name: keycloak-env-vars
-        image: docker.io/bitnamilegacy/keycloak:26.3.3-debian-12-r0
+        image: docker.io/bitnamilegacy/keycloak:26.3.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 120
+          initialDelaySeconds: 300
           periodSeconds: 1
           successThreshold: 1
           tcpSocket:
@@ -81,7 +88,7 @@ spec:
           name: http
           protocol: TCP
         - containerPort: 9000
-          name: management
+          name: metrics
           protocol: TCP
         - containerPort: 7800
           name: discovery
@@ -90,7 +97,6 @@ spec:
           httpGet:
             path: /realms/master
             port: http
-            scheme: HTTP
           initialDelaySeconds: 30
           periodSeconds: 10
           successThreshold: 1
@@ -171,18 +177,16 @@ spec:
           '
         command:
         - /bin/bash
-        image: docker.io/bitnamilegacy/keycloak:26.3.3-debian-12-r0
+        image: docker.io/bitnamilegacy/keycloak:26.3.2-debian-12-r0
         imagePullPolicy: IfNotPresent
         name: prepare-write-dirs
         resources:
           limits:
-            cpu: 150m
-            ephemeral-storage: 2Gi
-            memory: 192Mi
+            cpu: 500m
+            memory: 4096Mi
           requests:
             cpu: 100m
-            ephemeral-storage: 50Mi
-            memory: 128Mi
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -236,4 +240,5 @@ spec:
         persistentVolumeClaim:
           claimName: keycloak
   updateStrategy:
+    rollingUpdate: {}
     type: RollingUpdate
