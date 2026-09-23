@@ -13,7 +13,7 @@ spec:
         transpire.ocf.io/deployment: create
     spec:
       containers:
-      - image: ghcr.io/ocf/create:da63828424f144bf2ddfd913ff1b0410020db339
+      - image: ghcr.io/ocf/create:cfb6a5b204ab76b2bf390a50b589c1c679b865c4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
