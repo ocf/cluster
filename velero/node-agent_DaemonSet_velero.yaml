@@ -5,7 +5,8 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-6.0.0
+    app.kubernetes.io/version: 1.18.2
+    helm.sh/chart: velero-12.2.0
   name: node-agent
   namespace: velero
 spec:
@@ -23,9 +24,12 @@ spec:
         app.kubernetes.io/instance: velero
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: velero
-        helm.sh/chart: velero-6.0.0
+        app.kubernetes.io/version: 1.18.2
+        helm.sh/chart: velero-12.2.0
         name: node-agent
+        role: node-agent
     spec:
+      automountServiceAccountToken: true
       containers:
       - args:
         - node-agent
@@ -52,7 +56,7 @@ spec:
           value: /credentials/cloud
         - name: ALIBABA_CLOUD_CREDENTIALS_FILE
           value: /credentials/cloud
-        image: velero/velero:v1.13.0
+        image: docker.io/velero/velero:v1.18.2
         imagePullPolicy: IfNotPresent
         name: node-agent
         ports:
@@ -72,6 +76,9 @@ spec:
         - mountPath: /host_pods
           mountPropagation: HostToContainer
           name: host-pods
+        - mountPath: /host_plugins
+          mountPropagation: HostToContainer
+          name: host-plugins
         - mountPath: /scratch
           name: scratch
       dnsPolicy: ClusterFirst
@@ -86,5 +93,8 @@ spec:
       - hostPath:
           path: /var/lib/kubelet/pods
         name: host-pods
+      - hostPath:
+          path: /var/lib/kubelet/plugins
+        name: host-plugins
       - emptyDir: {}
         name: scratch

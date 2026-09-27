@@ -5,8 +5,9 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: velero
+    app.kubernetes.io/version: 1.18.2
     component: velero
-    helm.sh/chart: velero-6.0.0
+    helm.sh/chart: velero-12.2.0
   name: velero
   namespace: velero
 spec:
@@ -28,14 +29,17 @@ spec:
         app.kubernetes.io/instance: velero
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: velero
-        helm.sh/chart: velero-6.0.0
+        app.kubernetes.io/version: 1.18.2
+        helm.sh/chart: velero-12.2.0
         name: velero
     spec:
+      automountServiceAccountToken: true
       containers:
       - args:
         - server
         - --uploader-type=kopia
         - --features=EnableCSI
+        - --repo-maintenance-job-configmap=velero-repo-maintenance
         command:
         - /velero
         env:
@@ -56,7 +60,7 @@ spec:
           value: /credentials/cloud
         - name: ALIBABA_CLOUD_CREDENTIALS_FILE
           value: /credentials/cloud
-        image: velero/velero:v1.13.0
+        image: docker.io/velero/velero:v1.18.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
@@ -82,13 +86,6 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           timeoutSeconds: 5
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 512Mi
-          requests:
-            cpu: 500m
-            memory: 128Mi
         volumeMounts:
         - mountPath: /plugins
           name: plugins

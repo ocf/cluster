@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.12.0
+    controller-gen.kubebuilder.io/version: v0.16.5
   labels:
     component: velero
   name: datauploads.velero.io
@@ -34,6 +34,12 @@ spec:
       jsonPath: .status.progress.totalBytes
       name: Total Bytes
       type: integer
+    - description: Incremental bytes
+      format: int64
+      jsonPath: .status.incrementalBytes
+      name: Incremental Bytes
+      priority: 10
+      type: integer
     - description: Name of the Backup Storage Location where this backup should be
         stored
       jsonPath: .spec.backupStorageLocation
@@ -55,13 +61,27 @@ spec:
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              of an object.
+
+              Servers should convert recognized schemas to the latest internal value,
+              and
+
+              may reject unrecognized values.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
             description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              object represents.
+
+              Servers may infer this from the endpoint the client submits requests
+              to.
+
+              Cannot be updated.
+
+              In CamelCase.
+
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -69,18 +89,25 @@ spec:
             description: DataUploadSpec is the specification for a DataUpload.
             properties:
               backupStorageLocation:
-                description: BackupStorageLocation is the name of the backup storage
-                  location where the backup repository is stored.
+                description: 'BackupStorageLocation is the name of the backup storage
+                  location
+
+                  where the backup repository is stored.'
                 type: string
               cancel:
-                description: Cancel indicates request to cancel the ongoing DataUpload.
-                  It can be set when the DataUpload is in InProgress phase
+                description: 'Cancel indicates request to cancel the ongoing DataUpload.
+                  It can be set
+
+                  when the DataUpload is in InProgress phase'
                 type: boolean
               csiSnapshot:
                 description: If SnapshotType is CSI, CSISnapshot provides the information
                   of the CSI snapshot.
                 nullable: true
                 properties:
+                  driver:
+                    description: Driver is the driver used by the VolumeSnapshotContent
+                    type: string
                   snapshotClass:
                     description: SnapshotClass is the name of the snapshot class that
                       the volume snapshot is created with
@@ -105,22 +132,27 @@ spec:
                 nullable: true
                 type: object
               datamover:
-                description: DataMover specifies the data mover to be used by the
-                  backup. If DataMover is "" or "velero", the built-in data mover
-                  will be used.
+                description: 'DataMover specifies the data mover to be used by the
+                  backup.
+
+                  If DataMover is "" or "velero", the built-in data mover will be
+                  used.'
                 type: string
               operationTimeout:
-                description: OperationTimeout specifies the time used to wait internal
-                  operations, before returning error as timeout.
+                description: 'OperationTimeout specifies the time used to wait internal
+                  operations,
+
+                  before returning error as timeout.'
                 type: string
               snapshotType:
                 description: SnapshotType is the type of the snapshot to be backed
                   up.
                 type: string
               sourceNamespace:
-                description: SourceNamespace is the original namespace where the volume
-                  is backed up from. It is the same namespace for SourcePVC and CSI
-                  namespaced objects.
+                description: 'SourceNamespace is the original namespace where the
+                  volume is backed up from.
+
+                  It is the same namespace for SourcePVC and CSI namespaced objects.'
                 type: string
               sourcePVC:
                 description: SourcePVC is the name of the PVC which the snapshot is
@@ -136,11 +168,26 @@ spec:
           status:
             description: DataUploadStatus is the current status of a DataUpload.
             properties:
+              acceptedByNode:
+                description: AcceptedByNode is name of the node where the DataUpload
+                  is prepared.
+                type: string
+              acceptedTimestamp:
+                description: 'AcceptedTimestamp records the time the DataUpload is
+                  to be prepared.
+
+                  The server''s time is used for AcceptedTimestamp'
+                format: date-time
+                nullable: true
+                type: string
               completionTimestamp:
-                description: CompletionTimestamp records the time a backup was completed.
-                  Completion time is recorded even on failed backups. Completion time
-                  is recorded before uploading the backup object. The server's time
-                  is used for CompletionTimestamps
+                description: 'CompletionTimestamp records the time a backup was completed.
+
+                  Completion time is recorded even on failed backups.
+
+                  Completion time is recorded before uploading the backup object.
+
+                  The server''s time is used for CompletionTimestamps'
                 format: date-time
                 nullable: true
                 type: string
@@ -151,11 +198,23 @@ spec:
                   as a result of the DataUpload.
                 nullable: true
                 type: object
+              incrementalBytes:
+                description: IncrementalBytes holds the number of bytes new or changed
+                  since the last backup
+                format: int64
+                type: integer
               message:
                 description: Message is a message about the DataUpload's status.
                 type: string
               node:
                 description: Node is name of the node where the DataUpload is processed.
+                type: string
+              nodeOS:
+                description: NodeOS is OS of the node where the DataUpload is processed.
+                enum:
+                - auto
+                - linux
+                - windows
                 type: string
               path:
                 description: Path is the full path of the snapshot volume being backed
@@ -174,9 +233,13 @@ spec:
                 - Failed
                 type: string
               progress:
-                description: Progress holds the total number of bytes of the volume
-                  and the current number of backed up bytes. This can be used to display
-                  progress information about the backup operation.
+                description: 'Progress holds the total number of bytes of the volume
+                  and the current
+
+                  number of backed up bytes. This can be used to display progress
+                  information
+
+                  about the backup operation.'
                 properties:
                   bytesDone:
                     format: int64
@@ -190,9 +253,13 @@ spec:
                   backup repository.
                 type: string
               startTimestamp:
-                description: StartTimestamp records the time a backup was started.
-                  Separate from CreationTimestamp, since that value changes on restores.
-                  The server's time is used for StartTimestamps
+                description: 'StartTimestamp records the time a backup was started.
+
+                  Separate from CreationTimestamp, since that value changes
+
+                  on restores.
+
+                  The server''s time is used for StartTimestamps'
                 format: date-time
                 nullable: true
                 type: string
