@@ -5,7 +5,6 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: 'true'
     kubernetes.io/tls-acme: 'true'
-    projectcontour.io/websocket-routes: /
   labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/instance: argocd
@@ -17,7 +16,7 @@ metadata:
   name: argocd-server
   namespace: argocd
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: argo.ocf.berkeley.edu
     http:
