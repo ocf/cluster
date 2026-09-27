@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    ingress.cilium.io/force-https: disabled
     ingress.kubernetes.io/force-ssl-redirect: 'false'
     io.cilium/websocket: enabled
     kubernetes.io/tls-acme: 'true'
