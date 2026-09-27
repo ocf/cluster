@@ -11,12 +11,12 @@ metadata:
 spec:
   accessMode: ReadWrite
   config:
-    region: minio
+    region: seaweedfs
     s3ForcePathStyle: 'true'
-    s3Url: http://hal.ocf.berkeley.edu:9000
+    s3Url: http://hal.ocf.berkeley.edu:8333
   credential:
     key: aws-config
     name: minio-credentials
   objectStorage:
-    bucket: velero
+    bucket: dna-ceph-backup
   provider: velero.io/aws
