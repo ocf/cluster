@@ -9,7 +9,7 @@ metadata:
     projectcontour.io/websocket-routes: /
   name: hedgedoc
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: notes.ocf.berkeley.edu
     http:

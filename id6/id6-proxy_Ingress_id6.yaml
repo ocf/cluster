@@ -9,7 +9,7 @@ metadata:
     projectcontour.io/websocket-routes: /
   name: id6-proxy
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: discord.ocf.berkeley.edu
     http:

@@ -9,7 +9,7 @@ metadata:
     projectcontour.io/websocket-routes: /
   name: grafana-web
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: grafana.ocf.berkeley.edu
     http:

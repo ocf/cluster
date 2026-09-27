@@ -9,7 +9,7 @@ metadata:
     projectcontour.io/websocket-routes: /
   name: ocfweb
 spec:
-  ingressClassName: contour
+  ingressClassName: cilium
   rules:
   - host: www.ocf.berkeley.edu
     http:
