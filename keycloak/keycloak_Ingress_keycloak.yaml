@@ -15,7 +15,6 @@ metadata:
   name: keycloak
   namespace: keycloak
 spec:
-  ingressClassName: contour
   rules:
   - host: idm.ocf.berkeley.edu
     http:

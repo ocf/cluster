@@ -13,7 +13,6 @@ metadata:
   name: prometheus-grafana
   namespace: prometheus
 spec:
-  ingressClassName: contour
   rules:
   - host: graf.ocf.berkeley.edu
     http:
