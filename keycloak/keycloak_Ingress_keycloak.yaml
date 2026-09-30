@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
-    kubernetes.io/tls-acme: 'true'
   labels:
     app.kubernetes.io/component: keycloak
     app.kubernetes.io/instance: keycloak
@@ -25,7 +23,7 @@ spec:
             port:
               name: http
         path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
   tls:
   - hosts:
     - idm.ocf.berkeley.edu
